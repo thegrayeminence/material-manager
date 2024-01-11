@@ -1,76 +1,93 @@
 import React from 'react'
 //libs
 import { Outlet, useNavigate, Navigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+
 import { AnimatePresence, motion } from 'framer-motion';
-import { Stack, VStack, Box, ButtonGroup, useColorModeValue } from '@chakra-ui/react';
+import { Stack, VStack, Box, Button, Text, ButtonGroup, useColorModeValue } from '@chakra-ui/react';
+
 
 //components
 import { ChoiceButton } from '../components';
 import { NavBar } from '../components'
 import Header from '../components/Header';
-//state
+
+const MotionBox = motion(Box);
+const MotionButton = motion(Button);
+const MotionText = motion(Text);
 
 function LandingPage() {
-
     const navigate = useNavigate();
 
-    //COMPONENT STYLING
-    const btnStyles = {
-        borderRadius: '6',
-        borderWidth: '.125rem',
-        borderColor: 'twitter.400',
-        color: 'white',
-        background: 'blue.400',
-        boxShadow:'dark-lg',
+    // Background animation variants
+    const backgroundVariants = {
+        animate: {
+            background: [
+                "linear-gradient(135deg, rgba(224, 9, 153, 0.7), rgba(208, 14, 222, 0.7))",
+                "linear-gradient(135deg, rgba(158, 0, 255, 0.7), rgba(14, 222, 221, 0.7))",
+                "linear-gradient(135deg, rgba(224, 9, 153, 0.7), rgba(208, 14, 222, 0.7))"
+            ],
+            transition: {
+                duration: 20,
+                ease: "linear",
+                loop: Infinity,
+            }
+        }
     };
-    const btnHover = {
-        color: 'white', background: 'twitter.600',
-        backdropFilter: 'auto', borderColor: 'twitter.200',
-        backdropBlur: '20px', transform: 'scale(1.1)',
-        transition: 'all 0.2s cubic-bezier(.08,.52,.52,1)'
 
+    // Continuous subtle animations for text and button
+    const textMotion = {
+        animate: {
+            y: [0, -10, 0],
+            transition: {
+                duration: 4,
+                ease: "easeInOut",
+                loop: Infinity,
+            }
+        }
     };
-    //Text styles
-    const headerStyle = {
-        bgGradient: useColorModeValue('linear(to-r, blue.400, purple.600)', 'linear(to-r, purple.200, blue.600)'),
-        bgClip: 'text',
-        textAlign: 'center',
-        letterSpacing: '.5rem',
-        fontSize: '6xl',
-        fontFamily: 'avenir',
-        fontWeight: 'extrabold',
-        backdropFilter: 'auto',
-        transition: 'all 0.2s cubic-bezier(.08,.52,.52,1)',
-    }
 
+    const buttonMotion = {
+        animate: {
+            scale: [1, 1.05, 1],
+            transition: {
+                duration: 3,
+                ease: "easeInOut",
+                loop: Infinity,
+            }
+        }
+    };
 
     return (
-        <Box
+        <MotionBox
             position="relative"
             overflow="hidden"
-            minH='100vh'
-            py={'5rem'}
-            width='100vw'
-            mt='-10'
+            minH="100vh"
+            width="100vw"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            flexDirection="column"
+            variants={backgroundVariants}
+            initial="initial"
+            animate="animate"
         >
-            {/* HEADER */}
-            <Header text={'SERVICES:'} customStyles={headerStyle}/>
+            <MotionText fontSize="4xl" mb="4" fontWeight="bold" variants={textMotion} initial="initial" animate="animate">
+                Material Manager: Preview and Rename Assets
+            </MotionText>
 
-            {/* BUTTONS */}
-            <VStack spacing={7} justify='center' 
-            pt={'2rem'} ml='25%' width='50%'>
-                
-                    <ChoiceButton text={"PREVIEW TEXTURE FILES"}
-                        handleClick={() => navigate('/preview')}
-                        sx={btnStyles} hover={btnHover}
-                    />
-                    <ChoiceButton text={"RENAME TEXTURE FILES"}
-                        handleClick={() => navigate('/rename')}
-                        sx={btnStyles} hover={btnHover}
-                    />
+            <VStack spacing="4">
+                <MotionButton
+                    onClick={() => navigate('/preview')}
+                    colorScheme="teal"
+                    size="lg"
+                    variants={buttonMotion}
+                    initial="initial"
+                    animate="animate"
+                >
+                    Manage Materials
+                </MotionButton>
             </VStack>
-        </Box>
+        </MotionBox>
     )
 }
 
