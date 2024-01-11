@@ -21,7 +21,22 @@ URL_PREFIX = '/api'
 
 ##serialization rules 
 
+##endpoints
+@app.post( URL_PREFIX + '/upload_filedata')
+def upload_metadata():
+    data = request.json
 
+    metadata = ImageMetadata(
+        filename=data['filename'],
+        size=data['size'],
+        filetype=data['filetype'],
+        exif=data.get('exif')
+    )
+
+    db.session.add(metadata)
+    db.session.commit()
+
+    return jsonify({'message': 'Metadata saved successfully'}), 201
 
 
 
