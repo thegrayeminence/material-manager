@@ -1,9 +1,11 @@
 import React from 'react'
 import BasicForm from '../components/UI/basicForm'
+import ImageUploadInput from '../components/imageUploadInput'
 function About() {
   return (
     <>
-    <div>SALDKJAd</div>
+    <ImageUploadInput />
+
     <BasicForm />
     </>
   )

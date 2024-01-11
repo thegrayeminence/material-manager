@@ -5,8 +5,7 @@ import { ProgressBar } from '../components'
 import { useProgressStore } from '../store/store'
 import Header from '../components/Header'
 import ShaderInfoForm from '../components/ShaderInfoForm'
-import FileUpload from '../components/FileUpload'
-import { useForm } from 'react-hook-form'
+
 function Preview() {
 
 

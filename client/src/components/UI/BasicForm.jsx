@@ -7,14 +7,14 @@ import { Input, Box, Stack, Button, Heading } from '@chakra-ui/react';
 import axios from 'axios';
 
 export default function BasicForm() {
-  const getquote = () => {
-    axios.get('https://api.quotable.io/random').then(res => {
-      console.log(res.data.content)
-      setQuote(res.data.content)
-    })
-      .catch(err=>console.log(err))
-  }
-  const [quote,setQuote] = useState('')
+  // const getquote = () => {
+  //   axios.get('https://api.quotable.io/random').then(res => {
+  //     console.log(res.data.content)
+  //     setQuote(res.data.content)
+  //   })
+  //     .catch(err=>console.log(err))
+  // }
+  // const [quote,setQuote] = useState('')
 
   const form = useForm();
   const { register, control, handleSubmit } = form;
@@ -23,12 +23,11 @@ export default function BasicForm() {
 
     return (
       <div>
-        {/* <div>{quote.toString()}</div> */}
-        <Box >
+        {/* <Box >
         <Button onClick={getquote}>GETQUOTE</Button>
         <Heading>{quote}</Heading>
+        </Box> */}
 
-        </Box>
         <form onSubmit={handleSubmit(onSubmit)}>
           <label htmlFor="username">Username</label>
           <input type="text" id="username" {...register("username")} />

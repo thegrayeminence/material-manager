@@ -7,6 +7,7 @@ import axios from 'axios';
 export default function ImageUpload() {
   const { register, handleSubmit } = useForm();
   const [fileData, setFileData] = useState([]);
+  const [materialData, setMaterialData] = useState([{}]);
   const [imagePreviews, setImagePreviews] = useState([]);
 
   const handleFileChange = (event) => {

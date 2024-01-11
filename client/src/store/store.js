@@ -8,6 +8,14 @@ export const useProgressStore = create((set) => ({
   resetProgress: () => set({ progress: 0 }),
 }))
 
-// const { progress, increaseProgress, decreaseProgress, resetProgress  } = useProgressStore()
 
 
+// Zustand store for global state management of materialData/fileData/imagePreviews
+export const useMaterialStore = create(set => ({
+  fileData: [],
+  materialData: {},
+  imagePreviews: [],
+  setFileData: (data) => set({ fileData: data }),
+  setMaterialData: (data) => set({ materialData: data }),
+  setImagePreviews: (data) => set({ imagePreviews: data })
+}));
