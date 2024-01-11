@@ -19,11 +19,16 @@ export default function ImageUpload() {
     const fileInput = event.target;
     const files = fileInput.files;
 
+
     const newImages = Array.from(files).map((file) => {
       return {
         file,
         filename: file.name,
-        /* You can add more metadata properties here if needed */
+        // additional metadata:
+        fileextension: file.name.split('.').pop(),
+        filesize: file.size,
+        filetype: file.type,
+        
       };
     });
 
@@ -66,20 +71,24 @@ export default function ImageUpload() {
   };
    
 
-  return (
+  return (<>
+    <Box py='2rem'>
+    <Header text={"RENAME TEXTURE FILES"}/>
+    </Box>
     <div>
       <ImageUploadInput  func={handleFileChange} />
-      <Button onClick={handleUpload}>Upload</Button>
+      <Button ml='25%' onClick={handleUpload}>Upload</Button>
 
       <div>
         {images.map((image, index) => (
           <div key={index}>
             <img src={fileData[index]?.content} alt={image.filename} width="100" />
-            <p>{image.filename}</p>
+            <p>{image.fileextension}</p>
           </div>
         ))}
       </div>
     </div>
+    </>
   );
 }
 
