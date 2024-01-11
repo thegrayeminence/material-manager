@@ -1,8 +1,11 @@
 import React from 'react'
-
+import BasicForm from '../components/UI/basicForm'
 function About() {
   return (
-    <div>About</div>
+    <>
+    <div>SALDKJAd</div>
+    <BasicForm />
+    </>
   )
 }
 

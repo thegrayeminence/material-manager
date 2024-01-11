@@ -15,6 +15,7 @@
     "@emotion/styled": "^11.11.0",
     "@react-three/drei": "^9.93.0",
     "@react-three/fiber": "^8.15.13",
+    "axios": "^1.6.5",
     "chakra-react-select": "^4.7.6",
     "framer-motion": "^10.17.9",
     "latest": "^0.2.0",
@@ -30,6 +31,7 @@
     "zustand": "^4.4.7"
   },
   "devDependencies": {
+    "@hookform/devtools": "^4.3.1",
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
     "@vitejs/plugin-react": "^4.2.1",
