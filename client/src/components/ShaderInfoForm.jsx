@@ -17,11 +17,11 @@ import { useForm, Controller } from "react-hook-form";
 import { useProgressStore } from "../store/store";
 import { useMaterialStore } from "../store/store";
 import FileUpload from "./FileUpload";
-import { metaDataOptions, materialTypeOptions, textureMapOptions, programOptions, engineOptions } from "../config/formInputData";
+import { metaDataOptions, materialTypeOptions, textureMapOptionsCommon, programOptions, engineOptions } from "../config/formInputData";
 
 
 //form input data
-const mappedTextureMapOptions = textureMapOptions.map((option) => ({
+const mappedTextureMapOptions = textureMapOptionsCommon.map((option) => ({
   ...option,
   colorScheme: option.color,
 }));

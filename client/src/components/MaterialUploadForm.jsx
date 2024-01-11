@@ -9,7 +9,7 @@ import {
 import { Select } from "chakra-react-select";
 
 //component imports
-import { textureMapOptionsPBRMetalRough, textureMapOptionsPBRGlossSpec, textureMapOptionsCommon, materialTypeOptions, metaDataOptions } from './FormInputData';
+import { textureMapOptionsPBRMetalRough, textureMapOptionsPBRGlossSpec, textureMapOptionsCommon, materialTypeOptions, metaDataOptions } from '../config/formInputData';
 import { useMaterialStore, useProgressStore } from '../store/store';
 
 

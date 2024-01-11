@@ -3,7 +3,7 @@
 
 
 
-  export const textureMapOptions = [
+  export const textureMapOptionsCommon = [
     { value: "albedo", label: "Albedo" },
     { value: "diffuse", label: "Diffuse" },
     { value: "specular", label: "Specular" },

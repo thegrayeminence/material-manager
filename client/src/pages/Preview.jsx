@@ -4,7 +4,7 @@ import { Box,Stack } from '@chakra-ui/react'
 import { ProgressBar } from '../components'
 import { useProgressStore } from '../store/store'
 import Header from '../components/Header'
-import ShaderInfoForm from '../components/ShaderInfoForm'
+import MaterialUploadForm from '../components/MaterialUploadForm'
 
 function Preview() {
 
@@ -17,7 +17,7 @@ function Preview() {
      </Box>
      <Box px='2rem' width={'80%'} ml='10%'>
      <ProgressBar/>
-     <ShaderInfoForm />
+     <MaterialUploadForm />
     
 
      </Box>
