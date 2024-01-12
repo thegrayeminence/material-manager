@@ -21,19 +21,22 @@ export default function MaterialUploadForm() {
     //query client
     const queryClient = useQueryClient();
     const [textureMapOptions, setTextureMapOptions] = useState([]);
+    
+    //hook form watch fields
+    
+
     const materialType = watch("materialType");
+    const materialMetadata = watch("materialMetadata");
+    const materialTextures = watch("materialTextures");
+    const color = watch("color");
+    const elementType = watch("elementType");
+    const condition = watch("condition");
+    const manifestation = watch("manifestation");
+
 
     //zustand global states
-    const { fileData, setFileData, materialData, setMaterialData, imagePreviews, setImagePreviews } = useMaterialStore();
+    const { formData, setFileData, setMaterialData, imagePreviews, setImagePreviews } = useMaterialStore();
     const { progress, increaseProgress, decreaseProgress, resetProgress } = useProgressStore();
-
-    const handleNext = () => {
-        if (progress < 2) {
-            increaseProgress();
-        } else {
-            handleSubmit(onSubmit)(); // Call the submit function when on the last step
-        }
-    };
 
     // loads options for texture maps based on material type
     useEffect(() => {
@@ -51,7 +54,13 @@ export default function MaterialUploadForm() {
     }, [materialType]);
 
 
-    //react-dropzone
+    //updates zustand state with form data upon changing any of the form fields
+    useEffect(() => {
+        setMaterialData({ ...formData.materialData, materialTextures, materialType, materialMetadata, color, elementType, condition, manifestation });
+        console.table(formData.materialData)
+    }, [materialTextures, materialType, materialMetadata, color, elementType, condition, manifestation, setMaterialData]);
+
+    //react-dropzone integration
     const { getRootProps, getInputProps } = useDropzone({
         onDrop: acceptedFiles => {
             setImagePreviews(acceptedFiles.map(file => Object.assign(file, {
@@ -65,16 +74,33 @@ export default function MaterialUploadForm() {
         }
     });
 
-    //react-query + axios
+    //react-query + axios integration
     const materialMutation = useMutation(newMaterial => axios.post('/api/material', newMaterial), {
         onSuccess: () => {
             queryClient.invalidateQueries('materialData');
         }
     });
+
+    //handles navigation between form steps
+    const handleNext = () => {
+        if (progress < 2) {
+            increaseProgress();
+        } else {
+            handleSubmit(onSubmit)();
+        }
+    };
+
     //submit handler via mutation function using axios post request
-    const onSubmit = async (data) => {
-        setMaterialData(data);
-        materialMutation.mutate({ fileData, materialData });
+    const onSubmit = async () => {
+        try {
+            console.log("Submitting:", { fileData: formData.fileData, materialData: formData.materialData });
+            alert(JSON.stringify({ fileData: formData.fileData, materialData: formData.materialData }, null, 2));
+
+            // await materialMutation.mutateAsync({ fileData: formData.fileData, materialData: formData.materialData });
+        } catch (error) {
+            // Handle submission error
+            console.error("Submission error:", error);
+        }
     };
 
     return (
@@ -89,7 +115,7 @@ export default function MaterialUploadForm() {
                 <FormLabel htmlFor="materialType">Material Type</FormLabel>
                 <Controller
                     name="materialType"
-                    value="materialType"
+                    id="materialType"
                     control={control}
                     render={({ field }) => (
                         <Select {...field} options={materialTypeOptions}
@@ -110,6 +136,7 @@ export default function MaterialUploadForm() {
                 <FormLabel htmlFor="materialTextures">Texture Maps</FormLabel>
                 <Controller
                     name="materialTextures"
+                    id="materialTextures"
                     control={control}
                     render={({ field }) => (
                         <Select {...field} options={textureMapOptions}
@@ -133,6 +160,7 @@ export default function MaterialUploadForm() {
                 <FormLabel htmlFor="materialMetadata">Additional Meta-Data</FormLabel>
                 <Controller
                     name="materialMetadata"
+                    id="materialMetadata"
                     control={control}
                     render={({ field }) => (
                         <Select {...field} options={metaDataOptions}
@@ -156,15 +184,17 @@ export default function MaterialUploadForm() {
                 <FormLabel htmlFor="color">Color/Shade/Luminosity</FormLabel>
                 <Input 
                 id="color" 
+                name="color"
                 {...register('color')} 
                 placeholder="Blue, Red, Grey, Bright, Dark, etc."
                 />
             </FormControl>
             <FormControl mb={4}>
-                <FormLabel htmlFor="element_type">Element/Type</FormLabel>
+                <FormLabel htmlFor="elementType">Element/Type</FormLabel>
                 <Input 
-                id="element_type" 
-                {...register('element_type')} 
+                id="elementType"
+                name="elementType" 
+                {...register('elementType')} 
                 placeholder="Steel, Diamond, Ceramic, Textile, Gold, etc."
                 />
             </FormControl>
@@ -178,6 +208,7 @@ export default function MaterialUploadForm() {
                 <FormLabel htmlFor="manifestation">Manifestation/Form</FormLabel>
                 <Input 
                 id="manifestation" 
+                name="manifestation"
                 {...register('manifestation')} 
                 placeholder="Railing, Carpet, Tile, Book, Leaf, Skin, etc. "
                 />
@@ -186,6 +217,7 @@ export default function MaterialUploadForm() {
                 <FormLabel htmlFor="condition">Condition</FormLabel>
                 <Input 
                 id="condition" 
+                name="condition"
                 {...register('condition')} 
                 placeholder="Rusted, Polished, Dusty, Clean, Old, etc."
                 />
@@ -204,7 +236,7 @@ export default function MaterialUploadForm() {
                     <p>Drag 'n' drop files here, or click to select files</p>
                 </div>
                 <VStack spacing={4} mt={4}>
-                    {imagePreviews.map((src, index) => (
+                    {imagePreviews && imagePreviews.map((src, index) => (
                         <Image key={index} src={src.preview} alt={`Preview ${index}`} boxSize="100px" />
                     ))}
                 </VStack>
