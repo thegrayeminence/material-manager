@@ -18,8 +18,8 @@ function Preview() {
      <Box px='2rem' width={'80%'} ml='10%'>
      <ProgressBar/>
      <MaterialUploadForm />
-    
-
+     </Box>
+     <Box px='2rem' width={'80%'} ml='10%'>
      </Box>
     </>
    

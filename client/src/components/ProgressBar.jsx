@@ -18,16 +18,13 @@ import { useProgressStore } from '../store/store'
 
 
 const steps = [
-  { title: 'First', description: 'Describe Material' },
-  { title: 'Second', description: 'Upload Files' },
+  { title: 'First', description: 'Classify Material: Technical Specifications' },
+  { title: 'Second', description: 'Describe Material: Physical Attributes' },
   { title: 'Third', description: 'Generate Preview'},
 ]
 
 function ProgressBar( {func} ) {
   
-// const { progress, increaseProgress, decreaseProgress, resetProgress  } = useProgressStore()
-// const increaseProgress = useProgressStore((state) => state.increaseProgress)
-
 
   const progress = useProgressStore((state) => state.progress)
   const activeStepText = steps[progress].description

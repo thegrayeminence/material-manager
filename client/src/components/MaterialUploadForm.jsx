@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
+import { DevTool } from '@hookform/devtools';
 import { useDropzone } from 'react-dropzone';
 import { useMutation, useQueryClient } from 'react-query';
 import axios from 'axios';
@@ -73,6 +74,7 @@ export default function MaterialUploadForm() {
     };
 
     return (
+        <>
         <Box as="form" onSubmit={handleSubmit(onSubmit)} p={5}>
             
             
@@ -142,30 +144,50 @@ export default function MaterialUploadForm() {
 
 
 
-            {/* Additional Form Controls for Material Physical Attributes */}
+            {/* Additional Form Controls for Material Physical Attributes:Row1 */}
             {progress === 1 && (
-            <>
+            <HStack spacing={4} py={'.5rem'}>
             <FormControl mb={4}>
-                <FormLabel htmlFor="color">Color</FormLabel>
-                <Input id="color" {...register('color')} />
+                <FormLabel htmlFor="color">Color/Shade/Luminosity</FormLabel>
+                <Input 
+                id="color" 
+                {...register('color')} 
+                placeholder="Blue, Red, Grey, Bright, Dark, etc."
+                />
             </FormControl>
             <FormControl mb={4}>
                 <FormLabel htmlFor="element_type">Element/Type</FormLabel>
-                <Input id="element_type" {...register('element_type')} />
+                <Input 
+                id="element_type" 
+                {...register('element_type')} 
+                placeholder="Steel, Diamond, Ceramic, Textile, Gold, etc."
+                />
             </FormControl>
+            </HStack>
+            )}
+
+            {/* Additional Form Controls for Material Physical Attributes: Row2 */}
+            {progress === 1 && (
+            <HStack spacing={4} py={'.5rem'}>
             <FormControl mb={4}>
-                <FormLabel htmlFor="manifestation">Manifestation</FormLabel>
-                <Textarea id="manifestation" {...register('manifestation')} />
+                <FormLabel htmlFor="manifestation">Manifestation/Form</FormLabel>
+                <Input 
+                id="manifestation" 
+                {...register('manifestation')} 
+                placeholder="Railing, Carpet, Tile, Book, Leaf, Skin, etc. "
+                />
             </FormControl>
             <FormControl mb={4}>
                 <FormLabel htmlFor="condition">Condition</FormLabel>
-                <Textarea id="condition" {...register('condition')} />
+                <Input 
+                id="condition" 
+                {...register('condition')} 
+                placeholder="Rusted, Polished, Dusty, Clean, Old, etc."
+                />
             </FormControl>
-            </>
+            </HStack>
             )}
-
-
-
+            
 
             {/* File Upload Section */}
             {progress === 2 && (
@@ -198,5 +220,7 @@ export default function MaterialUploadForm() {
 
 
         </Box>
+        <DevTool control={control} />
+        </>
     );
 }

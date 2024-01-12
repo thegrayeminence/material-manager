@@ -60,6 +60,7 @@ function LandingPage() {
     return (
         <MotionBox
             position="relative"
+            mt='-2.5rem'
             overflow="hidden"
             minH="100vh"
             width="100vw"
