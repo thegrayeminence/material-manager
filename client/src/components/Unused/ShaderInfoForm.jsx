@@ -14,10 +14,10 @@ import { Select, CreatableSelect, AsyncSelect } from "chakra-react-select";
 import { useForm, Controller } from "react-hook-form";
 
 //import components + zustand states
-import { useProgressStore } from "../store/store";
-import { useMaterialStore } from "../store/store";
-import FileUpload from "./FileUpload";
-import { metaDataOptions, materialTypeOptions, textureMapOptionsCommon, programOptions, engineOptions } from "../config/formInputData";
+import { useProgressStore } from "../../store/store";
+import { useMaterialStore } from "../../store/store";
+import FileUpload from "../FileUpload";
+import { metaDataOptions, materialTypeOptions, textureMapOptionsCommon, programOptions, engineOptions } from "../../config/formInputData";
 
 
 //form input data

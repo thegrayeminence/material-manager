@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 //component imports
 import { Select, CreatableSelect, AsyncSelect } from "chakra-react-select";
-import { groupedOptions, colorOptions } from "../config/formInputData";
+import { groupedOptions, colorOptions } from "../../config/formInputData";
 import { useForm, Controller } from "react-hook-form";
 
 //functions

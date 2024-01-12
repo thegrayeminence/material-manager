@@ -33,7 +33,7 @@ export default function MaterialUploadForm() {
     const condition = watch("condition");
     const manifestation = watch("manifestation");
 
-
+ 
     //zustand global states
     const { formData, setFileData, setMaterialData, imagePreviews, setImagePreviews } = useMaterialStore();
     const { progress, increaseProgress, decreaseProgress, resetProgress } = useProgressStore();
@@ -245,7 +245,7 @@ export default function MaterialUploadForm() {
             )}
 
             {/* Navigation Buttons */}
-            <HStack spacing={4} py={'2.5rem'}>
+            <HStack spacing={4} py={'1rem'}>
                 <Button colorScheme="blue" w="full" onClick={resetProgress}>Reset</Button>
                 {progress > 0 && (
                     <Button colorScheme="blue" w="full" onClick={decreaseProgress}>Back</Button>
