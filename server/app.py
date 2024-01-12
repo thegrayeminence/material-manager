@@ -38,6 +38,15 @@ def upload_metadata():
 
     return jsonify({'message': 'Metadata saved successfully'}), 201
 
+def upload_materialdata():
+    data = request.json
+    material = Material(**data)  # Ensure this matches your Material model's structure
+    db.session.add(material)
+    db.session.commit()
+
+    return jsonify({'message': 'Material data saved successfully'}), 201
+
+
 
 
 ## error handlers: catch errors thrown from @validates and other exceptions

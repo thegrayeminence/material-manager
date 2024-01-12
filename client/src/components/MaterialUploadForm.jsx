@@ -16,12 +16,14 @@ import { useMaterialStore, useProgressStore } from '../store/store';
 
 
 export default function MaterialUploadForm() {
+    //react-hook-form
     const { register, handleSubmit, control, watch } = useForm();
+    //query client
     const queryClient = useQueryClient();
     const [textureMapOptions, setTextureMapOptions] = useState([]);
     const materialType = watch("materialType");
 
-
+    //zustand global states
     const { fileData, setFileData, materialData, setMaterialData, imagePreviews, setImagePreviews } = useMaterialStore();
     const { progress, increaseProgress, decreaseProgress, resetProgress } = useProgressStore();
 
@@ -35,6 +37,7 @@ export default function MaterialUploadForm() {
 
     // loads options for texture maps based on material type
     useEffect(() => {
+        console.log("Material Type:", materialType); //debugging
         switch (materialType) {
             case "metallic":
                 setTextureMapOptions(textureMapOptionsPBRMetalRough);
@@ -48,7 +51,7 @@ export default function MaterialUploadForm() {
     }, [materialType]);
 
 
-
+    //react-dropzone
     const { getRootProps, getInputProps } = useDropzone({
         onDrop: acceptedFiles => {
             setImagePreviews(acceptedFiles.map(file => Object.assign(file, {
@@ -62,12 +65,13 @@ export default function MaterialUploadForm() {
         }
     });
 
+    //react-query + axios
     const materialMutation = useMutation(newMaterial => axios.post('/api/material', newMaterial), {
         onSuccess: () => {
             queryClient.invalidateQueries('materialData');
         }
     });
-
+    //submit handler via mutation function using axios post request
     const onSubmit = async (data) => {
         setMaterialData(data);
         materialMutation.mutate({ fileData, materialData });
@@ -85,6 +89,7 @@ export default function MaterialUploadForm() {
                 <FormLabel htmlFor="materialType">Material Type</FormLabel>
                 <Controller
                     name="materialType"
+                    value="materialType"
                     control={control}
                     render={({ field }) => (
                         <Select {...field} options={materialTypeOptions}

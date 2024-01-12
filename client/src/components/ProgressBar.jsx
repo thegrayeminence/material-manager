@@ -18,9 +18,9 @@ import { useProgressStore } from '../store/store'
 
 
 const steps = [
-  { title: 'First', description: 'Classify Material: Technical Specifications' },
-  { title: 'Second', description: 'Describe Material: Physical Attributes' },
-  { title: 'Third', description: 'Generate Preview'},
+  { title: 'First', description: 'Classify Material: Technical Attributes' },
+  { title: 'Second', description: 'Describe Material: Physical Properties' },
+  { title: 'Third', description: 'Upload Files & Specify Texture Type'},
 ]
 
 function ProgressBar( {func} ) {
