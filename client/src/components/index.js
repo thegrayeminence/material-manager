@@ -4,6 +4,7 @@ import ProgressBar from "./ProgressBar"
 import MaterialUploadForm from "./MaterialUploadForm";
 import FormPreviewBox from "./FormPreviewBox";
 import Header from "./Header";
+import ImageGrid from "./ImageGrid";
 
 
 
@@ -14,4 +15,5 @@ export {
     MaterialUploadForm,
     FormPreviewBox,
     Header,
+    ImageGrid,
 };
