@@ -10,8 +10,8 @@ import { useProgressStore } from '../store/store'
   
 
 function Preview() {
-const {progress} = useProgressStore()
-const {imagePreviews} = useMaterialStore()
+// const {progress} = useProgressStore()
+// const {imagePreviews} = useMaterialStore()
   return (
     <>
       <Box py='2rem'>
@@ -22,10 +22,10 @@ const {imagePreviews} = useMaterialStore()
         <MaterialUploadForm />
       </Box>
       <FormPreviewBox />
-      {progress == 2 && imagePreviews && (
+      {/* {progress == 2 && imagePreviews && (
       <Box px='2rem' width={'80vw'} ml='10%'>
         <ImageGrid imagePreviews={imagePreviews} />
-      </Box>)}
+      </Box>)} */}
      
     </>
 

@@ -9,13 +9,13 @@ const ImageGrid = ({ imagePreviews }) => {
 
 
     return (
-        
-        <SimpleGrid columns={3} spacing={10}>
+        <>
+        {/* <SimpleGrid columns={3} spacing={10}>
             {imagePreviews.map((file, index) => (
                 <Image key={index} src={file.preview} alt={`Preview ${index}`} />
             ))}
-        </SimpleGrid>
-
+        </SimpleGrid> */}
+        </>
     );
 };
 

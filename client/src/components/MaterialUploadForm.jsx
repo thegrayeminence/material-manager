@@ -53,53 +53,44 @@ export default function MaterialUploadForm() {
         }
     }, [materialType]);
 
+    useEffect(() => {
+        // cleanup function called the component unmount or when the imagePreviews array changes
+        return () => {
+            imagePreviews.forEach(preview => {
+                if (preview.preview) {
+                    // revoke blob URL to free up memory
+                    URL.revokeObjectURL(preview.preview);
+                }
+            });
+        };
+    }, [imagePreviews]); // cleanup function runs when imagePreviews changes
+    
 
     //updates zustand state with form data upon changing any of the form fields
     useEffect(() => {
         setMaterialData({ ...formData.materialData, materialTextures, materialType, materialMetadata, color, elementType, condition, manifestation });
-        console.log(formData.materialData)
+        console.table(formData.materialData)
     }, [materialTextures, materialType, materialMetadata, color, elementType, condition, manifestation, setMaterialData]);
 
 
-    //prevents memory leaks for multiple image preview uploads upon unmounting
-    // useEffect(() => {
-    //     // Run the effect only if imagePreviews is a valid array
-    //     if (Array.isArray(imagePreviews)) {
-    //         return () => {
-    //             imagePreviews.forEach(file => {
-    //                 if (file && file.preview) {
-    //                     URL.revokeObjectURL(file.preview);
-    //                 }
-    //             });
-    //         };
-    //     }
-    //     // If imagePreviews is not an array, do nothing
-    //     return undefined;
-    // }, [imagePreviews]);
-
-
-
-    //react-dropzone integration
-    const { getRootProps, getInputProps } = useDropzone({
-        multiple: true,
+     //react-dropzone integration
+     const { getRootProps, getInputProps } = useDropzone({
         onDrop: acceptedFiles => {
-            const newPreviews = acceptedFiles.map(file => ({
-                ...file,
+            setImagePreviews(acceptedFiles.map(file => Object.assign(file, {
                 preview: URL.createObjectURL(file)
-            }));
-
-            // update image previews and validate array exsists
-            console.log("New previews:", newPreviews);
-            setImagePreviews(imagePreviews => [...imagePreviews, ...newPreviews]);
-            console.log("Newerest previews!!:", newPreviews);
-            // Update file data
-            setFileData([...formData.fileData, ...acceptedFiles.map(file => ({
+            })));
+            setFileData(acceptedFiles.map(file => ({
                 filename: file.name,
                 size: file.size,
                 type: file.type
-            }))]);
+            })));
         }
-    });
+    });  
+
+    //logs image preview file data if using async method (fileapi vs base64)
+    useEffect(() => {
+        console.log(imagePreviews);
+    }, [imagePreviews]);
 
     //react-query + axios integration
     const materialMutation = useMutation(newMaterial => axios.post('/api/material', newMaterial), {
@@ -120,8 +111,8 @@ export default function MaterialUploadForm() {
     //submit handler via mutation function using axios post request
     const onSubmit = async () => {
         try {
-            console.log("Submitting:", { fileData: formData.fileData, materialData: formData.materialData, imagePreviews: imagePreviews });
-            alert(JSON.stringify({ fileData: formData.fileData, materialData: formData.materialData }, null, 2));
+            console.log("Submitting:", { fileData: formData.fileData, materialData: formData.materialData });
+            alert(JSON.stringify({ imagePreviews: imagePreviews, fileData: formData.fileData, materialData: formData.materialData }, null, 2));
 
             // await materialMutation.mutateAsync({ fileData: formData.fileData, materialData: formData.materialData });
         } catch (error) {
@@ -253,24 +244,24 @@ export default function MaterialUploadForm() {
                 )}
 
 
-                {/* File Upload Section */}
-                {progress === 2 && (
-                    <>
-                        <FormControl mb={4}>
-                            <FormLabel>Upload Texture Files</FormLabel>
-                            <div {...getRootProps()} style={{ border: '2px dashed gray', padding: '20px', textAlign: 'center', cursor: 'pointer' }}>
-                                <input {...getInputProps()} />
-                                <p>Drag 'n' drop files here, or click to select files</p>
-                            </div>
-                            {/* Image Previews */}
-                            <VStack spacing={4} mt={4}>
-                                {imagePreviews && Array.isArray(imagePreviews) && imagePreviews.map((file, index) => (
-                                    <Image key={index} src={file.preview} alt={`Preview ${index}`} boxSize="100px" />
-                                ))}
-                            </VStack>
-                        </FormControl>
-                    </>
-                )}
+                 {/* File Upload Section */}
+            {progress === 2 && (
+                <>
+            <FormControl mb={4}>
+                <FormLabel>Upload Texture Files</FormLabel>
+                <div {...getRootProps()} style={{ border: '2px dashed gray', padding: '20px', textAlign: 'center', cursor: 'pointer' }}>
+                    <input {...getInputProps()} />
+                    <p>Drag 'n' drop files here, or click to select files</p>
+                </div>
+                <VStack spacing={4} mt={4}>
+                    {imagePreviews && imagePreviews.map((src, index) => (
+                        <Image key={index} src={src.preview} alt={`Preview ${index}`} boxSize="100px" />
+                    ))}
+                </VStack>
+            </FormControl>
+            </>
+            )}
+
 
                 {/* Navigation Buttons */}
                 <HStack spacing={4} py={'1rem'}>
