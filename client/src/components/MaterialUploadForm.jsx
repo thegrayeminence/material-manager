@@ -22,7 +22,7 @@ export default function MaterialUploadForm() {
 
     //query client
     const queryClient = useQueryClient();
-    const [textureMapOptions, setTextureMapOptions] = useState([]);
+    const [textureMapOptions, setTextureMapOptions] = useState(textureMapOptionsCommon);
 
     //hook form watch fields
     const materialType = watch("materialType");
@@ -38,24 +38,32 @@ export default function MaterialUploadForm() {
     const { formData, setFileData, setMaterialData, imagePreviews, setImagePreviews } = useMaterialStore();
     const { progress, increaseProgress, decreaseProgress, resetProgress } = useProgressStore();
 
-
+    const defaultTextureMapSelections = {
+        metallic: textureMapOptionsPBRMetalRough,
+        glossy: textureMapOptionsPBRGlossSpec,
+        custom: [],
+    };
 
     //### USE EFFECTS ####//
     // ------------------ //    
-    // auto loads options for texture maps based on material type selection
+    // auto loads/renders options/selections for texture maps based on material type selection
     useEffect(() => {
-        console.log("Material Type:", materialType);
-        switch (materialType) {
-            case "metallic":
-                setTextureMapOptions(textureMapOptionsPBRMetalRough);
-                break;
-            case "glossy":
-                setTextureMapOptions(textureMapOptionsPBRGlossSpec);
-                break;
-            default:
+        if (materialType && materialType.value) {
+            // Get the default texture maps for the selected material type
+            const defaultTextures = defaultTextureMapSelections[materialType.value];
+            if (materialType.value === "custom") {
+                setValue('materialTextures', defaultTextures);
                 setTextureMapOptions(textureMapOptionsCommon);
+                return;
+            }
+
+            if (defaultTextures) {
+                setTextureMapOptions(defaultTextures);
+                setValue('materialTextures', defaultTextures);
+            }
         }
-    }, [materialType]);
+    }, [materialType, setValue]);
+
 
     useEffect(() => {
         // cleanup function 4 memory leak prevantage; called when components unmount/imagePreviews arr changes
@@ -77,31 +85,7 @@ export default function MaterialUploadForm() {
     }, [materialTextures, materialType, materialMetadata, color, elementType, condition, manifestation, setMaterialData]);
 
 
-    // resets/flushes form data values 
-    useEffect(() => {
-        let defaultValues = {};
-        defaultValues.firstName = "Kristof";
-        defaultValues.lastName = "Rado";
-        reset({ ...defaultValues });
-    }, []);
 
-
-    const flushFormData = () => {
-        let defaultValues = {};
-        defaultValues.materialTextures = [];
-        defaultValues.materialType = [];
-        defaultValues.materialMetadata = [];
-        defaultValues.color = "";
-        defaultValues.elementType = "";
-        defaultValues.condition = "";
-        defaultValues.manifestation = "";
-        reset({ ...defaultValues });
-        resetProgress();
-        console.log("Form Data and Progress Reset!");
-        // setImagePreviews([]);
-        // setFileData([]);
-        // setMaterialData({});
-    }
     //logs image preview file data if using async method (fileapi vs base64)
     useEffect(() => {
         console.log(imagePreviews);
@@ -146,7 +130,8 @@ export default function MaterialUploadForm() {
 
     // ### HELPER FUNCTIONS ### //
     // ----------------------- //
-    //handles navigation between form steps
+    //handles navigation between form steps via progress var state
+
     const handleNext = () => {
         if (progress < 2) {
             increaseProgress();
@@ -155,6 +140,22 @@ export default function MaterialUploadForm() {
         }
     };
 
+    const flushFormData = () => {
+        let defaultValues = {};
+        defaultValues.materialTextures = [];
+        defaultValues.materialType = [];
+        defaultValues.materialMetadata = [];
+        defaultValues.color = "";
+        defaultValues.elementType = "";
+        defaultValues.condition = "";
+        defaultValues.manifestation = "";
+        reset({ ...defaultValues });
+        resetProgress();
+        console.log("Form Data Flushed! Default Values Set To:", FormData );
+        setImagePreviews([]);
+        setFileData([]);
+        setMaterialData({});
+    }
 
 
     return (
@@ -178,7 +179,6 @@ export default function MaterialUploadForm() {
                                     placeholder="Select Material Type"
                                     closeMenuOnSelect={true}
                                     variant="flushed"
-                                    isRequired={true}
                                 />
                             )}
                         />
@@ -192,16 +192,16 @@ export default function MaterialUploadForm() {
                         <FormLabel htmlFor="materialTextures">Texture Maps</FormLabel>
                         <Controller
                             name="materialTextures"
-                            id="materialTextures"
                             control={control}
                             render={({ field }) => (
-                                <Select {...field} options={textureMapOptions}
+                                <Select 
+                                    {...field} 
+                                    options={textureMapOptions}
                                     placeholder="Choose texture maps for material..."
                                     isMulti
                                     closeMenuOnSelect={false}
                                     selectedOptionStyle="check"
                                     hideSelectedOptions={true}
-                                    isRequired={true}
                                 />
                             )}
                         />
@@ -219,7 +219,8 @@ export default function MaterialUploadForm() {
                             id="materialMetadata"
                             control={control}
                             render={({ field }) => (
-                                <Select {...field} options={metaDataOptions}
+                                <Select {...field} 
+                                    options={metaDataOptions}
                                     placeholder="Add additional metadata about material..."
                                     isMulti
                                     closeMenuOnSelect={false}
