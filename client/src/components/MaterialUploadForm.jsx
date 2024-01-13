@@ -18,7 +18,7 @@ import { useMaterialStore, useProgressStore } from '../store/store';
 export default function MaterialUploadForm() {
 
     //react-hook-form
-    const { register, handleSubmit, control, watch } = useForm();
+    const { register, handleSubmit, control, watch, reset, setError, setFocus, setValue } = useForm();
 
     //query client
     const queryClient = useQueryClient();
@@ -38,7 +38,11 @@ export default function MaterialUploadForm() {
     const { formData, setFileData, setMaterialData, imagePreviews, setImagePreviews } = useMaterialStore();
     const { progress, increaseProgress, decreaseProgress, resetProgress } = useProgressStore();
 
-    // loads options for texture maps based on material type
+
+
+    //### USE EFFECTS ####//
+    // ------------------ //    
+    // auto loads options for texture maps based on material type selection
     useEffect(() => {
         console.log("Material Type:", materialType);
         switch (materialType) {
@@ -54,7 +58,7 @@ export default function MaterialUploadForm() {
     }, [materialType]);
 
     useEffect(() => {
-        // cleanup function called the component unmount or when the imagePreviews array changes
+        // cleanup function 4 memory leak prevantage; called when components unmount/imagePreviews arr changes
         return () => {
             imagePreviews.forEach(preview => {
                 if (preview.preview) {
@@ -64,7 +68,7 @@ export default function MaterialUploadForm() {
             });
         };
     }, [imagePreviews]); // cleanup function runs when imagePreviews changes
-    
+
 
     //updates zustand state with form data upon changing any of the form fields
     useEffect(() => {
@@ -73,8 +77,39 @@ export default function MaterialUploadForm() {
     }, [materialTextures, materialType, materialMetadata, color, elementType, condition, manifestation, setMaterialData]);
 
 
-     //react-dropzone integration
-     const { getRootProps, getInputProps } = useDropzone({
+    // resets/flushes form data values 
+    useEffect(() => {
+        let defaultValues = {};
+        defaultValues.firstName = "Kristof";
+        defaultValues.lastName = "Rado";
+        reset({ ...defaultValues });
+    }, []);
+
+
+    const flushFormData = () => {
+        let defaultValues = {};
+        defaultValues.materialTextures = [];
+        defaultValues.materialType = [];
+        defaultValues.materialMetadata = [];
+        defaultValues.color = "";
+        defaultValues.elementType = "";
+        defaultValues.condition = "";
+        defaultValues.manifestation = "";
+        reset({ ...defaultValues });
+        resetProgress();
+        console.log("Form Data and Progress Reset!");
+        // setImagePreviews([]);
+        // setFileData([]);
+        // setMaterialData({});
+    }
+    //logs image preview file data if using async method (fileapi vs base64)
+    useEffect(() => {
+        console.log(imagePreviews);
+    }, [imagePreviews]);
+
+
+    //react-dropzone integration
+    const { getRootProps, getInputProps } = useDropzone({
         onDrop: acceptedFiles => {
             setImagePreviews(acceptedFiles.map(file => Object.assign(file, {
                 preview: URL.createObjectURL(file)
@@ -85,28 +120,16 @@ export default function MaterialUploadForm() {
                 type: file.type
             })));
         }
-    });  
+    });
 
-    //logs image preview file data if using async method (fileapi vs base64)
-    useEffect(() => {
-        console.log(imagePreviews);
-    }, [imagePreviews]);
-
+    //HTTP POST REQUESTS & ASYNCHRONOUS STUFF//
+    // ---------------- //
     //react-query + axios integration
     const materialMutation = useMutation(newMaterial => axios.post('/api/material', newMaterial), {
         onSuccess: () => {
             queryClient.invalidateQueries('materialData');
         }
     });
-
-    //handles navigation between form steps
-    const handleNext = () => {
-        if (progress < 2) {
-            increaseProgress();
-        } else {
-            handleSubmit(onSubmit)();
-        }
-    };
 
     //submit handler via mutation function using axios post request
     const onSubmit = async () => {
@@ -120,6 +143,19 @@ export default function MaterialUploadForm() {
             console.error("Submission error:", error);
         }
     };
+
+    // ### HELPER FUNCTIONS ### //
+    // ----------------------- //
+    //handles navigation between form steps
+    const handleNext = () => {
+        if (progress < 2) {
+            increaseProgress();
+        } else {
+            handleSubmit(onSubmit)();
+        }
+    };
+
+
 
     return (
         <>
@@ -136,7 +172,9 @@ export default function MaterialUploadForm() {
                             id="materialType"
                             control={control}
                             render={({ field }) => (
-                                <Select {...field} options={materialTypeOptions}
+                                <Select
+                                    {...field}
+                                    options={materialTypeOptions}
                                     placeholder="Select Material Type"
                                     closeMenuOnSelect={true}
                                     variant="flushed"
@@ -244,28 +282,28 @@ export default function MaterialUploadForm() {
                 )}
 
 
-                 {/* File Upload Section */}
-            {progress === 2 && (
-                <>
-            <FormControl mb={4}>
-                <FormLabel>Upload Texture Files</FormLabel>
-                <div {...getRootProps()} style={{ border: '2px dashed gray', padding: '20px', textAlign: 'center', cursor: 'pointer' }}>
-                    <input {...getInputProps()} />
-                    <p>Drag 'n' drop files here, or click to select files</p>
-                </div>
-                <VStack spacing={4} mt={4}>
-                    {imagePreviews && imagePreviews.map((src, index) => (
-                        <Image key={index} src={src.preview} alt={`Preview ${index}`} boxSize="100px" />
-                    ))}
-                </VStack>
-            </FormControl>
-            </>
-            )}
+                {/* File Upload Section */}
+                {progress === 2 && (
+                    <>
+                        <FormControl mb={4}>
+                            <FormLabel>Upload Texture Files</FormLabel>
+                            <div {...getRootProps()} style={{ border: '2px dashed gray', padding: '20px', textAlign: 'center', cursor: 'pointer' }}>
+                                <input {...getInputProps()} />
+                                <p>Drag 'n' drop files here, or click to select files</p>
+                            </div>
+                            <VStack spacing={4} mt={4}>
+                                {imagePreviews && imagePreviews.map((src, index) => (
+                                    <Image key={index} src={src.preview} alt={`Preview ${index}`} boxSize="100px" />
+                                ))}
+                            </VStack>
+                        </FormControl>
+                    </>
+                )}
 
 
                 {/* Navigation Buttons */}
                 <HStack spacing={4} py={'1rem'}>
-                    <Button colorScheme="blue" w="full" onClick={resetProgress}>Reset</Button>
+                    <Button colorScheme="blue" w="full" onClick={() => flushFormData()}>Reset</Button>
                     {progress > 0 && (
                         <Button colorScheme="blue" w="full" onClick={decreaseProgress}>Back</Button>
                     )}
