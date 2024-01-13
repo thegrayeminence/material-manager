@@ -12,6 +12,7 @@ import { Select } from "chakra-react-select";
 //component imports
 import { textureMapOptionsPBRMetalRough, textureMapOptionsPBRGlossSpec, textureMapOptionsCommon, materialTypeOptions, metaDataOptions } from '../config/formInputData';
 import { useMaterialStore, useProgressStore } from '../store/store';
+import { useAutosuggestionStore, updateSuggestions, clearSuggestions } from '../store/store';
 
 
 
@@ -37,6 +38,8 @@ export default function MaterialUploadForm() {
     //zustand global states
     const { formData, setFileData, setMaterialData, imagePreviews, setImagePreviews } = useMaterialStore();
     const { progress, increaseProgress, decreaseProgress, resetProgress } = useProgressStore();
+    const { colorSuggestions, elementTypeSuggestions, conditionSuggestions, manifestationSuggestions } = useAutosuggestionStore();
+
 
     const defaultTextureMapSelections = {
         metallic: textureMapOptionsPBRMetalRough,
@@ -151,7 +154,7 @@ export default function MaterialUploadForm() {
         defaultValues.manifestation = "";
         reset({ ...defaultValues });
         resetProgress();
-        console.log("Form Data Flushed! Default Values Set To:", FormData );
+        console.log("Form Data Flushed! Default Values Set To:", FormData);
         setImagePreviews([]);
         setFileData([]);
         setMaterialData({});
@@ -194,8 +197,8 @@ export default function MaterialUploadForm() {
                             name="materialTextures"
                             control={control}
                             render={({ field }) => (
-                                <Select 
-                                    {...field} 
+                                <Select
+                                    {...field}
                                     options={textureMapOptions}
                                     placeholder="Choose texture maps for material..."
                                     isMulti
@@ -219,7 +222,7 @@ export default function MaterialUploadForm() {
                             id="materialMetadata"
                             control={control}
                             render={({ field }) => (
-                                <Select {...field} 
+                                <Select {...field}
                                     options={metaDataOptions}
                                     placeholder="Add additional metadata about material..."
                                     isMulti
@@ -244,7 +247,16 @@ export default function MaterialUploadForm() {
                                 name="color"
                                 {...register('color')}
                                 placeholder="Blue, Red, Grey, Bright, Dark, etc."
+                                onChange={(e) => updateSuggestions(e.target.value, 'color')}
                             />
+                            {colorSuggestions.map((suggestion, index) => (
+                                <Box key={index} cursor="pointer" onClick={() => {
+                                    setValue('color', suggestion);
+                                    clearSuggestions('color');
+                                }}>
+                                    {suggestion}
+                                </Box>
+                            ))}
                         </FormControl>
                         <FormControl mb={4}>
                             <FormLabel htmlFor="elementType">Element/Type</FormLabel>
@@ -252,8 +264,17 @@ export default function MaterialUploadForm() {
                                 id="elementType"
                                 name="elementType"
                                 {...register('elementType')}
-                                placeholder="Steel, Diamond, Ceramic, Textile, Gold, etc."
+                                placeholder="Steel, Diamond, Ceramic, Leather, Silk, Gold, etc."
+                                onChange={(e) => updateSuggestions(e.target.value, 'elementType')}
                             />
+                            {elementTypeSuggestions.map((suggestion, index) => (
+                                <Box key={index} cursor="pointer" onClick={() => {
+                                    setValue('elementType', suggestion);
+                                    clearSuggestions('elementType');
+                                }}>
+                                    {suggestion}
+                                </Box>
+                            ))}
                         </FormControl>
                     </HStack>
                 )}
@@ -268,7 +289,16 @@ export default function MaterialUploadForm() {
                                 name="manifestation"
                                 {...register('manifestation')}
                                 placeholder="Railing, Carpet, Tile, Book, Leaf, Skin, etc. "
+                                onChange={(e) => updateSuggestions(e.target.value, 'manifestation')}
                             />
+                            {manifestationSuggestions.map((suggestion, index) => (
+                                <Box key={index} cursor="pointer" onClick={() => {
+                                    setValue('manifestation', suggestion);
+                                    clearSuggestions('manifestation');
+                                }}>
+                                    {suggestion}
+                                </Box>
+                            ))}
                         </FormControl>
                         <FormControl mb={4}>
                             <FormLabel htmlFor="condition">Condition</FormLabel>
@@ -277,7 +307,17 @@ export default function MaterialUploadForm() {
                                 name="condition"
                                 {...register('condition')}
                                 placeholder="Rusted, Polished, Dusty, Clean, Old, etc."
+                                onChange={(e) => updateSuggestions(e.target.value, 'condition')}
                             />
+                            {conditionSuggestions.map((suggestion, index) => (
+                                <Box key={index} cursor="pointer" onClick={() => {
+                                    setValue('condition', suggestion);
+                                    clearSuggestions('condition');
+                                }}>
+                                    {suggestion}
+                                </Box>
+                            ))}
+
                         </FormControl>
                     </HStack>
                 )}
