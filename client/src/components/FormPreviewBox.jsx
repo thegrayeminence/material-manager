@@ -35,7 +35,10 @@ export default function FormPreviewBox() {
     const { materialData } = formData;
     const { materialTextures, materialMetadata, materialType, color, elementType, condition, manifestation } = materialData;
 
-
+    const strippedNames = () => {
+        const stripped = `${color.replace(/\s*/g, '')}_${elementType.replace(/\s*/g, '')}_${manifestation.replace(/\s*/g, '')}_${condition.replace(/\s*/g, '')}`
+        return stripped
+} 
   return (
     <Stack px='2rem' width={'80vw'} ml='10%'>
         <Box
@@ -95,7 +98,7 @@ export default function FormPreviewBox() {
 
               </Grid> */}
               <Box w="100%" p={4}>
-                {(color||elementType||manifestation||condition) && <Text textAlign='center' sx={headerStyle}><Text sx={bodyStyle}>Material Name:</Text>"{color}_{elementType}_{manifestation}_{condition}"</Text>}
+                {(color||elementType||manifestation||condition) && <Text textAlign='center' sx={headerStyle}><Text sx={bodyStyle}>Material Name:</Text>{strippedNames()}</Text>}
               </Box>
             </Box>
           </Flex>
