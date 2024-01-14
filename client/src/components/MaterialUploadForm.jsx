@@ -5,7 +5,7 @@ import { useDropzone } from 'react-dropzone';
 import { useMutation, useQueryClient } from 'react-query';
 import axios from 'axios';
 import {
-    Box, Button, VStack, FormControl, FormLabel, Image, Input, Textarea, 
+    Box, Button, VStack, FormControl, FormLabel, Image, Input, Textarea,
     HStack, useBoolean, useTheme, useColorModeValue, useToast,
 } from '@chakra-ui/react';
 // import { getClosestMatch } from '../config/helperfunctions';
@@ -16,6 +16,20 @@ import { textureMapOptionsPBRMetalRough, textureMapOptionsPBRGlossSpec, textureM
 import { useMaterialStore, useProgressStore, useAutosuggestionStore } from '../store/store';
 
 
+const SuggestionDisplay = ({ inputValue, suggestion }) => {
+    const isVisible = suggestion && inputValue !== suggestion;
+
+    return (
+        <Box 
+            height="1rem" // Reserve space for the suggestion
+            mt={'.1rem'}
+            color="gray.500"
+            visibility={isVisible ? "visible" : "hidden"} // Control visibility
+        >
+            {isVisible ? `Suggestion: ${suggestion}` : ''}
+        </Box>
+    );
+};
 
 export default function MaterialUploadForm() {
 
@@ -39,18 +53,21 @@ export default function MaterialUploadForm() {
     //zustand global states
     const { formData, setFileData, setMaterialData, imagePreviews, setImagePreviews } = useMaterialStore();
     const { progress, increaseProgress, decreaseProgress, resetProgress } = useProgressStore();
+    const theme = useTheme(); // Access the theme for styling
     const {
-        colorSuggestion, elementTypeSuggestion, conditionSuggestion,
-        manifestationSuggestion, setColorSuggestion, setElementTypeSuggestion,
-        setConditionSuggestion, setManifestationSuggestion
+        colorSuggestion, setColorSuggestion,
+        elementTypeSuggestion, setElementTypeSuggestion,
+        conditionSuggestion, setConditionSuggestion,
+        manifestationSuggestion, setManifestationSuggestion
     } = useAutosuggestionStore();
 
-     // Local state to manage input values and determine if they are user-entered
-     const [colorInput, setColorInput] = useState("");
-     const [elementTypeInput, setElementTypeInput] = useState("");
-     const [conditionInput, setConditionInput] = useState("");
-     const [manifestationInput, setManifestationInput] = useState("");
- 
+    // Local state to manage input values and determine if they are user-entered
+    // const [colorInput, setColorInput] = useState("");
+    // const [elementTypeInput, setElementTypeInput] = useState("");
+    // const [conditionInput, setConditionInput] = useState("");
+    // const [manifestationInput, setManifestationInput] = useState("");
+
+
 
     //var for setting texture selections based on material type
     const defaultTextureMapSelections = {
@@ -100,15 +117,6 @@ export default function MaterialUploadForm() {
     }, [materialTextures, materialType, materialMetadata, color, elementType, condition, manifestation, setMaterialData]);
 
 
-    // Update suggestions as user types
-    React.useEffect(() => {
-        setColorSuggestion(color);
-        setElementTypeSuggestion(elementType);
-        setConditionSuggestion(condition);
-        setManifestationSuggestion(manifestation);
-    }, [color, elementType, condition, manifestation, setColorSuggestion, setElementTypeSuggestion, setConditionSuggestion, setManifestationSuggestion]);
-
-
     //logs image preview file data if using async method (fileapi vs base64)
     useEffect(() => {
         console.log(imagePreviews);
@@ -140,8 +148,7 @@ export default function MaterialUploadForm() {
 
     // ### HELPER FUNCTIONS ### //
     // ----------------------- //
-
-    // --------------------------------- //
+    // -----------------------//
 
     //handles form submission of filedata w/ dropzone
     //react-dropzone integration
@@ -158,11 +165,12 @@ export default function MaterialUploadForm() {
         }
     });
 
-    //handles form autosuggestions for physical attributes
+    // Handle input changes
+
+
     const onInputChange = (e, type) => {
         const value = e.target.value;
         setValue(type, value);
-
         switch (type) {
             case 'color':
                 setColorSuggestion(value);
@@ -185,7 +193,9 @@ export default function MaterialUploadForm() {
         }
     };
 
-    //handles navigation between form steps via progress var state
+    // ### RENDERING ### //
+    // ---------------- //
+    //handles navigation between form steps via progress var's global state
     const handleNext = () => {
         if (progress < 2) {
             increaseProgress();
@@ -194,6 +204,7 @@ export default function MaterialUploadForm() {
         }
     };
 
+    //resets all form data to default/blank values 
     const flushFormData = () => {
         let defaultValues = {};
         defaultValues.materialTextures = [];
@@ -215,7 +226,6 @@ export default function MaterialUploadForm() {
     return (
         <>
             <Box as="form" onSubmit={handleSubmit(onSubmit)} p={5}>
-
 
 
                 {/* Material Type Selection */}
@@ -290,28 +300,34 @@ export default function MaterialUploadForm() {
                 {/* Additional Form Controls for Material Physical Attributes:Row1 */}
                 {progress === 1 && (
                     <HStack spacing={4} py={'.5rem'}>
-                    <FormControl mb={4}>
-                        <FormLabel htmlFor="color">Color/Shade/Luminosity</FormLabel>
-                        <Input
-                            id="color"
-                            name="color"
-                            {...register('color')}
-                            placeholder={color ? "" : colorSuggestion}
-                            onChange={(e) => onInputChange(e, 'color')}
-                        />
-                    </FormControl>
+                        <FormControl mb={4}>
+                            <FormLabel htmlFor="color">Color/Shade/Luminosity</FormLabel>
+                            <Input
+                                id="color"
+                                name="color"
+                                {...register('color')}
+                                // placeholder={colorSuggestion}
+                                onChange={(e) => onInputChange(e, 'color')}
+                            // sx={colorInput ? {} : { color: 'grey.500' }} // Using grey color from the theme
+                            />
+                            <SuggestionDisplay inputValue={color} suggestion={colorSuggestion} />
 
-                    <FormControl mb={4}>
-                        <FormLabel htmlFor="elementType">Element/Type</FormLabel>
-                        <Input
-                            id="elementType"
-                            name="elementType"
-                            {...register('elementType')}
-                            placeholder={elementType ? "" : elementTypeSuggestion}
-                            onChange={(e) => onInputChange(e, 'elementType')}
-                        />
-                    </FormControl>
-                </HStack>
+                        </FormControl>
+
+                        <FormControl mb={4}>
+                            <FormLabel htmlFor="elementType">Element/Type</FormLabel>
+                            <Input
+                                id="elementType"
+                                name="elementType"
+                                {...register('elementType')}
+                                // placeholder={elementTypeSuggestion}
+                                onChange={(e) => onInputChange(e, 'elementType')}
+                            // sx={elementTypeSuggestion ? { color: theme.colors.gray[500] } : {}}
+                            />
+                            <SuggestionDisplay inputValue={elementType} suggestion={elementTypeSuggestion} />
+
+                        </FormControl>
+                    </HStack>
                 )}
 
 
@@ -324,21 +340,26 @@ export default function MaterialUploadForm() {
                                 id="manifestation"
                                 name="manifestation"
                                 {...register('manifestation')}
-                                placeholder={manifestation ? "" : manifestationSuggestion}
+                                // placeholder={manifestationSuggestion}
                                 onChange={(e) => onInputChange(e, 'manifestation')}
+                            // sx={manifestationSuggestion ? { color: theme.colors.gray[500] } : {}}
                             />
-                        </FormControl>
+                            <SuggestionDisplay inputValue={manifestation} suggestion={manifestationSuggestion} />
 
+                        </FormControl>
                         <FormControl mb={4}>
                             <FormLabel htmlFor="condition">Condition</FormLabel>
                             <Input
                                 id="condition"
                                 name="condition"
                                 {...register('condition')}
-                                placeholder={condition ? "" : conditionSuggestion}
+                                placeholder={conditionSuggestion}
                                 onChange={(e) => onInputChange(e, 'condition')}
+                            // sx={conditionSuggestion ? { color: theme.colors.gray[500] } : {}}
                             />
+                            <SuggestionDisplay inputValue={condition} suggestion={conditionSuggestion} />
                         </FormControl>
+
                     </HStack>
 
                 )}
