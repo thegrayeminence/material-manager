@@ -7,7 +7,7 @@ import Header from "./Header";
 import SuggestionDisplay from "./UI/SuggestionDisplay";
 import ImagePreviewBox from "./UI/ImagePreviewBox";
 import ImagePreviewGrid from "./UI/ImagePreviewGrid";
-
+import ToastPromiseButton from "./UI/ToastPromiseButton";
 
 export { 
     ChoiceButton,
@@ -19,5 +19,6 @@ export {
     ImagePreviewBox,
     SuggestionDisplay,
     ImagePreviewGrid,
+    ToastPromiseButton,
 
 };

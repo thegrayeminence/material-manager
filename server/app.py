@@ -31,12 +31,18 @@ model_name = "stability-ai/stable-diffusion:27b93a2413e7f36cd83da926f3656280b293
 #     else:
 #         raise Exception(f"Failed to generate image: {output}")
 
-##endpoints##
-@app.post(URL_PREFIX + '/generate_image')
-def generate_image():
+
+#ENDPOINTS FOR GENERATING IMAGES FOR WEBPAGE:
+##----------------------------------------##
+##----------------------------------------##
+@app.post(URL_PREFIX + '/generate_texture_from_form')
+def generate_texture_from_form():
     data = request.json
-    prompt = data['prompt']
+    material_data = data['materialData']
     
+    # Logic to construct prompt from material_data
+    prompt = construct_prompt_from_material_data(material_data)
+        
     try:
         image_url = replicate.run(model_name, input={"prompt": prompt})
         return jsonify({"image_url": image_url[0]})
@@ -44,6 +50,20 @@ def generate_image():
         return jsonify({"error": str(e)}), 500
 
 
+
+def construct_prompt_from_material_data(material_data):
+    # Implement logic to construct the prompt based on material_data from frontend
+
+    prompt = f"{material_data['color']} texture of {material_data['materialType']} ..."
+    return prompt
+
+
+
+
+
+#ENDPOINTS FOR STORING FORMDATA IN DATABASE (not used rn):
+##----------------------------------------##
+##----------------------------------------##
 
 @app.post( URL_PREFIX + '/upload_filedata')
 def upload_metadata():
@@ -82,4 +102,4 @@ def handle_errors(e):
     return {"error": f"Value Error:{str(e)}"}, 422
     
 if __name__ == '__main__':
-    app.run(port=5555, debug=True)
+    app.run(port=3000, debug=True)

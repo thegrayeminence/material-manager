@@ -6,15 +6,17 @@ import { useMutation, useQueryClient } from 'react-query';
 import axios from 'axios';
 import {
     Box, Button, VStack, FormControl, FormLabel, Image, Input, Textarea,
-    HStack, useBoolean, useTheme, useColorModeValue, useToast,
+    HStack, useToast, useBoolean, useTheme, useColorModeValue, 
+    useToast, 
 } from '@chakra-ui/react';
 // import { getClosestMatch } from '../config/helperfunctions';
 import { Select } from "chakra-react-select";
 
-//component imports
+//local imports
 import { textureMapOptionsPBRMetalRough, textureMapOptionsPBRGlossSpec, textureMapOptionsCommon, materialTypeOptions, metaDataOptions } from '../config/formInputData';
 import { useMaterialStore, useProgressStore, useAutosuggestionStore } from '../store/store';
 import SuggestionDisplay from './UI/SuggestionDisplay';
+import { toastPromiseOnClick } from '../config/helperfunctions';
 
 
 
@@ -38,7 +40,7 @@ export default function MaterialUploadForm() {
 
 
     //zustand global states
-    const { formData, setFileData, setMaterialData, imagePreviews, setImagePreviews } = useMaterialStore();
+    const { formData, setFileData, setMaterialData, imagePreviews, setImagePreviews, generatedImages, setGeneratedImages } = useMaterialStore();
     const { progress, increaseProgress, decreaseProgress, resetProgress } = useProgressStore();
     const theme = useTheme(); // Access chakra theme for styling
 
@@ -110,19 +112,33 @@ export default function MaterialUploadForm() {
     //HTTP POST REQUESTS & ASYNCHRONOUS STUFF//
     // ---------------- //
     //react-query + axios integration
-    const materialMutation = useMutation(newMaterial => axios.post('/api/material', newMaterial), {
-        onSuccess: () => {
-            queryClient.invalidateQueries('materialData');
-        }
-    });
 
-    //submit handler via mutation function using axios post request
+    // react-query mutation for sending form data to Flask backend//
+    const sendFormDataMutation = useMutation(
+        formData => axios.post('/api/generate_texture_from_form', formData),
+        {
+            onSuccess: (response) => {
+                // Update Zustand store with new image URL
+                setGeneratedImages(prevImages => [...prevImages, response.data.image_url]);
+                queryClient.invalidateQueries('textureData');
+            },
+            onError: (error) => {
+                // error handling
+                console.error("Error in sending form data:", error);
+            }
+        }
+    );
+
+
+    //submit handler via mutation function using axios post request//
     const onSubmit = async () => {
         try {
-            console.log("Submitting:", { fileData: formData.fileData, materialData: formData.materialData });
-            alert(JSON.stringify({ imagePreviews: imagePreviews, fileData: formData.fileData, materialData: formData.materialData }, null, 2));
+          
+            //post and log request to server w/ form data via usemutation hook
 
-            // await materialMutation.mutateAsync({ fileData: formData.fileData, materialData: formData.materialData });
+            console.log("Submitting form data:", formData.materialData);
+            await sendFormDataMutation.mutateAsync({ materialData: formData.materialData });
+
         } catch (error) {
             // Handle submission error
             console.error("Submission error:", error);
@@ -134,7 +150,6 @@ export default function MaterialUploadForm() {
     // -----------------------//
 
     //handles form submission of filedata w/ dropzone
-    //react-dropzone integration
     const { getRootProps, getInputProps } = useDropzone({
         onDrop: acceptedFiles => {
             setImagePreviews(acceptedFiles.map(file => Object.assign(file, {
@@ -148,9 +163,7 @@ export default function MaterialUploadForm() {
         }
     });
 
-    // Handle input changes
-
-
+    // Handle input changes for autosuggestion
     const onInputChange = (e, type) => {
         const value = e.target.value;
         setValue(type, value);
@@ -364,15 +377,22 @@ export default function MaterialUploadForm() {
                 )}
 
 
-                {/* Navigation Buttons */}
+                {/* Navigation Buttons; Next and Submit have diff functions based on progress state */}
                 <HStack spacing={4} py={'1rem'}>
                     <Button colorScheme="blue" w="full" onClick={() => flushFormData()}>Reset</Button>
                     {progress > 0 && (
                         <Button colorScheme="blue" w="full" onClick={decreaseProgress}>Back</Button>
                     )}
+                    {progress < 2 && (
                     <Button colorScheme="green" w="full" onClick={handleNext}>
-                        {progress < 2 ? 'Next' : 'Submit'}
+                        {'Next'}
                     </Button>
+                    )}
+                    {progress === 2 && (
+                        <Button colorScheme="green" w="full" onClick={toastPromiseOnClick}>
+                            {'Submit'}
+                        </Button>
+                    )}
                 </HStack>
 
 
