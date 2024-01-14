@@ -108,21 +108,20 @@ export const colorOptions = [...new Set(colorOptionsUnfiltered)];
 
  const elementTypeOptionsUnfiltered = [
   "Aluminum", "Brass", "Bronze", "Copper", "Gold", "Iron", "Lead", "Nickel",
-  "Platinum", "Silver", "Steel", "Tin", "Titanium", "Zinc", "Carbon Fiber",
+  "Platinum", "Silver", "Steel", "Tin", "Titanium",
   "Ceramic", "Clay", "Concrete", "Granite", "Marble", "Porcelain", "Slate",
-  "Stone", "Terracotta", "Acrylic", "Nylon", "Polycarbonate", "Polyester",
-  "Polyethylene", "Polypropylene", "Polystyrene", "PVC", "Rubber", "Silicone",
-  "Urethane", "Bamboo", "Cedar", "Cherry", "Ebony", "Mahogany",
+  "Stone", "Terracotta", "Acrylic", "Nylon", "Polyester",
+  "Rubber", "Silicone", "Bamboo", "Cedar", "Cherry", "Ebony", "Mahogany",
   "Maple", "Oak", "Pine", "Redwood", "Teak", "Walnut", "Cotton", "Denim",
   "Felt", "Flannel", "Leather", "Linen", "Satin", "Silk", "Velvet", "Wool",
   "Skin", "Fur", "Latex", "Paint", "Stucco", "Varnish",
-  "Glass", "Obsidian", "Plexiglass", "StainedGlass", "TemperedGlass",
+  "Glass", "Obsidian", "Plexiglass", "Quartz", "Sand", "Crystal", "Ice",
   "Amber", "Coral", "Ivory", "Pearl", "Bone", "Horn",
   "Paper", "Cardboard", "Cork", "Foam", "Graphite", "Wax", "Gelatin",
-  "Resin", "Plaster", "Fiberglass", "Kevlar", "Neoprene", "Spandex",
+  "Resin", "Plaster", "Kevlar", "Neoprene", "Spandex",
   "Vinyl", "Asphalt", "Coal", "Plaster", "Sponge", "Tarp", "Porcelain",
   "Ceramic", "Enamel", "Silk", "Woolen", "Cotton", "Linen", "Leather", 
-  "Fur", "Velvet", "Satin", "Lace", "Denim", "Knitted", "CarbonFiber",
+  "Fur", "Velvet", "Satin", "Lace", "Denim", "Suede", "Canvas", "Mesh",
 ]
 
 export const elementTypeOptions = [...new Set(elementTypeOptionsUnfiltered)];

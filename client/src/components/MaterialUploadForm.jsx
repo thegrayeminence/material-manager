@@ -14,22 +14,8 @@ import { Select } from "chakra-react-select";
 //component imports
 import { textureMapOptionsPBRMetalRough, textureMapOptionsPBRGlossSpec, textureMapOptionsCommon, materialTypeOptions, metaDataOptions } from '../config/formInputData';
 import { useMaterialStore, useProgressStore, useAutosuggestionStore } from '../store/store';
+import SuggestionDisplay from './UI/SuggestionDisplay';
 
-
-const SuggestionDisplay = ({ inputValue, suggestion }) => {
-    const isVisible = suggestion && inputValue !== suggestion;
-
-    return (
-        <Box 
-            height="1rem" // Reserve space for the suggestion
-            mt={'.1rem'}
-            color="gray.500"
-            visibility={isVisible ? "visible" : "hidden"} // Control visibility
-        >
-            {isVisible ? `Suggestion: ${suggestion}` : ''}
-        </Box>
-    );
-};
 
 export default function MaterialUploadForm() {
 
@@ -53,19 +39,15 @@ export default function MaterialUploadForm() {
     //zustand global states
     const { formData, setFileData, setMaterialData, imagePreviews, setImagePreviews } = useMaterialStore();
     const { progress, increaseProgress, decreaseProgress, resetProgress } = useProgressStore();
-    const theme = useTheme(); // Access the theme for styling
+    const theme = useTheme(); // Access chakra theme for styling
+
     const {
         colorSuggestion, setColorSuggestion,
         elementTypeSuggestion, setElementTypeSuggestion,
         conditionSuggestion, setConditionSuggestion,
-        manifestationSuggestion, setManifestationSuggestion
+        manifestationSuggestion, setManifestationSuggestion,
+        clearAllSuggestions,
     } = useAutosuggestionStore();
-
-    // Local state to manage input values and determine if they are user-entered
-    // const [colorInput, setColorInput] = useState("");
-    // const [elementTypeInput, setElementTypeInput] = useState("");
-    // const [conditionInput, setConditionInput] = useState("");
-    // const [manifestationInput, setManifestationInput] = useState("");
 
 
 
@@ -216,6 +198,7 @@ export default function MaterialUploadForm() {
         defaultValues.manifestation = "";
         reset({ ...defaultValues });
         resetProgress();
+        clearAllSuggestions()
         console.log("Form Data Flushed! Default Values Set To:", FormData);
         setImagePreviews([]);
         setFileData([]);
@@ -310,7 +293,7 @@ export default function MaterialUploadForm() {
                                 onChange={(e) => onInputChange(e, 'color')}
                             // sx={colorInput ? {} : { color: 'grey.500' }} // Using grey color from the theme
                             />
-                            <SuggestionDisplay inputValue={color} suggestion={colorSuggestion} />
+                            <SuggestionDisplay inputValue={color} suggestions={colorSuggestion} />
 
                         </FormControl>
 
@@ -324,7 +307,7 @@ export default function MaterialUploadForm() {
                                 onChange={(e) => onInputChange(e, 'elementType')}
                             // sx={elementTypeSuggestion ? { color: theme.colors.gray[500] } : {}}
                             />
-                            <SuggestionDisplay inputValue={elementType} suggestion={elementTypeSuggestion} />
+                            <SuggestionDisplay inputValue={elementType} suggestions={elementTypeSuggestion} />
 
                         </FormControl>
                     </HStack>
@@ -344,7 +327,7 @@ export default function MaterialUploadForm() {
                                 onChange={(e) => onInputChange(e, 'manifestation')}
                             // sx={manifestationSuggestion ? { color: theme.colors.gray[500] } : {}}
                             />
-                            <SuggestionDisplay inputValue={manifestation} suggestion={manifestationSuggestion} />
+                            <SuggestionDisplay inputValue={manifestation} suggestions={manifestationSuggestion} />
 
                         </FormControl>
                         <FormControl mb={4}>
@@ -353,11 +336,11 @@ export default function MaterialUploadForm() {
                                 id="condition"
                                 name="condition"
                                 {...register('condition')}
-                                placeholder={conditionSuggestion}
+                                // placeholder={conditionSuggestion}
                                 onChange={(e) => onInputChange(e, 'condition')}
                             // sx={conditionSuggestion ? { color: theme.colors.gray[500] } : {}}
                             />
-                            <SuggestionDisplay inputValue={condition} suggestion={conditionSuggestion} />
+                            <SuggestionDisplay inputValue={condition} suggestions={conditionSuggestion} />
                         </FormControl>
 
                     </HStack>
@@ -374,11 +357,7 @@ export default function MaterialUploadForm() {
                                 <input {...getInputProps()} />
                                 <p>Drag 'n' drop files here, or click to select files</p>
                             </div>
-                            <VStack spacing={4} mt={4}>
-                                {imagePreviews && imagePreviews.map((src, index) => (
-                                    <Image key={index} src={src.preview} alt={`Preview ${index}`} boxSize="100px" />
-                                ))}
-                            </VStack>
+    
                         </FormControl>
                     </>
                 )}

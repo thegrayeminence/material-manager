@@ -42,9 +42,11 @@ export default function FormPreviewBox() {
           w="100%"
           maxW='60rem'
           overflow={'scroll'}
-          margin="0 auto" borderWidth='.1rem' p='2.5rem' borderRadius='2rem'
+          margin="0 auto" 
+          borderWidth='.1rem' p='2.5rem' borderRadius='2rem'
           backdropFilter='auto' shadow='lg'
-          bg='whiteAlpha.200' transition='all 0.2s cubic-bezier(.08,.52,.52,1)'
+        //   bg='whiteAlpha.200' 
+          transition='all 0.2s cubic-bezier(.08,.52,.52,1)'
           _hover={{
             backdropFilter: 'auto',
             backdropBlur: '10px', transform: 'scale(1.025)',
