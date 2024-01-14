@@ -40,8 +40,8 @@ export default function FormPreviewBox() {
     <Stack px='2rem' width={'80vw'} ml='10%'>
         <Box
           w="100%"
-          maxW='60rem'
-          overflow={'scroll'}
+          maxW='75rem'
+          overflow={'clip'}
           margin="0 auto" 
           borderWidth='.1rem' p='2.5rem' borderRadius='2rem'
           backdropFilter='auto' shadow='lg'
@@ -57,13 +57,13 @@ export default function FormPreviewBox() {
             direction="column"
             justify="center"
             align="center"
-            wrap='nowrap'
-            minW="100%"
-            maxH='20vh'
-            mb={10}
-            p={10}
+           flexWrap={'no-wrap'}
+            w="100%"
+            maxH='35vh'
+            mb={'1.5rem'}
+            p={'3rem'}
           >
-            <Heading size='lg' mt='-4rem' sx={bodyStyle} >Material Preview</Heading>
+            {/* <Heading size='lg'sx={bodyStyle}>Material Preview</Heading> */}
             <Box>
               <Grid templateColumns="repeat(3, 1fr)" gap={6}>
                 <Box w="100%" p={4}>
@@ -79,7 +79,7 @@ export default function FormPreviewBox() {
             </Box>
             <Box>
 
-              <Grid templateColumns="repeat(4, 1fr)" gap={6}>
+              {/* <Grid templateColumns="repeat(4, 1fr)" gap={6}>
                 <Box w="100%" p={4}>
                 {color && <Text sx={bodyStyle}>Color:</Text>}{color && <Text sx={headerStyle}>{color}</Text>}
                 </Box>
@@ -93,9 +93,9 @@ export default function FormPreviewBox() {
                 {condition && <Text sx={bodyStyle}>Condition:</Text>}{condition && <Text sx={headerStyle}>{condition}</Text>}                
                 </Box>
 
-              </Grid>
-              <Box w="100%" p={0}>
-                {(color||elementType||manifestation||condition) && <Text textAlign='center' sx={bodyStyle}>"{color}_{elementType}_{manifestation}_{condition}"</Text>}
+              </Grid> */}
+              <Box w="100%" p={4}>
+                {(color||elementType||manifestation||condition) && <Text textAlign='center' sx={headerStyle}><Text sx={bodyStyle}>Material Name:</Text>"{color}_{elementType}_{manifestation}_{condition}"</Text>}
               </Box>
             </Box>
           </Flex>
