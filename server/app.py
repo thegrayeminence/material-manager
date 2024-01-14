@@ -1,27 +1,50 @@
 #!/usr/bin/env python3
 
 # Standard library imports
+import os
+import re
 
 # Remote library imports
 from flask import make_response, request, session, jsonify 
 from flask_restful import Resource
-
+import replicate
 
 # Local imports
 from models import db
 from config import app, api
 
-## url prefix for flask endpoints
+## api prefix for endpoints
 URL_PREFIX = '/api'
 
+##replicate API vars
+replicate.api_token = os.getenv("REPLICATE_API_TOKEN")
+model_name = "stability-ai/stable-diffusion:27b93a2413e7f36cd83da926f3656280b2931564ff050bf9575f1fdf9bcd7478"
+
 ## HELPER FUNCTIONS ## 
-## get id of current user, if applicable
+# def generate_image(prompt):
+#     #run API call
+#     output = replicate.run(model_name, input={"prompt": prompt})
+#     print("Raw output from Replicate:", output)
+
+#     if isinstance(output, list) and len(output) > 0 and isinstance(output[0], str):
+#         return output[0]
+#     else:
+#         raise Exception(f"Failed to generate image: {output}")
+
+##endpoints##
+@app.post(URL_PREFIX + '/generate_image')
+def generate_image():
+    data = request.json
+    prompt = data['prompt']
+    
+    try:
+        image_url = replicate.run(model_name, input={"prompt": prompt})
+        return jsonify({"image_url": image_url[0]})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
 
-##serialization rules 
-
-##endpoints
 @app.post( URL_PREFIX + '/upload_filedata')
 def upload_metadata():
     data = request.json

@@ -10,15 +10,28 @@ from sqlalchemy_serializer import SerializerMixin
 from config import db, bcrypt
 
 
-class ImageMetadata(db.Model):
+class FileData(db.Model):
     
-    __tablename__="filedata"
+    __tablename__="FileData"
     
     id = db.Column(db.Integer, primary_key=True)
-    filename = db.Column(db.String(100), nullable=False)
-    size = db.Column(db.Integer, nullable=False)
-    filetype = db.Column(db.String(50), nullable=False)
-    exif = db.Column(db.JSON)
+    #LOGIC FOR MODEL GOES HERE
+
+class MaterialData(db.Model):
+    
+    __tablename__= "MaterialData"
+    
+    id = db.Column(db.Integer, primary_key=True)
+    #LOGIC FOR MODEL GOES HERE
+
+class TextureData(db.Model):
+    
+    __tablename__= "TextureData"
+    
+    id = db.Column(db.Integer, primary_key=True)
+    #LOGIC FOR MODEL GOES HERE
+
+####OTHER NECESSARY MODELS BELOW
 
     def __repr__(self):
         return f'<ImageMetadata {self.filename}>'

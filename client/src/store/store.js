@@ -3,7 +3,7 @@ import { create } from 'zustand';
 import { colorOptions, conditionOptions, manifestationOptions, elementTypeOptions } from '../config/formInputData';
 
 
-
+// store for global 'progress' value that determines which form step to render
 export const useProgressStore = create((set) => ({
   progress: 0,
   increaseProgress: () => set((state) => ({ progress: state.progress + 1 })),
@@ -13,7 +13,7 @@ export const useProgressStore = create((set) => ({
 
 
 
-// Zustand store for global state management of materialData/fileData/imagePreviews from form inputs
+// store for global state management of materialData/fileData/imagePreviews from form inputs
 export const useMaterialStore = create(set => ({
   // Other formData properties
   formData: {
@@ -23,9 +23,12 @@ export const useMaterialStore = create(set => ({
   setFileData: (fileData) => set(state => ({ formData: { ...state.formData, fileData } })),
   setMaterialData: (materialData) => set(state => ({ formData: { ...state.formData, materialData } })),
 
-  // Separate state for imagePreviews
+  // Separate state for imagePreviews from file uploads
   imagePreviews: [],
   setImagePreviews: (imagePreviews) => set({ imagePreviews }),
+  // Separate state for generated images from API
+  generatedImages: [],
+  setGeneratedImages: (generatedImages) => set({ generatedImages }),
 }));
 
 //helper function for returning the closest match to the input from the options array
