@@ -1,6 +1,7 @@
 import { create } from 'zustand';
-
+// import { getClosestMatch } from '../config/helperfunctions';
 import { colorOptions, conditionOptions, manifestationOptions, elementTypeOptions } from  '../config/formInputData';
+
 
 
 export const useProgressStore = create((set) => ({
@@ -27,69 +28,23 @@ export const useMaterialStore = create(set => ({
   setImagePreviews: (imagePreviews) => set({ imagePreviews }),
 }));
 
+//helper function for returning the closest match to the input from the options array
+const getClosestMatch = (input, options) => {
+  if (!input) return ''; // Return empty string if input is undefined or empty
+  const matches = options.filter(option => option.toLowerCase().startsWith(input.toLowerCase()));
+  return matches.sort()[0] || ''; // Return the first match alphabetically, or an empty string if no match
+};
 
-//global state management of autosuggestion data for physical properties form inputs
+// Zustand store for global state management of autosuggestion data
 export const useAutosuggestionStore = create((set) => ({
-  colorSuggestions: [],
-  elementTypeSuggestions: [],
-  conditionSuggestions: [],
-  manifestationSuggestions: [],
-  setColorSuggestions: (suggestions) => set({ colorSuggestions: suggestions }),
-  setElementTypeSuggestions: (suggestions) => set({ elementTypeSuggestions: suggestions }),
-  setConditionSuggestions: (suggestions) => set({ conditionSuggestions: suggestions }),
-  setManifestationSuggestions: (suggestions) => set({ manifestationSuggestions: suggestions }),
-  clearAllSuggestions: () => set({ 
-    colorSuggestions: [], 
-    elementTypeSuggestions: [], 
-    conditionSuggestions: [], 
-    manifestationSuggestions: [] 
-  })
+  colorSuggestion: '',
+  elementTypeSuggestion: '',
+  conditionSuggestion: '',
+  manifestationSuggestion: '',
+  setColorSuggestion: (input) => set({ colorSuggestion: getClosestMatch(input, colorOptions) }),
+  setElementTypeSuggestion: (input) => set({ elementTypeSuggestion: getClosestMatch(input, elementTypeOptions) }),
+  setConditionSuggestion: (input) => set({ conditionSuggestion: getClosestMatch(input, conditionOptions) }),
+  setManifestationSuggestion: (input) => set({ manifestationSuggestion: getClosestMatch(input, manifestationOptions) }),
+  clearAllSuggestions: () => set({ colorSuggestion: '', elementTypeSuggestion: '', conditionSuggestion: '', manifestationSuggestion: '' })
 }));
 
-
-// Helper functions for autosuggestion store (updating data)
-export const updateSuggestions = (input, type) => {
-  const store = useAutosuggestionStore.getState();
-  let suggestions = [];
-  switch (type) {
-    case 'color':
-      suggestions = colorOptions.filter(option => option.toLowerCase().startsWith(input.toLowerCase()));
-      store.setColorSuggestions(suggestions);
-      break;
-    case 'elementType':
-      suggestions = elementTypeOptions.filter(option => option.toLowerCase().startsWith(input.toLowerCase()));
-      store.setElementTypeSuggestions(suggestions);
-      break;
-    case 'condition':
-      suggestions = conditionOptions.filter(option => option.toLowerCase().startsWith(input.toLowerCase()));
-      store.setConditionSuggestions(suggestions);
-      break;
-    case 'manifestation':
-      suggestions = manifestationOptions.filter(option => option.toLowerCase().startsWith(input.toLowerCase()));
-      store.setManifestationSuggestions(suggestions);
-      break;
-    default:
-      break;
-  }
-};
-// Helper functions for autosuggestion store (clearing data)
-export const clearSuggestions = (type) => {
-  const store = useAutosuggestionStore.getState();
-  switch (type) {
-    case 'color':
-      store.setColorSuggestions([]);
-      break;
-    case 'elementType':
-      store.setElementTypeSuggestions([]);
-      break;
-    case 'condition':
-      store.setConditionSuggestions([]);
-      break;
-    case 'manifestation':
-      store.setManifestationSuggestions([]);
-      break;
-    default:
-      store.clearAllSuggestions();
-      break;
-  }
-};
