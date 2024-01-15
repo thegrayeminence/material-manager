@@ -1,21 +1,32 @@
 import React from 'react'
 import {
-  Box, Grid, VStack, Heading, Text, Stack, Flex, 
-  useColorModeValue, Skeleton, SkeletonCircle, SkeletonText, 
-  useBoolean, HStack 
+  Box, Grid, VStack, Heading, Text, Stack, Flex,
+  useColorModeValue, Skeleton, SkeletonCircle, SkeletonText,
+  useBoolean, HStack
 } from '@chakra-ui/react'
 
 import { AnimatePresence, motion } from 'framer-motion';
 //components
-import { ProgressBar, MaterialUploadForm, FormPreviewBox, Header, ImagePreviewGrid, GeneratedTextureDisplay, JsonDisplayModal, ImageGridUrlSrc } from '../components'
+import { ProgressBar, MaterialUploadForm, FormPreviewBox, Header, ImagePreviewGrid, JsonDisplayModal, ImageGridUrlSrc } from '../components'
 import { useMaterialStore, useProgressStore } from '../store/store';
+
+// const GeneratedTextureDisplay = () => {
+//   const { generatedImages } = useMaterialStore();
+
+//   return (
+//     <Box>
+//       {generatedImages.map((image_url, index) => (
+
+//         <Image key={index} src={image_url} alt={"GeneratedTexture..."} />
+// ))}
+//     </Box>
+//   );
+// };
 
 
 function Preview() {
-// const {progress} = useProgressStore()
-// const {imagePreviews} = useMaterialStore()
-// const { generatedImages } = useMaterialStore();
-
+  const {progress} = useProgressStore()
+  const { generatedImages } = useMaterialStore();
 
   return (
     <>
@@ -28,14 +39,16 @@ function Preview() {
         <JsonDisplayModal />
       </Box>
       <FormPreviewBox />
-      {/* <Box px='2rem' width={'80vw'} ml='10%'>
-        <GeneratedTextureDisplay />
-      </Box> */}
+      {progress == 2 && (
       <Box px='2rem' width={'80vw'} ml='10%'>
-        {/* <ImageGridUrlSrc imagePreviews={generatedImages} /> */}
-        {/* <ImagePreviewGrid imagePreviews={generatedImages} /> */}
+        <Text>{generatedImages}</Text>
+        <Text>{generatedImages.image_url}</Text>
+      </Box>)}
+      <Box px='2rem' width={'80vw'} ml='10%'>
+
       </Box>
-     
+
+
     </>
 
   )

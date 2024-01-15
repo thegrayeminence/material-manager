@@ -78,10 +78,11 @@ material_data_example = {
 #ENDPOINTS/FUNCTIONALITY FOR GENERATING IMAGES FOR WEBPAGE:
 ##----------------------------------------##
 ##----------------------------------------##
-@app.get(URL_PREFIX + '/generate_texture')
+@app.post("/api/generate_texture")
 def generate_texture():
     # Extract the JSON data sent from the frontend
-    form_data = material_data_example
+    form_data = request.get_json()
+    #form_data = material_data_example
     print({f"logging form data post request \n" : form_data})
     material_data = form_data.get('materialData', {})
     print({f"logging material data from form \n" : material_data})

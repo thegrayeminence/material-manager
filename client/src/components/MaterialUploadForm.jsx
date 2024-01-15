@@ -107,7 +107,7 @@ export default function MaterialUploadForm() {
     }, [imagePreviews]);
 
     useEffect(() => {
-        console.log(generatedImages);
+        console.log({"logging generated images via useEffect": generatedImages});
     }, [generatedImages]);
 
 
@@ -118,17 +118,16 @@ export default function MaterialUploadForm() {
 
     // react-query mutation for sending form data to Flask backend//
     const sendFormDataMutation = useMutation(
-        formData => axios.post('/api/generate_texture', formData),
+        formData => axios.post('http://localhost:3000/api/generate_texture', formData),
         {
             onSuccess: (response) => {
                 //update zustand store for image urls
-                setGeneratedImages(prevImages => [...prevImages, response.data.image_url]);                
-                console.log(response.data, response.status)
+                setGeneratedImages(prevImages => [...prevImages, response.data.image_url]);
+                console.log("Received Image URL:", response.data.image_url);
                 //queryClient.invalidateQueries('textureData');
             },
             onError: (error) => {
                 console.error("Error in sending form data:", error);
-                // Handle error appropriately
             }
         }
     );
@@ -136,31 +135,33 @@ export default function MaterialUploadForm() {
 
     //submit handler via mutation function using axios post request//
     const onSubmit = async () => {
+        //SUBMIT VIA: usemutation/react-query
         try {
             // Retrieve the latest materialData from the Zustand store
+
             const { materialData } = formData;
-
-            // Log the data being submitted
             console.log("Submitting form data:", materialData);
-
-            // Make the POST request using React Query's mutation
-            // await sendFormDataMutation.mutateAsync({ materialData });
-            const response = await axios.post('http://localhost:3000/api/generate_texture', { materialData })
-            console.log("Response data:", response.data);
-            setGeneratedImages(prevImages => [...prevImages, response.data.image_url]);
+            await sendFormDataMutation.mutateAsync({ materialData });
 
         } catch (error) {
-            // Handle any errors during submission
             console.error("Submission error:", error);
-            // toast({
-            //     title: "Error submitting form.",
-            //     description: "Unable to process the request.",
-            //     status: "error",
-            //     duration: 9000,
-            //     isClosable: true,
-            // });
         }
     };
+
+    // const onSubmit = async () => {
+    //     //SUBMIT VIA AXIOS POST REQUEST
+    //     try {
+    //         const { materialData } = formData;
+    //         console.log("Submitting form data:", materialData);
+    //         const response = await axios.post('http://localhost:3000/api/generate_texture', { materialData });
+    //         console.log("Received Image URL:", response.data.image_url);
+    //         setGeneratedImages(prevImages => [...prevImages, response.data.image_url]);
+    //     } catch (error) {
+    //         console.error("Submission error:", error);
+    //         // Handle error appropriately
+    //     }
+    // };
+    
 
 
     // ### HELPER FUNCTIONS ### //
