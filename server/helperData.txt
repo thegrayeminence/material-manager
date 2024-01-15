@@ -1,0 +1,92 @@
+def stable_diffusion_input_schema_format( resX, resY, prompt, scheduler, num_outputs, guidance_scale, prompt_strength, num_inference_steps ):
+    
+    input_schema = {
+        "width": resX,
+        "height": resY,
+        "prompt": prompt,
+        "scheduler": scheduler,
+        "num_outputs": num_outputs,
+        "guidance_scale": guidance_scale,
+        "prompt_strength": prompt_strength,
+        "num_inference_steps": num_inference_steps
+    }
+    return input_schema
+
+    inputschemaexample = {
+        "input_schema":{
+      "seed": {
+        "type": "integer",
+        "title": "Seed",
+        "x-order": 7,
+        "description": "Random seed. Leave blank to randomize the seed"
+      },
+      "prompt": {
+        "type": "string",
+        "title": "Prompt",
+        "default": "a vision of paradise. unreal engine",
+        "x-order": 0,
+        "description": "Input prompt"
+      },
+      "scheduler": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/scheduler"
+          }
+        ],
+        "default": "DPMSolverMultistep",
+        "x-order": 6,
+        "description": "Choose a scheduler."
+      },
+      "num_outputs": {
+        "type": "integer",
+        "title": "Num Outputs",
+        "default": 1,
+        "maximum": 4,
+        "minimum": 1,
+        "x-order": 3,
+        "description": "Number of images to output."
+      },
+      "guidance_scale": {
+        "type": "number",
+        "title": "Guidance Scale",
+        "default": 7.5,
+        "maximum": 20,
+        "minimum": 1,
+        "x-order": 5,
+        "description": "Scale for classifier-free guidance"
+      },
+      "negative_prompt": {
+        "type": "string",
+        "title": "Negative Prompt",
+        "x-order": 2,
+        "description": "Specify things to not see in the output"
+      },
+      "image_dimensions": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/image_dimensions"
+          }
+        ],
+        "default": "768x768",
+        "x-order": 1,
+        "description": "pixel dimensions of output image"
+      },
+      "num_inference_steps": {
+        "type": "integer",
+        "title": "Num Inference Steps",
+        "default": 50,
+        "maximum": 500,
+        "minimum": 1,
+        "x-order": 4,
+        "description": "Number of denoising steps"
+      }
+    }}
+
+    stable_diffusion_output_schema = {
+        "type": "array",
+        "items": {
+            "type": "string",
+            "format": "uri"
+            },
+        "title": "Output"
+        }

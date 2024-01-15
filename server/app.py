@@ -17,140 +17,85 @@ URL_PREFIX = '/api'
 
 ##replicate API vars
 replicate.api_token = os.getenv("REPLICATE_API_TOKEN")
-model_name = "stability-ai/stable-diffusion:27b93a2413e7f36cd83da926f3656280b2931564ff050bf9575f1fdf9bcd7478"
+#model_name = "stability-ai/stable-diffusion:27b93a2413e7f36cd83da926f3656280b2931564ff050bf9575f1fdf9bcd7478"
+
 
 ## HELPER FUNCTIONS ## 
-def generate_image(prompt):
-    #run API call
-    output = replicate.run(model_name, input={"prompt": prompt})
-    print("Raw output from Replicate:", output)
-    url = output[0]
-    if isinstance(output, list) and len(output) > 0 and isinstance(output[0], str):
-        return url
-    else:
-        raise Exception(f"Failed to generate image: {output}")
+
+
+
+
+
+
+material_data_example = {
+    "materialType": {"value": "metallic", "label": "Metallic-Roughness"},
+    "materialMetadata": [{"value": "maya", "label": "Maya"}, {"value": "redshift", "label": "Redshift"}],
+    "color": "Blue",
+    "elementType": "Ceramic",
+    "condition": "Glossy",
+    "manifestation": "Tile"
+}
 
 
 #ENDPOINTS FOR GENERATING IMAGES FOR WEBPAGE:
 ##----------------------------------------##
 ##----------------------------------------##
-@app.post(URL_PREFIX + '/generate_texture_from_form')
-def generate_texture_from_form():
-    data = request.json
-    material_data = data['materialData']
-    
-    # Logic to construct prompt from material_data
-    prompt = construct_prompt_from_material_data(material_data)
-        
+@app.post(URL_PREFIX + '/get_material_data_from_form')
+def get_material_data_from_form():
+    # Extract the JSON data sent from the frontend
+    form_data = request.get_json()
+    material_data = form_data.get('materialData', {})
+
     try:
-        image_url = replicate.run(model_name, input={"prompt": prompt})
-        return jsonify({"image_url": image_url[0]})
+        prompt = construct_prompt_from_material_data(material_data)
+        return jsonify({"prompt": prompt})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-
-
 def construct_prompt_from_material_data(material_data):
-    # Implement logic to construct the prompt based on material_data from frontend
+    # Extract relevant details
+    color = material_data.get('color', 'default color').lower()
+    material_type = material_data.get('materialType', {}).get('label', 'default material').lower()
+    condition = material_data.get('condition', 'default condition').lower()
+    manifestation = material_data.get('manifestation', 'default manifestation').lower()
+    software = material_data.get('materialMetadata', {}).get('label', 'default software').lower()
 
-    prompt = f"{material_data['color']} texture of {material_data['materialType']} ..."
+    # Construct the prompt
+    prompt = f"{condition} {color} {manifestation} {material_type} seamless texture, trending on artstation, base color, albedo, 4k"
+    #prompt = f"Create a {color} base color texture map for a {condition.lower()} {material_type.lower()} material, resembling {manifestation.lower()}. Designed for {software}. PBR rendering workflow."
+    #prompt = f"{manifestation} texture, {condition}, {color}, trending on artstation, {material_type}, base color, albedo, 4k"
+    #prompt = f"{manifestation} seamless texture, trending on artstation, {material_type}, {color}, {condition}, base color, albedo, 4k"
+
     return prompt
-
-
-def stable_diffusion_input_schema_format( resX, resY, prompt, scheduler, num_outputs, guidance_scale, prompt_strength, num_inference_steps ):
-    
-    input_schema = {
-        "width": resX,
-        "height": resY,
-        "prompt": prompt,
-        "scheduler": scheduler,
-        "num_outputs": num_outputs,
-        "guidance_scale": guidance_scale,
-        "prompt_strength": prompt_strength,
-        "num_inference_steps": num_inference_steps
-    }
-    return input_schema
-
-    inputschemaexample = {
-        "input_schema":{
-      "seed": {
-        "type": "integer",
-        "title": "Seed",
-        "x-order": 7,
-        "description": "Random seed. Leave blank to randomize the seed"
-      },
-      "prompt": {
-        "type": "string",
-        "title": "Prompt",
-        "default": "a vision of paradise. unreal engine",
-        "x-order": 0,
-        "description": "Input prompt"
-      },
-      "scheduler": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/scheduler"
-          }
-        ],
-        "default": "DPMSolverMultistep",
-        "x-order": 6,
-        "description": "Choose a scheduler."
-      },
-      "num_outputs": {
-        "type": "integer",
-        "title": "Num Outputs",
-        "default": 1,
-        "maximum": 4,
-        "minimum": 1,
-        "x-order": 3,
-        "description": "Number of images to output."
-      },
-      "guidance_scale": {
-        "type": "number",
-        "title": "Guidance Scale",
-        "default": 7.5,
-        "maximum": 20,
-        "minimum": 1,
-        "x-order": 5,
-        "description": "Scale for classifier-free guidance"
-      },
-      "negative_prompt": {
-        "type": "string",
-        "title": "Negative Prompt",
-        "x-order": 2,
-        "description": "Specify things to not see in the output"
-      },
-      "image_dimensions": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/image_dimensions"
-          }
-        ],
-        "default": "768x768",
-        "x-order": 1,
-        "description": "pixel dimensions of output image"
-      },
-      "num_inference_steps": {
-        "type": "integer",
-        "title": "Num Inference Steps",
-        "default": 50,
-        "maximum": 500,
-        "minimum": 1,
-        "x-order": 4,
-        "description": "Number of denoising steps"
-      }
-    }}
-
-    stable_diffusion_output_schema = {
-        "type": "array",
-        "items": {
-            "type": "string",
-            "format": "uri"
-            },
-        "title": "Output"
+  
+def generate_image_from_prompt(prompt):
+    try:
+        # Specify the model name and parameters for replicate.run()
+        model_name= "tommoore515/material_stable_diffusion:3b5c0242f8925a4ab6c79b4c51e9b4ce6374e9b07b5e8461d89e692fd0faa449"
+        params = {
+            "width": 512,  # or other desired dimensions
+            "height": 512,
+            "prompt": prompt,
+            "num_outputs": 1,
+            "guidance_scale": 7.5,
+            "prompt_strength": 0.8,
+            "num_inference_steps": 50
         }
 
+        # Run the API call
+        output = replicate.run(model_name, input=params)
+        print("Raw output from Replicate:", output)
 
+        # Check if the output is a list with a valid URL
+        if isinstance(output, list) and output and isinstance(output[0], str):
+            return output[0]
+        else:
+            raise Exception("Invalid output format")
+
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        raise Exception(f"Failed to generate image: {e}")
+      
 
 #ENDPOINTS FOR STORING FORMDATA IN DATABASE (not used rn):
 ##----------------------------------------##
