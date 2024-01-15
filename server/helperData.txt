@@ -1,3 +1,9 @@
+### PROMPTS 
+  prompt = f"Create a {color} base color texture map for a {condition.lower()} {material_type.lower()} material, resembling {manifestation.lower()}. Designed for {software}. PBR rendering workflow."
+  prompt = f"{manifestation} texture, {condition}, {color}, trending on artstation, {material_type}, base color, albedo, 4k"
+  prompt = f"{manifestation} seamless texture, trending on artstation, {material_type}, {color}, {condition}, base color, albedo, 4k"
+
+### MODEL SCHEMA
 def stable_diffusion_input_schema_format( resX, resY, prompt, scheduler, num_outputs, guidance_scale, prompt_strength, num_inference_steps ):
     
     input_schema = {

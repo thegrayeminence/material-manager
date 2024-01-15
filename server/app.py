@@ -20,12 +20,7 @@ replicate.api_token = os.getenv("REPLICATE_API_TOKEN")
 #model_name = "stability-ai/stable-diffusion:27b93a2413e7f36cd83da926f3656280b2931564ff050bf9575f1fdf9bcd7478"
 
 
-## HELPER FUNCTIONS ## 
-
-
-
-
-
+## HELPER FUNCTIONS/Vars ## 
 
 material_data_example = {
     "materialType": {"value": "metallic", "label": "Metallic-Roughness"},
@@ -37,18 +32,19 @@ material_data_example = {
 }
 
 
-#ENDPOINTS FOR GENERATING IMAGES FOR WEBPAGE:
+#ENDPOINTS/FUNCTIONALITY FOR GENERATING IMAGES FOR WEBPAGE:
 ##----------------------------------------##
 ##----------------------------------------##
-@app.post(URL_PREFIX + '/get_material_data_from_form')
-def get_material_data_from_form():
+@app.post(URL_PREFIX + '/generate_texture')
+def generate_texture():
     # Extract the JSON data sent from the frontend
     form_data = request.get_json()
     material_data = form_data.get('materialData', {})
 
     try:
         prompt = construct_prompt_from_material_data(material_data)
-        return jsonify({"prompt": prompt})
+        image_url = generate_image_from_prompt(prompt)
+        return jsonify({"image_url": image_url})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
@@ -61,10 +57,7 @@ def construct_prompt_from_material_data(material_data):
     software = material_data.get('materialMetadata', {}).get('label', 'default software').lower()
 
     # Construct the prompt
-    prompt = f"{condition} {color} {manifestation} {material_type} seamless texture, trending on artstation, base color, albedo, 4k"
-    #prompt = f"Create a {color} base color texture map for a {condition.lower()} {material_type.lower()} material, resembling {manifestation.lower()}. Designed for {software}. PBR rendering workflow."
-    #prompt = f"{manifestation} texture, {condition}, {color}, trending on artstation, {material_type}, base color, albedo, 4k"
-    #prompt = f"{manifestation} seamless texture, trending on artstation, {material_type}, {color}, {condition}, base color, albedo, 4k"
+    prompt = f"{condition} {color} {material_type} {manifestation} seamless texture, trending on artstation, base color, albedo, 4k"
 
     return prompt
   

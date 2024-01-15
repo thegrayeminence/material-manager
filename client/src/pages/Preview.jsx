@@ -6,6 +6,7 @@ import { ProgressBar, FormPreviewBox, Header, ImagePreviewBox, ImagePreviewGrid 
 import { useMaterialStore, useProgressStore } from '../store/store'
 import MaterialUploadForm from '../components/MaterialUploadForm'
 import JsonDisplayModal from '../components/UI/JsonFormDataModal';
+import GeneratedTextureDisplay from '../components';
 
 function Preview() {
 const {progress} = useProgressStore()
@@ -19,9 +20,12 @@ const {imagePreviews} = useMaterialStore()
       <Box px='2rem' width={'80vw'} ml='10%'>
         <ProgressBar />
         <MaterialUploadForm />
+        <JsonDisplayModal />
       </Box>
       <FormPreviewBox />
-      <JsonDisplayModal />
+      <Box px='2rem' width={'80vw'} ml='10%'>
+        <GeneratedTextureDisplay />
+      </Box>
       <Box px='2rem' width={'80vw'} ml='10%'>
         <ImagePreviewGrid imagePreviews={imagePreviews} />
       </Box>

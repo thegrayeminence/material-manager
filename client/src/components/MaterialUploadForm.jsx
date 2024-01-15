@@ -114,19 +114,19 @@ export default function MaterialUploadForm() {
 
     // react-query mutation for sending form data to Flask backend//
     const sendFormDataMutation = useMutation(
-        formData => axios.post('/api/generate_texture_from_form', formData),
+        formData => axios.post('/api/generate_texture', formData),
         {
-            onSuccess: (response) => {
-                // Update Zustand store with new image URL
-                setGeneratedImages(prevImages => [...prevImages, response.data.image_url]);
-                queryClient.invalidateQueries('textureData');
-            },
-            onError: (error) => {
-                // error handling
-                console.error("Error in sending form data:", error);
-            }
+          onSuccess: (response) => {
+            //update zustand store for image urls
+            setGeneratedImages(prevImages => [...prevImages, response.data.image_url]);
+            queryClient.invalidateQueries('textureData');
+          },
+          onError: (error) => {
+            console.error("Error in sending form data:", error);
+            // Handle error appropriately
+          }
         }
-    );
+      );
 
 
     //submit handler via mutation function using axios post request//

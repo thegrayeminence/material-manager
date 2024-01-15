@@ -7,6 +7,7 @@ import Header from "./Header";
 import SuggestionDisplay from "./UI/SuggestionDisplay";
 import ImagePreviewBox from "./UI/ImagePreviewBox";
 import ImagePreviewGrid from "./UI/ImagePreviewGrid";
+import GeneratedTextureDisplay from "./UI/GeneratedTextureDisplay";
 
 
 export { 
@@ -19,5 +20,6 @@ export {
     ImagePreviewBox,
     SuggestionDisplay,
     ImagePreviewGrid,
+    GeneratedTextureDisplay,
 
 };
