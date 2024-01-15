@@ -36,6 +36,8 @@ export const useMaterialStore = create(set => ({
   
 }));
 
+
+
 //helper function for returning the closest match to the input from the options array
 const getClosestMatch = (input, options) => {
   if (!input) return [];

@@ -6,8 +6,8 @@ import { useMutation, useQueryClient } from 'react-query';
 import axios from 'axios';
 import {
     Box, Button, VStack, FormControl, FormLabel, Image, Input, Textarea,
-    HStack, useBoolean, useTheme, useColorModeValue, 
-    useToast, 
+    HStack, useBoolean, useTheme, useColorModeValue,
+    useToast,
 } from '@chakra-ui/react';
 // import { getClosestMatch } from '../config/helperfunctions';
 import { Select } from "chakra-react-select";
@@ -106,6 +106,10 @@ export default function MaterialUploadForm() {
         console.log(imagePreviews);
     }, [imagePreviews]);
 
+    useEffect(() => {
+        console.log(generatedImages);
+    }, [generatedImages]);
+
 
 
     //HTTP POST REQUESTS & ASYNCHRONOUS STUFF//
@@ -116,40 +120,48 @@ export default function MaterialUploadForm() {
     const sendFormDataMutation = useMutation(
         formData => axios.post('/api/generate_texture', formData),
         {
-          onSuccess: (response) => {
-            //update zustand store for image urls
-            setGeneratedImages(prevImages => [...prevImages, response.data.image_url]);
-            queryClient.invalidateQueries('textureData');
-          },
-          onError: (error) => {
-            console.error("Error in sending form data:", error);
-            // Handle error appropriately
-          }
+            onSuccess: (response) => {
+                //update zustand store for image urls
+                setGeneratedImages(prevImages => [...prevImages, response.data.image_url]);                
+                console.log(response.data, response.status)
+                //queryClient.invalidateQueries('textureData');
+            },
+            onError: (error) => {
+                console.error("Error in sending form data:", error);
+                // Handle error appropriately
+            }
         }
-      );
+    );
 
 
     //submit handler via mutation function using axios post request//
     const onSubmit = async () => {
         try {
-          
-            //post and log request to server w/ form data via usemutation hook
+            // Retrieve the latest materialData from the Zustand store
+            const { materialData } = formData;
 
-            console.log("Submitting form data:", formData.materialData);
-            await sendFormDataMutation.mutateAsync({ materialData: formData.materialData });
+            // Log the data being submitted
+            console.log("Submitting form data:", materialData);
+
+            // Make the POST request using React Query's mutation
+            // await sendFormDataMutation.mutateAsync({ materialData });
+            const response = await axios.post('http://localhost:3000/api/generate_texture', { materialData })
+            console.log("Response data:", response.data);
+            setGeneratedImages(prevImages => [...prevImages, response.data.image_url]);
 
         } catch (error) {
-            // Handle submission error
+            // Handle any errors during submission
             console.error("Submission error:", error);
-            toast({
-                title: "Error submitting form.",
-                description: "Unable to process the request.",
-                status: "error",
-                duration: 9000,
-                isClosable: true,
-            });
+            // toast({
+            //     title: "Error submitting form.",
+            //     description: "Unable to process the request.",
+            //     status: "error",
+            //     duration: 9000,
+            //     isClosable: true,
+            // });
         }
     };
+
 
     // ### HELPER FUNCTIONS ### //
     // ----------------------- //
@@ -377,7 +389,7 @@ export default function MaterialUploadForm() {
                                 <input {...getInputProps()} />
                                 <p>Drag 'n' drop files here, or click to select files</p>
                             </div>
-    
+
                         </FormControl>
                     </>
                 )}
@@ -390,12 +402,12 @@ export default function MaterialUploadForm() {
                         <Button colorScheme="blue" w="full" onClick={decreaseProgress}>Back</Button>
                     )}
                     {progress < 2 && (
-                    <Button colorScheme="green" w="full" onClick={handleNext}>
-                        {'Next'}
-                    </Button>
+                        <Button colorScheme="green" w="full" onClick={handleNext}>
+                            {'Next'}
+                        </Button>
                     )}
                     {progress === 2 && (
-                        <Button colorScheme="green" w="full" 
+                        <Button colorScheme="green" w="full"
                         // onClick={toastPromiseOnClick}
                         >
                             {'Submit'}

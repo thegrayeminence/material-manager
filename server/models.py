@@ -7,7 +7,7 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy_serializer import SerializerMixin
 
 ##local imports
-from config import db, bcrypt
+from config import db
 
 
 class FileData(db.Model):

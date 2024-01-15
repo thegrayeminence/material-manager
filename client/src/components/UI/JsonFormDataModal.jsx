@@ -9,12 +9,28 @@ import {
   ModalCloseButton,
   Button,
   useDisclosure,
-  Textarea
+  Textarea,
+  Text,
 } from '@chakra-ui/react';
 
-import FormDataJsonText from './FormDataJsonText';
 
- const JsonDisplayModal = () => {
+import { useMaterialStore } from '../../store/store';
+
+const FormDataJson = () => {
+
+const { formData } = useMaterialStore();
+
+  // Convert jsonFormData to formatted JSON string
+  const formattedData = JSON.stringify(formData, null, 2);
+
+  return (
+    <Text whiteSpace="pre-wrap">
+      {formattedData}
+    </Text>
+  );
+};
+
+ export default function JsonDisplayModal () {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   
@@ -29,7 +45,7 @@ import FormDataJsonText from './FormDataJsonText';
           <ModalCloseButton />
           <ModalBody>
             {/* <Textarea value={JSON.stringify(jsonFormData, null, 2)} readOnly height="300px" /> */}
-            <FormDataJsonText />
+            <FormDataJson />
           </ModalBody>
 
           <ModalFooter>
@@ -42,6 +58,3 @@ import FormDataJsonText from './FormDataJsonText';
     </>
   );
 };
-
-
-export default JsonDisplayModal;

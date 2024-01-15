@@ -23,27 +23,75 @@ replicate.api_token = os.getenv("REPLICATE_API_TOKEN")
 ## HELPER FUNCTIONS/Vars ## 
 
 material_data_example = {
-    "materialType": {"value": "metallic", "label": "Metallic-Roughness"},
-    "materialMetadata": [{"value": "maya", "label": "Maya"}, {"value": "redshift", "label": "Redshift"}],
-    "color": "Blue",
-    "elementType": "Ceramic",
-    "condition": "Glossy",
-    "manifestation": "Tile"
+  "materialData": {
+    "materialTextures": [
+      {
+        "value": "baseColor",
+        "label": "Base Color"
+      },
+      {
+        "value": "normal",
+        "label": "Normal Map"
+      },
+      {
+        "value": "height",
+        "label": "Height Map"
+      },
+      {
+        "value": "metallic",
+        "label": "Metallic"
+      },
+      {
+        "value": "roughness",
+        "label": "Roughness"
+      },
+      {
+        "value": "ambientOcclusion",
+        "label": "Ambient Occlusion"
+      },
+      {
+        "value": "emissive",
+        "label": "Emissive"
+      }
+    ],
+    "materialType": {
+      "value": "metallic",
+      "label": "Metallic-Roughness"
+    },
+    "materialMetadata": [
+      {
+        "value": "unreal",
+        "label": "Unreal Engine"
+      },
+      {
+        "value": "cinema4D",
+        "label": "Cinema 4D"
+      }
+    ],
+    "color": "Burnished",
+    "elementType": "Copper",
+    "condition": "Striated",
+    "manifestation": "Tiles"
+  }
 }
-
 
 #ENDPOINTS/FUNCTIONALITY FOR GENERATING IMAGES FOR WEBPAGE:
 ##----------------------------------------##
 ##----------------------------------------##
-@app.post(URL_PREFIX + '/generate_texture')
+@app.get(URL_PREFIX + '/generate_texture')
 def generate_texture():
     # Extract the JSON data sent from the frontend
-    form_data = request.get_json()
+    form_data = material_data_example
+    print({f"logging form data post request \n" : form_data})
     material_data = form_data.get('materialData', {})
-
-    try:
+    print({f"logging material data from form \n" : material_data})
+    try:  
+        print("Generating image...\n")
         prompt = construct_prompt_from_material_data(material_data)
+        print({"Logging Prompt...\n" :  prompt})
         image_url = generate_image_from_prompt(prompt)
+        print({"logging image_url \n": image_url})
+        print({"logging image_url_json_response\n": make_response(image_url, 200)})
         return jsonify({"image_url": image_url})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -51,22 +99,25 @@ def generate_texture():
 def construct_prompt_from_material_data(material_data):
     # Extract relevant details
     color = material_data.get('color', 'default color').lower()
-    material_type = material_data.get('materialType', {}).get('label', 'default material').lower()
+    elementType = material_data.get('elementType', 'default elementType').lower()
+    # material_type = material_data.get('materialType', {}).get('label', 'default material').lower()
     condition = material_data.get('condition', 'default condition').lower()
     manifestation = material_data.get('manifestation', 'default manifestation').lower()
-    software = material_data.get('materialMetadata', {}).get('label', 'default software').lower()
+    # software = material_data.get('materialMetadata', {}).get('label', 'default software').lower()
 
     # Construct the prompt
-    prompt = f"{condition} {color} {material_type} {manifestation} seamless texture, trending on artstation, base color, albedo, 4k"
-
+    prompt = f"{condition} {color} {elementType} {manifestation} seamless texture, trending on artstation, base color, albedo, 4k"
+    print("Prompt:", prompt)
     return prompt
   
 def generate_image_from_prompt(prompt):
     try:
         # Specify the model name and parameters for replicate.run()
+        # replicate.api_token = os.getenv("REPLICATE_API_TOKEN")
+        os.environ["REPLICATE_API_TOKEN"] = "r8_UG5Hm4swKAvk3K39YmcsMFqwuHlUELh3AAXCJ"
         model_name= "tommoore515/material_stable_diffusion:3b5c0242f8925a4ab6c79b4c51e9b4ce6374e9b07b5e8461d89e692fd0faa449"
         params = {
-            "width": 512,  # or other desired dimensions
+            "width": 512, 
             "height": 512,
             "prompt": prompt,
             "num_outputs": 1,
@@ -81,6 +132,7 @@ def generate_image_from_prompt(prompt):
 
         # Check if the output is a list with a valid URL
         if isinstance(output, list) and output and isinstance(output[0], str):
+            print("Image URL:", output[0])
             return output[0]
         else:
             raise Exception("Invalid output format")
@@ -94,29 +146,29 @@ def generate_image_from_prompt(prompt):
 ##----------------------------------------##
 ##----------------------------------------##
 
-@app.post( URL_PREFIX + '/upload_filedata')
-def upload_metadata():
-    data = request.json
+# @app.post( URL_PREFIX + '/upload_filedata')
+# def upload_metadata():
+#     data = request.json
 
-    metadata = ImageMetadata(
-        filename=data['filename'],
-        size=data['size'],
-        filetype=data['filetype'],
-        exif=data.get('exif')
-    )
+#     metadata = ImageMetadata(
+#         filename=data['filename'],
+#         size=data['size'],
+#         filetype=data['filetype'],
+#         exif=data.get('exif')
+#     )
 
-    db.session.add(metadata)
-    db.session.commit()
+#     db.session.add(metadata)
+#     db.session.commit()
 
-    return jsonify({'message': 'Metadata saved successfully'}), 201
+#     return jsonify({'message': 'Metadata saved successfully'}), 201
 
-def upload_materialdata():
-    data = request.json
-    material = Material(**data)  # Ensure this matches your Material model's structure
-    db.session.add(material)
-    db.session.commit()
+# def upload_materialdata():
+#     data = request.json
+#     material = Material(**data)  # Ensure this matches your Material model's structure
+#     db.session.add(material)
+#     db.session.commit()
 
-    return jsonify({'message': 'Material data saved successfully'}), 201
+#     return jsonify({'message': 'Material data saved successfully'}), 201
 
 
 

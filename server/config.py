@@ -10,7 +10,6 @@ from sqlalchemy import MetaData
 import psycopg2
 
 
-
 # Instantiate app, set attributes
 app = Flask(__name__)
 app.secret_key = b'\xbbyG>\xcf \x07\xad\x12\xfc\x8eJ'
@@ -27,22 +26,21 @@ metadata = MetaData(naming_convention={
 db = SQLAlchemy(metadata=metadata)
 migrate = Migrate(app, db)
 db.init_app(app)
-bcrypt = Bcrypt(app)
 
 # Instantiate REST API
 api = Api(app)
 
 # Instantiate CORS
-CORS(app)
+CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}})  
 #CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 
 ### POSTGRES DB CONFIG ###
 # Connect to your postgres DB
-conn = psycopg2.connect("dbname=test user=postgres")
-# Open a cursor to perform database operations
-cur = conn.cursor()
-# Execute a query
-cur.execute("SELECT * FROM my_data")
-# Retrieve query results
-records = cur.fetchall()
+# conn = psycopg2.connect("dbname=test user=postgres")
+# # Open a cursor to perform database operations
+# cur = conn.cursor()
+# # Execute a query
+# cur.execute("SELECT * FROM my_data")
+# # Retrieve query results
+# records = cur.fetchall()

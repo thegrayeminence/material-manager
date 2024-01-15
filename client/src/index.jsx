@@ -16,7 +16,7 @@ root.render(
 
   <React.StrictMode>
     <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-    <CSSReset/>
+    {/* <CSSReset/> */}
     <ChakraProvider theme={theme}>
       <App />
     </ChakraProvider>
