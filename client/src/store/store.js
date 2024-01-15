@@ -19,16 +19,21 @@ export const useMaterialStore = create(set => ({
   formData: {
     fileData: [],
     materialData: {},
+    jsonFormData: {},
   },
   setFileData: (fileData) => set(state => ({ formData: { ...state.formData, fileData } })),
   setMaterialData: (materialData) => set(state => ({ formData: { ...state.formData, materialData } })),
+  // stores JsonData from Form Submission for Previewing/Debugging
+  setJsonFormData: (jsonFormData) => set(state => ({ formData: { ...state.formData, jsonFormData } })),
 
   // Separate state for imagePreviews from file uploads
   imagePreviews: [],
   setImagePreviews: (imagePreviews) => set({ imagePreviews }),
+  
   // Separate state for generated images from API
   generatedImages: [],
   setGeneratedImages: (generatedImages) => set({ generatedImages }),
+  
 }));
 
 //helper function for returning the closest match to the input from the options array

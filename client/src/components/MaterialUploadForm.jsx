@@ -6,7 +6,7 @@ import { useMutation, useQueryClient } from 'react-query';
 import axios from 'axios';
 import {
     Box, Button, VStack, FormControl, FormLabel, Image, Input, Textarea,
-    HStack, useToast, useBoolean, useTheme, useColorModeValue, 
+    HStack, useBoolean, useTheme, useColorModeValue, 
     useToast, 
 } from '@chakra-ui/react';
 // import { getClosestMatch } from '../config/helperfunctions';
@@ -16,7 +16,6 @@ import { Select } from "chakra-react-select";
 import { textureMapOptionsPBRMetalRough, textureMapOptionsPBRGlossSpec, textureMapOptionsCommon, materialTypeOptions, metaDataOptions } from '../config/formInputData';
 import { useMaterialStore, useProgressStore, useAutosuggestionStore } from '../store/store';
 import SuggestionDisplay from './UI/SuggestionDisplay';
-import { toastPromiseOnClick } from '../config/helperfunctions';
 
 
 
@@ -142,6 +141,13 @@ export default function MaterialUploadForm() {
         } catch (error) {
             // Handle submission error
             console.error("Submission error:", error);
+            toast({
+                title: "Error submitting form.",
+                description: "Unable to process the request.",
+                status: "error",
+                duration: 9000,
+                isClosable: true,
+            });
         }
     };
 
@@ -389,7 +395,9 @@ export default function MaterialUploadForm() {
                     </Button>
                     )}
                     {progress === 2 && (
-                        <Button colorScheme="green" w="full" onClick={toastPromiseOnClick}>
+                        <Button colorScheme="green" w="full" 
+                        // onClick={toastPromiseOnClick}
+                        >
                             {'Submit'}
                         </Button>
                     )}

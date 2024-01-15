@@ -6,22 +6,19 @@ name = "pypi"
 [packages]
 SQLAlchemy = "1.4.49"
 flask = "2.2.2"
-flask-sqlalchemy = "2.5.1"
+flask-sqlalchemy = "3.0.3"
 flask-migrate = "4.0.0"
 flask_cors = "*"
 flask-restful = "*"
-psycopg2 = "*"
 psycopg2-binary = "*"
 sqlalchemy-serializer = "1.4.1"
 importlib-metadata = "6.0.0"
 importlib-resources = "5.10.0"
 flask-bcrypt = "1.0.1"
-Werkzeug= "*"
-faker = "*"
+Werkzeug = 2.3.6
 requests = "*"
-replicate = "*"
 
-[dev-packages]
-pytest = "*"
 
 [requires]
+python_full_version = "3.8.13"
+
