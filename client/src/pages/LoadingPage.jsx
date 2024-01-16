@@ -1,56 +1,99 @@
 import React, {useEffect, useState} from 'react';
-import {Box, Heading, Text, CircularProgress, Spacer} from '@chakra-ui/react';
-import {useNavigate, useLocation} from 'react-router-dom';
+import {Box, Heading, Text, CircularProgress, Spacer, Image, SimpleGrid, Skeleton} from '@chakra-ui/react';
+import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
-import {useGeneratedImagesStore} from '../store/store';
+import {motion} from 'framer-motion';
+
+const MotionImageBox = motion(Box);
 
 const LoadingMessages = [
-    "Connecting to database",
-    "Encoding image files",
-    "Prepping API calls",
-    "Hold tight, your packets are traveling at the speed of light!",
-    // ... more messages ...
+    // ... Existing messages ...
 ];
 
 const LoadingPage = () => {
     const [currentMessage, setCurrentMessage] = useState(0);
+    const [albedoImage, setAlbedoImage] = useState(null);
+    const [pbrMapUrls, setPbrMapUrls] = useState({normal: null, height: null, smoothness: null});
     const navigate = useNavigate();
-    const location = useLocation();
-    const {materialId} = location.state; // Assuming materialId is passed in state when navigating to this page
-    const {albedoImage, setAlbedoImage} = useGeneratedImagesStore();
 
     useEffect(() => {
         const intervalId = setInterval(() => {
             setCurrentMessage((prev) => (prev + 1) % LoadingMessages.length);
-        }, 4000); // Change message every 4 seconds
+        }, 4000);
 
         return () => clearInterval(intervalId);
     }, []);
 
+    // Fetch the most recent albedo image and its material ID
     useEffect(() => {
-        if (albedoImage) {
-            navigate('/gallery');
-            return;
-        }
-
-        const fetchAlbedoImage = async () => {
+        const fetchRecentAlbedo = async () => {
             try {
-                const response = await axios.get(`http://localhost:3001/api/get_albedo_by_id/${materialId}`);
+                const response = await axios.get('http://localhost:3001/api/get_recent_albedo');
                 setAlbedoImage(response.data.image_url);
-                navigate('/gallery');
+                loadPBRMaps(response.data.material_id);
             } catch (error) {
-                console.error('Error fetching albedo image:', error);
+                console.error('Error fetching recent albedo:', error);
             }
         };
 
-        if (materialId) {
-            fetchAlbedoImage();
+        fetchRecentAlbedo();
+    }, []);
+
+    // Fetch the PBR maps using the material ID
+    const loadPBRMaps = async (materialId) => {
+        const mapTypes = ['normal', 'height', 'smoothness'];
+        const mapPromises = mapTypes.map(mapType => axios.get(`http://localhost:3001/api/get_${mapType}_by_id/${materialId}`));
+        try {
+            const maps = await Promise.all(mapPromises);
+            const newPbrMapUrls = {};
+            mapTypes.forEach((mapType, index) => {
+                newPbrMapUrls[mapType] = maps[index].data.image_url;
+            });
+            setPbrMapUrls(newPbrMapUrls);
+            navigate('/gallery');
+        } catch (error) {
+            console.error('Error fetching PBR maps:', error);
         }
-    }, [navigate, materialId, albedoImage, setAlbedoImage]);
+    };
 
     return (
         <Box mt={'10rem'} fontSize={'2xl'} textAlign={'center'}>
-            <Heading>Loading Albedo...</Heading>
+            {albedoImage ? (
+                <>
+                    <MotionImageBox
+                        whileHover={{scale: 1.05}}
+                        boxShadow="md"
+                        borderRadius="lg"
+                        overflow="hidden"
+                        border="1px solid"
+                        borderColor="gray.200"
+                    >
+                        <Image src={albedoImage} alt="Albedo Texture" boxSize="300px" objectFit="cover" />
+                    </MotionImageBox>
+                    <Heading>Loading PBR Maps...</Heading>
+                    <SimpleGrid columns={[2, null, 3]} spacing="40px">
+                        {['normal', 'height', 'smoothness'].map((type, index) => (
+                            pbrMapUrls[type] ? (
+                                <MotionImageBox
+                                    key={type}
+                                    whileHover={{scale: 1.05}}
+                                    boxShadow="md"
+                                    borderRadius="lg"
+                                    overflow="hidden"
+                                    border="1px solid"
+                                    borderColor="gray.200"
+                                >
+                                    <Image src={pbrMapUrls[type]} alt={`${type} Texture`} boxSize="300px" objectFit="cover" />
+                                </MotionImageBox>
+                            ) : (
+                                <Skeleton key={index} height="300px" />
+                            )
+                        ))}
+                    </SimpleGrid>
+                </>
+            ) : (
+                <Heading>Loading Albedo...</Heading>
+            )}
             <Text>{LoadingMessages[currentMessage]}</Text>
             <Spacer p={'1rem'} />
             <CircularProgress isIndeterminate size='5rem' color='green.300' />
@@ -59,3 +102,83 @@ const LoadingPage = () => {
 };
 
 export default LoadingPage;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// OLD LOADING SCREEN 
+
+// import React, {useEffect, useState} from 'react';
+// import {Box, Heading, Text, CircularProgress, Spacer} from '@chakra-ui/react';
+// import {useNavigate, useLocation} from 'react-router-dom';
+// import axios from 'axios';
+// import {useGeneratedImagesStore} from '../store/store';
+
+// const LoadingMessages = [
+//     "Connecting to database",
+//     "Encoding image files",
+//     "Prepping API calls",
+//     "Hold tight, your packets are traveling at the speed of light!",
+//     // ... more messages ...
+// ];
+
+// const LoadingPage = () => {
+//     const [currentMessage, setCurrentMessage] = useState(0);
+//     const navigate = useNavigate();
+//     const location = useLocation();
+//     const {materialId} = location.state; // Assuming materialId is passed in state when navigating to this page
+//     const {albedoImage, setAlbedoImage} = useGeneratedImagesStore();
+
+//     useEffect(() => {
+//         const intervalId = setInterval(() => {
+//             setCurrentMessage((prev) => (prev + 1) % LoadingMessages.length);
+//         }, 4000); // Change message every 4 seconds
+
+//         return () => clearInterval(intervalId);
+//     }, []);
+
+//     useEffect(() => {
+//         if (albedoImage) {
+//             navigate('/gallery');
+//             return;
+//         }
+
+//         const fetchAlbedoImage = async () => {
+//             try {
+//                 const response = await axios.get(`http://localhost:3001/api/get_albedo_by_id/${materialId}`);
+//                 setAlbedoImage(response.data.image_url);
+//                 navigate('/gallery');
+//             } catch (error) {
+//                 console.error('Error fetching albedo image:', error);
+//             }
+//         };
+
+//         if (materialId) {
+//             fetchAlbedoImage();
+//         }
+//     }, [navigate, materialId, albedoImage, setAlbedoImage]);
+
+//     return (
+//         <Box mt={'10rem'} fontSize={'2xl'} textAlign={'center'}>
+//             <Heading>Loading Albedo...</Heading>
+//             <Text>{LoadingMessages[currentMessage]}</Text>
+//             <Spacer p={'1rem'} />
+//             <CircularProgress isIndeterminate size='5rem' color='green.300' />
+//         </Box>
+//     );
+// };
+
+// export default LoadingPage;
