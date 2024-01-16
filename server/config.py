@@ -7,13 +7,13 @@ from flask_migrate import Migrate
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
-import psycopg2
+
 
 
 # Instantiate app, set attributes
 app = Flask(__name__)
 app.secret_key = b'\xbbyG>\xcf \x07\xad\x12\xfc\x8eJ'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://materialMaker:luthien@localhost:5432/materialsdb'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.json.compact = False
 
@@ -32,15 +32,4 @@ api = Api(app)
 
 # Instantiate CORS
 CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}})  
-#CORS(app, resources={r"/api/*": {"origins": "*"}})
 
-
-### POSTGRES DB CONFIG ###
-# Connect to your postgres DB
-# conn = psycopg2.connect("dbname=test user=postgres")
-# # Open a cursor to perform database operations
-# cur = conn.cursor()
-# # Execute a query
-# cur.execute("SELECT * FROM my_data")
-# # Retrieve query results
-# records = cur.fetchall()

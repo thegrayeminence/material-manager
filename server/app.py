@@ -17,67 +17,11 @@ from models import db, Material
 from config import app, api
 
 ## api prefix for endpoints
-URL_PREFIX = '/api'
+#URL_PREFIX = '/api'
 
 ##replicate API vars
 replicate.api_token = os.getenv("REPLICATE_API_TOKEN")
 #model_name = "stability-ai/stable-diffusion:27b93a2413e7f36cd83da926f3656280b2931564ff050bf9575f1fdf9bcd7478"
-
-
-### PLACEHOLDER DATA FOR TESTING ###
-##----------------------------------------##
-material_data_example = {
-  "materialData": {
-    "materialTextures": [
-      {
-        "value": "baseColor",
-        "label": "Base Color"
-      },
-      {
-        "value": "normal",
-        "label": "Normal Map"
-      },
-      {
-        "value": "height",
-        "label": "Height Map"
-      },
-      {
-        "value": "metallic",
-        "label": "Metallic"
-      },
-      {
-        "value": "roughness",
-        "label": "Roughness"
-      },
-      {
-        "value": "ambientOcclusion",
-        "label": "Ambient Occlusion"
-      },
-      {
-        "value": "emissive",
-        "label": "Emissive"
-      }
-    ],
-    "materialType": {
-      "value": "metallic",
-      "label": "Metallic-Roughness"
-    },
-    "materialMetadata": [
-      {
-        "value": "unreal",
-        "label": "Unreal Engine"
-      },
-      {
-        "value": "cinema4D",
-        "label": "Cinema 4D"
-      }
-    ],
-    "color": "Burnished",
-    "elementType": "Copper",
-    "condition": "Striated",
-    "manifestation": "Tiles"
-  }
-}
 
 
 ##------HELPER FUNCTIONS FOR GENERATING TEXTURES------##
@@ -88,28 +32,20 @@ def construct_prompt_from_material_data(material_data):
       # Extract physical properties of materials from materialData json
       color = material_data.get('color', 'default color').lower()
       elementType = material_data.get('elementType', 'default elementType').lower()
-      material_type = material_data.get('materialType', {}).get('label', 'PBR material').lower()
+      #material_type = material_data.get('materialType', {}).get('label', 'PBR material').lower()
       condition = material_data.get('condition', 'default condition').lower()
       manifestation = material_data.get('manifestation', 'default manifestation').lower()
-      software = [{'Program': item.get('label', 'default software').lower()} for item in material_data.get('materialMetadata', [])]
-      maps = [{'Map': item.get('label', 'default map').lower()} for item in material_data.get('materialTextures', [])]
-
-      # Construct the prompt
+      #software = [{'Program': item.get('label', 'default software').lower()} for item in material_data.get('materialMetadata', [])]
+      #maps = [{'Map': item.get('label', 'default map').lower()} for item in material_data.get('materialTextures', [])]
+    
+      # Construct prompt
       prompt = f"{condition} {color} {elementType} {manifestation} seamless texture, trending on artstation, base color, albedo, 4k"
-      print("Logging prompt:", prompt)
-      print("adding material data to database...")
-      
-      new_material = Material_Data(
-        workflow = material_type, maps = maps, software = software, color = color, element = elementType, condition = condition, manifestation = manifestation, prompt = prompt
-        )
-      db.session.add(new_material)
-      db.session.commit()
-      print("material data added to database!")
+      print("Logging prompt:", prompt)  
       return prompt
     
     except Exception as e:
       print(f"error: {e}")
-      raise Exception(f"Failed to extract data!: {e}")
+      raise Exception(f"Failed to generate prompt!: {e}")
 
 ## MAKES API CALL TO REPLICATE TO GENERATE TEXTURE USING PROMPT, RETURNS URL AS OUTPUT###
 def generate_image_from_prompt(prompt):
@@ -199,4 +135,62 @@ def handle_errors(e):
     return {"error": f"Value Error:{str(e)}"}, 422
     
 if __name__ == '__main__':
-    app.run(port=3000, debug=True)
+    app.run(port=3001, debug=True)
+    
+    
+
+
+### PLACEHOLDER DATA FOR TESTING ###
+##----------------------------------------##
+material_data_example = {
+  "materialData": {
+    "materialTextures": [
+      {
+        "value": "baseColor",
+        "label": "Base Color"
+      },
+      {
+        "value": "normal",
+        "label": "Normal Map"
+      },
+      {
+        "value": "height",
+        "label": "Height Map"
+      },
+      {
+        "value": "metallic",
+        "label": "Metallic"
+      },
+      {
+        "value": "roughness",
+        "label": "Roughness"
+      },
+      {
+        "value": "ambientOcclusion",
+        "label": "Ambient Occlusion"
+      },
+      {
+        "value": "emissive",
+        "label": "Emissive"
+      }
+    ],
+    "materialType": {
+      "value": "metallic",
+      "label": "Metallic-Roughness"
+    },
+    "materialMetadata": [
+      {
+        "value": "unreal",
+        "label": "Unreal Engine"
+      },
+      {
+        "value": "cinema4D",
+        "label": "Cinema 4D"
+      }
+    ],
+    "color": "Burnished",
+    "elementType": "Copper",
+    "condition": "Striated",
+    "manifestation": "Tiles"
+  }
+}
