@@ -7,14 +7,16 @@ import {
 
 import {AnimatePresence, motion} from 'framer-motion';
 //components
-import {ProgressBar, MaterialUploadForm, FormPreviewBox, Header, ImagePreviewGrid, JsonDisplayModal, ImageGridUrlSrc} from '../components'
-import {useMaterialStore, useProgressStore} from '../store/store';
+import {ProgressBar, MaterialUploadForm, FormPreviewBox, Header, ImagePreviewGrid, TextureDisplay, JsonDisplayModal, ImageGridUrlSrc} from '../components'
+import {useMaterialStore, useProgressStore, useIsLoadingStore, useFormMode} from '../store/store';
 
 
 
 function Preview() {
   const {progress} = useProgressStore()
   const {generatedImages} = useMaterialStore();
+  const {isLoading} = useIsLoadingStore();
+  const {mode, incrementMode, decrementMode} = useFormMode();
 
   return (
     <>
@@ -26,11 +28,13 @@ function Preview() {
         <MaterialUploadForm />
         {/* <JsonDisplayModal /> */}
       </Box>
-      <FormPreviewBox />
-      {progress == 2 && (
+      {progress < 2 && mode === 0 && <FormPreviewBox />}
+      {progress < 3 && mode === 1 && <FormPreviewBox />}
+
+      {/* {progress === 2 && mode === 0 && (< TextureDisplay />)} */}
+      {progress === 2 && mode === 0 && (
         <Box px='2rem' width={'80vw'} ml='10%'>
-          <Text>{generatedImages}</Text>
-          <Text>{generatedImages.image_url}</Text>
+          <TextureDisplay />
         </Box>)}
       <Box px='2rem' width={'80vw'} ml='10%'>
 

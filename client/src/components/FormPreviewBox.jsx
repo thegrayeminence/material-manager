@@ -1,8 +1,8 @@
 import React from 'react'
-import { Box, Grid, VStack, Heading, Text, Stack, Flex, useColorModeValue, Skeleton, SkeletonCircle, SkeletonText, useBoolean, HStack } from '@chakra-ui/react'
+import {Box, Grid, VStack, Heading, Text, Stack, Flex, useColorModeValue, Skeleton, SkeletonCircle, SkeletonText, useBoolean, HStack} from '@chakra-ui/react'
 //components
-import { useMaterialStore } from '../store/store'
-import { GeneratedTextureDisplay } from '../components'
+import {useMaterialStore} from '../store/store'
+import {GeneratedTextureDisplay} from '../components'
 
 //font styles
 const headerStyle = {
@@ -31,10 +31,10 @@ export default function FormPreviewBox() {
   //loading state info for preview box animation
   // const [isLoaded, setIsLoaded] = useBoolean(false);
   // stateful form data vars
-  const { progress } = useMaterialStore();
-  const { formData, imagePreviews, generatedImages } = useMaterialStore();
-  const { materialData } = formData;
-  const { materialTextures, materialMetadata, materialType, color, elementType, condition, manifestation } = materialData;
+  const {progress} = useMaterialStore();
+  const {formData, imagePreviews, generatedImages} = useMaterialStore();
+  const {materialData} = formData;
+  const {materialTextures, materialMetadata, materialType, color, elementType, condition, manifestation} = materialData;
 
   const strippedNames = () => {
     const stripped = `${color.replace(/\s*/g, '')}_${elementType.replace(/\s*/g, '')}_${manifestation.replace(/\s*/g, '')}_${condition.replace(/\s*/g, '')}`
@@ -82,22 +82,22 @@ export default function FormPreviewBox() {
             </Grid>
           </Box>
           <Box>
-
-            {/* <Grid templateColumns="repeat(4, 1fr)" gap={6}>
-                <Box w="100%" p={4}>
+            {/* CONDITION: */}
+            <Grid templateColumns="repeat(4, 1fr)" gap={6}>
+              <Box w="100%" p={4}>
                 {color && <Text sx={bodyStyle}>Color:</Text>}{color && <Text sx={headerStyle}>{color}</Text>}
-                </Box>
-                <Box w="100%" p={4}>
+              </Box>
+              <Box w="100%" p={4}>
                 {elementType && <Text sx={bodyStyle}>Element:</Text>}{elementType && <Text sx={headerStyle}>{elementType}</Text>}
-                </Box>
-                <Box w="100%" p={4}>
+              </Box>
+              <Box w="100%" p={4}>
                 {manifestation && <Text sx={bodyStyle}>Object:</Text>}{manifestation && <Text sx={headerStyle}>{manifestation}</Text>}
-                </Box>
-                <Box w="100%"  p={4}>
-                {condition && <Text sx={bodyStyle}>Condition:</Text>}{condition && <Text sx={headerStyle}>{condition}</Text>}                
-                </Box>
+              </Box>
+              <Box w="100%" p={4}>
+                {condition && <Text sx={bodyStyle}>Condition:</Text>}{condition && <Text sx={headerStyle}>{condition}</Text>}
+              </Box>
 
-              </Grid> */}
+            </Grid>
 
             <Box w="100%" p={4}>
               {(color || elementType || manifestation || condition) && <Text textAlign='center' sx={headerStyle}><Text sx={bodyStyle}>Material Name:</Text>{strippedNames()}</Text>}
@@ -106,9 +106,9 @@ export default function FormPreviewBox() {
 
           </Box>
 
-          <Box px='2rem' width={'80vw'} ml='10%'>
-              {progress === 2 && generatedImages.length > 0 && (<GeneratedTextureDisplay />)}
-            </Box>
+          {/* <Box px='2rem' width={'80vw'} ml='10%'>
+            {progress === 2 && generatedImages.length > 0 && (<GeneratedTextureDisplay />)}
+          </Box> */}
         </Flex>
       </Box>
 

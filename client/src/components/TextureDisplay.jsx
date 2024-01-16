@@ -1,15 +1,18 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import axios from 'axios';
-import {useMaterialStore} from '../store/store';
-import {Box, Image, SimpleGrid, Spinner, Center, useToast} from '@chakra-ui/react';
+import {useMaterialStore, useIsLoadingStore} from '../store/store';
+import {Box, SimpleGrid, Spinner, Center, useToast, Image} from '@chakra-ui/react';
+import {motion} from 'framer-motion';
+
+const MotionImageBox = motion(Box);
 
 const TextureDisplay = () => {
     const {generatedImages, setGeneratedImages} = useMaterialStore();
-    const [isLoading, setIsLoading] = useState(false);
+    const {isLoading, setIsLoading} = useIsLoadingStore();
     const toast = useToast();
 
     useEffect(() => {
-        if (generatedImages.length === 0 || !generatedImages.length) {
+        if (!generatedImages.length) {
             setIsLoading(true);
             axios.get('http://localhost:3001/api/get_generated_textures')
                 .then(response => {
@@ -33,7 +36,7 @@ const TextureDisplay = () => {
                 })
                 .finally(() => setIsLoading(false));
         }
-    }, [setGeneratedImages, toast]);
+    }, [generatedImages, setGeneratedImages, setIsLoading, toast]);
 
     return (
         <Box>
@@ -41,9 +44,17 @@ const TextureDisplay = () => {
                 <Center><Spinner size="xl" /></Center>
             ) : (
                 generatedImages.length > 0 && (
-                    <SimpleGrid columns={[2, null, 3]} spacing="40px">
+                    <SimpleGrid columns={[2, null, 3]} spacing="40px" p={5}>
                         {generatedImages.map((url, index) => (
-                            <Image key={index} src={url} alt={`Texture ${index + 1}`} boxSize="300px" objectFit="cover" />
+                            <MotionImageBox
+                                key={index}
+                                whileHover={{scale: 1.05}}
+                                boxShadow="md"
+                                borderRadius="lg"
+                                overflow="hidden"
+                            >
+                                <Image src={url} alt={`Texture ${index + 1}`} boxSize="300px" objectFit="cover" />
+                            </MotionImageBox>
                         ))}
                     </SimpleGrid>
                 )

@@ -103,13 +103,13 @@ export default function MaterialUploadForm() {
 
 
     //logs image preview file data if using async method (fileapi vs base64)
-    useEffect(() => {
-        console.log(imagePreviews);
-    }, [imagePreviews]);
+    // useEffect(() => {
+    //     console.log(imagePreviews);
+    // }, [imagePreviews]);
 
-    useEffect(() => {
-        console.log({"logging generated images via useEffect": generatedImages});
-    }, [generatedImages]);
+    // useEffect(() => {
+    //     console.log({"logging generated images via useEffect": generatedImages});
+    // }, [generatedImages]);
 
 
 
@@ -178,9 +178,13 @@ export default function MaterialUploadForm() {
     // ---------------- //
     //handles navigation between form steps via progress var's global state
     const handleNext = () => {
-        if (progress < 2) {
+        if (progress === 0 && mode === 0) {
             increaseProgress();
-        } else {
+        } else if (progress === 1 && mode === 0) {
+            handleSubmit(onSubmit)();
+        } else if (progress < 2 && mode === 1) {
+            increaseProgress();
+        } else if (progress === 2 && mode === 1) {
             handleSubmit(onSubmit)();
         }
     };
@@ -348,7 +352,7 @@ export default function MaterialUploadForm() {
 
 
                 {/* MODE 1: Manual File Upload Section */}
-                {progress === 2 && (
+                {progress === 2 && mode === 1 && (
                     <>
                         <FormControl mb={4}>
                             <FormLabel>Upload Texture Files</FormLabel>
@@ -366,14 +370,28 @@ export default function MaterialUploadForm() {
                 <HStack spacing={4} py={'1rem'}>
                     <Button colorScheme="blue" w="full" onClick={() => flushFormData()}>Reset</Button>
                     {progress > 0 && (
-                        <Button colorScheme="blue" w="full" onClick={decreaseProgress}>Back</Button>
+                        <Button colorScheme="blue" w="full" onClick={() => decreaseProgress()}>Back</Button>
                     )}
-                    {progress < 2 && (
+                    {/* Mode 0 : Default */}
+                    {progress < 1 && mode === 0 && (
                         <Button colorScheme="green" w="full" onClick={handleNext}>
                             {'Next'}
                         </Button>
                     )}
-                    {progress === 2 && (
+                    {progress === 1 && mode === 0 && (
+                        <Button type="submit" colorScheme="green" w="full" onClick={handleNext}
+                        //onClick={toastPromiseOnClick}
+                        >
+                            {'Submit'}
+                        </Button>
+                    )}
+                    {/* MODE 1 : Manual Uploads */}
+                    {progress < 2 && mode === 1 && (
+                        <Button colorScheme="green" w="full" onClick={handleNext}>
+                            {'Next'}
+                        </Button>
+                    )}
+                    {progress === 2 && mode === 1 && (
                         <Button type="submit" colorScheme="green" w="full"
                         //onClick={toastPromiseOnClick}
                         >

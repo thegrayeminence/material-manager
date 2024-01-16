@@ -11,9 +11,13 @@ export const useProgressStore = create((set) => ({
   resetProgress: () => set({progress: 0}),
 }))
 
+export const useIsLoadingStore = create((set) => ({
+  isLoading: false,
+  setIsLoading: () => set((state) => ({isLoading: (!state.isLoading)})),
+  resetIsLoading: () => set({isLoading: !isLoading}),
+}))
 
-// store for global values for form settings and options
-
+// store for global values for form settings and options (e.g. AI generation mode/manual uploads)
 // mode 0 = default mode w/ AI generation ; mode 1 = manual mode w/o AI generation
 export const useFormMode = create((set) => ({
   mode: 0,

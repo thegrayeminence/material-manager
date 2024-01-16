@@ -111,7 +111,15 @@ def generate_texture():
         return jsonify({"error": str(e)}), 500
 
 
+
+
+
+
+
+
+
 ######## Server-->Client ENDPOINTS ######
+##-------------------------------------##
 ## GET Generated Images from DB ####
 @app.route("/api/get_generated_textures", methods=['GET'])
 def get_generated_textures():

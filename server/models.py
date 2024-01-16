@@ -26,64 +26,12 @@ class Material(db.Model, SerializerMixin):
     condition = db.Column(db.String, nullable=False)
     manifestation = db.Column(db.String, nullable=False)
     prompt = db.Column(db.String, nullable=False)
-    base_color_url = db.Column(db.String)  # URL of the generated texture
+    ##imgs
+    base_color_url = db.Column(db.String)  
+    normal_map_url = db.Column(db.String) 
+    height_map_url = db.Column(db.String) 
+    smoothness_map_url = db.Column(db.String)  
 
     def __repr__(self):
         return f'<Material {self.id}>'
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-# #####!!!! OLD MODELS !!!!#####
-# ###----------------------------------------###
-# class Material_Data(db.Model, SerializerMixin):
-    
-#     __tablename__= "material_data"
-#     serialize_rules = ('-materials_generated.material_data',)
-    
-#     #properties
-#     id = db.Column(db.Integer, primary_key=True)
-#     workflow = db.Column(db.String, nullable = False)
-#     maps =  db.Column(db.String)
-#     software = db.Column(db.String)
-#     color = db.Column(db.String, nullable = False)
-#     element = db.Column(db.String, nullable = False)
-#     condition = db.Column(db.String, nullable = False)
-#     manifestation = db.Column(db.String, nullable = False)
-#     prompt = db.Column(db.String, nullable = False)
-    
-    
-#     #relationships/foreign keys/association proxies
-#     materials_generated = db.relationship('Material_Generated', back_populates='material_data')
-#     # prompt = association_proxy('materials_generated', 'base_color_prompt')
-#     base_color_url = association_proxy('materials_generated', 'base_color_url')
-
-#     def __repr__(self):
-#         return f'<Material_Data {self.id} / workflow: {self.material_workflow} / properties: {self.color} {self.element} {self.condition} {self.manifestation} / url: {self.base_color_url}>'
-
-# class Material_Generated(db.Model, SerializerMixin):
-
-#     __tablename__= "material_generated"
-#     serialize_rules = ('-material_data.materials_generated',)
-    
-#     #properties
-#     id = db.Column(db.Integer, primary_key=True)
-#     base_color_prompt = db.Column(db.String, nullable = False)
-#     base_color_url = db.Column(db.String, nullable = False)
-    
-#     #relationships/foreign keys/association proxies
-#     material_data_id = db.Column(db.Integer, db.ForeignKey('material_data.id'))
-#     material_data = db.relationship('Material_Data', back_populates='materials_generated')
-    
-#     def __repr__(self):
-#         return f'<Material_Generated {self.id} {self.base_color_prompt} {self.base_color_url}>'
