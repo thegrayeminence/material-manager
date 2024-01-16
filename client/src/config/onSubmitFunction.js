@@ -8,7 +8,7 @@ const handleFormSubmission = async (data) => {
 
     try {
         const materialData = {...formData.materialData, ...data};
-        const textureResponse = await axios.post('http://localhost:3001/api/generate_texture', {materialData});
+        const textureResponse = await axios.post('http://localhost:3001/api/generate_albedo', {materialData});
         console.log("Texture generation initiated!");
         const materialId = textureResponse.data.material_id;
         const baseColorUrl = textureResponse.data.image_url;

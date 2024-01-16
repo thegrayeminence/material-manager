@@ -48,21 +48,43 @@ export const useMaterialStore = create(set => ({
 
 }));
 
-// Store for managing generated images
+// // Store for managing generated images
+// export const useGeneratedImagesStore = create(set => ({
+//   // Array to store URLs of generated images
+//   generatedImages: [],
+
+//   // Method to set the generated images
+//   setGeneratedImages: (generatedImages) => set({generatedImages}),
+//   // Method to add a single generated image
+//   addGeneratedImage: (imageURL) => set(state => ({generatedImages: [...state.generatedImages, imageURL]})),
+//   // Method to clear all generated images
+//   clearGeneratedImages: () => set({generatedImages: []}),
+// }));
+
+
 export const useGeneratedImagesStore = create(set => ({
-  // Array to store URLs of generated images
-  generatedImages: [],
+  // Separate state for the albedo image
+  albedoImage: null,
 
-  // Method to set the generated images
-  setGeneratedImages: (generatedImages) => set({generatedImages}),
-  // Method to add a single generated image
-  addGeneratedImage: (imageURL) => set(state => ({generatedImages: [...state.generatedImages, imageURL]})),
-  // Method to clear all generated images
-  clearGeneratedImages: () => set({generatedImages: []}),
+  // Separate state for the PBR images
+  pbrImages: {
+    normal: null,
+    height: null,
+    smoothness: null
+  },
+
+  // Method to set the albedo image
+  setAlbedoImage: (imageURL) => set({albedoImage: imageURL}),
+
+  // Method to set a specific PBR image
+  setPBRImage: (type
+    , imageURL) => set(state => ({
+      pbrImages: {...state.pbrImages, [type]: imageURL}
+    })),
+
+  // Method to clear all images
+  clearImages: () => set({albedoImage: null, pbrImages: {normal: null, height: null, smoothness: null}})
 }));
-
-
-
 
 
 //helper function for returning the closest match to the input from the options array

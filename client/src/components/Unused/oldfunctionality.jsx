@@ -8,7 +8,7 @@
 //     e.preventDefault();  // Prevent default form submission behavior
 //     try {
 //         const materialData = {...formData.materialData, ...data};
-//         const response = await axios.post('http://localhost:3000/api/generate_texture', {materialData});
+//         const response = await axios.post('http://localhost:3000/api/generate_albedo', {materialData});
 //         setGeneratedImages(prevImages => [...prevImages, response.data.image_url]);
 //         console.log("Received Image URL:", response.data.image_url);
 //     } catch (error) {
@@ -21,7 +21,7 @@
 
 // react-query mutation for sending form data to Flask backend//
 // const sendFormDataMutation = useMutation(
-//     formData => axios.post('http://localhost:3000/api/generate_texture', formData),
+//     formData => axios.post('http://localhost:3000/api/generate_albedo', formData),
 //     {
 //         onSuccess: (response) => {
 //             //update zustand store for image urls

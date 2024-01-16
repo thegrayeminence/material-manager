@@ -14,8 +14,7 @@ import {useMaterialStore, useProgressStore, useIsLoadingStore, useFormMode, useG
 
 function Preview() {
   const {progress} = useProgressStore()
-  const {generatedImages} = useGeneratedImagesStore();
-  const {isLoading} = useIsLoadingStore();
+
   const {mode, incrementMode, decrementMode} = useFormMode();
 
   return (

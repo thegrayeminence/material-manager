@@ -30,8 +30,8 @@ const LoadingPage = () => {
     useEffect(() => {
         const intervalId = setInterval(async () => {
             try {
-                const response = await axios.get('http://localhost:3001/api/get_recent_maps');
-                if (response.data.image_urls.length === 4 && response.data.image_urls.every(url => typeof url === 'string')) { // Check if all textures are loaded as urls
+                const response = await axios.get('http://localhost:3001/api/get_recent_albedo');
+                if (response.data.image_urls.length && typeof response.data.image_urls === 'string') { // Check if albedo is loaded first
                     navigate('/gallery'); // Or the appropriate display page
                     clearInterval(intervalId);
                 }
@@ -46,7 +46,7 @@ const LoadingPage = () => {
 
     return (
         <Box mt={'10rem'} fontSize={'2xl'} textAlign={'center'}>
-            <Heading>Loading Your Textures</Heading>
+            <Heading>Loading Albedo...</Heading>
             <Text>{LoadingMessages[currentMessage]}</Text>
             <Spacer p={'1rem'} />
             <CircularProgress isIndeterminate size='5rem' color='green.300' />

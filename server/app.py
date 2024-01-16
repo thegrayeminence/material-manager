@@ -47,6 +47,35 @@ def construct_prompt_from_material_data(material_data):
       print(f"error: {e}")
       raise Exception(f"Failed to generate prompt!: {e}")
 
+####### API CALLS TO GENERATE TEXTURES INDIVIDUALLY #######
+##--------------------------------------------------------##
+
+def generate_specific_pbr_map(map_type):
+    pbr_maps = {}
+    try:
+        data = request.get_json()
+        base_color_url = data.get('base_color_url')
+        if not base_color_url:
+            return jsonify({"error": "Albedo URL is required"}), 400
+
+        print(f"Generating {map_type} map...")
+        map_output = generate_pbr_from_albedo(base_color_url, map_type)
+        pbr_maps.update(map_output)
+
+        material_id = data.get('material_id')
+        if not material_id:
+            return jsonify({"error": "material_id is required"}), 400
+
+        material = Material.query.get(material_id)
+        if material:
+            setattr(material, f"{map_type}_url", pbr_maps.get(map_type))
+            db.session.commit()
+            return jsonify({"message": f"{map_type} map generated successfully", "pbr_map": pbr_maps[map_type]}), 200
+        else:
+            return jsonify({"error": "Material not found"}), 404
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 ## MAKES API CALL TO REPLICATE TO GENERATE TEXTURE USING PROMPT, RETURNS URL AS OUTPUT###
 def generate_image_from_prompt(prompt):
     try:
@@ -54,7 +83,7 @@ def generate_image_from_prompt(prompt):
         # replicate.api_token = os.getenv("REPLICATE_API_TOKEN")
         os.environ["REPLICATE_API_TOKEN"] = "r8_UG5Hm4swKAvk3K39YmcsMFqwuHlUELh3AAXCJ"
         model1= "tommoore515/material_stable_diffusion:3b5c0242f8925a4ab6c79b4c51e9b4ce6374e9b07b5e8461d89e692fd0faa449"
-        params = {
+        params1 = {
             "width": 512, 
             "height": 512,
             "prompt": prompt,
@@ -77,7 +106,7 @@ def generate_image_from_prompt(prompt):
             }
 
         # Run the API call
-        output = replicate.run(model2, input=params2)
+        output = replicate.run(model1, input=params1)
         print("Logging output from Replicate:", output)
 
         # Check if the output is a list with a valid URL
@@ -125,8 +154,8 @@ def generate_pbr_from_albedo(base_color_url, map_type):
 ## CLIENT --> SERVER ENDPOINTS: GENERATE TEXTURES FOR WEBPAGE:
 ##----------------------------------------##
 ## GET MATERIAL DATA FROM FORMDATA, EXTRACT PROMPT, GENERATE TEXTURE, RETURN URL/id:
-@app.route("/api/generate_texture", methods=['POST'])
-def generate_texture():
+@app.route("/api/generate_albedo", methods=['POST'])
+def generate_albedo():
     try:
         material_data = request.get_json().get('materialData', {})
         prompt = construct_prompt_from_material_data(material_data)
@@ -152,7 +181,7 @@ def generate_texture():
 
 
 ## GENERATE ADDITIONAL PBR MAPS FROM ALBEDO MAP: ##
-@app.route("/api/generate_pbr_maps", methods=['POST'])
+@app.post("/api/generate_pbr_maps")
 def generate_pbr_maps():
     map_types = ["albedo2normal", "albedo2height", "albedo2smoothness"]
     pbr_maps = {}
@@ -188,7 +217,18 @@ def generate_pbr_maps():
 
 
 
+## generate one by one ##
+@app.route("/api/generate_normal_map", methods=['POST'])
+def generate_normal_map():
+    return generate_specific_pbr_map("albedo2normal")
 
+@app.route("/api/generate_height_map", methods=['POST'])
+def generate_height_map():
+    return generate_specific_pbr_map("albedo2height")
+
+@app.route("/api/generate_smoothness_map", methods=['POST'])
+def generate_smoothness_map():
+    return generate_specific_pbr_map("albedo2smoothness")
 
 
 
@@ -196,7 +236,7 @@ def generate_pbr_maps():
 ######## Server-->Client ENDPOINTS ######
 ##-------------------------------------##
 ## GET Generated Images from DB ####
-@app.route("/api/get_albedo_maps", methods=['GET'])
+@app.get("/api/get_albedo_maps")
 def get_albedo_maps():
     try:
         materials = Material.query.all()
@@ -205,7 +245,7 @@ def get_albedo_maps():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
-@app.get('/api/get_maps')
+@app.get('/api/get_all_maps')
 def get_all_maps():
     try:
         materials = Material.query.all()
@@ -227,31 +267,25 @@ def get_maps_by_id(id):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@app.get("/api/get_recent_maps")
-def get_recent_maps():
+@app.get("/api/get_recent_pbrs")
+def get_recent_pbrs():
     try:
         material = Material.query.order_by(Material.id.desc()).first()
-        images_urls = [material.base_color_url, material.normal_map_url, material.height_map_url, material.smoothness_map_url]
+        images_urls = [material.normal_map_url, material.height_map_url, material.smoothness_map_url]
         return jsonify({'image_urls': images_urls}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
+@app.get("/api/get_recent_albedo")
+def get_recent_albedo():
+    try:
+        material = Material.query.order_by(Material.id.desc()).first()
+        image_url = material.base_color_url
+        return jsonify({'image_urls': image_url}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
     
-@app.get("/api/check_pbr_status/<material_id>")
-def check_pbr_status(material_id):
-    material = Material.query.get(material_id)
-    if not material:
-        return jsonify({"error": "Material not found"}), 404
-
-    # Check if PBR maps are ready
-    if material.normal_map_url and material.height_map_url and material.smoothness_map_url:
-        return jsonify({"status": "completed", "pbr_maps": {
-            "normal": material.normal_map_url,
-            "height": material.height_map_url,
-            "smoothness": material.smoothness_map_url
-        }}), 200
-
-    return jsonify({"status": "pending"}), 200
+    
 
 ##-------------------------------------##
 ## error handlers: catch errors thrown from @validates and other exceptions

@@ -13,7 +13,7 @@ const TextureDisplay = () => {
 
     useEffect(() => {
         setIsLoading(true);
-        axios.get('http://localhost:3001/api/get_recent_maps')
+        axios.get('http://localhost:3001/api/get_recent_albedo')
             .then(response => {
                 setGeneratedImages(response.data.image_urls);
                 setIsLoading(false);
