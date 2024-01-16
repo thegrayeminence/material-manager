@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { useForm, Controller } from 'react-hook-form';
-import { DevTool } from '@hookform/devtools';
-import { useDropzone } from 'react-dropzone';
-import { useMutation, useQueryClient } from 'react-query';
+import React, {useState, useEffect} from 'react';
+import {useForm, Controller} from 'react-hook-form';
+import {DevTool} from '@hookform/devtools';
+import {useDropzone} from 'react-dropzone';
+import {useMutation, useQueryClient} from 'react-query';
 import axios from 'axios';
 import {
     Box, Button, VStack, FormControl, FormLabel, Image, Input, Textarea,
@@ -10,11 +10,11 @@ import {
     useToast,
 } from '@chakra-ui/react';
 // import { getClosestMatch } from '../config/helperfunctions';
-import { Select } from "chakra-react-select";
+import {Select} from "chakra-react-select";
 
 //local imports
-import { textureMapOptionsPBRMetalRough, textureMapOptionsPBRGlossSpec, textureMapOptionsCommon, materialTypeOptions, metaDataOptions } from '../config/formInputData';
-import { useMaterialStore, useProgressStore, useAutosuggestionStore } from '../store/store';
+import {textureMapOptionsPBRMetalRough, textureMapOptionsPBRGlossSpec, textureMapOptionsCommon, materialTypeOptions, metaDataOptions} from '../config/formInputData';
+import {useMaterialStore, useProgressStore, useAutosuggestionStore} from '../store/store';
 import SuggestionDisplay from './UI/SuggestionDisplay';
 
 
@@ -22,7 +22,7 @@ import SuggestionDisplay from './UI/SuggestionDisplay';
 export default function MaterialUploadForm() {
 
     //react-hook-form
-    const { register, handleSubmit, control, watch, reset, setError, setFocus, setValue } = useForm();
+    const {register, handleSubmit, control, watch, reset, setError, setFocus, setValue} = useForm();
 
     //query client
     const queryClient = useQueryClient();
@@ -39,8 +39,8 @@ export default function MaterialUploadForm() {
 
 
     //zustand global states
-    const { formData, setFileData, setMaterialData, imagePreviews, setImagePreviews, generatedImages, setGeneratedImages } = useMaterialStore();
-    const { progress, increaseProgress, decreaseProgress, resetProgress } = useProgressStore();
+    const {formData, setFileData, setMaterialData, imagePreviews, setImagePreviews, generatedImages, setGeneratedImages} = useMaterialStore();
+    const {progress, increaseProgress, decreaseProgress, resetProgress} = useProgressStore();
     const theme = useTheme(); // Access chakra theme for styling
 
     const {
@@ -96,7 +96,7 @@ export default function MaterialUploadForm() {
 
     //updates zustand state with form data upon changing any of the form fields
     useEffect(() => {
-        setMaterialData({ ...formData.materialData, materialTextures, materialType, materialMetadata, color, elementType, condition, manifestation });
+        setMaterialData({...formData.materialData, materialTextures, materialType, materialMetadata, color, elementType, condition, manifestation});
         console.table(formData.materialData)
     }, [materialTextures, materialType, materialMetadata, color, elementType, condition, manifestation, setMaterialData]);
 
@@ -114,54 +114,19 @@ export default function MaterialUploadForm() {
 
     //HTTP POST REQUESTS & ASYNCHRONOUS STUFF//
     // ---------------- //
-    //react-query + axios integration
-
-    // react-query mutation for sending form data to Flask backend//
-    const sendFormDataMutation = useMutation(
-        formData => axios.post('http://localhost:3000/api/generate_texture', formData),
-        {
-            onSuccess: (response) => {
-                //update zustand store for image urls
-                setGeneratedImages(prevImages => [...prevImages, response.data.image_url]);
-                console.log("Received Image URL:", response.data.image_url);
-                //queryClient.invalidateQueries('textureData');
-            },
-            onError: (error) => {
-                console.error("Error in sending form data:", error);
-            }
-        }
-    );
-
-
-    //submit handler via mutation function using axios post request//
-    const onSubmit = async () => {
-        //SUBMIT VIA: usemutation/react-query
+    // axios integration to send form data to Flask backend
+    const onSubmit = async (data, e) => {
+        e.preventDefault();
         try {
-            // Retrieve the latest materialData from the Zustand store
-
-            const { materialData } = formData;
-            console.log("Submitting form data:", materialData);
-            await sendFormDataMutation.mutateAsync({ materialData });
-
+            const materialData = {...formData.materialData, ...data};
+            await axios.post('http://localhost:3000/api/generate_texture', {materialData});
+            console.log("Texture generation initiated!");
         } catch (error) {
             console.error("Submission error:", error);
+            //more error handling here
         }
     };
 
-    // const onSubmit = async () => {
-    //     //SUBMIT VIA AXIOS POST REQUEST
-    //     try {
-    //         const { materialData } = formData;
-    //         console.log("Submitting form data:", materialData);
-    //         const response = await axios.post('http://localhost:3000/api/generate_texture', { materialData });
-    //         console.log("Received Image URL:", response.data.image_url);
-    //         setGeneratedImages(prevImages => [...prevImages, response.data.image_url]);
-    //     } catch (error) {
-    //         console.error("Submission error:", error);
-    //         // Handle error appropriately
-    //     }
-    // };
-    
 
 
     // ### HELPER FUNCTIONS ### //
@@ -169,7 +134,7 @@ export default function MaterialUploadForm() {
     // -----------------------//
 
     //handles form submission of filedata w/ dropzone
-    const { getRootProps, getInputProps } = useDropzone({
+    const {getRootProps, getInputProps} = useDropzone({
         onDrop: acceptedFiles => {
             setImagePreviews(acceptedFiles.map(file => Object.assign(file, {
                 preview: URL.createObjectURL(file)
@@ -229,7 +194,7 @@ export default function MaterialUploadForm() {
         defaultValues.elementType = "";
         defaultValues.condition = "";
         defaultValues.manifestation = "";
-        reset({ ...defaultValues });
+        reset({...defaultValues});
         resetProgress();
         clearAllSuggestions()
         console.log("Form Data Flushed! Default Values Set To:", FormData);
@@ -252,7 +217,7 @@ export default function MaterialUploadForm() {
                             name="materialType"
                             id="materialType"
                             control={control}
-                            render={({ field }) => (
+                            render={({field}) => (
                                 <Select
                                     {...field}
                                     options={materialTypeOptions}
@@ -273,7 +238,7 @@ export default function MaterialUploadForm() {
                         <Controller
                             name="materialTextures"
                             control={control}
-                            render={({ field }) => (
+                            render={({field}) => (
                                 <Select
                                     {...field}
                                     options={textureMapOptions}
@@ -298,7 +263,7 @@ export default function MaterialUploadForm() {
                             name="materialMetadata"
                             id="materialMetadata"
                             control={control}
-                            render={({ field }) => (
+                            render={({field}) => (
                                 <Select {...field}
                                     options={metaDataOptions}
                                     placeholder="Add additional metadata about material..."
@@ -386,7 +351,7 @@ export default function MaterialUploadForm() {
                     <>
                         <FormControl mb={4}>
                             <FormLabel>Upload Texture Files</FormLabel>
-                            <div {...getRootProps()} style={{ border: '2px dashed gray', padding: '20px', textAlign: 'center', cursor: 'pointer' }}>
+                            <div {...getRootProps()} style={{border: '2px dashed gray', padding: '20px', textAlign: 'center', cursor: 'pointer'}}>
                                 <input {...getInputProps()} />
                                 <p>Drag 'n' drop files here, or click to select files</p>
                             </div>
@@ -408,8 +373,8 @@ export default function MaterialUploadForm() {
                         </Button>
                     )}
                     {progress === 2 && (
-                        <Button colorScheme="green" w="full"
-                        // onClick={toastPromiseOnClick}
+                        <Button type="submit" colorScheme="green" w="full"
+                        //onClick={toastPromiseOnClick}
                         >
                             {'Submit'}
                         </Button>

@@ -44,15 +44,6 @@ class Material(db.Model, SerializerMixin):
 
 
 
-
-
-
-
-
-
-
-
-
 # #####!!!! OLD MODELS !!!!#####
 # ###----------------------------------------###
 # class Material_Data(db.Model, SerializerMixin):

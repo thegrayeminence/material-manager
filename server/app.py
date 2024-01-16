@@ -5,6 +5,7 @@ from email.mime import base
 from hmac import new
 from nis import maps
 import os
+import json
 
 # Remote library imports
 from flask import make_response, request, session, jsonify 
@@ -12,7 +13,7 @@ from flask_restful import Resource
 import replicate
 
 # Local imports
-from models import db, Material_Data, Material_Generated
+from models import db, Material
 from config import app, api
 
 ## api prefix for endpoints
@@ -145,65 +146,45 @@ def generate_image_from_prompt(prompt):
 
 
 
-#ENDPOINTS: GENERATE TEXTURES FOR WEBPAGE:
+## CLIENT --> SERVER ENDPOINTS: GENERATE TEXTURES FOR WEBPAGE:
 ##----------------------------------------##
-
 ## GET MATERIAL DATA FROM FORMDATA, EXTRACT PROMPT:
-@app.post("/api/generate_texture")
+@app.route("/api/generate_texture", methods=['POST'])
 def generate_texture():
-    # Extract the JSON data sent from the frontend
-    form_data = request.get_json()
-    #form_data = material_data_example
-    print("processing formData post request...\n")
-    material_data = form_data.get('materialData', {})
-    print({f"logging materialData extracted from formData  \n" : material_data})
-    try:  
-        print("Generating image...\n")
+    try:
+        material_data = request.get_json().get('materialData', {})
         prompt = construct_prompt_from_material_data(material_data)
-        print({"Logging Prompt...\n" :  prompt})
         image_url = generate_image_from_prompt(prompt)
-        print({"logging image_url \n": image_url})
-        
-        print("adding newly generated material files to database...")
-        new_material = Material_Generated(base_color_prompt = prompt, base_color_url = image_url)
+
+        new_material = Material(
+            workflow=material_data.get('materialType', {}).get('label', ''),
+            maps=json.dumps(material_data.get('materialTextures', [])),
+            software=json.dumps(material_data.get('materialMetadata', [])),
+            color=material_data.get('color', ''),
+            element=material_data.get('elementType', ''),
+            condition=material_data.get('condition', ''),
+            manifestation=material_data.get('manifestation', ''),
+            prompt=prompt,
+            base_color_url=image_url
+        )
         db.session.add(new_material)
         db.session.commit()
-        print("generated materials added to database!")
-        
-        return make_response({'image_url': image_url}, 200)
-      
+
+        return jsonify({'image_url': image_url}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
 
-
-#ENDPOINTS FOR STORING FORMDATA IN DATABASE (not used rn):
-##----------------------------------------##
-##----------------------------------------##
-
-# @app.post( URL_PREFIX + '/upload_filedata')
-# def upload_metadata():
-#     data = request.json
-
-#     metadata = ImageMetadata(
-#         filename=data['filename'],
-#         size=data['size'],
-#         filetype=data['filetype'],
-#         exif=data.get('exif')
-#     )
-
-#     db.session.add(metadata)
-#     db.session.commit()
-
-#     return jsonify({'message': 'Metadata saved successfully'}), 201
-
-# def upload_materialdata():
-#     data = request.json
-#     material = Material(**data)  # Ensure this matches your Material model's structure
-#     db.session.add(material)
-#     db.session.commit()
-
-#     return jsonify({'message': 'Material data saved successfully'}), 201
+######## Server-->Client ENDPOINTS ######
+## GET Generated Images from DB ####
+@app.route("/api/get_generated_textures", methods=['GET'])
+def get_generated_textures():
+    try:
+        materials = Material.query.all()
+        images_urls = [material.base_color_url for material in materials]
+        return jsonify({'image_urls': images_urls}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
 

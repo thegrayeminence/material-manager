@@ -1,14 +1,14 @@
-import { create } from 'zustand';
+import {create} from 'zustand';
 // import { getClosestMatch } from '../config/helperfunctions';
-import { colorOptions, conditionOptions, manifestationOptions, elementTypeOptions } from '../config/formInputData';
+import {colorOptions, conditionOptions, manifestationOptions, elementTypeOptions} from '../config/formInputData';
 
 
 // store for global 'progress' value that determines which form step to render
 export const useProgressStore = create((set) => ({
   progress: 0,
-  increaseProgress: () => set((state) => ({ progress: state.progress + 1 })),
-  decreaseProgress: () => set((state) => ({ progress: state.progress - 1 })),
-  resetProgress: () => set({ progress: 0 }),
+  increaseProgress: () => set((state) => ({progress: state.progress + 1})),
+  decreaseProgress: () => set((state) => ({progress: state.progress - 1})),
+  resetProgress: () => set({progress: 0}),
 }))
 
 
@@ -21,19 +21,19 @@ export const useMaterialStore = create(set => ({
     materialData: {},
     jsonFormData: {},
   },
-  setFileData: (fileData) => set(state => ({ formData: { ...state.formData, fileData } })),
-  setMaterialData: (materialData) => set(state => ({ formData: { ...state.formData, materialData } })),
+  setFileData: (fileData) => set(state => ({formData: {...state.formData, fileData}})),
+  setMaterialData: (materialData) => set(state => ({formData: {...state.formData, materialData}})),
   // stores JsonData from Form Submission for Previewing/Debugging
-  setJsonFormData: (jsonFormData) => set(state => ({ formData: { ...state.formData, jsonFormData } })),
+  setJsonFormData: (jsonFormData) => set(state => ({formData: {...state.formData, jsonFormData}})),
 
-  // Separate state for imagePreviews from file uploads
+  // Separate state for imagePreviews from manual file uploads
   imagePreviews: [],
-  setImagePreviews: (imagePreviews) => set({ imagePreviews }),
-  
+  setImagePreviews: (imagePreviews) => set({imagePreviews}),
+
   // Separate state for generated images from API
   generatedImages: [],
-  setGeneratedImages: (generatedImages) => set({ generatedImages }),
-  
+  setGeneratedImages: (generatedImages) => set({generatedImages}),
+
 }));
 
 
@@ -52,10 +52,10 @@ export const useAutosuggestionStore = create((set) => ({
   elementTypeSuggestion: [],
   conditionSuggestion: [],
   manifestationSuggestion: [],
-  setColorSuggestion: (input) => set({ colorSuggestion: getClosestMatch(input, colorOptions) }),
-  setElementTypeSuggestion: (input) => set({ elementTypeSuggestion: getClosestMatch(input, elementTypeOptions) }),
-  setConditionSuggestion: (input) => set({ conditionSuggestion: getClosestMatch(input, conditionOptions) }),
-  setManifestationSuggestion: (input) => set({ manifestationSuggestion: getClosestMatch(input, manifestationOptions) }),
-  clearAllSuggestions: () => set({ colorSuggestion: '', elementTypeSuggestion: '', conditionSuggestion: '', manifestationSuggestion: '' })
+  setColorSuggestion: (input) => set({colorSuggestion: getClosestMatch(input, colorOptions)}),
+  setElementTypeSuggestion: (input) => set({elementTypeSuggestion: getClosestMatch(input, elementTypeOptions)}),
+  setConditionSuggestion: (input) => set({conditionSuggestion: getClosestMatch(input, conditionOptions)}),
+  setManifestationSuggestion: (input) => set({manifestationSuggestion: getClosestMatch(input, manifestationOptions)}),
+  clearAllSuggestions: () => set({colorSuggestion: '', elementTypeSuggestion: '', conditionSuggestion: '', manifestationSuggestion: ''})
 }));
 
