@@ -79,12 +79,36 @@ def generate_image_from_prompt(prompt):
         print(f"An error occurred: {e}")
         raise Exception(f"Failed to generate image: {e}")
       
+## MAKES API CALL TO GENERATE PBR MAPS FROM ALBEDO MAP & RETURNS URLS ###
+def generate_pbr_maps_from_albedo(base_color_url):
+    models = ["albedo2normal", "albedo2height", "albedo2smoothness"]
+    generated_maps = {}
+    #replicate.api_token = os.getenv("REPLICATE_API_TOKEN")
 
+    for model_name in models:
+        try:
+            output = replicate.run(
+                "tommoore515/pix2pix_tf_albedo2pbrmaps:21bd96b6e69f40e54502d67798f9025ab9e4a9e08f2a1b51dde5131b129a825e",
+                input={
+                    "model": model_name,
+                    "imagepath": base_color_url
+                }
+            )
+            if output:
+                generated_maps[model_name] = output
+            # if output and "output" in output:
+            #     generated_maps[model_name] = output['output']
+            else:
+                print(f"Failed to generate map for model: {model_name}")
+        except Exception as e:
+            print(f"Error generating map for model {model_name}: {e}")
+
+    return generated_maps
 
 
 ## CLIENT --> SERVER ENDPOINTS: GENERATE TEXTURES FOR WEBPAGE:
 ##----------------------------------------##
-## GET MATERIAL DATA FROM FORMDATA, EXTRACT PROMPT:
+## GET MATERIAL DATA FROM FORMDATA, EXTRACT PROMPT, GENERATE TEXTURE, RETURN URL/id:
 @app.route("/api/generate_texture", methods=['POST'])
 def generate_texture():
     try:
@@ -106,7 +130,38 @@ def generate_texture():
         db.session.add(new_material)
         db.session.commit()
 
-        return jsonify({'image_url': image_url}), 200
+        return jsonify({'image_url': image_url, 'material_id': new_material.id}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+## GENERATE ADDITIONAL PBR MAPS FROM ALBEDO MAP: ##
+@app.route("/api/generate_pbr_maps", methods=['POST'])
+def generate_pbr_maps():
+    try:
+        data = request.get_json()
+        base_color_url = data.get('base_color_url')
+        if not base_color_url:
+            return jsonify({"error": "Albedo URL is required"}), 400
+
+        pbr_maps = generate_pbr_maps_from_albedo(base_color_url)
+
+        # Update database with new map URLs
+        # Assuming you have a mechanism to identify the correct Material record
+        material_id = data.get('material_id')
+        if not material_id:
+            return jsonify({"error": "material_id is required"}), 400
+        
+        material = Material.query.get(material_id)
+        if material:
+            material.normal_map_url = pbr_maps.get("albedo2normal")
+            material.height_map_url = pbr_maps.get("albedo2height")
+            material.smoothness_map_url = pbr_maps.get("albedo2smoothness")
+            db.session.commit()
+            return jsonify({"message": "PBR maps generated successfully", "pbr_maps": pbr_maps}), 200
+        else:
+            return jsonify({"error": "Material not found"}), 404
+        
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
@@ -132,7 +187,7 @@ def get_generated_textures():
 
 
 
-
+##-------------------------------------##
 ## error handlers: catch errors thrown from @validates and other exceptions
 @app.errorhandler(Exception)
 def handle_errors(e):

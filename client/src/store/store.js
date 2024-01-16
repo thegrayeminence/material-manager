@@ -47,8 +47,30 @@ export const useMaterialStore = create(set => ({
   // Separate state for generated images from API
   generatedImages: [],
   setGeneratedImages: (generatedImages) => set({generatedImages}),
-
+  // Separate state for material IDs needed for second API call
+  materialId: null,
+  setMaterialId: (materialId) => set({materialId}),
 }));
+
+
+// Store for managing generated images
+export const useGeneratedImagesStore = create(set => ({
+  // Array to store URLs of generated images
+  generatedImages: [],
+
+  // Method to set the generated images
+  setGeneratedImages: (generatedImages) => set({generatedImages}),
+
+  // Method to add a single generated image
+  addGeneratedImage: (imageURL) => set(state => ({generatedImages: [...state.generatedImages, imageURL]})),
+
+  // Method to clear all generated images
+  clearGeneratedImages: () => set({generatedImages: []}),
+}));
+
+// Usage in a component
+// const { generatedImages, setGeneratedImages, addGeneratedImage, clearGeneratedImages } = useGeneratedImagesStore();
+
 
 
 

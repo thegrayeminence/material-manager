@@ -120,14 +120,18 @@ export default function MaterialUploadForm() {
         e.preventDefault();
         try {
             const materialData = {...formData.materialData, ...data};
-            await axios.post('http://localhost:3001/api/generate_texture', {materialData});
+            const response = await axios.post('http://localhost:3001/api/generate_texture', {materialData});
             console.log("Texture generation initiated!");
+            const materialId = response.data.material_id;
+            const baseColorUrl = response.data.image_url;
+            // Now make a second API call to generate PBR maps
+            const pbrResponse = await axios.post('http://localhost:3001/api/generate_pbr_maps', {base_color_url: baseColorUrl, material_id: materialId});
+            console.log("PBR maps generation initiated!");
+            setGeneratedImages(prevImages => [...prevImages, baseColorUrl, pbrResponse.data.normal_map_url, pbrResponse.data.height_map_url, pbrResponse.data.smoothness_map_url]);
         } catch (error) {
             console.error("Submission error:", error);
-            //more error handling here
         }
     };
-
 
 
     // ### HELPER FUNCTIONS ### //
