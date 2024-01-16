@@ -1,63 +1,55 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import {useMaterialStore} from '../store/store';
 import {Box, Image, SimpleGrid, Spinner, Center, useToast} from '@chakra-ui/react';
 
 const TextureDisplay = () => {
-    const {generatedImages, setGeneratedImages} = useMaterialStore(state => state);
-    const [isLoading, setIsLoading] = React.useState(true);
+    const {generatedImages, setGeneratedImages} = useMaterialStore();
+    const [isLoading, setIsLoading] = useState(false);
     const toast = useToast();
 
     useEffect(() => {
-        const fetchTextures = async () => {
-            if (generatedImages.length === 0) {
-                const textureLoadingPromise = axios.get('http://localhost:3000/api/get_generated_textures')
-                    .then(response => {
-                        setGeneratedImages(response.data.image_urls);
-                        return response;
-                    });
-
-                toast.promise(
-                    textureLoadingPromise,
-                    {
-                        loading: "Loading textures...",
-                        success: "Textures loaded successfully",
-                        error: "Error loading textures"
-                    },
-                    {
-                        duration: 9000,
+        if (generatedImages.length === 0 || !generatedImages.length) {
+            setIsLoading(true);
+            axios.get('http://localhost:3001/api/get_generated_textures')
+                .then(response => {
+                    setGeneratedImages(response.data.image_urls);
+                    toast({
+                        title: "Textures loaded successfully",
+                        status: "success",
+                        duration: 5000,
                         isClosable: true,
-                    }
-                );
-
-                try {
-                    await textureLoadingPromise;
-                } catch (error) {
+                    });
+                })
+                .catch(error => {
                     console.error('Error fetching texture images:', error);
-                } finally {
-                    setIsLoading(false);
-                }
-            } else {
-                setIsLoading(false);
-            }
-        };
-        fetchTextures();
-    }, [generatedImages.length, setGeneratedImages, toast]);
+                    toast({
+                        title: "Error loading textures",
+                        description: error.message,
+                        status: "error",
+                        duration: 5000,
+                        isClosable: true,
+                    });
+                })
+                .finally(() => setIsLoading(false));
+        }
+    }, [setGeneratedImages, toast]);
 
     return (
         <Box>
             {isLoading ? (
                 <Center><Spinner size="xl" /></Center>
             ) : (
-                <SimpleGrid columns={[2, null, 3]} spacing="40px">
-                    {generatedImages.map((url, index) => (
-                        <Image key={index} src={url} alt={`Texture ${index + 1}`} boxSize="300px" objectFit="cover" />
-                    ))}
-                </SimpleGrid>
+                generatedImages.length > 0 && (
+                    <SimpleGrid columns={[2, null, 3]} spacing="40px">
+                        {generatedImages.map((url, index) => (
+                            <Image key={index} src={url} alt={`Texture ${index + 1}`} boxSize="300px" objectFit="cover" />
+                        ))}
+                    </SimpleGrid>
+                )
             )}
         </Box>
     );
 };
 
 export default TextureDisplay;
-

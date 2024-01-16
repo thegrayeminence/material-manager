@@ -1,93 +1,18 @@
-import React, { useState } from 'react'
-import { Box, Stack, Button, Input, VStack, HStack } from '@chakra-ui/react'
-//components
-import { ProgressBar } from '../components'
-import { useProgressStore } from '../store/store'
-import Header from '../components/Header'
-import FileUpload from '../components/FileUpload'
-import { useForm } from 'react-hook-form'
+import React from 'react'
+import {Box, Heading, Text, } from '@chakra-ui/react'
+import Header from '../components/UI/Header'
+import {TextureDisplay} from '../components'
 
-//component imports
-import ImageUploadInput from '../components/imageUploadInput'
-
-export default function ImageUpload() {
-  const [images, setImages] = useState([]);
-  const [fileData, setFileData] = useState([]);
-
-  const handleFileChange = (event) => {
-    const fileInput = event.target;
-    const files = fileInput.files;
-
-
-    const newImages = Array.from(files).map((file) => {
-      return {
-        file,
-        filename: file.name,
-        // additional metadata:
-        fileextension: file.name.split('.').pop(),
-        filesize: file.size,
-        filetype: file.type,
-        
-      };
-    });
-
-        setImages([...images, ...newImages]);
-
-        // Read file content and store in state
-        newImages.forEach((image) => {
-          const fr = new FileReader();
-          fr.onload = () => {
-            setFileData([...fileData, { filename: image.filename, content: fr.result }]);
-          };
-          fr.readAsDataURL(image.file); // You can use other methods for different metadata
-        });
-      };
-
-
-
-  const handleUpload = () => {
-    // Create a FormData object to send to the server
-    const formData = new FormData();
-    images.forEach((image) => {
-      formData.append('images', image.file);
-    });
-
-    // You can also append additional metadata to the FormData object here if needed
-
-    // Send FormData to the server using fetch or Axios
-    fetch('/uploadEndpoint', {
-      method: 'POST',
-      body: formData,
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        // Handle the server response
-        console.log('Server response:', data);
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
-  };
-   
-
+function Rename() {
   return (<>
     <Box py='2rem'>
-    <Header text={"RENAME TEXTURE FILES"}/>
+      <Header text={"PREVIEW MATERIALS"} />
     </Box>
-    <div>
-      <ImageUploadInput  func={handleFileChange} />
-      <Button ml='25%' onClick={handleUpload}>Upload</Button>
-
-      <div>
-        {images.map((image, index) => (
-          <div key={index}>
-            <img src={fileData[index]?.content} alt={image.filename} width="100" />
-            <p>{image.fileextension}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-    </>
-  );
+    <Box px='2rem' width={'80vw'} ml='10%'>
+      <TextureDisplay />
+    </Box>
+  </>
+  )
 }
 
+export default Rename

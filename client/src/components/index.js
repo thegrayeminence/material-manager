@@ -3,16 +3,17 @@ import NavBar from "./NavBar"
 import ProgressBar from "./ProgressBar"
 import MaterialUploadForm from "./MaterialUploadForm";
 import FormPreviewBox from "./FormPreviewBox";
-import Header from "./Header";
+import Header from "./UI/Header";
 import SuggestionDisplay from "./UI/SuggestionDisplay";
 import ImagePreviewBox from "./UI/ImagePreviewBox";
 import ImagePreviewGrid from "./UI/ImagePreviewGrid";
 import GeneratedTextureDisplay from "./UI/GeneratedTextureDisplay";
 import JsonDisplayModal from "./UI/JsonFormDataModal";
 import ImageGridUrlSrc from "./UI/ImageGridUrlSrc";
+import TextureDisplay from "./TextureDisplay";
 
 
-export { 
+export {
     ChoiceButton,
     NavBar,
     ProgressBar,
@@ -25,6 +26,7 @@ export {
     GeneratedTextureDisplay,
     JsonDisplayModal,
     ImageGridUrlSrc,
+    TextureDisplay,
 
 
 };

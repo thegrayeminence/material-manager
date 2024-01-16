@@ -14,7 +14,7 @@ import {Select} from "chakra-react-select";
 
 //local imports
 import {textureMapOptionsPBRMetalRough, textureMapOptionsPBRGlossSpec, textureMapOptionsCommon, materialTypeOptions, metaDataOptions} from '../config/formInputData';
-import {useMaterialStore, useProgressStore, useAutosuggestionStore} from '../store/store';
+import {useMaterialStore, useProgressStore, useAutosuggestionStore, useFormMode} from '../store/store';
 import SuggestionDisplay from './UI/SuggestionDisplay';
 
 
@@ -41,6 +41,7 @@ export default function MaterialUploadForm() {
     //zustand global states
     const {formData, setFileData, setMaterialData, imagePreviews, setImagePreviews, generatedImages, setGeneratedImages} = useMaterialStore();
     const {progress, increaseProgress, decreaseProgress, resetProgress} = useProgressStore();
+    const {mode, incrementMode, decrementMode} = useFormMode();
     const theme = useTheme(); // Access chakra theme for styling
 
     const {
@@ -119,7 +120,7 @@ export default function MaterialUploadForm() {
         e.preventDefault();
         try {
             const materialData = {...formData.materialData, ...data};
-            await axios.post('http://localhost:3000/api/generate_texture', {materialData});
+            await axios.post('http://localhost:3001/api/generate_texture', {materialData});
             console.log("Texture generation initiated!");
         } catch (error) {
             console.error("Submission error:", error);
@@ -346,7 +347,7 @@ export default function MaterialUploadForm() {
                 )}
 
 
-                {/* File Upload Section */}
+                {/* MODE 1: Manual File Upload Section */}
                 {progress === 2 && (
                     <>
                         <FormControl mb={4}>

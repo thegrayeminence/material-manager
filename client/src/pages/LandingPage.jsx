@@ -1,15 +1,12 @@
 import React from 'react'
 //libs
-import { Outlet, useNavigate, Navigate } from 'react-router-dom';
+import {Outlet, useNavigate, Navigate} from 'react-router-dom';
 
-import { AnimatePresence, motion } from 'framer-motion';
-import { Stack, VStack, Box, Button, Text, ButtonGroup, useColorModeValue } from '@chakra-ui/react';
+import {AnimatePresence, motion} from 'framer-motion';
+import {Stack, VStack, Box, Button, Text, ButtonGroup, useColorModeValue} from '@chakra-ui/react';
 
 
 //components
-import { ChoiceButton } from '../components';
-import { NavBar } from '../components'
-import Header from '../components/Header';
 
 const MotionBox = motion(Box);
 const MotionButton = motion(Button);
