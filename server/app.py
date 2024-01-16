@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 # Standard library imports
+from email.mime import base
 from hmac import new
 from nis import maps
 import os
@@ -98,7 +99,7 @@ def construct_prompt_from_material_data(material_data):
       print("adding material data to database...")
       
       new_material = Material_Data(
-        workflow = material_type, maps = maps, software = software, color = color, element = elementType, condition = condition, manifestation = manifestation
+        workflow = material_type, maps = maps, software = software, color = color, element = elementType, condition = condition, manifestation = manifestation, prompt = prompt
         )
       db.session.add(new_material)
       db.session.commit()
@@ -163,8 +164,14 @@ def generate_texture():
         image_url = generate_image_from_prompt(prompt)
         print({"logging image_url \n": image_url})
         
+        print("adding newly generated material files to database...")
+        new_material = Material_Generated(base_color_prompt = prompt, base_color_url = image_url)
+        db.session.add(new_material)
+        db.session.commit()
+        print("generated materials added to database!")
         
-        return jsonify({"image_url": image_url})
+        return make_response({'image_url': image_url}, 200)
+      
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
