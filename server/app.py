@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
 # Standard library imports
+from hmac import new
+from nis import maps
 import os
 
 # Remote library imports
@@ -9,7 +11,7 @@ from flask_restful import Resource
 import replicate
 
 # Local imports
-from models import db
+from models import db, Material_Data, Material_Generated
 from config import app, api
 
 ## api prefix for endpoints
@@ -20,8 +22,8 @@ replicate.api_token = os.getenv("REPLICATE_API_TOKEN")
 #model_name = "stability-ai/stable-diffusion:27b93a2413e7f36cd83da926f3656280b2931564ff050bf9575f1fdf9bcd7478"
 
 
-## HELPER FUNCTIONS/Vars ## 
-
+### PLACEHOLDER DATA FOR TESTING ###
+##----------------------------------------##
 material_data_example = {
   "materialData": {
     "materialTextures": [
@@ -75,42 +77,39 @@ material_data_example = {
   }
 }
 
-#ENDPOINTS/FUNCTIONALITY FOR GENERATING IMAGES FOR WEBPAGE:
-##----------------------------------------##
-##----------------------------------------##
-@app.post("/api/generate_texture")
-def generate_texture():
-    # Extract the JSON data sent from the frontend
-    form_data = request.get_json()
-    #form_data = material_data_example
-    print({f"logging form data post request \n" : form_data})
-    material_data = form_data.get('materialData', {})
-    print({f"logging material data from form \n" : material_data})
-    try:  
-        print("Generating image...\n")
-        prompt = construct_prompt_from_material_data(material_data)
-        print({"Logging Prompt...\n" :  prompt})
-        image_url = generate_image_from_prompt(prompt)
-        print({"logging image_url \n": image_url})
-        print({"logging image_url_json_response\n": make_response(image_url, 200)})
-        return jsonify({"image_url": image_url})
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
 
+##------HELPER FUNCTIONS FOR GENERATING TEXTURES------##
+##----------------------------------------------------##
+## TURNS MATERIAL DATA INTO PROMPT FOR GENERATING TEXTURE:
 def construct_prompt_from_material_data(material_data):
-    # Extract relevant details
-    color = material_data.get('color', 'default color').lower()
-    elementType = material_data.get('elementType', 'default elementType').lower()
-    # material_type = material_data.get('materialType', {}).get('label', 'default material').lower()
-    condition = material_data.get('condition', 'default condition').lower()
-    manifestation = material_data.get('manifestation', 'default manifestation').lower()
-    # software = material_data.get('materialMetadata', {}).get('label', 'default software').lower()
+    try:
+      # Extract physical properties of materials from materialData json
+      color = material_data.get('color', 'default color').lower()
+      elementType = material_data.get('elementType', 'default elementType').lower()
+      material_type = material_data.get('materialType', {}).get('label', 'PBR material').lower()
+      condition = material_data.get('condition', 'default condition').lower()
+      manifestation = material_data.get('manifestation', 'default manifestation').lower()
+      software = [{'Program': item.get('label', 'default software').lower()} for item in material_data.get('materialMetadata', [])]
+      maps = [{'Map': item.get('label', 'default map').lower()} for item in material_data.get('materialTextures', [])]
 
-    # Construct the prompt
-    prompt = f"{condition} {color} {elementType} {manifestation} seamless texture, trending on artstation, base color, albedo, 4k"
-    print("Prompt:", prompt)
-    return prompt
-  
+      # Construct the prompt
+      prompt = f"{condition} {color} {elementType} {manifestation} seamless texture, trending on artstation, base color, albedo, 4k"
+      print("Logging prompt:", prompt)
+      print("adding material data to database...")
+      
+      new_material = Material_Data(
+        workflow = material_type, maps = maps, software = software, color = color, element = elementType, condition = condition, manifestation = manifestation
+        )
+      db.session.add(new_material)
+      db.session.commit()
+      print("material data added to database!")
+      return prompt
+    
+    except Exception as e:
+      print(f"error: {e}")
+      raise Exception(f"Failed to extract data!: {e}")
+
+## MAKES API CALL TO REPLICATE TO GENERATE TEXTURE USING PROMPT, RETURNS URL AS OUTPUT###
 def generate_image_from_prompt(prompt):
     try:
         # Specify the model name and parameters for replicate.run()
@@ -129,7 +128,7 @@ def generate_image_from_prompt(prompt):
 
         # Run the API call
         output = replicate.run(model_name, input=params)
-        print("Raw output from Replicate:", output)
+        print("Logging output from Replicate:", output)
 
         # Check if the output is a list with a valid URL
         if isinstance(output, list) and output and isinstance(output[0], str):
@@ -142,6 +141,34 @@ def generate_image_from_prompt(prompt):
         print(f"An error occurred: {e}")
         raise Exception(f"Failed to generate image: {e}")
       
+
+
+
+#ENDPOINTS: GENERATE TEXTURES FOR WEBPAGE:
+##----------------------------------------##
+
+## GET MATERIAL DATA FROM FORMDATA, EXTRACT PROMPT:
+@app.post("/api/generate_texture")
+def generate_texture():
+    # Extract the JSON data sent from the frontend
+    form_data = request.get_json()
+    #form_data = material_data_example
+    print("processing formData post request...\n")
+    material_data = form_data.get('materialData', {})
+    print({f"logging materialData extracted from formData  \n" : material_data})
+    try:  
+        print("Generating image...\n")
+        prompt = construct_prompt_from_material_data(material_data)
+        print({"Logging Prompt...\n" :  prompt})
+        image_url = generate_image_from_prompt(prompt)
+        print({"logging image_url \n": image_url})
+        
+        
+        return jsonify({"image_url": image_url})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
 
 #ENDPOINTS FOR STORING FORMDATA IN DATABASE (not used rn):
 ##----------------------------------------##

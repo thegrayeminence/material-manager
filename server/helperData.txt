@@ -96,3 +96,27 @@ def stable_diffusion_input_schema_format( resX, resY, prompt, scheduler, num_out
             },
         "title": "Output"
         }
+
+
+material_data = {
+  'materialTextures': [
+  {'value': 'baseColor', 'label': 'Base Color'}, 
+  {'value': 'normal', 'label': 'Normal Map'}, 
+  {'value': 'height', 'label': 'Height Map'}, 
+  {'value': 'metallic', 'label': 'Metallic'}, 
+  {'value': 'roughness', 'label': 'Roughness'}, 
+  {'value': 'ambientOcclusion', 'label': 'Ambient Occlusion'}, 
+  {'value': 'emissive', 'label': 'Emissive'}
+  ], 
+  'materialType': {
+    'value': 'metallic', 'label': 'Metallic-Roughness'
+    }, 
+  'materialMetadata': [
+    {'value': 'unreal', 'label': 'Unreal Engine'},
+    {'value': 'cinema4D', 'label': 'Cinema 4D'}
+    ],
+  'color': 'Grey', 
+  'elementType': 'Concrete', 
+  'condition': 'Weathered', 
+  'manifestation': 'Wall'
+  }
