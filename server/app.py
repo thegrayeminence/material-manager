@@ -218,23 +218,6 @@ def generate_pbr_maps():
 
 
 
-
-# ## generate one by one ##
-# @app.route("/api/generate_normal_map", methods=['POST'])
-# def generate_normal_map():
-#     return generate_specific_pbr_map("albedo2normal")
-
-# @app.route("/api/generate_height_map", methods=['POST'])
-# def generate_height_map():
-#     return generate_specific_pbr_map("albedo2height")
-
-# @app.route("/api/generate_smoothness_map", methods=['POST'])
-# def generate_smoothness_map():
-#     return generate_specific_pbr_map("albedo2smoothness")
-
-
-
-
 ######## Server-->Client ENDPOINTS ######
 ##-------------------------------------##
 ## GET Generated Images from DB ####
@@ -314,8 +297,8 @@ def get_smoothness_by_id(material_id):
 def get_recent_pbrs():
     try:
         material = Material.query.order_by(Material.id.desc()).first()
-        images_urls = [material.normal_map_url, material.height_map_url, material.smoothness_map_url]
-        return jsonify({'image_urls': images_urls}), 200
+        image_url = [material.normal_map_url, material.height_map_url, material.smoothness_map_url]
+        return jsonify({'image_url': image_url, 'material_id': material.id}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
@@ -323,8 +306,9 @@ def get_recent_pbrs():
 def get_recent_albedo():
     try:
         material = Material.query.order_by(Material.id.desc()).first()
+                    
         image_url = material.base_color_url
-        return jsonify({'image_urls': image_url}), 200
+        return jsonify({'image_url': image_url, 'material_id': material.id}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
@@ -333,7 +317,7 @@ def get_recent_normal():
     try:
         material = Material.query.order_by(Material.id.desc()).first()
         image_url = material.normal_map_url
-        return jsonify({'image_url': image_url}), 200
+        return jsonify({'image_url': image_url, 'material_id': material.id}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
@@ -342,7 +326,7 @@ def get_recent_height():
     try:
         material = Material.query.order_by(Material.id.desc()).first()
         image_url = material.height_map_url
-        return jsonify({'image_url': image_url}), 200
+        return jsonify({'image_url': image_url, 'material_id': material.id}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
@@ -351,7 +335,7 @@ def get_recent_smoothness():
     try:
         material = Material.query.order_by(Material.id.desc()).first()
         image_url = material.smoothness_map_url
-        return jsonify({'image_url': image_url}), 200
+        return jsonify({'image_url': image_url, 'material_id': material.id}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
