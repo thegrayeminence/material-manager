@@ -13,6 +13,19 @@ Terminal commands for setup:
 5. export DATABASE_URL='postgresql://materialMaker:luthien@localhost:5432/materialsdb'
 6. flask db upgrade (if upgrades to db pending)
 7. flask run
+
+If flushing/reinitializing sql db is necessary, run:
+1. run postgreSQL and connect to postgreSQL CLI:
+   1. brew services start postgresql
+   2. psql postgres
+2. drop db table + create new one
+   1. DROP DATABASE your_database_name;
+   2. CREATE DATABASE your_new_database_name;
+
+
+
+
+
 #### Frontend:
 1. cd client
 2. npm install

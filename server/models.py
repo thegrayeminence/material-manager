@@ -31,6 +31,7 @@ class Material(db.Model, SerializerMixin):
     normal_map_url = db.Column(db.String) 
     height_map_url = db.Column(db.String) 
     smoothness_map_url = db.Column(db.String)  
+    
 
     def __repr__(self):
         return f'<Material {self.id}>'

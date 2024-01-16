@@ -3,7 +3,7 @@ import {Box, Heading, Text, } from '@chakra-ui/react'
 import Header from '../components/UI/Header'
 import {TextureDisplay} from '../components'
 
-function Rename() {
+function Gallery() {
   return (<>
     <Box py='2rem'>
       <Header text={"PREVIEW MATERIALS"} />
@@ -15,4 +15,4 @@ function Rename() {
   )
 }
 
-export default Rename
+export default Gallery

@@ -2,30 +2,35 @@ import ErrorPage from "./pages/ErrorPage";
 import Home from "./pages/Home";
 import About from "./pages/About"
 import Preview from "./pages/Preview";
-import Rename from "./pages/Rename";
+import Gallery from "./pages/Gallery";
 import LandingPage from "./pages/LandingPage";
+import LoadingPage from "./pages/LoadingPage";
 
 const routes = [
     {
-        path:'/',
-        element:<Home />,
+        path: '/',
+        element: <Home />,
         errorElement: <ErrorPage />,
         children: [
             {
-                path:'/',
-                element:<LandingPage />
+                path: '/',
+                element: <LandingPage />
             },
             {
-                path:'/preview',
-                element:<Preview />
+                path: '/preview',
+                element: <Preview />
             },
             {
-                path:'/about',
-                element:<About />
+                path: '/about',
+                element: <About />
             },
             {
-                path:'/rename',
-                element:<Rename />
+                path: '/loading-textures',
+                element: <LoadingPage />,
+            },
+            {
+                path: '/gallery',
+                element: <Gallery />
             }
         ]
     }

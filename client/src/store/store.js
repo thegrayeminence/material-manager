@@ -13,9 +13,10 @@ export const useProgressStore = create((set) => ({
 
 export const useIsLoadingStore = create((set) => ({
   isLoading: false,
-  setIsLoading: () => set((state) => ({isLoading: (!state.isLoading)})),
-  resetIsLoading: () => set({isLoading: !isLoading}),
-}))
+  setIsLoading: (isLoading) => set({isLoading}),
+  resetIsLoading: () => set({isLoading: false}),
+}));
+
 
 // store for global values for form settings and options (e.g. AI generation mode/manual uploads)
 // mode 0 = default mode w/ AI generation ; mode 1 = manual mode w/o AI generation
@@ -37,6 +38,7 @@ export const useMaterialStore = create(set => ({
   },
   setFileData: (fileData) => set(state => ({formData: {...state.formData, fileData}})),
   setMaterialData: (materialData) => set(state => ({formData: {...state.formData, materialData}})),
+
   // stores JsonData from Form Submission for Previewing/Debugging
   setJsonFormData: (jsonFormData) => set(state => ({formData: {...state.formData, jsonFormData}})),
 
@@ -44,14 +46,7 @@ export const useMaterialStore = create(set => ({
   imagePreviews: [],
   setImagePreviews: (imagePreviews) => set({imagePreviews}),
 
-  // Separate state for generated images from API
-  generatedImages: [],
-  setGeneratedImages: (generatedImages) => set({generatedImages}),
-  // Separate state for material IDs needed for second API call
-  materialId: null,
-  setMaterialId: (materialId) => set({materialId}),
 }));
-
 
 // Store for managing generated images
 export const useGeneratedImagesStore = create(set => ({
@@ -60,16 +55,12 @@ export const useGeneratedImagesStore = create(set => ({
 
   // Method to set the generated images
   setGeneratedImages: (generatedImages) => set({generatedImages}),
-
   // Method to add a single generated image
   addGeneratedImage: (imageURL) => set(state => ({generatedImages: [...state.generatedImages, imageURL]})),
-
   // Method to clear all generated images
   clearGeneratedImages: () => set({generatedImages: []}),
 }));
 
-// Usage in a component
-// const { generatedImages, setGeneratedImages, addGeneratedImage, clearGeneratedImages } = useGeneratedImagesStore();
 
 
 

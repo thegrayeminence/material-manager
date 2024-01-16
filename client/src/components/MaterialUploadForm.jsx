@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import {useNavigate} from "react-router-dom";
 import {useForm, Controller} from 'react-hook-form';
 import {DevTool} from '@hookform/devtools';
 import {useDropzone} from 'react-dropzone';
@@ -14,7 +15,7 @@ import {Select} from "chakra-react-select";
 
 //local imports
 import {textureMapOptionsPBRMetalRough, textureMapOptionsPBRGlossSpec, textureMapOptionsCommon, materialTypeOptions, metaDataOptions} from '../config/formInputData';
-import {useMaterialStore, useProgressStore, useAutosuggestionStore, useFormMode} from '../store/store';
+import {useMaterialStore, useProgressStore, useAutosuggestionStore, useFormMode, useIsLoadingStore, useGeneratedImagesStore, } from '../store/store';
 import SuggestionDisplay from './UI/SuggestionDisplay';
 
 
@@ -39,11 +40,13 @@ export default function MaterialUploadForm() {
 
 
     //zustand global states
-    const {formData, setFileData, setMaterialData, imagePreviews, setImagePreviews, generatedImages, setGeneratedImages} = useMaterialStore();
+    const {formData, setFileData, setMaterialData, imagePreviews, setImagePreviews} = useMaterialStore();
     const {progress, increaseProgress, decreaseProgress, resetProgress} = useProgressStore();
-    const {mode, incrementMode, decrementMode} = useFormMode();
-    const theme = useTheme(); // Access chakra theme for styling
+    const {mode} = useFormMode();
+    const {isLoading, setIsLoading} = useIsLoadingStore();
+    const {addGeneratedImage, clearGeneratedImages, generatedImages} = useGeneratedImagesStore();
 
+    //autosuggestion zustand states
     const {
         colorSuggestion, setColorSuggestion,
         elementTypeSuggestion, setElementTypeSuggestion,
@@ -61,25 +64,28 @@ export default function MaterialUploadForm() {
         custom: [],
     };
 
+
+    //nav/theme imports
+    const theme = useTheme();
+    const navigate = useNavigate();
+
     //### USE EFFECTS ####//
     // ------------------ //    
     // auto loads/renders options/selections for texture maps based on material type selection
-    useEffect(() => {
-        if (materialType && materialType.value) {
-            // Get the default texture maps for the selected material type
-            const defaultTextures = defaultTextureMapSelections[materialType.value];
-            if (materialType.value === "custom") {
-                setValue('materialTextures', defaultTextures);
-                setTextureMapOptions(textureMapOptionsCommon);
-                return;
-            }
 
-            if (defaultTextures) {
-                setTextureMapOptions(defaultTextures);
-                setValue('materialTextures', defaultTextures);
-            }
+
+
+    useEffect(() => {
+        if (materialType && materialType.value === "custom") {
+            setValue('materialTextures', []);
+            setTextureMapOptions(textureMapOptionsCommon);
+        } else {
+            const defaultTextures = defaultTextureMapSelections[materialType?.value] || [];
+            setTextureMapOptions(defaultTextures);
+            setValue('materialTextures', defaultTextures);
         }
     }, [materialType, setValue]);
+
 
 
     // cleanup function 4 memory leak prevantage; called when components unmount/imagePreviews arr changes
@@ -98,59 +104,67 @@ export default function MaterialUploadForm() {
     //updates zustand state with form data upon changing any of the form fields
     useEffect(() => {
         setMaterialData({...formData.materialData, materialTextures, materialType, materialMetadata, color, elementType, condition, manifestation});
-        console.table(formData.materialData)
     }, [materialTextures, materialType, materialMetadata, color, elementType, condition, manifestation, setMaterialData]);
-
-
-    //logs image preview file data if using async method (fileapi vs base64)
-    // useEffect(() => {
-    //     console.log(imagePreviews);
-    // }, [imagePreviews]);
-
-    // useEffect(() => {
-    //     console.log({"logging generated images via useEffect": generatedImages});
-    // }, [generatedImages]);
 
 
 
     //HTTP POST REQUESTS & ASYNCHRONOUS STUFF//
     // ---------------- //
-    // axios integration to send form data to Flask backend
-    const onSubmit = async (data, e) => {
-        e.preventDefault();
+
+
+    const handleFormSubmission = async (data) => {
+        setIsLoading(true); // Start loading indicator
+        clearGeneratedImages(); // Clear previously loaded images
+
         try {
             const materialData = {...formData.materialData, ...data};
-            const response = await axios.post('http://localhost:3001/api/generate_texture', {materialData});
+            const textureResponse = await axios.post('http://localhost:3001/api/generate_texture', {materialData});
             console.log("Texture generation initiated!");
-            const materialId = response.data.material_id;
-            const baseColorUrl = response.data.image_url;
-            // Now make a second API call to generate PBR maps
+            const materialId = textureResponse.data.material_id;
+            const baseColorUrl = textureResponse.data.image_url;
+
+            // Add base color image to the store and navigate to the loading page
+            addGeneratedImage(baseColorUrl);
+            console.log(`Base color url ${baseColorUrl} added to store: ${generatedImages}`);
+            navigate('/loading-textures', {state: {materialId, baseColorUrl}});
+
+            // Second API call to generate PBR maps
             const pbrResponse = await axios.post('http://localhost:3001/api/generate_pbr_maps', {base_color_url: baseColorUrl, material_id: materialId});
             console.log("PBR maps generation initiated!");
-            setGeneratedImages(prevImages => [...prevImages, baseColorUrl, pbrResponse.data.normal_map_url, pbrResponse.data.height_map_url, pbrResponse.data.smoothness_map_url]);
+            console.log("PBR Response/Response.data", pbrResponse.data)
+            const maps = pbrResponse.data.pbr_maps
+            // Add PBR maps to the store
+            addGeneratedImage(maps.normal_map_url);
+            addGeneratedImage(maps.height_map_url);
+            addGeneratedImage(maps.smoothness_map_url);
+
+            console.log(`PBR maps added to store: ${generatedImages}`)
+
         } catch (error) {
-            console.error("Submission error:", error);
+            console.error("Error during form submission:", error);
+            toast({title: "Error in image generation", description: error.message, status: "error", duration: 5000, isClosable: true});
+        } finally {
+            setIsLoading(false); // Always reset loading state
         }
     };
-
 
     // ### HELPER FUNCTIONS ### //
     // ----------------------- //
     // -----------------------//
 
     //handles form submission of filedata w/ dropzone
-    const {getRootProps, getInputProps} = useDropzone({
-        onDrop: acceptedFiles => {
-            setImagePreviews(acceptedFiles.map(file => Object.assign(file, {
-                preview: URL.createObjectURL(file)
-            })));
-            setFileData(acceptedFiles.map(file => ({
-                filename: file.name,
-                size: file.size,
-                type: file.type
-            })));
-        }
-    });
+    // const {getRootProps, getInputProps} = useDropzone({
+    //     onDrop: acceptedFiles => {
+    //         setImagePreviews(acceptedFiles.map(file => Object.assign(file, {
+    //             preview: URL.createObjectURL(file)
+    //         })));
+    //         setFileData(acceptedFiles.map(file => ({
+    //             filename: file.name,
+    //             size: file.size,
+    //             type: file.type
+    //         })));
+    //     }
+    // });
 
     // Handle input changes for autosuggestion
     const onInputChange = (e, type) => {
@@ -159,19 +173,15 @@ export default function MaterialUploadForm() {
         switch (type) {
             case 'color':
                 setColorSuggestion(value);
-                console.log("Color Suggestion:", colorSuggestion);
                 break;
             case 'elementType':
                 setElementTypeSuggestion(value);
-                console.log("Element Type Suggestion:", elementTypeSuggestion);
                 break;
             case 'condition':
                 setConditionSuggestion(value);
-                console.log("Condition Suggestion:", conditionSuggestion);
                 break;
             case 'manifestation':
                 setManifestationSuggestion(value);
-                console.log("Manifestation Suggestion:", manifestationSuggestion);
                 break;
             default:
                 break;
@@ -185,11 +195,12 @@ export default function MaterialUploadForm() {
         if (progress === 0 && mode === 0) {
             increaseProgress();
         } else if (progress === 1 && mode === 0) {
-            handleSubmit(onSubmit)();
+            print("handle next function is ass")
+            return;
         } else if (progress < 2 && mode === 1) {
             increaseProgress();
         } else if (progress === 2 && mode === 1) {
-            handleSubmit(onSubmit)();
+            return;
         }
     };
 
@@ -210,12 +221,13 @@ export default function MaterialUploadForm() {
         setImagePreviews([]);
         setFileData([]);
         setMaterialData({});
+        clearGeneratedImages();
     }
 
 
     return (
         <>
-            <Box as="form" onSubmit={handleSubmit(onSubmit)} p={5}>
+            <Box as="form" onSubmit={handleSubmit(handleFormSubmission)} p={5}>
 
 
                 {/* Material Type Selection */}
@@ -383,7 +395,7 @@ export default function MaterialUploadForm() {
                         </Button>
                     )}
                     {progress === 1 && mode === 0 && (
-                        <Button type="submit" colorScheme="green" w="full" onClick={handleNext}
+                        <Button type="submit" colorScheme="green" w="full"
                         //onClick={toastPromiseOnClick}
                         >
                             {'Submit'}

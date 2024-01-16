@@ -32,7 +32,7 @@ export default function FormPreviewBox() {
   // const [isLoaded, setIsLoaded] = useBoolean(false);
   // stateful form data vars
   const {progress} = useMaterialStore();
-  const {formData, imagePreviews, generatedImages} = useMaterialStore();
+  const {formData} = useMaterialStore();
   const {materialData} = formData;
   const {materialTextures, materialMetadata, materialType, color, elementType, condition, manifestation} = materialData;
 
@@ -71,13 +71,13 @@ export default function FormPreviewBox() {
           <Box>
             <Grid templateColumns="repeat(3, 1fr)" gap={6}>
               <Box w="100%" p={4}>
-                {materialType && <Text sx={bodyStyle}>Shader Type:</Text>}<Text sx={headerStyle}>{materialType && materialType['label']}</Text>
+                {materialType && <Text sx={bodyStyle}> {materialType['label']} </Text>}
               </Box>
               <Box w="100%" p={4}>
-                {materialTextures && <Text sx={bodyStyle}>Maps Used:</Text>}{materialTextures && materialTextures.map((i) => <Text sx={headerStyle} key={i['label']}>{i['label']}</Text>)}
+                {materialTextures && materialTextures.map((i) => <Text sx={headerStyle} key={i['label']}>{i['label']}</Text>)}
               </Box>
               <Box w="100%" p={4}>
-                {materialMetadata && <Text sx={bodyStyle}>MetaData:</Text>}{materialMetadata && materialMetadata.map((i) => <Text sx={headerStyle} key={i['label']}>{i['label']}</Text>)}
+                {materialMetadata && materialMetadata.map((i) => <Text sx={headerStyle} key={i['label']}>{i['label']}</Text>)}
               </Box>
             </Grid>
           </Box>
@@ -85,30 +85,28 @@ export default function FormPreviewBox() {
             {/* CONDITION: */}
             <Grid templateColumns="repeat(4, 1fr)" gap={6}>
               <Box w="100%" p={4}>
-                {color && <Text sx={bodyStyle}>Color:</Text>}{color && <Text sx={headerStyle}>{color}</Text>}
+                {color && <Text sx={headerStyle}>{color}</Text>}
               </Box>
               <Box w="100%" p={4}>
-                {elementType && <Text sx={bodyStyle}>Element:</Text>}{elementType && <Text sx={headerStyle}>{elementType}</Text>}
+                {elementType && <Text sx={headerStyle}>{elementType}</Text>}
               </Box>
               <Box w="100%" p={4}>
-                {manifestation && <Text sx={bodyStyle}>Object:</Text>}{manifestation && <Text sx={headerStyle}>{manifestation}</Text>}
+                {manifestation && <Text sx={headerStyle}>{manifestation}</Text>}
               </Box>
               <Box w="100%" p={4}>
-                {condition && <Text sx={bodyStyle}>Condition:</Text>}{condition && <Text sx={headerStyle}>{condition}</Text>}
+                {condition && <Text sx={headerStyle}>{condition}</Text>}
               </Box>
 
             </Grid>
 
             <Box w="100%" p={4}>
-              {(color || elementType || manifestation || condition) && <Text textAlign='center' sx={headerStyle}><Text sx={bodyStyle}>Material Name:</Text>{strippedNames()}</Text>}
+              {(color || elementType || manifestation || condition) && <Text sx={bodyStyle}> Material Name: {strippedNames()}</Text>}
             </Box>
 
 
           </Box>
 
-          {/* <Box px='2rem' width={'80vw'} ml='10%'>
-            {progress === 2 && generatedImages.length > 0 && (<GeneratedTextureDisplay />)}
-          </Box> */}
+
         </Flex>
       </Box>
 

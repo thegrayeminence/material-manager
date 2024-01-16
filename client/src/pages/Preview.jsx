@@ -8,13 +8,13 @@ import {
 import {AnimatePresence, motion} from 'framer-motion';
 //components
 import {ProgressBar, MaterialUploadForm, FormPreviewBox, Header, ImagePreviewGrid, TextureDisplay, JsonDisplayModal, ImageGridUrlSrc} from '../components'
-import {useMaterialStore, useProgressStore, useIsLoadingStore, useFormMode} from '../store/store';
+import {useMaterialStore, useProgressStore, useIsLoadingStore, useFormMode, useGeneratedImagesStore} from '../store/store';
 
 
 
 function Preview() {
   const {progress} = useProgressStore()
-  const {generatedImages} = useMaterialStore();
+  const {generatedImages} = useGeneratedImagesStore();
   const {isLoading} = useIsLoadingStore();
   const {mode, incrementMode, decrementMode} = useFormMode();
 
