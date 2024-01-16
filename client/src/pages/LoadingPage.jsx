@@ -4,7 +4,6 @@ import {useNavigate, useLocation} from 'react-router-dom';
 import axios from 'axios';
 import {useGeneratedImagesStore} from '../store/store';
 
-
 const LoadingMessages = [
     "Connecting to database",
     "Encoding image files",
@@ -12,6 +11,7 @@ const LoadingMessages = [
     "Hold tight, your packets are traveling at the speed of light!",
     // ... more messages ...
 ];
+
 const LoadingPage = () => {
     const [currentMessage, setCurrentMessage] = useState(0);
     const navigate = useNavigate();

@@ -44,7 +44,8 @@ export default function MaterialUploadForm() {
     const {progress, increaseProgress, decreaseProgress, resetProgress} = useProgressStore();
     const {mode} = useFormMode();
     const {isLoading, setIsLoading} = useIsLoadingStore();
-    const {albedoImage, pbrImages, setAlbedoImage, setPBRImage, clearImages} = useGeneratedImagesStore();
+    // const {albedoImage, pbrImages, setAlbedoImage, setPBRImage, clearImages} = useGeneratedImagesStore();
+    const {setAlbedoImage, setPBRImage, clearImages} = useGeneratedImagesStore();
 
     //autosuggestion zustand states
     const {
@@ -110,9 +111,9 @@ export default function MaterialUploadForm() {
 
     //HTTP POST REQUESTS & ASYNCHRONOUS STUFF//
     // ---------------- //
+
     const handleFormSubmission = async (data) => {
         setIsLoading(true); // Start loading indicator
-        const {setAlbedoImage, setPBRImage, clearImages} = useGeneratedImagesStore();
 
         try {
             const materialData = {...formData.materialData, ...data};
@@ -132,7 +133,6 @@ export default function MaterialUploadForm() {
             // Second API call to generate PBR maps
             const pbrResponse = await axios.post('http://localhost:3001/api/generate_pbr_maps', {base_color_url: baseColorUrl, material_id: materialId});
             console.log("PBR maps generation initiated!");
-
             // Set PBR maps in the store
             const maps = pbrResponse.data.pbr_maps;
             setPBRImage('normal', maps.normal_map_url);
@@ -147,38 +147,6 @@ export default function MaterialUploadForm() {
     };
 
 
-    // const handleFormSubmission = async (data) => {
-    //     setIsLoading(true); // Start loading indicator
-    //     clearImages(); // Clear previous images from the store
-
-    //     try {
-    //         const materialData = {...formData.materialData, ...data};
-    //         const textureResponse = await axios.post('http://localhost:3001/api/generate_albedo', {materialData});
-    //         console.log("Albedo texture generation initiated!");
-    //         const materialId = textureResponse.data.material_id;
-    //         const baseColorUrl = textureResponse.data.image_url;
-
-    //         // Set the albedo image in the store and navigate to the loading page
-    //         setAlbedoImage(baseColorUrl);
-    //         console.log(`Albedo url ${baseColorUrl} added to store.`);
-    //         navigate('/loading-textures', {state: {materialId, baseColorUrl}});
-
-    //         // Second API call to generate PBR maps
-    //         const pbrResponse = await axios.post('http://localhost:3001/api/generate_pbr_maps', {base_color_url: baseColorUrl, material_id: materialId});
-    //         console.log("PBR maps generation initiated!");
-    //         console.log("PBR Response/Response.data", pbrResponse.data);
-    //         const maps = pbrResponse.data.pbr_maps;
-    //         // Set PBR maps in the store
-    //         setPBRImage('normal', maps.normal_map_url);
-    //         setPBRImage('height', maps.height_map_url);
-    //         setPBRImage('smoothness', maps.smoothness_map_url);
-    //     } catch (error) {
-    //         console.error("Error during form submission:", error);
-    //         // handle error, e.g., show toast
-    //     } finally {
-    //         setIsLoading(false); // Always reset loading state
-    //     }
-    // };
 
     // ### HELPER FUNCTIONS ### //
     // ----------------------- //
@@ -253,7 +221,7 @@ export default function MaterialUploadForm() {
         setImagePreviews([]);
         setFileData([]);
         setMaterialData({});
-        clearGeneratedImages();
+        clearImages();
     }
 
 

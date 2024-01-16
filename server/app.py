@@ -258,37 +258,37 @@ def get_maps_by_id(id):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+
 @app.get("/api/get_albedo_by_id/<int:material_id>")
 def get_albedo_by_id(material_id):
     try:
         material = Material.query.get(material_id)
         if material:
-            image_url = material.base_color_url
-            return jsonify({'image_url': image_url}), 200
+            return jsonify({'image_url': material.base_color_url, 'material_id': material.id}), 200
         else:
             return jsonify({"error": "Material not found"}), 404
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
 
 @app.get("/api/get_normal_by_id/<int:material_id>")
 def get_normal_by_id(material_id):
     try:
         material = Material.query.get(material_id)
         if material:
-            image_url = material.normal_map_url
-            return jsonify({'image_url': image_url}), 200
+            return jsonify({'image_url': material.normal_map_url, 'material_id': material.id}), 200
         else:
             return jsonify({"error": "Material not found"}), 404
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
 
 @app.get("/api/get_height_by_id/<int:material_id>")
 def get_height_by_id(material_id):
     try:
         material = Material.query.get(material_id)
         if material:
-            image_url = material.height_map_url
-            return jsonify({'image_url': image_url}), 200
+            return jsonify({'image_url': material.height_map_url, 'material_id': material.id}), 200
         else:
             return jsonify({"error": "Material not found"}), 404
     except Exception as e:
@@ -299,8 +299,7 @@ def get_smoothness_by_id(material_id):
     try:
         material = Material.query.get(material_id)
         if material:
-            image_url = material.smoothness_map_url
-            return jsonify({'image_url': image_url}), 200
+            return jsonify({'image_url': material.smoothness_map_url, 'material_id': material.id}), 200
         else:
             return jsonify({"error": "Material not found"}), 404
     except Exception as e:
