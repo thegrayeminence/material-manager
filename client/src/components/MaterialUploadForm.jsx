@@ -15,7 +15,7 @@ import {Select} from "chakra-react-select";
 
 //local imports
 import {textureMapOptionsPBRMetalRough, textureMapOptionsPBRGlossSpec, textureMapOptionsCommon, materialTypeOptions, metaDataOptions} from '../config/formInputData';
-import {useMaterialStore, useProgressStore, useAutosuggestionStore, useFormMode, useIsLoadingStore, useGeneratedImagesStore, } from '../store/store';
+import {useMaterialStore, useProgressStore, useAutosuggestionStore, useFormMode, useIsLoadingStore, useGeneratedImagesStore} from '../store/store';
 import SuggestionDisplay from './UI/SuggestionDisplay';
 
 
@@ -44,7 +44,7 @@ export default function MaterialUploadForm() {
     const {progress, increaseProgress, decreaseProgress, resetProgress} = useProgressStore();
     const {mode} = useFormMode();
     const {isLoading, setIsLoading} = useIsLoadingStore();
-    const {addGeneratedImage, clearGeneratedImages, generatedImages} = useGeneratedImagesStore();
+    const {albedoImage, pbrImages, setAlbedoImage, setPBRImage, clearImages} = useGeneratedImagesStore();
 
     //autosuggestion zustand states
     const {
@@ -110,61 +110,93 @@ export default function MaterialUploadForm() {
 
     //HTTP POST REQUESTS & ASYNCHRONOUS STUFF//
     // ---------------- //
-
-
     const handleFormSubmission = async (data) => {
         setIsLoading(true); // Start loading indicator
-        clearGeneratedImages(); // Clear previously loaded images
+        const {setAlbedoImage, setPBRImage, clearImages} = useGeneratedImagesStore();
 
         try {
             const materialData = {...formData.materialData, ...data};
+            // API call to generate the albedo texture
             const textureResponse = await axios.post('http://localhost:3001/api/generate_albedo', {materialData});
-            console.log("Texture generation initiated!");
+            console.log("Albedo texture generation initiated!");
             const materialId = textureResponse.data.material_id;
             const baseColorUrl = textureResponse.data.image_url;
 
-            // Add base color image to the store and navigate to the loading page
-            addGeneratedImage(baseColorUrl);
-            console.log(`Base color url ${baseColorUrl} added to store: ${generatedImages}`);
-            navigate('/loading-textures', {state: {materialId, baseColorUrl}});
+            // Set the albedo image in the store
+            setAlbedoImage(baseColorUrl);
+            console.log(`Albedo url ${baseColorUrl} added to store.`);
+
+            // Navigate to the loading page with materialId
+            navigate('/loading-textures', {state: {materialId}});
 
             // Second API call to generate PBR maps
             const pbrResponse = await axios.post('http://localhost:3001/api/generate_pbr_maps', {base_color_url: baseColorUrl, material_id: materialId});
             console.log("PBR maps generation initiated!");
-            console.log("PBR Response/Response.data", pbrResponse.data)
-            const maps = pbrResponse.data.pbr_maps
-            // Add PBR maps to the store
-            addGeneratedImage(maps.normal_map_url);
-            addGeneratedImage(maps.height_map_url);
-            addGeneratedImage(maps.smoothness_map_url);
 
-            console.log(`PBR maps added to store: ${generatedImages}`)
-
+            // Set PBR maps in the store
+            const maps = pbrResponse.data.pbr_maps;
+            setPBRImage('normal', maps.normal_map_url);
+            setPBRImage('height', maps.height_map_url);
+            setPBRImage('smoothness', maps.smoothness_map_url);
         } catch (error) {
             console.error("Error during form submission:", error);
-            // toast({title: "Error in image generation", description: error.message, status: "error", duration: 5000, isClosable: true});
+            // Optionally handle the error, e.g., show toast
         } finally {
-            setIsLoading(false); // Always reset loading state
+            setIsLoading(false); // Reset loading state
         }
     };
+
+
+    // const handleFormSubmission = async (data) => {
+    //     setIsLoading(true); // Start loading indicator
+    //     clearImages(); // Clear previous images from the store
+
+    //     try {
+    //         const materialData = {...formData.materialData, ...data};
+    //         const textureResponse = await axios.post('http://localhost:3001/api/generate_albedo', {materialData});
+    //         console.log("Albedo texture generation initiated!");
+    //         const materialId = textureResponse.data.material_id;
+    //         const baseColorUrl = textureResponse.data.image_url;
+
+    //         // Set the albedo image in the store and navigate to the loading page
+    //         setAlbedoImage(baseColorUrl);
+    //         console.log(`Albedo url ${baseColorUrl} added to store.`);
+    //         navigate('/loading-textures', {state: {materialId, baseColorUrl}});
+
+    //         // Second API call to generate PBR maps
+    //         const pbrResponse = await axios.post('http://localhost:3001/api/generate_pbr_maps', {base_color_url: baseColorUrl, material_id: materialId});
+    //         console.log("PBR maps generation initiated!");
+    //         console.log("PBR Response/Response.data", pbrResponse.data);
+    //         const maps = pbrResponse.data.pbr_maps;
+    //         // Set PBR maps in the store
+    //         setPBRImage('normal', maps.normal_map_url);
+    //         setPBRImage('height', maps.height_map_url);
+    //         setPBRImage('smoothness', maps.smoothness_map_url);
+    //     } catch (error) {
+    //         console.error("Error during form submission:", error);
+    //         // handle error, e.g., show toast
+    //     } finally {
+    //         setIsLoading(false); // Always reset loading state
+    //     }
+    // };
 
     // ### HELPER FUNCTIONS ### //
     // ----------------------- //
     // -----------------------//
 
     //handles form submission of filedata w/ dropzone
-    // const {getRootProps, getInputProps} = useDropzone({
-    //     onDrop: acceptedFiles => {
-    //         setImagePreviews(acceptedFiles.map(file => Object.assign(file, {
-    //             preview: URL.createObjectURL(file)
-    //         })));
-    //         setFileData(acceptedFiles.map(file => ({
-    //             filename: file.name,
-    //             size: file.size,
-    //             type: file.type
-    //         })));
-    //     }
-    // });
+    const {getRootProps, getInputProps} = useDropzone({
+        onDrop: acceptedFiles => {
+            setImagePreviews(acceptedFiles.map(file => Object.assign(file, {
+                preview: URL.createObjectURL(file)
+            })));
+            setFileData(acceptedFiles.map(file => ({
+                filename: file.name,
+                size: file.size,
+                type: file.type
+            })));
+        }
+    });
 
     // Handle input changes for autosuggestion
     const onInputChange = (e, type) => {

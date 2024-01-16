@@ -2,8 +2,10 @@
 
 # Standard library imports
 from email.mime import base
+from datetime import datetime, timedelta
 from hmac import new
 from nis import maps
+import zipfile
 import os
 import json
 
@@ -106,7 +108,7 @@ def generate_image_from_prompt(prompt):
             }
 
         # Run the API call
-        output = replicate.run(model1, input=params1)
+        output = replicate.run(model2, input=params2)
         print("Logging output from Replicate:", output)
 
         # Check if the output is a list with a valid URL
@@ -154,7 +156,7 @@ def generate_pbr_from_albedo(base_color_url, map_type):
 ## CLIENT --> SERVER ENDPOINTS: GENERATE TEXTURES FOR WEBPAGE:
 ##----------------------------------------##
 ## GET MATERIAL DATA FROM FORMDATA, EXTRACT PROMPT, GENERATE TEXTURE, RETURN URL/id:
-@app.route("/api/generate_albedo", methods=['POST'])
+@app.post("/api/generate_albedo")
 def generate_albedo():
     try:
         material_data = request.get_json().get('materialData', {})
@@ -217,18 +219,18 @@ def generate_pbr_maps():
 
 
 
-## generate one by one ##
-@app.route("/api/generate_normal_map", methods=['POST'])
-def generate_normal_map():
-    return generate_specific_pbr_map("albedo2normal")
+# ## generate one by one ##
+# @app.route("/api/generate_normal_map", methods=['POST'])
+# def generate_normal_map():
+#     return generate_specific_pbr_map("albedo2normal")
 
-@app.route("/api/generate_height_map", methods=['POST'])
-def generate_height_map():
-    return generate_specific_pbr_map("albedo2height")
+# @app.route("/api/generate_height_map", methods=['POST'])
+# def generate_height_map():
+#     return generate_specific_pbr_map("albedo2height")
 
-@app.route("/api/generate_smoothness_map", methods=['POST'])
-def generate_smoothness_map():
-    return generate_specific_pbr_map("albedo2smoothness")
+# @app.route("/api/generate_smoothness_map", methods=['POST'])
+# def generate_smoothness_map():
+#     return generate_specific_pbr_map("albedo2smoothness")
 
 
 
@@ -245,18 +247,7 @@ def get_albedo_maps():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
-@app.get('/api/get_all_maps')
-def get_all_maps():
-    try:
-        materials = Material.query.all()
-        base_color = [material.base_color_url for material in materials]
-        normal= [material.normal_map_url for material in materials]
-        height = [material.height_map_url for material in materials]
-        smoothness = [material.smoothness_map_url for material in materials]
-        
-        return jsonify({'base_color': base_color, 'normal': normal, 'height': height, 'smoothness': smoothness}), 200
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+
 
 @app.get("/api/get_maps/<int:id>")
 def get_maps_by_id(id):
@@ -267,6 +258,59 @@ def get_maps_by_id(id):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+@app.get("/api/get_albedo_by_id/<int:material_id>")
+def get_albedo_by_id(material_id):
+    try:
+        material = Material.query.get(material_id)
+        if material:
+            image_url = material.base_color_url
+            return jsonify({'image_url': image_url}), 200
+        else:
+            return jsonify({"error": "Material not found"}), 404
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.get("/api/get_normal_by_id/<int:material_id>")
+def get_normal_by_id(material_id):
+    try:
+        material = Material.query.get(material_id)
+        if material:
+            image_url = material.normal_map_url
+            return jsonify({'image_url': image_url}), 200
+        else:
+            return jsonify({"error": "Material not found"}), 404
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.get("/api/get_height_by_id/<int:material_id>")
+def get_height_by_id(material_id):
+    try:
+        material = Material.query.get(material_id)
+        if material:
+            image_url = material.height_map_url
+            return jsonify({'image_url': image_url}), 200
+        else:
+            return jsonify({"error": "Material not found"}), 404
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.get("/api/get_smoothness_by_id/<int:material_id>")
+def get_smoothness_by_id(material_id):
+    try:
+        material = Material.query.get(material_id)
+        if material:
+            image_url = material.smoothness_map_url
+            return jsonify({'image_url': image_url}), 200
+        else:
+            return jsonify({"error": "Material not found"}), 404
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+
+
+
+#### GET RECENTLY GENERATED MAPS w order_by ####
 @app.get("/api/get_recent_pbrs")
 def get_recent_pbrs():
     try:
@@ -284,6 +328,84 @@ def get_recent_albedo():
         return jsonify({'image_urls': image_url}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
+@app.get("/api/get_recent_normal")
+def get_recent_normal():
+    try:
+        material = Material.query.order_by(Material.id.desc()).first()
+        image_url = material.normal_map_url
+        return jsonify({'image_url': image_url}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.get("/api/get_recent_height")
+def get_recent_height():
+    try:
+        material = Material.query.order_by(Material.id.desc()).first()
+        image_url = material.height_map_url
+        return jsonify({'image_url': image_url}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.get("/api/get_recent_smoothness")
+def get_recent_smoothness():
+    try:
+        material = Material.query.order_by(Material.id.desc()).first()
+        image_url = material.smoothness_map_url
+        return jsonify({'image_url': image_url}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+##-------------------------------------##
+## download functionality ####
+
+
+def create_downloadable_zip(material_id):
+    material = Material.query.get(material_id)
+    if not material:
+        raise FileNotFoundError("Material not found")
+
+    zip_filename = f"material_{material_id}.zip"
+    with zipfile.ZipFile(zip_filename, 'w') as zipf:
+        # Add texture images
+        for map_type in ['base_color', 'normal', 'height', 'smoothness']:
+            image_url = getattr(material, f"{map_type}_map_url")
+            if image_url:
+                image_path = download_image(image_url)  # You'll need a function to download the image
+                zipf.write(image_path, os.path.basename(image_path))
+
+        # Create and add summary text file
+        summary_text = create_summary_text(material)  # Implement this function to generate summary
+        summary_filename = "summary.txt"
+        with open(summary_filename, "w") as summary_file:
+            summary_file.write(summary_text)
+        zipf.write(summary_filename, summary_filename)
+
+    return zip_filename
+
+##-------------------------------------##
+## flush db entries older than 60 minutes ####
+# def flush_old_materials():
+#     # Define the time threshold (e.g., 60 minutes old)
+#     time_threshold = datetime.utcnow() - timedelta(minutes=60)
+
+#     # Query for old materials
+#     old_materials = Material.query.filter(Material.created_at < time_threshold).all()
+
+#     # Delete old materials
+#     for material in old_materials:
+#         db.session.delete(material)
+
+#     db.session.commit()
+
+@app.route("/api/download_material/<int:material_id>", methods=['GET'])
+def download_material(material_id):
+    try:
+        zip_filename = create_downloadable_zip(material_id)
+        return send_from_directory(directory=os.path.dirname(zip_filename), filename=os.path.basename(zip_filename), as_attachment=True)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
     
     
 

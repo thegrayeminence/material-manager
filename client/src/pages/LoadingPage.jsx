@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {Box, Heading, Text, CircularProgress, Spacer} from "@chakra-ui/react";
-import {useGeneratedImagesStore} from '../store/store';
-import {useNavigate} from 'react-router-dom';
+import {Box, Heading, Text, CircularProgress, Spacer} from '@chakra-ui/react';
+import {useNavigate, useLocation} from 'react-router-dom';
 import axios from 'axios';
+import {useGeneratedImagesStore} from '../store/store';
 
 
 const LoadingMessages = [
@@ -12,11 +12,12 @@ const LoadingMessages = [
     "Hold tight, your packets are traveling at the speed of light!",
     // ... more messages ...
 ];
-
 const LoadingPage = () => {
     const [currentMessage, setCurrentMessage] = useState(0);
-    const {generatedImages} = useGeneratedImagesStore();
     const navigate = useNavigate();
+    const location = useLocation();
+    const {materialId} = location.state; // Assuming materialId is passed in state when navigating to this page
+    const {albedoImage, setAlbedoImage} = useGeneratedImagesStore();
 
     useEffect(() => {
         const intervalId = setInterval(() => {
@@ -26,23 +27,26 @@ const LoadingPage = () => {
         return () => clearInterval(intervalId);
     }, []);
 
-
     useEffect(() => {
-        const intervalId = setInterval(async () => {
+        if (albedoImage) {
+            navigate('/gallery');
+            return;
+        }
+
+        const fetchAlbedoImage = async () => {
             try {
-                const response = await axios.get('http://localhost:3001/api/get_recent_albedo');
-                if (response.data.image_urls.length && typeof response.data.image_urls === 'string') { // Check if albedo is loaded first
-                    navigate('/gallery'); // Or the appropriate display page
-                    clearInterval(intervalId);
-                }
+                const response = await axios.get(`http://localhost:3001/api/get_albedo_by_id/${materialId}`);
+                setAlbedoImage(response.data.image_url);
+                navigate('/gallery');
             } catch (error) {
-                console.error('Error fetching recent maps:', error);
+                console.error('Error fetching albedo image:', error);
             }
-        }, 2000); // Poll every 2 seconds
+        };
 
-        return () => clearInterval(intervalId);
-    }, [navigate]);
-
+        if (materialId) {
+            fetchAlbedoImage();
+        }
+    }, [navigate, materialId, albedoImage, setAlbedoImage]);
 
     return (
         <Box mt={'10rem'} fontSize={'2xl'} textAlign={'center'}>
@@ -52,6 +56,6 @@ const LoadingPage = () => {
             <CircularProgress isIndeterminate size='5rem' color='green.300' />
         </Box>
     );
-}
+};
 
 export default LoadingPage;

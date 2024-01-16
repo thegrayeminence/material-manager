@@ -48,43 +48,102 @@ export const useMaterialStore = create(set => ({
 
 }));
 
-// // Store for managing generated images
-// export const useGeneratedImagesStore = create(set => ({
-//   // Array to store URLs of generated images
-//   generatedImages: [],
 
-//   // Method to set the generated images
-//   setGeneratedImages: (generatedImages) => set({generatedImages}),
-//   // Method to add a single generated image
-//   addGeneratedImage: (imageURL) => set(state => ({generatedImages: [...state.generatedImages, imageURL]})),
-//   // Method to clear all generated images
-//   clearGeneratedImages: () => set({generatedImages: []}),
+export const useGeneratedImagesStore = create(set => ({
+  // Initialize albedoImage and pbrImages from localStorage
+  albedoImage: JSON.parse(localStorage.getItem('albedoImage')) || null,
+  pbrImages: JSON.parse(localStorage.getItem('pbrImages')) || {normal: null, height: null, smoothness: null},
+
+  // Method to set the albedo image
+  setAlbedoImage: (imageURL) => set(() => {
+    localStorage.setItem('albedoImage', JSON.stringify(imageURL));
+    return {albedoImage: imageURL};
+  }),
+
+  // Method to set a specific PBR image
+  setPBRImage: (type, imageURL) => set(state => {
+    const newPbrImages = {...state.pbrImages, [type]: imageURL};
+    localStorage.setItem('pbrImages', JSON.stringify(newPbrImages));
+    return {pbrImages: newPbrImages};
+  }),
+
+  // Method to clear all images
+  clearImages: () => set(() => {
+    localStorage.removeItem('albedoImage');
+    localStorage.removeItem('pbrImages');
+    return {albedoImage: null, pbrImages: {normal: null, height: null, smoothness: null}};
+  })
+}));
+
+
+
+
+
+
+
+// export const useGeneratedImagesStore = create(set => ({
+//   // ... existing store properties ...
+
+//   // Initialize albedoImage and pbrImages from localStorage
+//   albedoImage: JSON.parse(localStorage.getItem('albedoImage')) || null,
+//   pbrImages: JSON.parse(localStorage.getItem('pbrImages')) || {normal: null, height: null, smoothness: null},
+
+//   // ... existing setAlbedoImage and setPBRImage methods ...
+//   // Method to set the albedo image
+//   setAlbedoImage: (imageURL) => set({albedoImage: imageURL}),
+
+//   // Method to set a specific PBR image
+//   setPBRImage: (type
+//     , imageURL) => set(state => ({
+//       pbrImages: {...state.pbrImages, [type]: imageURL}
+//     })),
+
+
+//   setAlbedoImage: (imageURL) => set(() => {
+//     localStorage.setItem('albedoImage', JSON.stringify(imageURL));
+//     return {albedoImage: imageURL};
+//   }),
+
+//   setPBRImage: (type, imageURL) => set(state => {
+//     const newPbrImages = {...state.pbrImages, [type]: imageURL};
+//     localStorage.setItem('pbrImages', JSON.stringify(newPbrImages));
+//     return {pbrImages: newPbrImages};
+//   }),
+
+//   // ... existing clearImages method ...
+//   // Method to clear all images
+//   clearImages: () => set({albedoImage: null, pbrImages: {normal: null, height: null, smoothness: null}})
+//   clearImages: () => set(() => {
+//     localStorage.removeItem('albedoImage');
+//     localStorage.removeItem('pbrImages');
+//     return {albedoImage: null, pbrImages: {normal: null, height: null, smoothness: null}};
+//   })
 // }));
 
 
-export const useGeneratedImagesStore = create(set => ({
-  // Separate state for the albedo image
-  albedoImage: null,
+// export const useGeneratedImagesStore = create(set => ({
+//   // Separate state for the albedo image
+//   albedoImage: null,
 
-  // Separate state for the PBR images
-  pbrImages: {
-    normal: null,
-    height: null,
-    smoothness: null
-  },
+//   // Separate state for the PBR images
+//   pbrImages: {
+//     normal: null,
+//     height: null,
+//     smoothness: null
+//   },
 
-  // Method to set the albedo image
-  setAlbedoImage: (imageURL) => set({albedoImage: imageURL}),
+//   // Method to set the albedo image
+//   setAlbedoImage: (imageURL) => set({albedoImage: imageURL}),
 
-  // Method to set a specific PBR image
-  setPBRImage: (type
-    , imageURL) => set(state => ({
-      pbrImages: {...state.pbrImages, [type]: imageURL}
-    })),
+//   // Method to set a specific PBR image
+//   setPBRImage: (type
+//     , imageURL) => set(state => ({
+//       pbrImages: {...state.pbrImages, [type]: imageURL}
+//     })),
 
-  // Method to clear all images
-  clearImages: () => set({albedoImage: null, pbrImages: {normal: null, height: null, smoothness: null}})
-}));
+//   // Method to clear all images
+//   clearImages: () => set({albedoImage: null, pbrImages: {normal: null, height: null, smoothness: null}})
+// }));
 
 
 //helper function for returning the closest match to the input from the options array
