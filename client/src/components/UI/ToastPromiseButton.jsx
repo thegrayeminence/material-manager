@@ -2,7 +2,7 @@ import {useToast, Button} from "@chakra-ui/react";
 
 
 //async chakra ui toast loading functions
-export default function ToastPromiseButton() {
+export default function ToastPromiseButton({text}) {
   const toast = useToast()
 
   //example promise that resolves in 5s
@@ -16,13 +16,13 @@ export default function ToastPromiseButton() {
 
         // Will display the loading toast until the promise resolved/rejected
         toast.promise(examplePromise, {
-          success: {title: 'Promise resolved', description: 'Looks great'},
-          error: {title: 'Promise rejected', description: 'Something wrong'},
-          loading: {title: 'Promise pending', description: 'Please wait'},
+          success: {title: 'Promise resolved', description: 'Your materials are ready!'},
+          error: {title: 'Promise rejected', description: 'Something went wrong with your request..'},
+          loading: {title: 'Promise pending', description: 'Generating your materials...'},
         })
       }}
     >
-      Show Toast
+      {text}
     </Button>
   )
 }

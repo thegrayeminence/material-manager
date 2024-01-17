@@ -1,6 +1,8 @@
 
-# ProxyShader: Generate Placeholder Materials for PBR Workflows 
+# ShaderProxy: Generate Placeholder Materials for PBR Workflows 
 >render texture maps for your materials procedurally or via AI prompts and pre-existing assets; configure your materials’ structure; and preview your materials in the browser before 
+
+ShaderProxy USES DATA INPUTS TO GENERATE MATERIALS THAT can be used to ACT AS LOW IMPACT/Temporary PLACEHOLDERS FOR PBR MATERIALs; by mimicking the file structure and color information of true PBR materials, users can slot their proxies (i.e. generated texture maps) into their rendering engine's  shader system/node tree as they normally would PLACEHOLDERS IN SOFTWARE/RENDERING ENGINES; thus providing a handy time-saving device for animators/artsits still in the early stage of developing their projects--previz, playblasts, or quick renders where the prioritization of speed and low-impact assets over photorealistic lighting is desirable.
 
 
 ## The Problem:
@@ -15,11 +17,44 @@
 
 ### Developer Instructions:
 
-### Prerequisites:
+### Server/Client Setup:
+
+#### For Server Setup, Run The Following In Your Terminal:
+
+   ```shell
+   brew services start postgresql
+   cd server
+   pipenv install && pipenv shell
+   export FLASK_APP=app.py && export FLASK_RUN_PORT=3001 && export FLASK_DEBUG=1
+   export DATABASE_URL='postgresql://username:password@hostname/dbname'
+   flask db upgrade
+   flask run
+   ```
+
+#### If you need to flush/reset the SQL database, run:
+
+   ```shell
+   brew services start postgresql
+   psql postgres
+   DROP DATABASE your_database_name;
+   CREATE DATABASE your_new_database_name;
+   ```
+
+##### For Setting Up the Frontend:
+   ```shell
+   cd client
+   npm install
+   npm run dev
+   ```
+#### For configuring Stable Diffusion/Replicate Client:
+- Sign up for account on [Replicate](https://replicate.com), generate an API token, and store the token's text locally in .env and then reference the token's value in the main app.py file 
+- To find new models/forked versions of Stable Diffusion, visit Replicate's site and import them into the app.py's replicate.run(...) function to create surprising results; just make sure the new models' input and ouput schema match those used in the code!
+
+### Software Used/Prerequisites:
 
 #### Main Frameworks:
 - Frontend:
-  - React JS/Chakra UI
+  - JS/ReactJS/ChakraUI
 - Backend:
   - Python/Flask/SqlAlchemy
 
@@ -85,41 +120,7 @@ faker = "*"
 replicate = "*"
 ```
 
-### Main Frameworks:
-
-### Server/Client Setup:
-
-#### Run The Following In Your Terminal:
-
-   ```shell
-   brew services start postgresql
-   cd server
-   pipenv install && pipenv shell
-   export FLASK_APP=app.py && export FLASK_RUN_PORT=3001 && export FLASK_DEBUG=1
-   export DATABASE_URL='postgresql://username:password@hostname/dbname'
-   flask db upgrade
-   flask run
-   ```
-
-#### If you need to flush/reset the database, run:
-
-   ```shell
-   brew services start postgresql
-   psql postgres
-   DROP DATABASE your_database_name;
-   CREATE DATABASE your_new_database_name;
-   ```
-
-##### For Setting up the frontend, run:
-   ```shell
-   cd client
-   npm install
-   npm run dev
-   ```
-#### For configuring Stable Diffusion/Replicate Client:
-- Sign up for account on [Replicate](https://replicate.com), generate an API token, and store the token's text locally in .env and then reference the token's value in the main app.py file 
-- To find new models/forked versions of Stable Diffusion, visit Replicate's site and import them into the app.py's replicate.run(...) function to create surprising results; just make sure the new models' input and ouput schema match those used in the code!
-
 ### Credits & Acknowledgements:
-+ Textures generated w/ [Stable Diffusion AI](https://replicate.com/stability-ai/stable-diffusion) via [Replicate API](https://replicate.com)
++ Textures generated w/ [Stable Diffusion AI](https://replicate.com/stability-ai/stable-diffusion) via [Replicate API](https://replicate.com) Python [Client](https://github.com/replicate/replicate-python)
 + Landing page procedural animation made by [Mark Boots](https://codepen.io/MarkBoots)
+  

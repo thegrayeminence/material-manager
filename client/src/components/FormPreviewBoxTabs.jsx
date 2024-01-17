@@ -1,7 +1,8 @@
 import React from 'react';
-import {Box, Stack, Flex, Grid, Text, useBoolean, Tabs, TabList, TabPanels, Tab, TabPanel, TabIndicator, useColorModeValue, useColorMode} from '@chakra-ui/react';
+import {Box, Stack, Flex, Grid, Text, useBoolean, Tabs, TabList, TabPanels, Tab, TabPanel, TabIndicator} from '@chakra-ui/react';
 import {motion} from 'framer-motion';
 import {useMaterialStore} from '../store/store';
+import JsonTreeVisualization from './UI/JsonVizualized';
 
 const MotionBox = motion(Box);
 
@@ -11,19 +12,15 @@ const FormPreviewBoxTabs = () => {
     const {materialTextures, materialMetadata, materialType, color, elementType, condition, manifestation} = materialData;
     const [previewBoxIsLoading, setPreviewBoxIsLoading] = useBoolean(false);
 
-
     const headerStyle = {
-
         fontWeight: 'semibold',
         color: 'slateblue',
         letterSpacing: '.2rem',
         fontFamily: 'Avenir Next',
         lineHeight: '1.35rem',
-
     };
 
     const bodyStyle = {
-
         fontWeight: 'medium',
         color: 'slategrey',
         letterSpacing: '.1rem',
@@ -33,7 +30,6 @@ const FormPreviewBoxTabs = () => {
     };
 
     const formattedData = JSON.stringify(materialData, null, 2);
-
 
     const strippedNames = () => {
         return `${color.replace(/\s*/g, '')}_${elementType.replace(/\s*/g, '')}_${manifestation.replace(/\s*/g, '')}_${condition.replace(/\s*/g, '')}`;
@@ -53,13 +49,12 @@ const FormPreviewBoxTabs = () => {
                 backdropFilter="auto"
                 shadow="lg"
                 whileHover={{scale: 1.05, backdropFilter: 'blur(10px)'}}
-
             >
                 <Tabs variant="enclosed" colorScheme="purple">
                     <TabList>
-                        <Tab>Descriptions</Tab>
-                        <Tab>Raw Data</Tab>
-                        <Tab isDisabled>Graphics</Tab>
+                        <Tab>Text</Tab>
+                        <Tab>JSON Output</Tab>
+                        <Tab>Graphics</Tab>
                     </TabList>
                     <TabIndicator
                         mt="-1.5px"
@@ -70,54 +65,43 @@ const FormPreviewBoxTabs = () => {
                     <TabPanels>
                         <TabPanel>
                             <Flex direction="column" align="center" w="100%" maxH="35vh">
-                                <>
-
-                                    {/* <Heading size='lg'sx={bodyStyle}>Material Preview</Heading> */}
-                                    <Box>
-                                        <Grid templateColumns="repeat(3, 1fr)" gap={6}>
-                                            <Box w="100%" p={4}>
-                                                {materialType && <Text sx={bodyStyle}> {materialType['label']} </Text>}
-                                            </Box>
-                                            <Box w="100%" p={4}>
-                                                {materialTextures && materialTextures.map((i) => <Text sx={headerStyle} key={i['label']}>{i['label']}</Text>)}
-                                            </Box>
-                                            <Box w="100%" p={4}>
-                                                {materialMetadata && materialMetadata.map((i) => <Text sx={headerStyle} key={i['label']}>{i['label']}</Text>)}
-                                            </Box>
-                                        </Grid>
-                                    </Box>
-                                    <Box>
-                                        {/* CONDITION: */}
-                                        <Grid templateColumns="repeat(4, 1fr)" gap={6}>
-                                            <Box w="100%" p={4}>
-                                                {color && <Text sx={bodyStyle}> Color:</Text>}
-                                                {color && <Text sx={headerStyle}>{color}</Text>}
-                                            </Box>
-                                            <Box w="100%" p={4}>
-                                                {elementType && <Text sx={bodyStyle}> Element Type:</Text>}
-                                                {elementType && <Text sx={headerStyle}>{elementType}</Text>}
-                                            </Box>
-                                            <Box w="100%" p={4}>
-                                                {manifestation && <Text sx={bodyStyle}> Manifestation:</Text>}
-                                                {manifestation && <Text sx={headerStyle}>{manifestation}</Text>}
-                                            </Box>
-                                            <Box w="100%" p={4}>
-                                                {condition && <Text sx={bodyStyle}> Condition:</Text>}
-                                                {condition && <Text sx={headerStyle}>{condition}</Text>}
-                                            </Box>
-
-                                        </Grid>
-
+                                <Box>
+                                    <Grid templateColumns="repeat(3, 1fr)" gap={6}>
                                         <Box w="100%" p={4}>
-                                            {(color || elementType || manifestation || condition) && <Text sx={headerStyle}>Material Name:</Text>}
-                                            {(color || elementType || manifestation || condition) && <Text sx={bodyStyle}> {strippedNames()}</Text>}
+                                            {materialType && <Text sx={bodyStyle}> {materialType['label']} </Text>}
                                         </Box>
-
-
+                                        <Box w="100%" p={4}>
+                                            {materialTextures && materialTextures.map((i) => <Text sx={headerStyle} key={i['label']}>{i['label']}</Text>)}
+                                        </Box>
+                                        <Box w="100%" p={4}>
+                                            {materialMetadata && materialMetadata.map((i) => <Text sx={headerStyle} key={i['label']}>{i['label']}</Text>)}
+                                        </Box>
+                                    </Grid>
+                                </Box>
+                                <Box>
+                                    <Grid templateColumns="repeat(4, 1fr)" gap={6}>
+                                        <Box w="100%" p={4}>
+                                            {color && <Text sx={bodyStyle}> Color:</Text>}
+                                            {color && <Text sx={headerStyle}>{color}</Text>}
+                                        </Box>
+                                        <Box w="100%" p={4}>
+                                            {elementType && <Text sx={bodyStyle}> Element Type:</Text>}
+                                            {elementType && <Text sx={headerStyle}>{elementType}</Text>}
+                                        </Box>
+                                        <Box w="100%" p={4}>
+                                            {manifestation && <Text sx={bodyStyle}> Manifestation:</Text>}
+                                            {manifestation && <Text sx={headerStyle}>{manifestation}</Text>}
+                                        </Box>
+                                        <Box w="100%" p={4}>
+                                            {condition && <Text sx={bodyStyle}> Condition:</Text>}
+                                            {condition && <Text sx={headerStyle}>{condition}</Text>}
+                                        </Box>
+                                    </Grid>
+                                    <Box w="100%" p={4}>
+                                        {(color || elementType || manifestation || condition) && <Text sx={headerStyle}>Material Name:</Text>}
+                                        {(color || elementType || manifestation || condition) && <Text sx={bodyStyle}> {strippedNames()}</Text>}
                                     </Box>
-
-                                </>
-
+                                </Box>
                             </Flex>
                         </TabPanel>
                         <TabPanel>
@@ -126,7 +110,7 @@ const FormPreviewBoxTabs = () => {
                             </Text>
                         </TabPanel>
                         <TabPanel>
-                            {/* Content for Graphics */}
+                            <JsonTreeVisualization materialData={materialData} />
                         </TabPanel>
                     </TabPanels>
                 </Tabs>

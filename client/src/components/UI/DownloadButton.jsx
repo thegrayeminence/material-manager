@@ -7,13 +7,14 @@ const handleDownload = async (materialId) => {
         const url = window.URL.createObjectURL(new Blob([response.data]));
         const link = document.createElement('a');
         link.href = url;
+        console.log("link:", link, "url:", url)
         link.setAttribute('download', `material_${materialId}.zip`);
         document.body.appendChild(link);
         link.click();
         link.parentNode.removeChild(link);
     } catch (error) {
         console.error("Error downloading material:", error);
-        // Handle error appropriately
+
     }
 };
 

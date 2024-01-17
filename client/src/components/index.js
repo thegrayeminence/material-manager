@@ -16,7 +16,7 @@ import AboutSideBar from "./AboutSideBar";
 import SideBarBtn from "./UI/SideBarBtn";
 import RadioBtns from "./UI/RadioBtns";
 import FormPreviewBoxTabs from "./FormPreviewBoxTabs";
-
+import JsonTreeVisualization from "./UI/JsonVizualized";
 
 
 export {
@@ -38,6 +38,7 @@ export {
     SideBarBtn,
     RadioBtns,
     FormPreviewBoxTabs,
+    JsonTreeVisualization,
 
 
 };
