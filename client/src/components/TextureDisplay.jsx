@@ -89,20 +89,20 @@ const TextureDisplay = () => {
             </Flex>
 
             {/* PBR Images: Normal, Height, Smoothness */}
-            <Flex direction="column" align="center">
-                <Heading mb={4} color="blue.500">PBR Maps</Heading>
-                <SimpleGrid columns={[2, null, 3]} spacing="30px" justifyContent="center">
+            <Box>
+                <Heading mb={4}>PBR Maps</Heading>
+                <SimpleGrid columns={[2, null, 3]} spacing="40px">
                     {['normal', 'height', 'smoothness'].map((type, index) => (
                         pbrMapUrls[type] ? (
-                            <MotionImageBox key={type} {...imageBoxStyle}>
+                            <MotionImageBox {...imageBoxStyle}>
                                 <Image src={pbrMapUrls[type]} alt={`${type} Texture`} boxSize={pbrBoxSize} objectFit="cover" />
                             </MotionImageBox>
                         ) : (
-                            <Skeleton key={index} height={pbrBoxSize} />
+                            <Skeleton key={index} height="300px" />
                         )
                     ))}
                 </SimpleGrid>
-            </Flex>
+            </Box>
         </Box >
     );
 };

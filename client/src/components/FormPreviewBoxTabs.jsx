@@ -32,6 +32,9 @@ const FormPreviewBoxTabs = () => {
         fontSize: '1.25rem'
     };
 
+    const formattedData = JSON.stringify(materialData, null, 2);
+
+
     const strippedNames = () => {
         return `${color.replace(/\s*/g, '')}_${elementType.replace(/\s*/g, '')}_${manifestation.replace(/\s*/g, '')}_${condition.replace(/\s*/g, '')}`;
     };
@@ -118,7 +121,9 @@ const FormPreviewBoxTabs = () => {
                             </Flex>
                         </TabPanel>
                         <TabPanel>
-                            {/* Content for Raw Data */}
+                            <Text whiteSpace="pre-wrap">
+                                {formattedData}
+                            </Text>
                         </TabPanel>
                         <TabPanel>
                             {/* Content for Graphics */}

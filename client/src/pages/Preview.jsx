@@ -1,6 +1,6 @@
 import React from 'react'
 import {
-  Box, Flex, Stack
+  Box, Flex, Spacer, Stack
 } from '@chakra-ui/react'
 
 
@@ -18,7 +18,7 @@ function Preview() {
   return (
     <>
       <Box py='2rem'>
-
+        <Spacer py={'2.5rem'} />
         <Header text={"PREVIEW MATERIALS"} />
 
       </Box>

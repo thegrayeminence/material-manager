@@ -109,7 +109,7 @@ def generate_image_from_prompt(prompt):
             }
 
         # Run the API call
-        output = replicate.run(model1, input=params1)
+        output = replicate.run(model2, input=params2)
         print("Logging output from Replicate:", output)
 
         # Check if the output is a list with a valid URL
@@ -339,6 +339,17 @@ def get_recent_smoothness():
         return jsonify({'image_url': image_url, 'material_id': material.id}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+
+## Get 10 most recent materials:
+@app.get("/api/get_recent_materials")
+def get_recent_materials():
+    try:
+        materials = Material.query.order_by(Material.id.desc()).limit(10).all()
+        return jsonify({'materials': [material.to_dict() for material in materials]}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 
 
 
