@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Box, Heading, Text, CircularProgress, Spacer, Image, SimpleGrid, Skeleton} from '@chakra-ui/react';
+import {Box, Heading, Text, CircularProgress, Spacer, Image, SimpleGrid, Skeleton, Flex} from '@chakra-ui/react';
 import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import {motion} from 'framer-motion';
@@ -10,15 +10,16 @@ const MotionImageBox = motion(Box);
 const LoadingMessages = [
     "Connecting to database...",
     "Constructing prompts...",
+    "Generating albedo map...",
     "Storing material data...",
-    "Making API calls...",
-    "Generating maps...",
+    "Making secondary API calls...",
     "Hold tight, your packets are traveling at the speed of light!",
-    "Maximizing Spiral Energy Output...",
-    "Encoding texture files...",
-    "Transcompiling Pseudo-Quarks...",
+    "Rendering PBR Maps...",
+    "Maximizing Spiral Energy...",
+    "Encoding image files...",
+    "Transcompiling pseudo-space...",
     "Attempting to reverse entropy...",
-    "Sending requests...",
+    "Sending requests.....",
 ];
 
 const LoadingPage = () => {
@@ -69,45 +70,48 @@ const LoadingPage = () => {
             console.error('Error fetching PBR maps:', error);
         }
     };
+    const imageBoxStyle = {
+        whileHover: {scale: 1.1},
+        boxShadow: "xl",
+        borderRadius: "md",
+        overflow: "hidden",
+        border: "2px solid",
+        borderColor: "gray.300",
+        bg: "gray.50",
+        cursor: "pointer",
+        transition: "all 0.3s ease-in-out"
+    };
+
+    const albedoBoxSize = "360px"; // 20% larger than PBR maps
+    const pbrBoxSize = "300px";
 
     return (
         <Box fontSize={'2xl'} textAlign={'center'}>
             {albedoImage ? (
                 <>
-                    <MotionImageBox
-                        whileHover={{scale: 1.05}}
-                        boxShadow="md"
-                        borderRadius="lg"
-                        overflow="hidden"
-                        border="1px solid"
-                        borderColor="gray.200"
-                        mb={8}
-                    >
-                        <Image src={albedoImage} alt="Albedo Texture" boxSize="300px" objectFit="cover" />
-                    </MotionImageBox>
+                    {/* albedo map */}
+                    <Flex direction="column" align="center" mb={10}>
+                        <MotionImageBox {...imageBoxStyle}>
+                            <Image src={albedoImage} alt="Albedo Texture" boxSize={albedoBoxSize} objectFit="cover" />
+                        </MotionImageBox>
+                        <Heading mb={4}>{LoadingMessages[currentMessage]}</Heading>
+                        <Spacer p={'1rem'} />
+                    </Flex>
 
-                    <Heading mb={4}>Loading PBR Maps...</Heading>
-                    <Text>{LoadingMessages[currentMessage]}</Text>
-                    <Spacer p={'1rem'} />
-                    <SimpleGrid columns={[2, null, 3]} spacing="40px">
-                        {['normal', 'height', 'smoothness'].map((type, index) => (
-                            pbrMapUrls[type] ? (
-                                <MotionImageBox
-                                    key={type}
-                                    whileHover={{scale: 1.05}}
-                                    boxShadow="md"
-                                    borderRadius="lg"
-                                    overflow="hidden"
-                                    border="1px solid"
-                                    borderColor="gray.200"
-                                >
-                                    <Image src={pbrMapUrls[type]} alt={`${type} Texture`} boxSize="300px" objectFit="cover" />
-                                </MotionImageBox>
-                            ) : (
-                                <Skeleton key={index} height="300px" />
-                            )
-                        ))}
-                    </SimpleGrid>
+                    {/* pbr maps */}
+                    <Flex direction="column" align="center">
+                        <SimpleGrid columns={[2, null, 3]} spacing="30px" justifyContent="center">
+                            {['normal', 'height', 'smoothness'].map((type, index) => (
+                                pbrMapUrls[type] ? (
+                                    <MotionImageBox key={type} {...imageBoxStyle}>
+                                        <Image src={pbrMapUrls[type]} alt={`${type} Texture`} boxSize={pbrBoxSize} objectFit="cover" />
+                                    </MotionImageBox>
+                                ) : (
+                                    <Skeleton key={index} height={pbrBoxSize} />
+                                )
+                            ))}
+                        </SimpleGrid>
+                    </Flex>
                 </>
             ) : (
                 <>

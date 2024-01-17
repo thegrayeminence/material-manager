@@ -34,7 +34,7 @@ const NavBarContainer = ({children}) => {
                 position="fixed"
                 top={0}
                 zIndex={1}
-                color={'whiteAlpha.800'}
+                color={useColorModeValue('blue.700', 'whiteAlpha.800')}
             >
                 {children}
             </Flex>

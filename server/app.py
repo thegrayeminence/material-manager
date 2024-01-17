@@ -342,6 +342,8 @@ def get_recent_smoothness():
 
 
 
+##-------------------------------------##
+## Download Functionality ##
 def download_image(url):
     try:
         response = requests.get(url)

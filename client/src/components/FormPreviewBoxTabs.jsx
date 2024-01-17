@@ -1,5 +1,5 @@
 import React from 'react';
-import {Box, Stack, Flex, Grid, Text, useBoolean, Tabs, TabList, TabPanels, Tab, TabPanel, useColorModeValue, useColorMode} from '@chakra-ui/react';
+import {Box, Stack, Flex, Grid, Text, useBoolean, Tabs, TabList, TabPanels, Tab, TabPanel, TabIndicator, useColorModeValue, useColorMode} from '@chakra-ui/react';
 import {motion} from 'framer-motion';
 import {useMaterialStore} from '../store/store';
 
@@ -44,20 +44,26 @@ const FormPreviewBoxTabs = () => {
                 overflow="clip"
                 margin="0 auto"
                 borderWidth=".1rem"
-                p="2.5rem"
+                px="2.5rem"
+                py={"1.5rem"}
                 borderRadius="2rem"
                 backdropFilter="auto"
                 shadow="lg"
                 whileHover={{scale: 1.05, backdropFilter: 'blur(10px)'}}
 
             >
-                <Tabs variant="soft-rounded" colorScheme="purple">
+                <Tabs variant="enclosed" colorScheme="purple">
                     <TabList>
                         <Tab>Descriptions</Tab>
                         <Tab>Raw Data</Tab>
-                        <Tab>Graphics</Tab>
+                        <Tab isDisabled>Graphics</Tab>
                     </TabList>
-
+                    <TabIndicator
+                        mt="-1.5px"
+                        height="2px"
+                        bg="purple.500"
+                        borderRadius="1px"
+                    />
                     <TabPanels>
                         <TabPanel>
                             <Flex direction="column" align="center" w="100%" maxH="35vh">
