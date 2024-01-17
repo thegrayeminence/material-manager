@@ -1,4 +1,4 @@
-body {
+.background-animation {
     height: 100vh;
     margin: 0;
     --x: calc(var(--posX, 0) * 1px);

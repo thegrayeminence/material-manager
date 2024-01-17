@@ -1,21 +1,26 @@
 import React from 'react';
 import {
-    Box, Flex, useColorModeValue, Stack, useColorMode, useDisclosure, Breadcrumb, BreadcrumbItem, BreadcrumbLink
+    Box, Flex, useColorModeValue, Stack, useDisclosure, Breadcrumb, BreadcrumbItem, BreadcrumbLink, useColorMode
 } from '@chakra-ui/react';
 
 //icons:
 import {ViewIcon, QuestionIcon} from "@chakra-ui/icons";
-// import { IoMdPhotos } from "react-icons/io";
+import {MoonIcon, SunIcon} from "@chakra-ui/icons";
 import {AiOutlineHome} from "react-icons/ai";
 
 //hooks and components
 import {useNavigate, useLocation} from 'react-router-dom';
-import ColorModeToggle from './ColorModeToggle';
+import ColorModeToggle from './UI/ColorModeToggle';
 import AboutSideBar from './AboutSideBar';
-import SideBarBtn from './UI/SideBarBtn';
+
+
+
 
 
 const NavBarContainer = ({children}) => {
+
+
+
     return (
         <>
             <Flex
@@ -26,7 +31,6 @@ const NavBarContainer = ({children}) => {
                 w="100%"
                 bg={'transparent'}
                 p={4}
-                //boxShadow="sm"
                 position="fixed"
                 top={0}
                 zIndex={1}
@@ -40,14 +44,21 @@ const NavBarContainer = ({children}) => {
 
 }
 
+const BreadcrumbIconLink = ({size, icon, ...props}) => {
+    return (
+        <BreadcrumbLink {...props}>
+            <Box as={icon} size={size} />
+        </BreadcrumbLink>
+    );
+};
+
 function NavBar() {
     //hooks
     const navigate = useNavigate();
     const {isOpen, onOpen, onClose} = useDisclosure()
     const location = useLocation();
-    const {colorMode} = useColorMode();
 
-
+    const {colorMode, toggleColorMode} = useColorMode()
 
     // Function to determine the breadcrumb label based on the path
     const breadcrumbLabel = (path) => {
@@ -66,9 +77,7 @@ function NavBar() {
 
                 <Breadcrumb>
                     <BreadcrumbItem>
-                        <BreadcrumbLink href="/" onClick={(e) => {e.preventDefault(); navigate('/')}}>
-                            <AiOutlineHome />
-                        </BreadcrumbLink>
+                        <BreadcrumbIconLink size={'1.5rem'} href="/" onClick={(e) => {e.preventDefault(); navigate('/')}} icon={AiOutlineHome} />
                     </BreadcrumbItem>
                     <BreadcrumbItem isCurrentPage>
                         <BreadcrumbLink href="#" onClick={(e) => e.preventDefault()}>
@@ -79,17 +88,16 @@ function NavBar() {
 
                 </Breadcrumb>
                 <Breadcrumb>
-                    <BreadcrumbItem>
-                        <BreadcrumbLink href="#" onClick={(e) => {e.preventDefault(); navigate('/gallery')}}>
-                            <ViewIcon />
-                        </BreadcrumbLink>
-                    </BreadcrumbItem>
-                    <BreadcrumbItem>
-                        <BreadcrumbLink href="#" onClick={onOpen}>
-                            <QuestionIcon />
-                        </BreadcrumbLink>
-                    </BreadcrumbItem>
 
+                    <BreadcrumbItem>
+                        <BreadcrumbIconLink icon={ViewIcon} href="#" onClick={(e) => {e.preventDefault(); navigate('/gallery')}} />
+                    </BreadcrumbItem>
+                    <BreadcrumbItem>
+                        <BreadcrumbIconLink icon={QuestionIcon} href="#" onClick={onOpen} />
+                    </BreadcrumbItem>
+                    <BreadcrumbItem>
+                        <BreadcrumbIconLink icon={colorMode === 'light' ? SunIcon : MoonIcon} href="#" onClick={toggleColorMode} />
+                    </BreadcrumbItem>
                 </Breadcrumb>
 
 

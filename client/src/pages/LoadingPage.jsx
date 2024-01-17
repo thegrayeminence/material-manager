@@ -68,7 +68,7 @@ const LoadingPage = () => {
     };
 
     return (
-        <Box mt={'10rem'} fontSize={'2xl'} textAlign={'center'}>
+        <Box fontSize={'2xl'} textAlign={'center'}>
             {albedoImage ? (
                 <>
                     <MotionImageBox

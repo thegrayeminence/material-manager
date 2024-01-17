@@ -85,22 +85,27 @@ export default function FormPreviewBox() {
             {/* CONDITION: */}
             <Grid templateColumns="repeat(4, 1fr)" gap={6}>
               <Box w="100%" p={4}>
+                {color && <Text sx={bodyStyle}> Color:</Text>}
                 {color && <Text sx={headerStyle}>{color}</Text>}
               </Box>
               <Box w="100%" p={4}>
+                {elementType && <Text sx={bodyStyle}> Element Type:</Text>}
                 {elementType && <Text sx={headerStyle}>{elementType}</Text>}
               </Box>
               <Box w="100%" p={4}>
+                {manifestation && <Text sx={bodyStyle}> Manifestation:</Text>}
                 {manifestation && <Text sx={headerStyle}>{manifestation}</Text>}
               </Box>
               <Box w="100%" p={4}>
+                {condition && <Text sx={bodyStyle}> Condition:</Text>}
                 {condition && <Text sx={headerStyle}>{condition}</Text>}
               </Box>
 
             </Grid>
 
             <Box w="100%" p={4}>
-              {(color || elementType || manifestation || condition) && <Text sx={bodyStyle}> Material Name: {strippedNames()}</Text>}
+              {(color || elementType || manifestation || condition) && <Text sx={headerStyle}>Material Name:</Text>}
+              {(color || elementType || manifestation || condition) && <Text sx={bodyStyle}> {strippedNames()}</Text>}
             </Box>
 
 

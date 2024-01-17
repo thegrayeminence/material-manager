@@ -1,4 +1,4 @@
-import ChoiceButton from "./ChoiceButton";
+import ChoiceButton from "./UI/ChoiceButton";
 import NavBar from "./NavBar"
 import ProgressBar from "./ProgressBar"
 import MaterialUploadForm from "./MaterialUploadForm";
@@ -14,6 +14,9 @@ import TextureDisplay from "./TextureDisplay";
 import LandingPageText from "./UI/LandingPageText";
 import AboutSideBar from "./AboutSideBar";
 import SideBarBtn from "./UI/SideBarBtn";
+import RadioBtns from "./UI/RadioBtns";
+import FormPreviewBoxTabs from "./FormPreviewBoxTabs";
+
 
 
 export {
@@ -33,6 +36,8 @@ export {
     LandingPageText,
     AboutSideBar,
     SideBarBtn,
+    RadioBtns,
+    FormPreviewBoxTabs,
 
 
 };

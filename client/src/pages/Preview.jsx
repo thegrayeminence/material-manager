@@ -1,15 +1,13 @@
 import React from 'react'
 import {
-  Box, Grid, VStack, Heading, Text, Stack, Flex,
-  useColorModeValue, Skeleton, SkeletonCircle, SkeletonText,
-  useBoolean, HStack
+  Box
 } from '@chakra-ui/react'
 
-import {AnimatePresence, motion} from 'framer-motion';
+
 //components
 import {ProgressBar, MaterialUploadForm, FormPreviewBox, Header, ImagePreviewGrid, TextureDisplay, JsonDisplayModal, ImageGridUrlSrc} from '../components'
 import {useMaterialStore, useProgressStore, useIsLoadingStore, useFormMode, useGeneratedImagesStore} from '../store/store';
-
+import {FormPreviewBoxTabs} from '../components';
 
 
 function Preview() {
@@ -27,8 +25,8 @@ function Preview() {
         <MaterialUploadForm />
         {/* <JsonDisplayModal /> */}
       </Box>
-      {progress < 2 && mode === 0 && <FormPreviewBox />}
-      {progress < 3 && mode === 1 && <FormPreviewBox />}
+      {progress < 2 && mode === 0 && <FormPreviewBoxTabs />}
+      {progress < 3 && mode === 1 && <FormPreviewBoxTabs />}
 
       {/* {progress === 2 && mode === 0 && (< TextureDisplay />)} */}
       {progress === 2 && mode === 0 && (

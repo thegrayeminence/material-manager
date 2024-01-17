@@ -1,40 +1,71 @@
-import { extendTheme } from "@chakra-ui/react";
+import {extendTheme, theme as baseTheme} from "@chakra-ui/react";
 
-
-const colors = {
-  primary: {
-    100: "#E5FCF1",
-    200: "#27EF96",
-    300: "#10DE82",
-    400: "#0EBE6F",
-    500: "#0CA25F",
-    600: "#0A864F",
-    700: "#086F42",
-    800: "#075C37",
-    900: "#064C2E"
-  },
-  // Adding a grey color palette for suggestions
-  grey: {
-    100: "#f7f7f7",
-    200: "#e1e1e1",
-    300: "#cfcfcf",
-    400: "#b1b1b1",
-    500: "#9e9e9e", // This could be the color for your placeholders/suggestions
-    600: "#7e7e7e",
-    700: "#626262",
-    800: "#515151",
-    900: "#3b3b3b"
-  },
-  // Specific color for placeholders if preferred
-  placeholder: "#9e9e9e" // Light grey color
+// Dracula inspired color palette for dark mode
+const draculaColors = {
+  background: "#282a36",
+  currentLine: "#44475a",
+  selection: "#44475a",
+  foreground: "#f8f8f2",
+  comment: "#6272a4",
+  cyan: "#8be9fd",
+  green: "#50fa7b",
+  orange: "#ffb86c",
+  pink: "#ff79c6",
+  purple: "#bd93f9",
+  red: "#ff5555",
+  yellow: "#f1fa8c"
 };
 
-// color mode config
+// Light mode color palette complementing the Dracula theme
+const lightColors = {
+  background: "#f8f8f2",
+  currentLine: "#e0e0e0",
+  selection: "#d6d6d6",
+  foreground: "#282a36",
+  comment: "#a0a1a7",
+  cyan: "#76e0ea",
+  green: "#5af78e",
+  orange: "#ff9b53",
+  pink: "#ff92d0",
+  purple: "#caa9fa",
+  red: "#ff6e6e",
+  yellow: "#fafb70"
+};
+
+// Integrating custom colors with baseTheme colors
+const colors = {
+  ...baseTheme.colors,
+  ...draculaColors,
+  light: lightColors
+};
+
+// Override default Chakra UI styles based on color mode
+const styles = {
+  global: (props) => ({
+    "html, body": {
+      color: props.colorMode === "dark" ? draculaColors.foreground : lightColors.foreground,
+      background: props.colorMode === "dark" ? draculaColors.background : lightColors.background,
+      lineHeight: "base"
+    },
+    a: {
+      color: props.colorMode === "dark" ? draculaColors.cyan : lightColors.cyan,
+      _hover: {
+        textDecoration: "underline"
+      }
+    },
+    // Additional global styles can be added here
+  })
+};
+
+// Color mode configuration
 const config = {
   initialColorMode: 'light',
   useSystemColorMode: false,
-}
+};
 
-const theme = extendTheme({ colors, config });
+const customTheme = extendTheme({colors, config, styles});
 
-export default theme;
+export default customTheme;
+
+
+
