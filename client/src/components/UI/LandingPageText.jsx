@@ -145,7 +145,7 @@ function LandingPageText() {
                         variants={textMotion}
                         initial="initial" animate="animate"
                     >
-                        Generate Placeholder Materials For PBR Workflows
+                        Generate Placeholder Materials for PBR Workflows
                     </MotionHeading>
 
                     <VStack spacing="4" py={'3.5rem'}>

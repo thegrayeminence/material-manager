@@ -19,10 +19,10 @@ const handleDownload = async (materialId) => {
 
 import React from 'react'
 
-function DownloadButton() {
+function DownloadButton({sx, materialId}) {
     return (
         <>
-            <Button onClick={() => handleDownload(materialId)}>Download Material</Button>
+            <Button sx={sx} onClick={() => handleDownload(materialId)}>Download Textures</Button>
         </>
     )
 }
