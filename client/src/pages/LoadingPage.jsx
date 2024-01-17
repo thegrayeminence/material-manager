@@ -8,14 +8,17 @@ const MotionImageBox = motion(Box);
 
 
 const LoadingMessages = [
-    "Connecting to database",
-    "Encoding image files",
-    "Prepping API calls",
+    "Connecting to database...",
+    "Constructing prompts...",
+    "Storing material data...",
+    "Making API calls...",
+    "Generating maps...",
     "Hold tight, your packets are traveling at the speed of light!",
     "Maximizing Spiral Energy Output...",
+    "Encoding texture files...",
     "Transcompiling Pseudo-Quarks...",
     "Attempting to reverse entropy...",
-    "Loading.....",
+    "Sending requests...",
 ];
 
 const LoadingPage = () => {
@@ -84,6 +87,8 @@ const LoadingPage = () => {
                     </MotionImageBox>
 
                     <Heading mb={4}>Loading PBR Maps...</Heading>
+                    <Text>{LoadingMessages[currentMessage]}</Text>
+                    <Spacer p={'1rem'} />
                     <SimpleGrid columns={[2, null, 3]} spacing="40px">
                         {['normal', 'height', 'smoothness'].map((type, index) => (
                             pbrMapUrls[type] ? (

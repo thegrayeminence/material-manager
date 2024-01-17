@@ -12,6 +12,26 @@ const FormPreviewBoxTabs = () => {
     const [previewBoxIsLoading, setPreviewBoxIsLoading] = useBoolean(false);
 
 
+    const headerStyle = {
+
+        fontWeight: 'semibold',
+        color: 'slateblue',
+        letterSpacing: '.2rem',
+        fontFamily: 'Avenir Next',
+        lineHeight: '1.35rem',
+
+    };
+
+    const bodyStyle = {
+
+        fontWeight: 'medium',
+        color: 'slategrey',
+        letterSpacing: '.1rem',
+        fontFamily: 'Avenir Next',
+        lineHeight: '2rem',
+        fontSize: '1.25rem'
+    };
+
     const strippedNames = () => {
         return `${color.replace(/\s*/g, '')}_${elementType.replace(/\s*/g, '')}_${manifestation.replace(/\s*/g, '')}_${condition.replace(/\s*/g, '')}`;
     };

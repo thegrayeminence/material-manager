@@ -111,26 +111,48 @@ function LandingPageText() {
                 flexDirection="column"
                 initial="initial"
                 animate="animate"
+
             >
-                <MotionText
-                    // color={useColorModeValue('twitter.500', 'purple.600')}
-                    color={useColorModeValue('linear(to-r, pink.400, purple.600)', 'linear(to-r, purple.200, blue.600)')}
+                <Stack direction='column' >
+                    <MotionHeading
+                        // color={useColorModeValue('twitter.500', 'purple.600')}
+                        // color={useColorModeValue('linear(to-r, pink.400, purple.600)', 'linear(to-r, purple.200, blue.600)')}
+                        bgGradient="linear(to-l, #7928CA, #FF0080)"
+                        bgClip="text"
+                        letterSpacing={'.5rem'}
+                        fontSize='4rem'
+                        textAlign={'center'}
+                        py={'2rem'}
+                        textShadow="2px 2px 2px rgba(0, 0, 0, 0.3)"
+                        fontFamily={'avenir'}
+                        fontWeight='extrabold'
+                        variants={textMotion}
+                        initial="initial" animate="animate"
+                    >
+                        ProxyShader:
+                    </MotionHeading>
+                    <MotionHeading
+                        // color={useColorModeValue('twitter.500', 'purple.600')}
+                        bgGradient="linear(to-l, #7928CA, #FF0080)"
+                        bgClip="text"
+                        letterSpacing={'.15rem'}
+                        fontSize='2rem'
+                        textAlign={'center'}
+                        py={'.15rem'}
+                        // textShadow="2px 2px 2px rgba(0, 0, 0, 0.3)"
+                        fontFamily={'avenir'}
+                        fontWeight='medium'
+                        variants={textMotion}
+                        initial="initial" animate="animate"
+                    >
+                        Generate Placeholder Materials For PBR Workflows
+                    </MotionHeading>
 
-                    letterSpacing={'.5rem'}
-                    fontSize='3rem'
-                    textAlign={'center'}
-                    fontFamily={'avenir'}
-                    fontWeight='extrabold'
-                    variants={textMotion}
-                    initial="initial" animate="animate"
-                >
-                    Material Manager: Preview and Rename Assets
-                </MotionText>
+                    <VStack spacing="4" py={'3.5rem'}>
 
-                <VStack spacing="4">
-
-                    {ManageMaterialsButton({variants: buttonMotion}, 'Manage Materials')}
-                </VStack>
+                        {ManageMaterialsButton({variants: buttonMotion}, 'Manage Materials')}
+                    </VStack>
+                </Stack>
             </MotionBox>
 
         </>

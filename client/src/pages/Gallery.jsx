@@ -9,6 +9,7 @@ function Gallery() {
       <Header text={"PREVIEW MATERIALS"} />
     </Box>
     <Box px='2rem' width={'80vw'} ml='10%'>
+
       <TextureDisplay />
     </Box>
   </>

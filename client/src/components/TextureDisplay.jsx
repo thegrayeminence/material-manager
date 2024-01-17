@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import {useGeneratedImagesStore} from '../store/store';
-import {Box, SimpleGrid, Skeleton, Image, Heading} from '@chakra-ui/react';
+import {Box, SimpleGrid, Skeleton, Image, Heading, Flex} from '@chakra-ui/react';
 import {motion} from 'framer-motion';
 
 const MotionImageBox = motion(Box);
@@ -58,51 +58,52 @@ const TextureDisplay = () => {
         loadMaps();
     }, [materialId, setPBRImage]);
 
+
+    const imageBoxStyle = {
+        whileHover: {scale: 1.1},
+        boxShadow: "xl",
+        borderRadius: "md",
+        overflow: "hidden",
+        border: "2px solid",
+        borderColor: "gray.300",
+        bg: "gray.50",
+        cursor: "pointer",
+        transition: "all 0.3s ease-in-out"
+    };
+
+    const albedoBoxSize = "360px"; // 20% larger than PBR maps
+    const pbrBoxSize = "300px";
+
     return (
         <Box p={5}>
             {/* Albedo Image */}
-            <Box mb={8}>
-                <Heading mb={4}>Albedo</Heading>
+            <Flex direction="column" align="center" mb={10}>
+                <Heading mb={4} color="purple.500">Albedo</Heading>
                 {albedoImage ? (
-                    <MotionImageBox
-                        whileHover={{scale: 1.05}}
-                        boxShadow="md"
-                        borderRadius="lg"
-                        overflow="hidden"
-                        border="1px solid"
-                        borderColor="gray.200"
-                    >
-                        <Image src={albedoImage} alt="Albedo Texture" boxSize="300px" objectFit="cover" />
+                    <MotionImageBox {...imageBoxStyle}>
+                        <Image src={albedoImage} alt="Albedo Texture" boxSize={albedoBoxSize} objectFit="cover" />
                     </MotionImageBox>
                 ) : (
-                    <Skeleton height="300px" />
+                    <Skeleton height={albedoBoxSize} />
                 )}
-            </Box>
+            </Flex>
 
             {/* PBR Images: Normal, Height, Smoothness */}
-            <Box>
-                <Heading mb={4}>PBR Maps</Heading>
-                <SimpleGrid columns={[2, null, 3]} spacing="40px">
+            <Flex direction="column" align="center">
+                <Heading mb={4} color="blue.500">PBR Maps</Heading>
+                <SimpleGrid columns={[2, null, 3]} spacing="30px" justifyContent="center">
                     {['normal', 'height', 'smoothness'].map((type, index) => (
                         pbrMapUrls[type] ? (
-                            <MotionImageBox
-                                key={type}
-                                whileHover={{scale: 1.05}}
-                                boxShadow="md"
-                                borderRadius="lg"
-                                overflow="hidden"
-                                border="1px solid"
-                                borderColor="gray.200"
-                            >
-                                <Image src={pbrMapUrls[type]} alt={`${type} Texture`} boxSize="300px" objectFit="cover" />
+                            <MotionImageBox key={type} {...imageBoxStyle}>
+                                <Image src={pbrMapUrls[type]} alt={`${type} Texture`} boxSize={pbrBoxSize} objectFit="cover" />
                             </MotionImageBox>
                         ) : (
-                            <Skeleton key={index} height="300px" />
+                            <Skeleton key={index} height={pbrBoxSize} />
                         )
                     ))}
                 </SimpleGrid>
-            </Box>
-        </Box>
+            </Flex>
+        </Box >
     );
 };
 

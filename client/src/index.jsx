@@ -6,7 +6,7 @@ import {ChakraProvider, ColorModeScript, CSSReset} from '@chakra-ui/react';
 
 //pages/components/style
 import './styles/index.css';
-import customTheme from './styles/theme.js';
+import theme from './styles/theme'
 import App from './App';
 
 //router + root
@@ -15,9 +15,8 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
 
   <React.StrictMode>
-    <ColorModeScript initialColorMode={customTheme.config.initialColorMode} />
-    <CSSReset />
-    <ChakraProvider theme={customTheme}>
+    <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+    <ChakraProvider theme={theme}>
       <App />
     </ChakraProvider>
   </React.StrictMode>

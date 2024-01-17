@@ -1,6 +1,6 @@
 import React from 'react'
 import {
-  Box
+  Box, Flex, Stack
 } from '@chakra-ui/react'
 
 
@@ -8,7 +8,7 @@ import {
 import {ProgressBar, MaterialUploadForm, FormPreviewBox, Header, ImagePreviewGrid, TextureDisplay, JsonDisplayModal, ImageGridUrlSrc} from '../components'
 import {useMaterialStore, useProgressStore, useIsLoadingStore, useFormMode, useGeneratedImagesStore} from '../store/store';
 import {FormPreviewBoxTabs} from '../components';
-
+import GradientBackground from '../components/UI/GradientBackground';
 
 function Preview() {
   const {progress} = useProgressStore()
@@ -18,7 +18,9 @@ function Preview() {
   return (
     <>
       <Box py='2rem'>
+
         <Header text={"PREVIEW MATERIALS"} />
+
       </Box>
       <Box px='2rem' width={'80vw'} ml='10%'>
         <ProgressBar />
@@ -36,8 +38,10 @@ function Preview() {
       <Box px='2rem' width={'80vw'} ml='10%'>
 
       </Box>
-
-
+      {/* <Box width={'100vw'} height={'100%'} margin={0} padding={0} position={'fixed'} top={0} left={0}
+        zIndex={-1}>
+        <GradientBackground />
+      </Box> */}
     </>
 
   )
