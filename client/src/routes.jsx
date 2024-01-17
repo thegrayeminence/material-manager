@@ -1,6 +1,5 @@
 import ErrorPage from "./pages/ErrorPage";
 import Home from "./pages/Home";
-import About from "./pages/About"
 import Preview from "./pages/Preview";
 import Gallery from "./pages/Gallery";
 import LandingPage from "./pages/LandingPage";
@@ -19,10 +18,6 @@ const routes = [
             {
                 path: '/preview',
                 element: <Preview />
-            },
-            {
-                path: '/about',
-                element: <About />
             },
             {
                 path: '/loading-textures',

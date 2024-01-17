@@ -1,6 +1,6 @@
 import React from 'react';
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
+import {createBrowserRouter, RouterProvider} from "react-router-dom";
+import {QueryClient, QueryClientProvider, useQuery} from 'react-query'
 
 import routes from './routes';
 
@@ -13,11 +13,11 @@ export default function App() {
   return (
 
     <div className="App">
-      <QueryClientProvider client={queryClient}>
-        <RouterProvider
-          router={router}
-        />
-      </QueryClientProvider>
+      {/* <QueryClientProvider client={queryClient}> */}
+      <RouterProvider
+        router={router}
+      />
+      {/* </QueryClientProvider> */}
 
     </div>
 

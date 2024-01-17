@@ -113,7 +113,9 @@ export default function MaterialUploadForm() {
     // ---------------- //
 
     const handleFormSubmission = async (data) => {
-        setIsLoading(true); // Start loading indicator
+
+        clearImages();       // Clear any existing images before loading new ones
+        setIsLoading(true);  // Start loading indicator
 
         try {
             const materialData = {...formData.materialData, ...data};
@@ -133,6 +135,9 @@ export default function MaterialUploadForm() {
             // Second API call to generate PBR maps
             const pbrResponse = await axios.post('http://localhost:3001/api/generate_pbr_maps', {base_color_url: baseColorUrl, material_id: materialId});
             console.log("PBR maps generation initiated!");
+
+            // PBR MAPS LOAD HERE!!!!!!!!
+
             // Set PBR maps in the store
             const maps = pbrResponse.data.pbr_maps;
             setPBRImage('normal', maps.normal_map_url);

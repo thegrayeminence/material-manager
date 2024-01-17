@@ -11,6 +11,9 @@ import GeneratedTextureDisplay from "./UI/GeneratedTextureDisplay";
 import JsonDisplayModal from "./UI/JsonFormDataModal";
 import ImageGridUrlSrc from "./UI/ImageGridUrlSrc";
 import TextureDisplay from "./TextureDisplay";
+import LandingPageText from "./UI/LandingPageText";
+import AboutSideBar from "./AboutSideBar";
+import SideBarBtn from "./UI/SideBarBtn";
 
 
 export {
@@ -27,6 +30,9 @@ export {
     JsonDisplayModal,
     ImageGridUrlSrc,
     TextureDisplay,
+    LandingPageText,
+    AboutSideBar,
+    SideBarBtn,
 
 
 };

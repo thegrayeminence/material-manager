@@ -27,6 +27,7 @@
     "react-dropzone": "^14.2.3",
     "react-hook-form": "^7.49.3",
     "react-hook-form-chakra": "^1.0.2",
+    "react-iframe": "^1.8.5",
     "react-query": "^3.39.3",
     "react-router-dom": "^6.21.1",
     "sass": "^1.69.7",

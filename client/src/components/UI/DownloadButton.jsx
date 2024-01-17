@@ -1,4 +1,5 @@
-
+import axios from 'axios';
+import {Button} from '@chakra-ui/react';
 
 const handleDownload = async (materialId) => {
     try {
@@ -12,8 +13,19 @@ const handleDownload = async (materialId) => {
         link.parentNode.removeChild(link);
     } catch (error) {
         console.error("Error downloading material:", error);
-        // Handle error
+        // Handle error appropriately
     }
 };
 
-<button onClick={() => handleDownload(materialId)}>Download Material</button>
+import React from 'react'
+
+function DownloadButton() {
+    return (
+        <>
+            <Button onClick={() => handleDownload(materialId)}>Download Material</Button>
+        </>
+    )
+}
+
+export default DownloadButton
+

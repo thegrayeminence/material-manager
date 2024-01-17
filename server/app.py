@@ -10,6 +10,7 @@ import os
 import json
 
 # Remote library imports
+from flask import send_from_directory
 from flask import make_response, request, session, jsonify 
 from flask_restful import Resource
 import replicate
@@ -108,7 +109,7 @@ def generate_image_from_prompt(prompt):
             }
 
         # Run the API call
-        output = replicate.run(model2, input=params2)
+        output = replicate.run(model1, input=params1)
         print("Logging output from Replicate:", output)
 
         # Check if the output is a list with a valid URL
@@ -339,9 +340,25 @@ def get_recent_smoothness():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-##-------------------------------------##
-## download functionality ####
 
+
+def download_image(url):
+    try:
+        response = requests.get(url)
+        if response.status_code == 200:
+            filename = os.path.join('temp_images', url.split('/')[-1])
+            os.makedirs(os.path.dirname(filename), exist_ok=True)
+            with open(filename, 'wb') as f:
+                f.write(response.content)
+            return filename
+        else:
+            raise Exception(f"Failed to download image from {url}")
+    except Exception as e:
+        raise Exception(f"Error downloading image: {e}")
+
+def create_summary_text(material):
+    # Add more details as required
+    return f"Material ID: {material.id}\nBase Color URL: {material.base_color_url}\n..."
 
 def create_downloadable_zip(material_id):
     material = Material.query.get(material_id)
@@ -350,21 +367,38 @@ def create_downloadable_zip(material_id):
 
     zip_filename = f"material_{material_id}.zip"
     with zipfile.ZipFile(zip_filename, 'w') as zipf:
-        # Add texture images
         for map_type in ['base_color', 'normal', 'height', 'smoothness']:
             image_url = getattr(material, f"{map_type}_map_url")
             if image_url:
-                image_path = download_image(image_url)  # You'll need a function to download the image
+                image_path = download_image(image_url)
                 zipf.write(image_path, os.path.basename(image_path))
+                os.remove(image_path)  # Clean up the downloaded image
 
-        # Create and add summary text file
-        summary_text = create_summary_text(material)  # Implement this function to generate summary
+        summary_text = create_summary_text(material)
         summary_filename = "summary.txt"
         with open(summary_filename, "w") as summary_file:
             summary_file.write(summary_text)
         zipf.write(summary_filename, summary_filename)
+        os.remove(summary_filename)  # Clean up the summary file
 
     return zip_filename
+
+@app.route("/api/download_material/<int:material_id>", methods=['GET'])
+def download_material(material_id):
+    try:
+        zip_filename = create_downloadable_zip(material_id)
+        return send_from_directory(directory='.', filename=zip_filename, as_attachment=True)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+
+
+
+
+##-------------------------------------##
+#### flush db data /60min functionality ####
+
 
 ##-------------------------------------##
 ## flush db entries older than 60 minutes ####
@@ -381,15 +415,6 @@ def create_downloadable_zip(material_id):
 
 #     db.session.commit()
 
-@app.route("/api/download_material/<int:material_id>", methods=['GET'])
-def download_material(material_id):
-    try:
-        zip_filename = create_downloadable_zip(material_id)
-        return send_from_directory(directory=os.path.dirname(zip_filename), filename=os.path.basename(zip_filename), as_attachment=True)
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
-    
     
 
 ##-------------------------------------##
