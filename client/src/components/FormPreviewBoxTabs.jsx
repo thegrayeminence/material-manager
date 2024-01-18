@@ -31,6 +31,8 @@ const FormPreviewBoxTabs = () => {
     const strippedNames = () => {
         return `${color.replace(/\s*/g, '')}_${elementType.replace(/\s*/g, '')}_${manifestation.replace(/\s*/g, '')}_${condition.replace(/\s*/g, '')}`;
     };
+    const formattedData = JSON.stringify(formData, null, 2);
+
 
     return (
         <Stack px="2rem" width={'80vw'} ml="10%" maxHeight={'35vh'}>
@@ -65,7 +67,7 @@ const FormPreviewBoxTabs = () => {
                                 <Box>
                                     <Grid templateColumns="repeat(3, 1fr)" gap={6}>
                                         <Box w="100%" p={4}>
-                                            {materialType && <Text sx={bodyStyle}>Type: {materialType['label']}</Text>}
+                                            {materialType && <Text sx={headerStyle}>Type: {materialType['label']}</Text>}
                                         </Box>
                                         <Box w="100%" p={4}>
                                             {materialTextures && materialTextures.map((texture, index) => (
@@ -95,14 +97,16 @@ const FormPreviewBoxTabs = () => {
                                         </Box>
                                     </Grid>
 
-                                    <Box w="100%" p={4}>
+                                    {/* <Box w="100%" p={4}>
                                         {(color || elementType || manifestation || condition) && <Text sx={headerStyle}>Material Name: {strippedNames()}</Text>}
-                                    </Box>
+                                    </Box> */}
                                 </Box>
                             </Flex>
                         </TabPanel>
                         <TabPanel>
-                            <JsonTreeVisualization materialData={materialData} />
+                            <Text whiteSpace="pre-wrap">
+                                {formattedData}
+                            </Text>
                         </TabPanel>
                         <TabPanel>
                             <JsonTreeVisualization materialData={materialData} />
