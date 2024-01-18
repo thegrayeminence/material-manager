@@ -10,6 +10,8 @@ import zipfile
 import os
 import json
 import requests
+import shutil
+
 
 # Remote library imports
 from flask import send_from_directory
@@ -359,60 +361,6 @@ def get_recent_materials():
 
 ##-------------------------------------##
 ## Download Functionality ##
-# USING URLS 
-# def download_image(url):
-#     try:
-#         response = requests.get(url)
-#         if response.status_code == 200:
-#             return BytesIO(response.content)
-#         else:
-#             raise Exception(f"Failed to download image from {url}")
-#     except Exception as e:
-#         raise Exception(f"Error downloading image: {e}")
-
-# def create_summary_text(material):
-#     # Add more details as required
-#     return f"Material ID: {material.id}\nBase Color URL: {material.base_color_url}\n..."
-
-# def create_downloadable_zip(material_id):
-#     material = Material.query.get(material_id)
-#     if not material:
-#         raise FileNotFoundError("Material not found")
-
-#     zip_filename = f"material_{material_id}.zip"
-#     temp_images_dir = os.path.join(current_app.root_path, 'temp_images')
-#     os.makedirs(temp_images_dir, exist_ok=True)
-#     full_zip_path = os.path.join(temp_images_dir, zip_filename)
-
-#     with zipfile.ZipFile(full_zip_path, 'w') as zipf:
-#         for map_type, attribute_name in [('base_color', 'base_color_url'), ('normal', 'normal_map_url'), ('height', 'height_map_url'), ('smoothness', 'smoothness_map_url')]:
-#             image_url = getattr(material, attribute_name, None)
-#             if image_url:
-#                 image_data = download_image(image_url)
-#                 image_name = os.path.basename(image_url)
-#                 zipf.writestr(image_name, image_data.getvalue())
-
-#         summary_text = create_summary_text(material)
-#         summary_filename = "summary.txt"
-#         zipf.writestr(summary_filename, summary_text)
-
-#     return full_zip_path
-
-
-##local paths:
-# def download_image(url):
-#     try:
-#         response = requests.get(url)  # Using 'requests.get' instead of 'request.get'
-#         if response.status_code == 200:
-#             filename = os.path.join('temp_images', url.split('/')[-1])
-#             os.makedirs(os.path.dirname(filename), exist_ok=True)
-#             with open(filename, 'wb') as f:
-#                 f.write(response.content)
-#             return filename
-#         else:
-#             raise Exception(f"Failed to download image from {url}")
-#     except Exception as e:
-#         raise Exception(f"Error downloading image: {e}")
 
 def download_image(url, filename):
     try:
@@ -447,30 +395,6 @@ def create_summary_text(material):
     return "\n".join(summary_lines)
 
 
-# def create_downloadable_zip(material_id):
-#     material = Material.query.get(material_id)
-#     if not material:
-#         raise FileNotFoundError("Material not found")
-
-#     zip_filename = f"material_{material_id}.zip"
-#     with zipfile.ZipFile(zip_filename, 'w') as zipf:
-#         # Replace 'attribute_name' with the correct attribute names from your Material model
-#         for map_type, attribute_name in [('base_color', 'base_color_url'), ('normal', 'normal_map_url'), ('height', 'height_map_url'), ('smoothness', 'smoothness_map_url')]:
-#             image_url = getattr(material, attribute_name, None)
-#             if image_url:
-#                 image_path = download_image(image_url)
-#                 zipf.write(image_path, os.path.basename(image_path))
-#                 os.remove(image_path)  # Clean up the downloaded image
-
-
-#         summary_text = create_summary_text(material)
-#         summary_filename = "summary.txt"
-#         with open(summary_filename, "w") as summary_file:
-#             summary_file.write(summary_text)
-#         zipf.write(summary_filename, summary_filename)
-#         os.remove(summary_filename)  # Clean up the summary file
-
-#     return zip_filename
 
 def create_downloadable_zip(material_id):
     material = Material.query.get(material_id)
@@ -516,7 +440,6 @@ def download_material(material_id):
 
 ##-------------------------------------##
 ##CLEANUP FUNCTIONALITY:
-import shutil
 
 def cleanup_temporary_directory(directory):
     try:

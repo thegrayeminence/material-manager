@@ -6,13 +6,12 @@ import DownloadButton from '../components/UI/DownloadButton'
 
 function Gallery() {
   return (<>
-    <Box mt='5%' py='5rem'>
+    <Box py='5rem'>
       <Header text={"PREVIEW MATERIALS"} />
     </Box>
     <Box px='2rem' width={'80vw'} ml='10%'>
 
       <TextureDisplay />
-      <DownloadButton />
     </Box>
   </>
   )
