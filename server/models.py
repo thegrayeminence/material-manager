@@ -35,4 +35,3 @@ class Material(db.Model, SerializerMixin):
 
     def __repr__(self):
         return f'<Material {self.id}>'
-

@@ -5,15 +5,19 @@ from email.mime import base
 from datetime import datetime, timedelta
 from hmac import new
 from nis import maps
+from io import BytesIO
 import zipfile
 import os
 import json
+import requests
 
 # Remote library imports
 from flask import send_from_directory
 from flask import make_response, request, session, jsonify 
 from flask_restful import Resource
 import replicate
+from flask import current_app
+
 
 # Local imports
 from models import db, Material
@@ -355,9 +359,50 @@ def get_recent_materials():
 
 ##-------------------------------------##
 ## Download Functionality ##
+# USING URLS 
+# def download_image(url):
+#     try:
+#         response = requests.get(url)
+#         if response.status_code == 200:
+#             return BytesIO(response.content)
+#         else:
+#             raise Exception(f"Failed to download image from {url}")
+#     except Exception as e:
+#         raise Exception(f"Error downloading image: {e}")
+
+# def create_summary_text(material):
+#     # Add more details as required
+#     return f"Material ID: {material.id}\nBase Color URL: {material.base_color_url}\n..."
+
+# def create_downloadable_zip(material_id):
+#     material = Material.query.get(material_id)
+#     if not material:
+#         raise FileNotFoundError("Material not found")
+
+#     zip_filename = f"material_{material_id}.zip"
+#     temp_images_dir = os.path.join(current_app.root_path, 'temp_images')
+#     os.makedirs(temp_images_dir, exist_ok=True)
+#     full_zip_path = os.path.join(temp_images_dir, zip_filename)
+
+#     with zipfile.ZipFile(full_zip_path, 'w') as zipf:
+#         for map_type, attribute_name in [('base_color', 'base_color_url'), ('normal', 'normal_map_url'), ('height', 'height_map_url'), ('smoothness', 'smoothness_map_url')]:
+#             image_url = getattr(material, attribute_name, None)
+#             if image_url:
+#                 image_data = download_image(image_url)
+#                 image_name = os.path.basename(image_url)
+#                 zipf.writestr(image_name, image_data.getvalue())
+
+#         summary_text = create_summary_text(material)
+#         summary_filename = "summary.txt"
+#         zipf.writestr(summary_filename, summary_text)
+
+#     return full_zip_path
+
+
+##local paths:
 def download_image(url):
     try:
-        response = request.get(url)
+        response = requests.get(url)  # Using 'requests.get' instead of 'request.get'
         if response.status_code == 200:
             filename = os.path.join('temp_images', url.split('/')[-1])
             os.makedirs(os.path.dirname(filename), exist_ok=True)
@@ -380,12 +425,14 @@ def create_downloadable_zip(material_id):
 
     zip_filename = f"material_{material_id}.zip"
     with zipfile.ZipFile(zip_filename, 'w') as zipf:
-        for map_type in ['base_color', 'normal', 'height', 'smoothness']:
-            image_url = getattr(material, f"{map_type}_map_url")
+        # Replace 'attribute_name' with the correct attribute names from your Material model
+        for map_type, attribute_name in [('base_color', 'base_color_url'), ('normal', 'normal_map_url'), ('height', 'height_map_url'), ('smoothness', 'smoothness_map_url')]:
+            image_url = getattr(material, attribute_name, None)
             if image_url:
                 image_path = download_image(image_url)
                 zipf.write(image_path, os.path.basename(image_path))
                 os.remove(image_path)  # Clean up the downloaded image
+
 
         summary_text = create_summary_text(material)
         summary_filename = "summary.txt"
@@ -399,10 +446,18 @@ def create_downloadable_zip(material_id):
 @app.route("/api/download_material/<int:material_id>", methods=['GET'])
 def download_material(material_id):
     try:
+        print(f"Creating downloadable zip for material ID: {material_id}")
         zip_filename = create_downloadable_zip(material_id)
-        return send_from_directory(directory='.', filename=zip_filename, as_attachment=True)
+        print(f"Zip file created: {zip_filename}")
+
+        # Get the directory where the zip file is saved
+        directory = os.path.join(current_app.root_path, 'temp_images')
+        
+        return send_from_directory(directory, zip_filename, as_attachment=True)
     except Exception as e:
+        print(f"Error in download_material: {e}")
         return jsonify({"error": str(e)}), 500
+
 
 
 
