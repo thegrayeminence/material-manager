@@ -3,6 +3,8 @@ import axios from 'axios';
 import {useGeneratedImagesStore} from '../store/store';
 import {Box, SimpleGrid, Skeleton, Image, Heading, Flex} from '@chakra-ui/react';
 import {motion} from 'framer-motion';
+import {useParams} from 'react-router-dom'; // Import useParams from react-router-dom
+
 
 
 // helper function to download a material
@@ -25,7 +27,9 @@ const handleDownload = async (materialId) => {
     }
 };
 
-const TextureDisplayById = (id) => {
+const TextureDisplayById = () => {
+    const {id} = useParams(); // Get the 'id' parameter from the URL as a string
+
     const {setPBRImage} = useGeneratedImagesStore();
     const [materialId, setMaterialId] = useState(null);
     const [albedoImage, setAlbedoImage] = useState(null);
@@ -38,7 +42,7 @@ const TextureDisplayById = (id) => {
     useEffect(() => {
         const fetchRecentAlbedo = async () => {
             try {
-                const response = await axios.get(`http://localhost:3001/api/get_albedo_by_id/${id}`);
+                const response = await axios.get(`http://localhost:3001/api/get_albedo_by_id/${id}`); // Use 'id' as a string
                 setAlbedoImage(response.data.image_url);
                 setMaterialId(response.data.material_id);
                 // console.log(materialId, store_materialId)
@@ -50,7 +54,7 @@ const TextureDisplayById = (id) => {
         };
 
         fetchRecentAlbedo();
-    }, []);
+    }, [id]);
 
     // Fetch the PBR maps using the material ID
     useEffect(() => {
@@ -59,7 +63,7 @@ const TextureDisplayById = (id) => {
         const fetchMap = async (mapType) => {
             try {
                 console.log("Current materialId:", materialId);
-                const response = await axios.get(`http://localhost:3001/api/get_${mapType}_by_id/${id}`);
+                const response = await axios.get(`http://localhost:3001/api/get_${mapType}_by_id/${id}`); // Use 'id' as a string
                 return response.data.image_url;
             } catch (error) {
                 console.error(`Error fetching ${mapType} map:`, error);
@@ -83,7 +87,7 @@ const TextureDisplayById = (id) => {
         };
 
         loadMaps();
-    }, [materialId, setPBRImage]);
+    }, [materialId, setPBRImage, id]); // Include 'id' as a dependency
 
 
     const imageBoxStyle = {

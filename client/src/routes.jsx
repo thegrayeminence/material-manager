@@ -29,8 +29,8 @@ const routes = [
                 element: <Gallery />
             },
             {
-                path: '/gallery_by_id/:materialId',
-                element: <GalleryById materialId={materialId} />
+                path: '/gallery_id/:id',
+                element: <GalleryById />
             },
 
         ]
