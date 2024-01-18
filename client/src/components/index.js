@@ -17,6 +17,7 @@ import SideBarBtn from "./UI/SideBarBtn";
 import RadioBtns from "./UI/RadioBtns";
 import FormPreviewBoxTabs from "./FormPreviewBoxTabs";
 import JsonTreeVisualization from "./UI/JsonTreeVisualization";
+import TextureDisplayById from "./TextureDisplayById";
 
 
 export {
@@ -39,6 +40,7 @@ export {
     RadioBtns,
     FormPreviewBoxTabs,
     JsonTreeVisualization,
+    TextureDisplayById,
 
 
 };

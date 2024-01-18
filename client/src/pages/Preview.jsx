@@ -32,10 +32,10 @@ function Preview() {
       {progress < 3 && mode === 1 && <FormPreviewBoxTabs />}
 
       {/* {progress === 2 && mode === 0 && (< TextureDisplay />)} */}
-      {progress === 2 && mode === 0 && (
+      {/* {progress === 2 && mode === 0 && (
         <Box px='2rem' width={'80vw'} ml='10%'>
           <TextureDisplay />
-        </Box>)}
+        </Box>)} */}
       {/* {progress === 2 && mode === 0 && (
         <Box px='2rem' width={'80vw'} ml='10%'>
           <GalleryDisplayBox />
