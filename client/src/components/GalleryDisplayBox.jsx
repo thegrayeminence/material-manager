@@ -7,8 +7,8 @@
 
 // // helper function to download a material
 // const handleDownload = async (materialId) => {
-//     // const material_id = useGeneratedImagesStore(state => state.materialId);
-//     // console.log("material_id:", material_id)
+//     const material_id = useGeneratedImagesStore(state => state.materialId);
+//     console.log("material_id:", material_id)
 //     try {
 //         const response = await axios.get(`http://localhost:3001/api/download_material/${materialId}`, {responseType: 'blob'});
 //         const url = window.URL.createObjectURL(new Blob([response.data]));

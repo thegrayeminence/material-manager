@@ -109,7 +109,7 @@ def generate_image_from_prompt(prompt):
             }
 
         # Run the API call
-        output = replicate.run(model1, input=params1)
+        output = replicate.run(model2, input=params2)
         print("Logging output from Replicate:", output)
 
         # Check if the output is a list with a valid URL
@@ -357,7 +357,7 @@ def get_recent_materials():
 ## Download Functionality ##
 def download_image(url):
     try:
-        response = requests.get(url)
+        response = request.get(url)
         if response.status_code == 200:
             filename = os.path.join('temp_images', url.split('/')[-1])
             os.makedirs(os.path.dirname(filename), exist_ok=True)

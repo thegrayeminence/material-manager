@@ -8,7 +8,7 @@ import {motion} from 'framer-motion';
 // helper function to download a material
 const handleDownload = async (materialId) => {
     // const material_id = useGeneratedImagesStore(state => state.materialId);
-    // console.log("material_id:", material_id)
+    console.log("material_id:", materialId)
     try {
         const response = await axios.get(`http://localhost:3001/api/download_material/${materialId}`, {responseType: 'blob'});
         const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -58,6 +58,7 @@ const TextureDisplay = () => {
 
         const fetchMap = async (mapType) => {
             try {
+                console.log("Current materialId:", materialId);
                 const response = await axios.get(`http://localhost:3001/api/get_${mapType}_by_id/${materialId}`);
                 return response.data.image_url;
             } catch (error) {
@@ -66,6 +67,7 @@ const TextureDisplay = () => {
             }
         };
         const loadMaps = async () => {
+            console.log("Current materialId:", materialId);
             const mapTypes = ['normal', 'height', 'smoothness'];
             const mapPromises = mapTypes.map(mapType => fetchMap(mapType));
             const maps = await Promise.all(mapPromises);
