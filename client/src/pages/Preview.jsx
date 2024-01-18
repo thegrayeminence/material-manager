@@ -9,6 +9,7 @@ import {ProgressBar, MaterialUploadForm, FormPreviewBox, Header, ImagePreviewGri
 import {useMaterialStore, useProgressStore, useIsLoadingStore, useFormMode, useGeneratedImagesStore} from '../store/store';
 import {FormPreviewBoxTabs} from '../components';
 import GradientBackground from '../components/UI/GradientBackground';
+import GalleryDisplayBox from '../components/GalleryDisplayBox';
 
 function Preview() {
   const {progress} = useProgressStore()
@@ -35,13 +36,14 @@ function Preview() {
         <Box px='2rem' width={'80vw'} ml='10%'>
           <TextureDisplay />
         </Box>)}
-      <Box px='2rem' width={'80vw'} ml='10%'>
-
-      </Box>
-      {/* <Box width={'100vw'} height={'100%'} margin={0} padding={0} position={'fixed'} top={0} left={0}
+      {progress === 2 && mode === 0 && (
+        <Box px='2rem' width={'80vw'} ml='10%'>
+          <GalleryDisplayBox />
+        </Box>)}
+      <Box width={'100vw'} height={'100%'} margin={0} padding={0} position={'fixed'} top={0} left={0}
         zIndex={-1}>
         <GradientBackground />
-      </Box> */}
+      </Box>
     </>
 
   )

@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
-import {useGeneratedImagesStore} from '../store/store';
+import {useGeneratedImagesStore, useMaterialStore} from '../store/store';
 import {Box, SimpleGrid, Skeleton, Image, Heading, Flex} from '@chakra-ui/react';
 import {motion} from 'framer-motion';
 
@@ -25,7 +25,7 @@ const handleDownload = async (materialId) => {
     }
 };
 
-const TextureDisplay = () => {
+const GalleryDisplayBox = ({albedoImage, pbrMapUrls, ...props}) => {
     const {setPBRImage} = useGeneratedImagesStore();
     const [materialId, setMaterialId] = useState(null);
     const [albedoImage, setAlbedoImage] = useState(null);
@@ -38,7 +38,7 @@ const TextureDisplay = () => {
     useEffect(() => {
         const fetchRecentAlbedo = async () => {
             try {
-                const response = await axios.get('http://localhost:3001/api/get_recent_albedo');
+                const response = await axios.get('http://localhost:3001/api/get_10_recent_materials');
                 setAlbedoImage(response.data.image_url);
                 setMaterialId(response.data.material_id);
                 console.log(materialId, store_materialId)
@@ -58,19 +58,20 @@ const TextureDisplay = () => {
 
         const fetchMap = async (mapType) => {
             try {
-                const response = await axios.get(`http://localhost:3001/api/get_${mapType}_by_id/${materialId}`);
+                const response = await axios.get(`http://localhost:3001/api/get_10_recent_materials`);
                 return response.data.image_url;
             } catch (error) {
                 console.error(`Error fetching ${mapType} map:`, error);
                 return null;
             }
+
         };
         const loadMaps = async () => {
             const mapTypes = ['normal', 'height', 'smoothness'];
             const mapPromises = mapTypes.map(mapType => fetchMap(mapType));
             const maps = await Promise.all(mapPromises);
 
-            const newPbrMapUrls = {};
+            const newPbrMapUrls = pbrMapUrls;
             mapTypes.forEach((mapType, index) => {
                 newPbrMapUrls[mapType] = maps[index];
                 if (maps[index]) {
@@ -132,4 +133,4 @@ const TextureDisplay = () => {
     );
 };
 
-export default TextureDisplay;
+export default GalleryDisplayBox;

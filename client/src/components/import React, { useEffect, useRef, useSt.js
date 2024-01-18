@@ -14,10 +14,13 @@ const JsonTreeVisualization = ({materialData}) => {
             let hierarchyData = d3.hierarchy(materialData, (d) => {
                 return d && typeof d === 'object' ? Object.values(d).filter(v => typeof v === 'object') : [];
             });
+            const width = "80vw"; // Example dynamic width value based on viewport width
+            const padX = `calc(${width} / 2 - 45px)`; // Adjust the formula as needed
+            const maxH = "50vh";
+            const pady = `calc(${height} / 2 - 45px)`; // Adjust the formula as needed
 
-            const width = 800;
-            const dx = 10;
-            const dy = width / (hierarchyData.height + 1);
+            const dx = '10rem';
+            const dy = pady / (hierarchyData.height + 1);
             const tree = d3.tree().nodeSize([dx, dy]);
             const root = tree(hierarchyData);
 
@@ -55,8 +58,9 @@ const JsonTreeVisualization = ({materialData}) => {
                 .join("g")
                 .attr("transform", d => `translate(${d.y},${d.x})`);
 
+            // Node and text styling
             node.append("circle")
-                .attr("fill", d => d.children ? "#555" : "#999")
+                .attr("fill", d => d.depth === 0 ? "#ff6347" : d.depth === 1 ? "#4682b4" : "#32cd32") // Root, first and second level colors
                 .attr("r", 2.5);
 
             node.append("text")
@@ -64,6 +68,9 @@ const JsonTreeVisualization = ({materialData}) => {
                 .attr("x", d => d.children ? -6 : 6)
                 .attr("text-anchor", d => d.children ? "end" : "start")
                 .text(d => d.data.label || d.data.value || JSON.stringify(d.data))
+                .attr("fill", d => d.depth === 0 ? "#ff6347" : d.depth === 1 ? "#4682b4" : "#32cd32") // Matching text colors
+                .attr("font-family", "Arial")
+                .attr("font-size", "12px")
                 .clone(true).lower()
                 .attr("stroke", "white");
 
