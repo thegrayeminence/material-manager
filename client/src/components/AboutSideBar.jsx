@@ -51,14 +51,17 @@ const AboutSideBar = ({isOpen, onClose}) => {
                     <Spacer py={'1rem'} />
 
                     <Text sx={headerStyle}>How It Works:</Text>
-                    <Spacer py={'1rem'} />
+                    <Spacer py={'1.5rem'} />
                     <Text sx={bodyStyle}>1. User describes/classifies the properties of the material they want generated
                     </Text>
+                    <Spacer py={'.5rem'} />
                     <Text sx={bodyStyle}>2. ShaderProxy takes the descriptions and turns them into prompts optimally formatted for Stable Diffusion AI
                     </Text>
+                    <Spacer py={'.5rem'} />
                     <Text sx={bodyStyle}>3. Prompts are sent to API and used to generate the texture maps via two steps (text to image for Albedo map, image to image for other maps)
                     </Text>
-                    <Text sx={bodyStyle}>4. Once textures have been generated and loaded in browser, download and use to your heart's content!
+                    <Spacer py={'.5rem'} />
+                    <Text sx={bodyStyle}>4. Once textures have been generated and loaded in browser, download and use the texture maps to your heart's content!
                     </Text>
                     <Spacer py={'2.5rem'} />
                     <Link to='https://github.com/thegrayeminence/material-manager/tree/work1'>

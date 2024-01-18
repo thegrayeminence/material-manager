@@ -129,7 +129,7 @@ function LandingPageText() {
                         variants={textMotion}
                         initial="initial" animate="animate"
                     >
-                        ProxyShader:
+                        ShaderProxy:
                     </MotionHeading>
                     <MotionHeading
                         // color={useColorModeValue('twitter.500', 'purple.600')}
