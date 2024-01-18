@@ -400,71 +400,133 @@ def get_recent_materials():
 
 
 ##local paths:
-def download_image(url):
+# def download_image(url):
+#     try:
+#         response = requests.get(url)  # Using 'requests.get' instead of 'request.get'
+#         if response.status_code == 200:
+#             filename = os.path.join('temp_images', url.split('/')[-1])
+#             os.makedirs(os.path.dirname(filename), exist_ok=True)
+#             with open(filename, 'wb') as f:
+#                 f.write(response.content)
+#             return filename
+#         else:
+#             raise Exception(f"Failed to download image from {url}")
+#     except Exception as e:
+#         raise Exception(f"Error downloading image: {e}")
+
+def download_image(url, filename):
     try:
-        response = requests.get(url)  # Using 'requests.get' instead of 'request.get'
+        response = requests.get(url)
         if response.status_code == 200:
-            filename = os.path.join('temp_images', url.split('/')[-1])
             os.makedirs(os.path.dirname(filename), exist_ok=True)
             with open(filename, 'wb') as f:
                 f.write(response.content)
-            return filename
         else:
             raise Exception(f"Failed to download image from {url}")
     except Exception as e:
         raise Exception(f"Error downloading image: {e}")
 
 def create_summary_text(material):
-    # Add more details as required
-    return f"Material ID: {material.id}\nBase Color URL: {material.base_color_url}\n..."
+    # Constructing summary text with material details
+    summary_lines = [
+        f"Material ID: {material.id}",
+        f"Workflow: {material.workflow}",
+        f"Color: {material.color}",
+        f"Element: {material.element}",
+        f"Condition: {material.condition}",
+        f"Manifestation: {material.manifestation}",
+        f"Prompt: {material.prompt}",
+        f"Base Color URL: {material.base_color_url}",
+        f"Normal Map URL: {material.normal_map_url}",
+        f"Height Map URL: {material.height_map_url}",
+        f"Smoothness Map URL: {material.smoothness_map_url}",
+        f"Maps: {material.maps}",
+        f"Software: {material.software}"
+    ]
+
+    return "\n".join(summary_lines)
+
+
+# def create_downloadable_zip(material_id):
+#     material = Material.query.get(material_id)
+#     if not material:
+#         raise FileNotFoundError("Material not found")
+
+#     zip_filename = f"material_{material_id}.zip"
+#     with zipfile.ZipFile(zip_filename, 'w') as zipf:
+#         # Replace 'attribute_name' with the correct attribute names from your Material model
+#         for map_type, attribute_name in [('base_color', 'base_color_url'), ('normal', 'normal_map_url'), ('height', 'height_map_url'), ('smoothness', 'smoothness_map_url')]:
+#             image_url = getattr(material, attribute_name, None)
+#             if image_url:
+#                 image_path = download_image(image_url)
+#                 zipf.write(image_path, os.path.basename(image_path))
+#                 os.remove(image_path)  # Clean up the downloaded image
+
+
+#         summary_text = create_summary_text(material)
+#         summary_filename = "summary.txt"
+#         with open(summary_filename, "w") as summary_file:
+#             summary_file.write(summary_text)
+#         zipf.write(summary_filename, summary_filename)
+#         os.remove(summary_filename)  # Clean up the summary file
+
+#     return zip_filename
 
 def create_downloadable_zip(material_id):
     material = Material.query.get(material_id)
     if not material:
         raise FileNotFoundError("Material not found")
 
-    zip_filename = f"material_{material_id}.zip"
+    # Construct folder name based on material attributes
+    folder_name = f"{material.color}_{material.element}_{material.manifestation}_{material.condition}"
+    temp_images_dir = os.path.join(current_app.root_path, 'temp_images', folder_name)
+    os.makedirs(temp_images_dir, exist_ok=True)
+
+    zip_filename = os.path.join(temp_images_dir, f"{folder_name}.zip")
+    
     with zipfile.ZipFile(zip_filename, 'w') as zipf:
-        # Replace 'attribute_name' with the correct attribute names from your Material model
-        for map_type, attribute_name in [('base_color', 'base_color_url'), ('normal', 'normal_map_url'), ('height', 'height_map_url'), ('smoothness', 'smoothness_map_url')]:
+        for map_type, attribute_name in [('base_color', 'base_color_url'), ('normal', 'normal_map_url'), 
+                                         ('height', 'height_map_url'), ('smoothness', 'smoothness_map_url')]:
             image_url = getattr(material, attribute_name, None)
             if image_url:
-                image_path = download_image(image_url)
-                zipf.write(image_path, os.path.basename(image_path))
-                os.remove(image_path)  # Clean up the downloaded image
-
-
-        summary_text = create_summary_text(material)
-        summary_filename = "summary.txt"
-        with open(summary_filename, "w") as summary_file:
-            summary_file.write(summary_text)
-        zipf.write(summary_filename, summary_filename)
-        os.remove(summary_filename)  # Clean up the summary file
+                filename = f"{folder_name}_{map_type}.png"
+                filepath = os.path.join(temp_images_dir, filename)
+                download_image(image_url, filepath)
+                zipf.write(filepath, filename)
 
     return zip_filename
+
+
 
 @app.route("/api/download_material/<int:material_id>", methods=['GET'])
 def download_material(material_id):
     try:
-        print(f"Creating downloadable zip for material ID: {material_id}")
         zip_filename = create_downloadable_zip(material_id)
-        print(f"Zip file created: {zip_filename}")
-
-        # Get the directory where the zip file is saved
-        directory = os.path.join(current_app.root_path, 'temp_images')
-        
-        return send_from_directory(directory, zip_filename, as_attachment=True)
+        directory = os.path.dirname(zip_filename)
+        response = send_from_directory(directory, os.path.basename(zip_filename), as_attachment=True)
+        cleanup_temporary_directory(directory)  # Clean up after sending the file
+        return response
+        # return send_from_directory(directory, os.path.basename(zip_filename), as_attachment=True)
     except Exception as e:
-        print(f"Error in download_material: {e}")
         return jsonify({"error": str(e)}), 500
 
 
 
 
 
-
-
 ##-------------------------------------##
+##CLEANUP FUNCTIONALITY:
+import shutil
+
+def cleanup_temporary_directory(directory):
+    try:
+        shutil.rmtree(directory)
+        print(f"Cleaned up temporary directory: {directory}")
+    except Exception as e:
+        print(f"Error during cleanup: {e}")
+
+
+
 #### flush db data /60min functionality ####
 
 
