@@ -1,8 +1,7 @@
 
-# ShaderProxy: Generate Placeholder Materials for PBR Workflows 
->render texture maps for your materials procedurally or via AI prompts and pre-existing assets; configure your materials’ structure; and preview your materials in the browser before 
+# QuickMaps: Generate Placeholder Materials for PBR Workflows 
 
-ShaderProxy USES DATA INPUTS TO GENERATE MATERIALS THAT can be used to ACT AS LOW IMPACT/Temporary PLACEHOLDERS FOR PBR MATERIALs; by mimicking the file structure and color information of true PBR materials, users can slot their proxies (i.e. generated texture maps) into their rendering engine's  shader system/node tree as they normally would PLACEHOLDERS IN SOFTWARE/RENDERING ENGINES; thus providing a handy time-saving device for animators/artsits still in the early stage of developing their projects--previz, playblasts, or quick renders where the prioritization of speed and low-impact assets over photorealistic lighting is desirable.
+Summary of service provided: QuickMaps uses data inputs (via a series of elements on a form) to generate texture maps that can be downloaded and used to act as low impact/temporary placeholders (or 'proxies') for higher-fidelity PBR materials. By mimicking the file structure and color information of 'true' PBR materials, users can import their newly generated texture maps into their rendering engine of choice, then connect each map in the shader's console/node tree as they normally would, thus providing a handle, time-saving tool for Game Developers/3D and VFX artists/etc.--specifically those whose projects are still in the early stages of development (e.g. previz, playblasts, or rough renders where the prioritization of speed and low-impact assets over photorealistic lighting is desirable.)
 
 
 ## The Problem:
@@ -14,6 +13,16 @@ ShaderProxy USES DATA INPUTS TO GENERATE MATERIALS THAT can be used to ACT AS LO
 ## Getting Started:
 
 ### User Instructions:
+
+1. User describes/classifies the properties of the material they want generated
+
+2. QuickMaps takes the descriptions and turns them into prompts optimally formatted for Stable Diffusion AI
+
+3. Prompts are sent to API and used to generate the texture maps via two steps (text to image for Albedo map, image to image for other maps)
+
+4. Once textures have been generated and loaded in browser, download and use the texture maps to your heart's content!
+
+
 
 ### Developer Instructions:
 
@@ -27,6 +36,7 @@ ShaderProxy USES DATA INPUTS TO GENERATE MATERIALS THAT can be used to ACT AS LO
    pipenv install && pipenv shell
    export FLASK_APP=app.py && export FLASK_RUN_PORT=3001 && export FLASK_DEBUG=1
    export DATABASE_URL='postgresql://username:password@hostname/dbname'
+   flask db init
    flask db upgrade
    flask run
    ```
@@ -38,6 +48,9 @@ ShaderProxy USES DATA INPUTS TO GENERATE MATERIALS THAT can be used to ACT AS LO
    psql postgres
    DROP DATABASE your_database_name;
    CREATE DATABASE your_new_database_name;
+   flask db init
+   flask db migrate
+   flask db upgrade
    ```
 
 ##### For Setting Up the Frontend:
