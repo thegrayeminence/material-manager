@@ -11,7 +11,7 @@ import os
 import json
 import requests
 import shutil
-
+import webbrowser
 
 # Remote library imports
 from flask import send_from_directory
@@ -19,6 +19,8 @@ from flask import make_response, request, session, jsonify
 from flask_restful import Resource
 import replicate
 from flask import current_app
+from dotenv import load_dotenv
+
 
 
 # Local imports
@@ -28,10 +30,9 @@ from config import app, api
 ## api prefix for endpoints
 #URL_PREFIX = '/api'
 
-##replicate API vars
-replicate.api_token = os.getenv("REPLICATE_API_TOKEN")
-#model_name = "stability-ai/stable-diffusion:27b93a2413e7f36cd83da926f3656280b2931564ff050bf9575f1fdf9bcd7478"
-
+##.env imports
+load_dotenv()
+api_token = os.getenv("REPLICATE_API_TOKEN")
 
 ##------HELPER FUNCTIONS FOR GENERATING TEXTURES------##
 ##----------------------------------------------------##
@@ -89,8 +90,8 @@ def generate_specific_pbr_map(map_type):
 def generate_image_from_prompt(prompt):
     try:
         # Specify the model name and parameters for replicate.run()
-        # replicate.api_token = os.getenv("REPLICATE_API_TOKEN")
-        os.environ["REPLICATE_API_TOKEN"] = "r8_UG5Hm4swKAvk3K39YmcsMFqwuHlUELh3AAXCJ"
+        #replicate.api_token = api_token
+        os.environ["REPLICATE_API_TOKEN"] = api_token
         model1= "tommoore515/material_stable_diffusion:3b5c0242f8925a4ab6c79b4c51e9b4ce6374e9b07b5e8461d89e692fd0faa449"
         params1 = {
             "width": 512, 
@@ -132,8 +133,7 @@ def generate_image_from_prompt(prompt):
 ## MAKES API CALL TO GENERATE PBR MAPS FROM ALBEDO MAP & RETURNS URLS ###
 def generate_pbr_from_albedo(base_color_url, map_type):
     generated_maps = {}
-    #replicate.api_token = os.getenv("REPLICATE_API_TOKEN")
-    os.environ["REPLICATE_API_TOKEN"] = "r8_UG5Hm4swKAvk3K39YmcsMFqwuHlUELh3AAXCJ"
+    os.environ["REPLICATE_API_TOKEN"] = api_token
 
     ## FOR SINGLE MAP (THIS WORKS!)
     print(f"loaded albedo, attempting to generate: {map_type}" )

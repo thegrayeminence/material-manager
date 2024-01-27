@@ -13,9 +13,10 @@ from sqlalchemy import MetaData
 # Instantiate app, set attributes
 app = Flask(__name__)
 app.secret_key = b'\xbbyG>\xcf \x07\xad\x12\xfc\x8eJ'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://materialMaker:luthien@localhost:5432/materialsdb'
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.json.compact = False
+
 
 # Define metadata, instantiate db
 metadata = MetaData(naming_convention={

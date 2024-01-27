@@ -19,6 +19,7 @@ Werkzeug = "==2.3.6"
 requests = "*"
 faker = "*"
 replicate = "*"
+python-dotenv = "*"
 
 [dev-packages]
 pytest = "*"
