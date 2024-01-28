@@ -52,7 +52,7 @@ const JsonTreeVisualization = ({materialData}) => {
 
         const node = g.append("g")
             .attr("stroke-linejoin", "round")
-            .attr("stroke-width", 3)
+            .attr("stroke-width", 1.5)
             .selectAll("g")
             .data(root.descendants())
             .join("g")
@@ -93,7 +93,7 @@ const JsonTreeVisualization = ({materialData}) => {
                         exit={{opacity: 0, scale: 0.5}}
                         style={{position: 'absolute', left: selectedNode.y, top: selectedNode.x, pointerEvents: 'none'}}
                     >
-                        <Box p="2" bg="white" boxShadow="md" borderRadius="md">
+                        <Box p="2" boxShadow="md" borderRadius="md">
                             <Text fontSize="sm" fontWeight="bold">
                                 {selectedNode.data.label || selectedNode.data.value || JSON.stringify(selectedNode.data)}
                             </Text>

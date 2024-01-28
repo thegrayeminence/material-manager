@@ -8,7 +8,7 @@ const SideBarBtn = ({children, func}) => {
             borderRadius={6} borderWidth={2} transition='all 0.2s cubic-bezier(.08,.52,.52,1)'
             backdropFilter='auto' backdropBlur='5px'
             _hover={{
-                bg: useColorModeValue(), backdropFilter: 'auto', borderColor: 'pink.200',
+                backdropFilter: 'auto', borderColor: 'pink.200',
                 backdropBlur: '10px', transform: 'scale(1.125)'
             }}
         >

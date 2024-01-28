@@ -17,8 +17,6 @@ export const ManageMaterialsButton = (props, text) => {
     return (
         <GradientButton
             onClick={() => navigate('/preview')}
-            // color={useColorModeValue('whiteAlpha.800', 'whiteAlpha.900')}
-            // bg={useColorModeValue('twitter.500', 'purple.600')}
             size="lg"
             bgGradient="linear(to-r, teal.500, green.500)"
             color="white"

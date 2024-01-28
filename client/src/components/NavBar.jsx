@@ -12,14 +12,13 @@ import {AiOutlineHome} from "react-icons/ai";
 import {useNavigate, useLocation} from 'react-router-dom';
 import ColorModeToggle from './UI/ColorModeToggle';
 import AboutSideBar from './AboutSideBar';
+import {color} from 'framer-motion';
 
 
 
 
 
 const NavBarContainer = ({children}) => {
-
-
 
     return (
         <>
@@ -29,12 +28,12 @@ const NavBarContainer = ({children}) => {
                 justify="space-between"
                 wrap='nowrap'
                 w="100%"
-                bg={'transparent'}
+                bg={useColorModeValue('transparent', 'transparent')}
                 p={4}
                 position="fixed"
                 top={0}
                 zIndex={1}
-                color={useColorModeValue('blue.700', 'whiteAlpha.800')}
+                color={useColorModeValue('whiteAlpha.800', 'whiteAlpha.800')}
             >
                 {children}
             </Flex>
@@ -96,7 +95,9 @@ function NavBar() {
                         <BreadcrumbIconLink icon={QuestionIcon} href="#" onClick={onOpen} />
                     </BreadcrumbItem>
                     <BreadcrumbItem>
-                        <BreadcrumbIconLink icon={colorMode === 'light' ? SunIcon : MoonIcon} href="#" onClick={toggleColorMode} />
+                        <BreadcrumbIconLink icon={colorMode === 'light' ? SunIcon : MoonIcon} href="#"
+                        // onClick={toggleColorMode} 
+                        />
                     </BreadcrumbItem>
                 </Breadcrumb>
 

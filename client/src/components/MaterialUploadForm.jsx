@@ -7,11 +7,12 @@ import {useMutation, useQueryClient} from 'react-query';
 import axios from 'axios';
 import {
     Box, Button, VStack, FormControl, FormLabel, Image, Input, Textarea,
-    HStack, useBoolean, useTheme, useColorModeValue,
+    HStack, useBoolean, useTheme, useColorModeValue, FormErrorMessage,
     useToast,
 } from '@chakra-ui/react';
 // import { getClosestMatch } from '../config/helperfunctions';
 import {Select} from "chakra-react-select";
+
 
 //local imports
 import {textureMapOptionsPBRMetalRough, textureMapOptionsPBRGlossSpec, textureMapOptionsCommon, materialTypeOptions, metaDataOptions} from '../config/formInputData';
@@ -22,8 +23,10 @@ import SuggestionDisplay from './UI/SuggestionDisplay';
 
 export default function MaterialUploadForm() {
 
+
+
     //react-hook-form
-    const {register, handleSubmit, control, watch, reset, setError, setFocus, setValue} = useForm();
+    const {register, handleSubmit, control, watch, reset, setError, setFocus, setValue, formState: {errors}} = useForm();
 
     //query client
     const queryClient = useQueryClient();
@@ -66,16 +69,15 @@ export default function MaterialUploadForm() {
     };
 
 
-    //nav/theme imports
-    const theme = useTheme();
+
+    //other imports
     const navigate = useNavigate();
+    const toast = useToast();
+
 
     //### USE EFFECTS ####//
     // ------------------ //    
     // auto loads/renders options/selections for texture maps based on material type selection
-
-
-
     useEffect(() => {
         if (materialType && materialType.value === "custom") {
             setValue('materialTextures', []);
@@ -113,6 +115,36 @@ export default function MaterialUploadForm() {
     // ---------------- //
 
     const handleFormSubmission = async (data) => {
+
+        // Check if required fields for the second page are filled
+        if (progress === 1) {
+            if (!color || !elementType || !manifestation || !condition) {
+                toast({
+                    title: "Validation Error",
+                    description: "Please fill in all required fields.",
+                    status: "error",
+                    duration: 5000,
+                    isClosable: true,
+                    position: "top",
+                    // Styling the toast container
+                    // containerStyle: {
+                    //     maxWidth: '400px',
+                    //     border: '2px solid teal',
+                    //     bg: 'blue.400',
+                    //     color: 'white',
+                    //     borderRadius: '10px',
+                    //     boxShadow: '0 4px 12px 0 rgba(0, 0, 0, 0.05)',
+                    // },
+                    // // // Customizing the style for different parts of the toast
+                    // // style: {
+                    // //     color: 'white',
+                    // //     bg: 'blue.300',
+                    // //     padding: '16px',
+                    // // }
+                });
+                return;
+            }
+        }
 
         clearImages();       // Clear any existing images before loading new ones
         setIsLoading(true);  // Start loading indicator
@@ -198,9 +230,22 @@ export default function MaterialUploadForm() {
     //handles navigation between form steps via progress var's global state
     const handleNext = () => {
         if (progress === 0 && mode === 0) {
+            // Perform validation checks here before increasing progress
+            // For example, check if required fields are filled
+            if (!materialType || !materialTextures.length) {
+                // Do not increase progress if validation fails
+                toast({
+                    title: "Validation Error",
+                    description: "Please fill in all required fields.",
+                    status: "error",
+                    duration: 5000,
+                    isClosable: true,
+                    position: "top",
+                });
+                return;
+            }
             increaseProgress();
         } else if (progress === 1 && mode === 0) {
-            print("handle next function is ass")
             return;
         } else if (progress < 2 && mode === 1) {
             increaseProgress();
@@ -237,33 +282,40 @@ export default function MaterialUploadForm() {
 
                 {/* Material Type Selection */}
                 {progress === 0 && (
-                    <FormControl mb={4}>
+                    <FormControl mb={4} isInvalid={errors.materialType}>
                         <FormLabel htmlFor="materialType">Material Type</FormLabel>
                         <Controller
                             name="materialType"
-                            id="materialType"
                             control={control}
+                            rules={progress === 0 ? {required: "Material Type is required"} : {}}
                             render={({field}) => (
-                                <Select
-                                    {...field}
-                                    options={materialTypeOptions}
-                                    placeholder="Select Material Type"
-                                    closeMenuOnSelect={true}
-                                    variant="flushed"
-                                />
+                                <>
+                                    <Select
+                                        {...field}
+                                        options={materialTypeOptions}
+                                        placeholder="Select Material Type"
+                                        closeMenuOnSelect={true}
+                                        variant="flushed"
+                                        colorScheme="blue"
+
+                                    />
+                                </>
                             )}
                         />
+                        {errors.materialType && <FormErrorMessage>{errors.materialType.message}</FormErrorMessage>}
+
                     </FormControl>
                 )}
 
 
                 {/* Texture Maps Selection */}
                 {progress === 0 && (
-                    <FormControl mb={4}>
+                    <FormControl mb={4} isInvalid={errors.materialTextures}>
                         <FormLabel htmlFor="materialTextures">Texture Maps</FormLabel>
                         <Controller
                             name="materialTextures"
                             control={control}
+                            rules={progress === 0 ? {required: "Material Textures are required"} : {}}
                             render={({field}) => (
                                 <Select
                                     {...field}
@@ -273,6 +325,9 @@ export default function MaterialUploadForm() {
                                     closeMenuOnSelect={false}
                                     selectedOptionStyle="check"
                                     hideSelectedOptions={true}
+                                    variant="flushed"
+                                    colorScheme="blue"
+
                                 />
                             )}
                         />
@@ -297,6 +352,8 @@ export default function MaterialUploadForm() {
                                     closeMenuOnSelect={false}
                                     selectedOptionStyle="check"
                                     hideSelectedOptions={false}
+                                    variant="flushed"
+                                    colorScheme="blue"
                                 />
                             )}
                         />
@@ -389,10 +446,13 @@ export default function MaterialUploadForm() {
 
                 {/* Navigation Buttons; Next and Submit have diff functions based on progress state */}
                 <HStack spacing={4} py={'1rem'}>
-                    <Button colorScheme="blue" w="full" onClick={() => flushFormData()}>Reset</Button>
+
+                    <Button colorScheme="blue" w="full" onClick={flushFormData}>Reset</Button>
+
                     {progress > 0 && (
                         <Button colorScheme="blue" w="full" onClick={() => decreaseProgress()}>Back</Button>
                     )}
+
                     {/* Mode 0 : Default */}
                     {progress < 1 && mode === 0 && (
                         <Button colorScheme="green" w="full" onClick={handleNext}>
@@ -423,7 +483,7 @@ export default function MaterialUploadForm() {
 
 
             </Box>
-            <DevTool control={control} />
+            {/* <DevTool control={control} /> */}
         </>
     );
 }

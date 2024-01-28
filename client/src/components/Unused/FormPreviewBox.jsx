@@ -1,8 +1,8 @@
 import React from 'react'
 import {Box, Grid, VStack, Heading, Text, Stack, Flex, useColorModeValue, Skeleton, SkeletonCircle, SkeletonText, useBoolean, HStack} from '@chakra-ui/react'
 //components
-import {useMaterialStore} from '../store/store'
-import {GeneratedTextureDisplay} from '../components'
+import {useMaterialStore} from '../../store/store'
+import {GeneratedTextureDisplay} from '..'
 
 //font styles
 const headerStyle = {
@@ -54,7 +54,7 @@ export default function FormPreviewBox() {
         _hover={{
           backdropFilter: 'auto',
           backdropBlur: '10px', transform: 'scale(1.025)',
-          bgGradient: useColorModeValue('linear(to-b,  #fff4e7, #e6fffd)')
+          // bgGradient: useColorModeValue('linear(to-b,  #fff4e7, #e6fffd)')
         }}
       >
         <Flex

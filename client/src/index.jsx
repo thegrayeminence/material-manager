@@ -1,7 +1,7 @@
 //library/dependencies 
 import * as React from 'react';
 import ReactDOM from 'react-dom/client';
-import {ChakraProvider, ColorModeScript, CSSReset} from '@chakra-ui/react';
+import {ChakraProvider, ColorModeScript} from '@chakra-ui/react';
 
 
 //pages/components/style

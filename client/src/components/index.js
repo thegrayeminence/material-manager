@@ -2,7 +2,7 @@ import ChoiceButton from "./UI/ChoiceButton";
 import NavBar from "./NavBar"
 import ProgressBar from "./ProgressBar"
 import MaterialUploadForm from "./MaterialUploadForm";
-import FormPreviewBox from "./FormPreviewBox";
+import FormPreviewBox from "./Unused/FormPreviewBox";
 import Header from "./UI/Header";
 import SuggestionDisplay from "./UI/SuggestionDisplay";
 import ImagePreviewBox from "./UI/ImagePreviewBox";

@@ -29,7 +29,7 @@ function NavBar() {
             justify="space-between"
             wrap='nowrap'
             w="100%"
-            bg={colorMode === 'light' ? 'transparent' : 'gray.900'}
+            bg={'transparent'}
             p={4}
             boxShadow="sm"
             position="fixed"
