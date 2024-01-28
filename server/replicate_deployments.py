@@ -3,6 +3,37 @@ import replicate
 
 
 
+####### API CALL TO GENERATE PBR TEXTURES ONE AT A TIME #######
+##--------------------------------------------------------##
+
+# def generate_specific_pbr_map(map_type):
+#     pbr_maps = {}
+#     try:
+#         data = request.get_json()
+#         base_color_url = data.get('base_color_url')
+#         if not base_color_url:
+#             return jsonify({"error": "Albedo URL is required"}), 400
+
+#         print(f"Generating {map_type} map...")
+#         map_output = generate_pbr_from_albedo(base_color_url, map_type)
+#         pbr_maps.update(map_output)
+
+#         material_id = data.get('material_id')
+#         if not material_id:
+#             return jsonify({"error": "material_id is required"}), 400
+
+#         material = Material.query.get(material_id)
+#         if material:
+#             setattr(material, f"{map_type}_url", pbr_maps.get(map_type))
+#             db.session.commit()
+#             return jsonify({"message": f"{map_type} map generated successfully", "pbr_map": pbr_maps[map_type]}), 200
+#         else:
+#             return jsonify({"error": "Material not found"}), 404
+#     except Exception as e:
+#         return jsonify({"error": str(e)}), 500
+
+
+
 
 # Function for Text-to-Image generation
 def generate_image_from_prompt(model_identifier, prompt, params):
@@ -19,6 +50,7 @@ def generate_image_from_prompt(model_identifier, prompt, params):
     except Exception as e:
         print(f"An error occurred: {e}")
         raise Exception(f"Failed to generate image: {e}")
+        #return jsonify({"error": str(e)}), 500
 
 
 # Flask route to generate albedo map
