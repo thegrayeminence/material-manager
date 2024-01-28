@@ -27,15 +27,33 @@ from dotenv import load_dotenv
 from models import db, Material
 from config import app, api
 
-## api prefix for endpoints
-#URL_PREFIX = '/api'
 
-##.env imports
+# Load environment variables
 load_dotenv()
 api_token = os.getenv("REPLICATE_API_TOKEN")
+os.environ["REPLICATE_API_TOKEN"] = api_token
 
-##------HELPER FUNCTIONS FOR GENERATING TEXTURES------##
+##-------HELPER FUNCTIONS-------##
+##-------------------------------##
+
+##gets image urls for endpoints; limits redundancies
+def get_material_urls(material_id):
+    material = Material.query.get(material_id)
+    if material:
+        return {
+            'base_color_url': material.base_color_url,
+            'normal_map_url': material.normal_map_url,
+            'height_map_url': material.height_map_url,
+            'smoothness_map_url': material.smoothness_map_url
+        }
+    else:
+        return None
+
+
+
+##------FUNCTIONS for API Calls/Generating Textures/Handling Prompts and MaterialData------##
 ##----------------------------------------------------##
+
 ## TURNS MATERIAL DATA INTO PROMPT FOR GENERATING TEXTURE:
 def construct_prompt_from_material_data(material_data):
     try:
@@ -238,14 +256,22 @@ def get_albedo_maps():
     
 
 
-@app.get("/api/get_maps/<int:id>")
-def get_maps_by_id(id):
-    try:
-        material = db.session.get(Material, id)
-        images_urls = [material.base_color_url, material.normal_map_url, material.height_map_url, material.smoothness_map_url]
-        return jsonify({'image_urls': images_urls}), 200
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+# @app.get("/api/get_maps/<int:id>")
+# def get_maps_by_id(material_id):
+#     try:
+#         material = Material.query.get(material_id)
+#         images_urls = [material.base_color_url, material.normal_map_url, material.height_map_url, material.smoothness_map_url]
+#         return jsonify({'image_urls': images_urls}), 200
+#     except Exception as e:
+#         return jsonify({"error": str(e)}), 500
+
+@app.route("/api/get_maps/<int:material_id>")
+def get_maps_by_id(material_id):
+    material_urls = get_material_urls(material_id)
+    if material_urls:
+        return jsonify({'image_urls': material_urls}), 200
+    else:
+        return jsonify({"error": "Material not found"}), 404
 
 
 @app.get("/api/get_albedo_by_id/<int:material_id>")
