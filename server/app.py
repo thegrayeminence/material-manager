@@ -90,7 +90,6 @@ def generate_specific_pbr_map(map_type):
 def generate_image_from_prompt(prompt):
     try:
         # Specify the model name and parameters for replicate.run()
-        #replicate.api_token = api_token
         os.environ["REPLICATE_API_TOKEN"] = api_token
         model1= "tommoore515/material_stable_diffusion:3b5c0242f8925a4ab6c79b4c51e9b4ce6374e9b07b5e8461d89e692fd0faa449"
         params1 = {
@@ -473,12 +472,18 @@ def cleanup_temporary_directory(directory):
 ##-------------------------------------##
 ## error handlers: catch errors thrown from @validates and other exceptions
 @app.errorhandler(Exception)
-def handle_errors(e):
-    return {'error': f'Exception:{str(e)}'}, 404
+def handle_general_error(e):
+    log_error(e)  # Log error using a utility function
+    return jsonify({"error": f"An unexpected error occurred: {str(e)}"}), 500
 
-@app.errorhandler(ValueError)
-def handle_errors(e):
-    return {"error": f"Value Error:{str(e)}"}, 422
+@app.errorhandler(404)
+def handle_404(e):
+    return jsonify({"error": "Resource not found"}), 404
+
+@app.errorhandler(400)
+def handle_400(e):
+    return jsonify({"error": "Bad request"}), 400
+
     
 if __name__ == '__main__':
     app.run(port=3001, debug=True)
