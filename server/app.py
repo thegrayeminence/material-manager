@@ -556,6 +556,11 @@ def handle_500_error(e):
 
     
 if __name__ == '__main__':
-    app.run(port=3001, debug=True)
+    # Retrieve the port number from the environment variable 'PORT'
+    # If 'PORT' is not set, default to 5000 (common default for Flask)
+    port = int(os.environ.get('PORT', 5000))
+    # Run the application on the host '0.0.0.0' and the retrieved port
+    app.run(host='0.0.0.0', port=port, debug=False)
+
     
     

@@ -12,7 +12,7 @@ from sqlalchemy import MetaData
 
 # Instantiate app, set attributes
 app = Flask(__name__)
-app.secret_key = b'\xbbyG>\xcf \x07\xad\x12\xfc\x8eJ'
+app.secret_key = os.environ.get("SECRET_KEY")
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.json.compact = False
@@ -32,5 +32,8 @@ db.init_app(app)
 api = Api(app)
 
 # Instantiate CORS
-CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}})  
+# pre-deployment CORS settings
+# CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}})  
+# post-deployment CORS settings
+CORS(app, resources={r"/api/*": {"origins": "https://yourdomain.com"}})
 
