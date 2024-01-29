@@ -143,12 +143,12 @@ function LandingPageText() {
                         variants={textMotion}
                         initial="initial" animate="animate"
                     >
-                        Generate Placeholder Materials for PBR Workflows
+                        Generate Texture Maps for PBR Materials
                     </MotionHeading>
 
                     <VStack spacing="4" py={'3.5rem'}>
 
-                        {ManageMaterialsButton({variants: buttonMotion}, 'Manage Materials')}
+                        {ManageMaterialsButton({variants: buttonMotion}, 'Get Textures')}
                     </VStack>
                 </Stack>
             </MotionBox>
