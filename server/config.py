@@ -11,7 +11,13 @@ from sqlalchemy import MetaData
 
 
 # Instantiate app, set attributes
-app = Flask(__name__)
+app = Flask(
+    __name__,
+    static_url_path='',
+    static_folder='../client/build',
+    template_folder='../client/build'
+)
+# isss a secret, no looksy precious
 app.secret_key = os.environ.get("SECRET_KEY")
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -32,8 +38,6 @@ db.init_app(app)
 api = Api(app)
 
 # Instantiate CORS
-# pre-deployment CORS settings
-# CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}})  
-# post-deployment CORS settings
-CORS(app, resources={r"/api/*": {"origins": "https://yourdomain.com"}})
+CORS(app, resources={r"/api/*": {"origins": ["https://www.getpbrs.com", "http://localhost:3000"]}})
+
 

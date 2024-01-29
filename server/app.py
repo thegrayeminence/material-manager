@@ -18,7 +18,7 @@ from logging.handlers import RotatingFileHandler
 
 # Remote library imports
 from flask import send_from_directory
-from flask import make_response, request, session, jsonify 
+from flask import make_response, request, session, jsonify, render_template
 from flask_restful import Resource
 import replicate
 from flask import current_app
@@ -49,6 +49,14 @@ def setup_logging():
     app.logger.info('Application startup')
     
 setup_logging()
+
+##sets up default/fallback flask route to html file
+@app.route('/')
+@app.route('/<int:id>')
+def index(id=0):
+    return render_template("index.html")
+
+
 
 ##-------HELPER FUNCTIONS: GENERAL-------##
 ##-------------------------------##
