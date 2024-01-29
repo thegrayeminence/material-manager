@@ -7,7 +7,7 @@ import {Header} from '../../components'
 function Gallery() {
   return (<>
     <Box py='5rem'>
-      <Header text={"PREVIEW MATERIALS"} />
+      <Header text={"TEXTURE MAPS: GALLERY"} />
     </Box>
     <Box px='2rem' width={'80vw'} ml='10%'>
       <TextureDisplay />

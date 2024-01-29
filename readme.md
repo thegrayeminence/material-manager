@@ -33,7 +33,7 @@ Summary of service provided: QuickMaps uses data inputs (via a series of element
    ```shell
    brew services start postgresql
    cd server
-   pipenv install && pipenv shell
+   pipenv install && pipenv shell ##or:'pip install -r requirements.txt'
    export FLASK_APP=app.py && export FLASK_RUN_PORT=3001 && export FLASK_DEBUG=1
    export DATABASE_URL='postgresql://username:password@hostname/dbname'
    flask db init
