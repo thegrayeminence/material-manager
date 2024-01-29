@@ -1,6 +1,6 @@
 import React from 'react';
 import {useParams} from 'react-router-dom'; // Import useParams from react-router-dom
-import {Box, Heading} from '@chakra-ui/react';
+import {Box} from '@chakra-ui/react';
 import Header from '../components/UI/Header';
 import {TextureDisplayById} from '../components';
 

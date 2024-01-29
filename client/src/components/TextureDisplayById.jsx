@@ -45,10 +45,8 @@ const TextureDisplayById = () => {
                 const response = await axios.get(`http://localhost:3001/api/get_albedo_by_id/${id}`); // Use 'id' as a string
                 setAlbedoImage(response.data.image_url);
                 setMaterialId(response.data.material_id);
-                // console.log(materialId, store_materialId)
             } catch (error) {
                 console.error('Error fetching recent albedo:', error);
-                // console.log(materialId, store_materialId)
 
             }
         };

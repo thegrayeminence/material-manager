@@ -46,6 +46,7 @@ Summary of service provided: QuickMaps uses data inputs (via a series of element
    ```shell
    brew services start postgresql
    psql postgres
+   \l #use this if you need to look up your db's name
    DROP DATABASE your_database_name;
    CREATE DATABASE your_new_database_name;
    flask db init

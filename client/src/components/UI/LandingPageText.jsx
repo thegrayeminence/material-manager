@@ -1,13 +1,12 @@
 import React from 'react'
 //libs
-import {Outlet, useNavigate, Navigate} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 
 import {motion} from 'framer-motion';
-import {Stack, VStack, Box, Button, Text, Heading, ButtonGroup, useColorModeValue} from '@chakra-ui/react';
+import {Stack, VStack, Box, Button, Text, Heading} from '@chakra-ui/react';
 
 
 const MotionBox = motion(Box);
-const MotionButton = motion(Button);
 const MotionText = motion(Text);
 const MotionHeading = motion(Heading);
 const GradientButton = motion(Button);

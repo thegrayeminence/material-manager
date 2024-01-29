@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-    Box, Flex, useColorModeValue, Stack, useDisclosure, Breadcrumb, BreadcrumbItem, BreadcrumbLink, useColorMode
+    Box, Flex, useDisclosure, Breadcrumb, BreadcrumbItem, BreadcrumbLink, useColorMode
 } from '@chakra-ui/react';
 
 //icons:
@@ -26,12 +26,12 @@ const NavBarContainer = ({children}) => {
                 justify="space-between"
                 wrap='nowrap'
                 w="100%"
-                bg={useColorModeValue('transparent', 'transparent')}
+                bg='transparent'
                 p={4}
                 position="fixed"
                 top={0}
                 zIndex={1}
-                color={useColorModeValue('whiteAlpha.800', 'whiteAlpha.800')}
+                color='whiteAlpha.800'
             >
                 {children}
             </Flex>
@@ -54,8 +54,8 @@ function NavBar() {
     const navigate = useNavigate();
     const {isOpen, onOpen, onClose} = useDisclosure()
     const location = useLocation();
-
     const {colorMode, toggleColorMode} = useColorMode()
+
 
     // Function to determine the breadcrumb label based on the path
     const breadcrumbLabel = (path) => {
@@ -94,7 +94,7 @@ function NavBar() {
                     </BreadcrumbItem>
                     <BreadcrumbItem>
                         <BreadcrumbIconLink icon={colorMode === 'light' ? SunIcon : MoonIcon} href="#"
-                        // onClick={toggleColorMode} 
+                            onClick={toggleColorMode}
                         />
                     </BreadcrumbItem>
                 </Breadcrumb>

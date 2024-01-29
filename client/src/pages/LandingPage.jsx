@@ -1,17 +1,15 @@
+//lib imports
 import React, {useEffect} from 'react';
-//libs
-import {useNavigate, Navigate} from 'react-router-dom';
+import {Box} from '@chakra-ui/react';
 
-import {AnimatePresence, motion} from 'framer-motion';
-import {Stack, VStack, Box, Button, Heading, Text, ButtonGroup, useColorModeValue} from '@chakra-ui/react';
-
+//component imports
 import {LandingPageText} from '../components';
 import '../styles/landingPageAnimation.css';
-//components
+
 
 
 function LandingPage() {
-    // const navigate = useNavigate();
+
 
     useEffect(() => {
         const handleMouseMove = (e) => {

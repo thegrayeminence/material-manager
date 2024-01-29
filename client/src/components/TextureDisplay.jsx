@@ -26,6 +26,7 @@ const handleDownload = async (materialId) => {
 };
 
 const TextureDisplay = () => {
+    //zustand store values
     const {setPBRImage} = useGeneratedImagesStore();
     const [materialId, setMaterialId] = useState(null);
     const [albedoImage, setAlbedoImage] = useState(null);
@@ -33,6 +34,22 @@ const TextureDisplay = () => {
     const store_materialId = useGeneratedImagesStore(state => state.materialId);
 
     const MotionImageBox = motion(Box);
+
+    //styling image box
+    const imageBoxStyle = {
+        whileHover: {scale: 1.1},
+        boxShadow: "xl",
+        borderRadius: "md",
+        overflow: "hidden",
+        border: "2px solid",
+        borderColor: "gray.300",
+        bg: "gray.50",
+        cursor: "pointer",
+        transition: "all 0.3s ease-in-out"
+    };
+    //box sizes
+    const albedoBoxSize = "360px";
+    const pbrBoxSize = "300px";
 
     // Fetch the most recent albedo image and its material ID
     useEffect(() => {
@@ -68,7 +85,7 @@ const TextureDisplay = () => {
         };
         const loadMaps = async () => {
             console.log("Current materialId:", materialId);
-            const mapTypes = ['normal', 'height', 'smoothness'];
+            const mapTypes = ['albedo', 'normal', 'height', 'smoothness'];
             const mapPromises = mapTypes.map(mapType => fetchMap(mapType));
             const maps = await Promise.all(mapPromises);
 
@@ -85,21 +102,6 @@ const TextureDisplay = () => {
         loadMaps();
     }, [materialId, setPBRImage]);
 
-
-    const imageBoxStyle = {
-        whileHover: {scale: 1.1},
-        boxShadow: "xl",
-        borderRadius: "md",
-        overflow: "hidden",
-        border: "2px solid",
-        borderColor: "gray.300",
-        bg: "gray.50",
-        cursor: "pointer",
-        transition: "all 0.3s ease-in-out"
-    };
-
-    const albedoBoxSize = "360px"; // 20% larger than PBR maps
-    const pbrBoxSize = "300px";
 
     return (
         <Box p={5}>

@@ -1,13 +1,11 @@
 import React from 'react'
-import {
-  Box, Flex, Spacer, Stack, useColorModeValue,
-} from '@chakra-ui/react'
+import {Box, Spacer} from '@chakra-ui/react'
 import {motion} from 'framer-motion';
 
 
 //components
-import {ProgressBar, MaterialUploadForm, FormPreviewBox, Header, ImagePreviewGrid, TextureDisplay, JsonDisplayModal, ImageGridUrlSrc} from '../components'
-import {useMaterialStore, useProgressStore, useIsLoadingStore, useFormMode, useGeneratedImagesStore} from '../store/store';
+import {ProgressBar, MaterialUploadForm, Header} from '../components'
+import {useProgressStore, useFormMode} from '../store/store';
 import {FormPreviewBoxTabs} from '../components';
 import GradientBackground from '../components/UI/GradientBackground';
 
@@ -36,9 +34,8 @@ function Preview() {
           overflowX={'scroll'}
           px="2.5rem"
           py={"1.5rem"}
-          bg={useColorModeValue('whiteAlpha.300', 'blackAlpha.400')}
-          borderColor={useColorModeValue('whiteAlpha.300', 'whiteAlpha.400')}
-          // textColor={useColorModeValue('whiteAlpha.800', 'whiteAlpha.800')}
+          bg='whiteAlpha.300'
+          borderColor='teal.500'
           borderRadius="2rem"
           backdropFilter="blur(10px)"
           shadow="lg"

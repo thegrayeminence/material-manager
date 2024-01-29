@@ -1,21 +1,16 @@
-import React from 'react'
 import {
+  Stack,
   Step,
-  StepDescription,
   StepIcon,
   StepIndicator,
-  StepNumber,
   StepSeparator,
   StepStatus,
-  StepTitle,
   Stepper,
-  useSteps,
-  Stack,
-  Text,
+  Text
 } from '@chakra-ui/react'
+import React from 'react'
 
-import {useProgressStore} from '../store/store'
-import {useFormMode} from '../store/store'
+import {useFormMode, useProgressStore} from '../store/store'
 
 const steps = [
   {title: 'First', description: `Classify Material: Technical Specifications`},
