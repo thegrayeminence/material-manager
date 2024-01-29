@@ -1,9 +1,9 @@
 import ErrorPage from "./pages/ErrorPage";
 import Home from "./pages/Home";
-import Preview from "./pages/Preview";
-import Gallery from "./pages/Gallery";
-import GalleryById from "./pages/GalleryById";
-import LandingPage from "./pages/LandingPage";
+import Preview from "./pages/Preview/Preview";
+import Gallery from "./pages/Gallery/Gallery";
+import GalleryById from "./pages/Gallery/GalleryById";
+import LandingPage from "./pages/LandingPage/LandingPage";
 import LoadingPage from "./pages/LoadingPage";
 
 const routes = [

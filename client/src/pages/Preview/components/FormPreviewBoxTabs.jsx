@@ -1,8 +1,8 @@
 import React from 'react';
 import {Box, Spacer, Stack, Flex, Grid, Text, Tabs, TabList, TabPanels, Tab, TabPanel, TabIndicator, useColorModeValue} from '@chakra-ui/react';
 import {motion} from 'framer-motion';
-import {useMaterialStore} from '../store/store';
-import JsonTreeVisualization from '../components/UI/JsonTreeVisualization'
+import {useMaterialStore} from '../../../store/store';
+import JsonTreeVisualization from './JsonTreeVisualization'
 
 const MotionBox = motion(Box);
 

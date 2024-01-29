@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
-import {useGeneratedImagesStore} from '../store/store';
+import {useGeneratedImagesStore} from '../../../store/store';
 import {Box, SimpleGrid, Skeleton, Image, Heading, Flex} from '@chakra-ui/react';
 import {motion} from 'framer-motion';
 

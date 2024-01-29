@@ -1,20 +1,20 @@
-import { Input, FormControl, FormHelperText, FormLabel, InputGroup, InputLeftElement, FormErrorMessage, Icon } from "@chakra-ui/react";
-import { FiFile } from "react-icons/fi";
-import { useController, useForm } from "react-hook-form";
-import { useRef } from "react";
+import {Input, FormControl, FormHelperText, FormLabel, InputGroup, InputLeftElement, FormErrorMessage, Icon} from "@chakra-ui/react";
+import {FiFile} from "react-icons/fi";
+import {useController} from "react-hook-form";
+import {useRef} from "react";
 
-export const FileUpload = ({ name, placeholder, acceptedFileTypes, control, title, description, isRequired = false }) => {
+export default function FileUpload({name, placeholder, acceptedFileTypes, control, title, description, isRequired = false}) {
 
 
 
     const inputRef = useRef();
     const {
-        field: { ref, onChange, value, ...inputProps },
-        fieldState: { invalid, isTouched, isDirty },
+        field: {ref, onChange, value, ...inputProps},
+        fieldState: {invalid, isTouched, isDirty},
     } = useController({
         name,
         control,
-        rules: { required: isRequired },
+        rules: {required: isRequired},
     });
 
     return (
@@ -58,7 +58,7 @@ export const FileUpload = ({ name, placeholder, acceptedFileTypes, control, titl
                         name='{name}'
                         ref={inputRef}
                         {...inputProps}
-                        style={{ display: 'none' }} />
+                        style={{display: 'none'}} />
                     <Input
                         placeholder={placeholder || "Your file ..."}
                         onClick={() => inputRef.current.click()}
@@ -82,4 +82,3 @@ FileUpload.defaultProps = {
     allowMultipleFiles: true,
 };
 
-export default FileUpload;

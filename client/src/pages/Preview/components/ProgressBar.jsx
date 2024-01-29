@@ -10,7 +10,7 @@ import {
 } from '@chakra-ui/react'
 import React from 'react'
 
-import {useFormMode, useProgressStore} from '../store/store'
+import {useFormMode, useProgressStore} from '../../../store/store'
 
 const steps = [
   {title: 'First', description: `Classify Material: Technical Specifications`},

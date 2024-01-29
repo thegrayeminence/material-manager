@@ -15,9 +15,9 @@ import {Select} from "chakra-react-select";
 
 
 //local imports
-import {textureMapOptionsPBRMetalRough, textureMapOptionsPBRGlossSpec, textureMapOptionsCommon, materialTypeOptions, metaDataOptions} from '../config/formInputData';
-import {useMaterialStore, useProgressStore, useAutosuggestionStore, useFormMode, useIsLoadingStore, useGeneratedImagesStore} from '../store/store';
-import SuggestionDisplay from './UI/SuggestionDisplay';
+import {textureMapOptionsPBRMetalRough, textureMapOptionsPBRGlossSpec, textureMapOptionsCommon, materialTypeOptions, metaDataOptions} from '../../../config/formInputData';
+import {useMaterialStore, useProgressStore, useAutosuggestionStore, useFormMode, useIsLoadingStore, useGeneratedImagesStore} from '../../../store/store';
+import SuggestionDisplay from './SuggestionDisplay';
 
 
 

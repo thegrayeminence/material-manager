@@ -1,10 +1,8 @@
 //libs
 import {Outlet} from 'react-router-dom';
-
-
 //components
-import {NavBar} from '../components'
-//state
+import NavBar from './LandingPage/components/NavBar'
+
 
 
 const Home = () => {

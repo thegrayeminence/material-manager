@@ -1,15 +1,13 @@
 //lib imports
 import React, {useEffect} from 'react';
 import {Box} from '@chakra-ui/react';
+import {AnimatePresence, motion} from 'framer-motion';
 
-//component imports
-import {LandingPageText} from '../components';
-import '../styles/landingPageAnimation.css';
+//components
+import {LandingPageText} from './components';
+import './landingPage.css'
 
-
-
-function LandingPage() {
-
+function LandingPageBackground() {
 
     useEffect(() => {
         const handleMouseMove = (e) => {
@@ -32,9 +30,24 @@ function LandingPage() {
     return (
 
         <Box className="background-animation"
-            height={'100vh'}
+            height={'100vh'} width={'100vw'} margin={0} padding={0} position={'fixed'} top={0} left={0} zIndex={-1}
+        >
+        </Box>
+
+    );
+}
+
+
+
+function LandingPage() {
+
+    return (
+
+        <Box
+            height={'100vh'} width={'100vw'} margin={0} padding={0} position={'fixed'} top={0} left={0}
         >
             <LandingPageText />
+            <LandingPageBackground />
 
         </Box>
 

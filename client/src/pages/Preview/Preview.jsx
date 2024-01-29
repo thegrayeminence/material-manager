@@ -1,19 +1,22 @@
+//libs
 import React from 'react'
 import {Box, Spacer} from '@chakra-ui/react'
 import {motion} from 'framer-motion';
 
+//components/state
+import {
+  MaterialUploadForm,
+  ProgressBar,
+  FormPreviewBoxTabs,
+} from './components';
+import {GradientBG_Purple, Header} from '../../components';
+import {useProgressStore, useFormMode} from '../../store/store';
 
-//components
-import {ProgressBar, MaterialUploadForm, Header} from '../components'
-import {useProgressStore, useFormMode} from '../store/store';
-import {FormPreviewBoxTabs} from '../components';
-import GradientBackground from '../components/UI/GradientBackground';
 
 const MotionBox = motion(Box);
 
 function Preview() {
   const {progress} = useProgressStore()
-
   const {mode} = useFormMode();
 
   return (
@@ -57,7 +60,7 @@ function Preview() {
 
       <Box width={'100vw'} height={'100%'} margin={0} padding={0} position={'fixed'} top={0} left={0}
         zIndex={-1}>
-        <GradientBackground />
+        <GradientBG_Purple />
       </Box>
     </>
 

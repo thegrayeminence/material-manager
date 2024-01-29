@@ -1,7 +1,8 @@
 import React from 'react'
 import {Box} from '@chakra-ui/react'
-import Header from '../components/UI/Header'
-import {TextureDisplay} from '../components'
+
+import {TextureDisplay} from './components'
+import {Header} from '../../components'
 
 function Gallery() {
   return (<>

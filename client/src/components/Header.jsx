@@ -13,7 +13,7 @@ const fontStylesHeader = {
 
 };
 
-function Header({text, customStyles = fontStylesHeader}) {
+export default function Header({text, customStyles = fontStylesHeader}) {
 
     return (
         <Heading sx={customStyles} >
@@ -22,4 +22,3 @@ function Header({text, customStyles = fontStylesHeader}) {
     )
 }
 
-export default Header

@@ -22,4 +22,10 @@ const GradientBackground = styled.div`
   animation: ${gradientAnimation} 6s ease infinite;
 `;
 
-export default GradientBackground;
+function GradientBG_Purple() {
+  return (
+    <GradientBackground />
+  );
+}
+
+export default GradientBG_Purple;
