@@ -3,7 +3,6 @@ import axios from 'axios';
 import {useGeneratedImagesStore} from '../../../store/store';
 import {Box, SimpleGrid, Skeleton, Image, Heading, Flex} from '@chakra-ui/react';
 import {motion} from 'framer-motion';
-// import {API_URL} from './client/src/config/URLConfig.js';
 
 
 // helper function to download a material

@@ -50,11 +50,11 @@ def setup_logging():
     
 setup_logging()
 
-##sets up default/fallback flask route to html file
-@app.route('/')
-@app.route('/<int:id>')
-def index(id=0):
-    return render_template("index.html")
+# ##sets up default/fallback flask route to html file
+# @app.route('/', defaults={'path': ''})
+# @app.route('/<path:path>')
+# def index(path):
+#     return render_template("index.html")
 
 
 
