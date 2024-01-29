@@ -4,12 +4,13 @@ import {
 } from '@chakra-ui/react';
 
 //icons:
-import {ViewIcon, QuestionIcon, MoonIcon, SunIcon} from "@chakra-ui/icons";
+import {FaCloudSun, FaCloudMoon, FaRegQuestionCircle, FaPhotoVideo} from "react-icons/fa";
 import {AiOutlineHome} from "react-icons/ai";
 
 //hooks and components
 import {useNavigate, useLocation} from 'react-router-dom';
 import AboutSideBar from './AboutSideBar';
+
 
 
 
@@ -86,13 +87,13 @@ function NavBar() {
                 <Breadcrumb>
 
                     <BreadcrumbItem>
-                        <BreadcrumbIconLink icon={ViewIcon} href="#" onClick={(e) => {e.preventDefault(); navigate('/gallery')}} />
+                        <BreadcrumbIconLink icon={FaPhotoVideo} href="#" onClick={(e) => {e.preventDefault(); navigate('/gallery')}} />
                     </BreadcrumbItem>
                     <BreadcrumbItem>
-                        <BreadcrumbIconLink icon={QuestionIcon} href="#" onClick={onOpen} />
+                        <BreadcrumbIconLink icon={FaRegQuestionCircle} href="#" onClick={onOpen} />
                     </BreadcrumbItem>
                     <BreadcrumbItem>
-                        <BreadcrumbIconLink icon={colorMode === 'light' ? SunIcon : MoonIcon} href="#"
+                        <BreadcrumbIconLink icon={colorMode === 'light' ? FaCloudSun : FaCloudMoon} href="#"
                             onClick={toggleColorMode}
                         />
                     </BreadcrumbItem>
