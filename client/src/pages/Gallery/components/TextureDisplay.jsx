@@ -3,7 +3,7 @@ import axios from 'axios';
 import {useGeneratedImagesStore} from '../../../store/store';
 import {Box, SimpleGrid, Skeleton, Image, Heading, Flex} from '@chakra-ui/react';
 import {motion} from 'framer-motion';
-import {API_URL} from '../config/URLConfig';
+// import {API_URL} from './client/src/config/URLConfig.js';
 
 
 // helper function to download a material
@@ -11,7 +11,7 @@ const handleDownload = async (materialId) => {
     // const material_id = useGeneratedImagesStore(state => state.materialId);
     console.log("material_id:", materialId)
     try {
-        const response = await axios.get(API_URL + `/api/download_material/${materialId}`, {responseType: 'blob'});
+        const response = await axios.get(`/api/download_material/${materialId}`, {responseType: 'blob'});
         const url = window.URL.createObjectURL(new Blob([response.data]));
         const link = document.createElement('a');
         link.href = url;
@@ -56,7 +56,7 @@ const TextureDisplay = () => {
     useEffect(() => {
         const fetchRecentAlbedo = async () => {
             try {
-                const response = await axios.get(API_URL + '/api/get_recent_albedo');
+                const response = await axios.get('/api/get_recent_albedo');
                 setAlbedoImage(response.data.image_url);
                 setMaterialId(response.data.material_id);
                 console.log(materialId, store_materialId)
@@ -77,7 +77,7 @@ const TextureDisplay = () => {
         const fetchMap = async (mapType) => {
             try {
                 console.log("Current materialId:", materialId);
-                const response = await axios.get(API_URL + `/api/get_${mapType}_by_id/${materialId}`);
+                const response = await axios.get(`/api/get_${mapType}_by_id/${materialId}`);
                 return response.data.image_url;
             } catch (error) {
                 console.error(`Error fetching ${mapType} map:`, error);
