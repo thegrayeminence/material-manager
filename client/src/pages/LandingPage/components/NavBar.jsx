@@ -4,8 +4,7 @@ import {
 } from '@chakra-ui/react';
 
 //icons:
-import {ViewIcon, QuestionIcon} from "@chakra-ui/icons";
-import {MoonIcon, SunIcon} from "@chakra-ui/icons";
+import {ViewIcon, QuestionIcon, MoonIcon, SunIcon} from "@chakra-ui/icons";
 import {AiOutlineHome} from "react-icons/ai";
 
 //hooks and components
