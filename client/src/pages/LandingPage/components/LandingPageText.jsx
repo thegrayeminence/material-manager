@@ -83,7 +83,6 @@ function LandingPageText() {
                     <Spacer py={'1rem'} />
                     <VStack>
                         <StylishButton handleClick={() => navigate('/preview')} text="Get Started" />
-                        <StylishButton handleClick={() => navigate('/about')} text="Need Help?" />
                     </VStack>
                 </Stack>
             </MotionContainer>
