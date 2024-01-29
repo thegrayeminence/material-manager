@@ -6,7 +6,7 @@ import {AnimatePresence, motion} from 'framer-motion';
 import {Stack, VStack, Box, Button, Heading, Text, ButtonGroup, useColorModeValue} from '@chakra-ui/react';
 
 import {LandingPageText} from '../components';
-import '../styles/landingPage.css';
+import '../styles/landingPageAnimation.css';
 //components
 
 

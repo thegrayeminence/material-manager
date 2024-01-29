@@ -1,5 +1,5 @@
 //libs
-import {Outlet, useNavigate, Navigate} from 'react-router-dom';
+import {Outlet} from 'react-router-dom';
 
 
 //components

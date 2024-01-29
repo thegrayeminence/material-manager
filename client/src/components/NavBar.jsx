@@ -10,9 +10,7 @@ import {AiOutlineHome} from "react-icons/ai";
 
 //hooks and components
 import {useNavigate, useLocation} from 'react-router-dom';
-import ColorModeToggle from './UI/ColorModeToggle';
 import AboutSideBar from './AboutSideBar';
-import {color} from 'framer-motion';
 
 
 
