@@ -45,17 +45,16 @@ const AboutSideBar = ({isOpen, onClose}) => {
 
                     sx={headerStyle}
                     pt='3rem' textAlign={'center'} fontSize='4xl'>
-                    ABOUT:
+                    ABOUT/FAQ:
                 </DrawerHeader>
                 <DrawerBody fontSize={'2xl'}>
                     <Spacer py={'1rem'} />
-
                     <Text sx={headerStyle}>How It Works:</Text>
                     <Spacer py={'1.5rem'} />
                     <Text sx={bodyStyle}>1. User describes/classifies the properties of the material they want generated
                     </Text>
                     <Spacer py={'.5rem'} />
-                    <Text sx={bodyStyle}>2. ShaderProxy takes the descriptions and turns them into prompts optimally formatted for Stable Diffusion AI
+                    <Text sx={bodyStyle}>2. TextureForge takes the descriptions and turns them into prompts optimally formatted for Stable Diffusion AI
                     </Text>
                     <Spacer py={'.5rem'} />
                     <Text sx={bodyStyle}>3. Prompts are sent to API and used to generate the texture maps via two steps (text to image for Albedo map, image to image for other maps)
@@ -64,6 +63,11 @@ const AboutSideBar = ({isOpen, onClose}) => {
                     <Text sx={bodyStyle}>4. Once textures have been generated and loaded in browser, download and use the texture maps to your heart's content!
                     </Text>
                     <Spacer py={'2.5rem'} />
+                    <Spacer py={'1rem'} />
+                    <Text sx={headerStyle}>What is 'PBR'?:</Text>
+                    <Spacer py={'1rem'} />
+                    <Text sx={bodyStyle}>...</Text>
+                    <Spacer py={'1.5rem'} />
                     <Link to='https://github.com/thegrayeminence/material-manager/tree/work1'>
                         <Text sx={headerStyle}>View repo on GitHub:</Text>
                     </Link>

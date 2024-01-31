@@ -75,7 +75,7 @@ const FormPreviewBoxTabs = () => {
                     <TabList color={'purple.400'}>
                         <Tab>Text</Tab>
                         <Tab isDisabled>JSON Output</Tab>
-                        <Tab >Graphics</Tab>
+                        <Tab isDisabled>Graphics</Tab>
                     </TabList>
                     <TabIndicator
                         mt="-1.5px"

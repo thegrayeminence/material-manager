@@ -84,7 +84,7 @@ function LandingPageText() {
                         <Stack justifyContent="center" py={'2.5rem'} >
                             <HStack justifyContent={'center'}>
                                 <StylishButton mr='.5rem' handleClick={() => navigate('/preview')} text="Generate Maps" />
-                                <StylishButton ml='.5rem' handleClick={() => navigate('/preview')} text="Download Maps" />
+                                <StylishButton ml='.5rem' handleClick={() => navigate('/gallery')} text="Download Maps" />
                             </HStack>
                             <Box alignSelf={'center'} mt='5'>
                                 <Button colorScheme='white' variant='ghost'>How does it work? What is PBR? </Button>

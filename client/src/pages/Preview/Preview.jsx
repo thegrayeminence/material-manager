@@ -11,6 +11,7 @@ import {
 } from './components';
 import {GradientBG_Purple, Header} from '../../components';
 import {useProgressStore, useFormMode} from '../../store/store';
+// import {StylishHeader} from '../../components/StylishHeader'
 
 
 const MotionBox = motion(Box);
@@ -37,7 +38,7 @@ function Preview() {
           overflowX={'scroll'}
           px="2.5rem"
           py={"1.5rem"}
-          bg='whiteAlpha.300'
+          bg='blackAlpha.400'
           borderColor='teal.500'
           borderRadius="2rem"
           backdropFilter="blur(10px)"
