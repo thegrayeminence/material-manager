@@ -4,15 +4,13 @@ import {
     useColorModeValue, Icon, chakra, Tooltip, HStack, Spacer,
 } from "@chakra-ui/react"
 import {MdDownload, MdInfoOutline, MdOutlinePreview, MdViewInAr, MdGridView, MdPhotoLibrary} from "react-icons/md";
-
-
-
-
+import {useNavigate} from 'react-router-dom';
 
 
 function GalleryCard({name, images, isNew, ...props}) {
-    // console.log("images:", images[0])
-    // console.log("name:", name)
+
+    const navigate = useNavigate();
+
 
     const formatting = /[_-]/g
     const formattedName = name.replace(formatting, ' ')
@@ -58,6 +56,7 @@ function GalleryCard({name, images, isNew, ...props}) {
                                         h={7} w={7}
                                         alignSelf={'center'}
                                         as={MdPhotoLibrary}
+                                        onClick={() => navigate(`/gallery/${name}`)}
                                     />
                                 </chakra.span>
                             </Tooltip>
