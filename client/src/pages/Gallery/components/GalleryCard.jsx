@@ -12,8 +12,8 @@ function GalleryCard({name, images, isNew, ...props}) {
     const navigate = useNavigate();
 
 
-    const formatting = /[_-]/g
-    const formattedName = name.replace(formatting, ' ')
+    // const formatting = /[_-]/g
+    // const formattedName = name.replace(formatting, ' ')
     return (
         <Flex
             p={5} w="full" alignItems={'center'} justifyContent={'center'}>
@@ -84,7 +84,7 @@ function GalleryCard({name, images, isNew, ...props}) {
                             fontSize="xl" fontWeight="semibold" color="gray.800"
                             lineHeight="tight" isTruncated
                         >
-                            {(formattedName) || ('Untitled Material')}
+                            {(name) || ('Untitled Material')}
                         </Box>
 
                         {/* Material Info Icon/Tooltip: */}

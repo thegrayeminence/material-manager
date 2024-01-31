@@ -1,14 +1,13 @@
 //lib imports
 import React, {useEffect} from 'react';
-import {Box} from '@chakra-ui/react';
-import {AnimatePresence, motion} from 'framer-motion';
+import {Box, VStack, } from '@chakra-ui/react';
+import {AnimatePresence, motion, useScroll} from 'framer-motion';
 
 //components
-import {LandingPageText} from './components';
+import {LandingPageText, Features} from './components';
 import './landingPage.css'
 
 function LandingPageBackground() {
-
     useEffect(() => {
         const handleMouseMove = (e) => {
             const x = e.clientX;
@@ -41,15 +40,20 @@ function LandingPageBackground() {
 
 function LandingPage() {
 
+
     return (
 
-        <Box
-            height={'100vh'} width={'100vw'} margin={0} padding={0} position={'fixed'} top={0} left={0}
-        >
-            <LandingPageText />
-            <LandingPageBackground />
+        <VStack spacing={0} width={'100vw'}>
+            <Box
+                height={'auto'} width={'100vw'} position={'relative'}
+            >
+                <LandingPageText />
+                <LandingPageBackground />
 
-        </Box>
+            </Box>
+            <Features />
+
+        </VStack>
 
     );
 }
