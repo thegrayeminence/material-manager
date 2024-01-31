@@ -1,17 +1,21 @@
 import React from 'react'
 import {
     Flex, Circle, Box, Image, Badge,
-    useColorModeValue, Icon, chakra, Tooltip, useBreakpointValue
+    useColorModeValue, Icon, chakra, Tooltip, HStack, Spacer,
 } from "@chakra-ui/react"
-import {MdDownload} from "react-icons/md";
+import {MdDownload, MdInfoOutline, MdOutlinePreview, MdViewInAr, MdGridView, MdPhotoLibrary} from "react-icons/md";
+
 
 
 
 
 
 function GalleryCard({name, images, isNew, ...props}) {
-    console.log("images:", images[0])
-    console.log("name:", name)
+    // console.log("images:", images[0])
+    // console.log("name:", name)
+
+    const formatting = /[_-]/g
+    const formattedName = name.replace(formatting, ' ')
     return (
         <Flex
             p={5} w="full" alignItems={'center'} justifyContent={'center'}>
@@ -21,8 +25,8 @@ function GalleryCard({name, images, isNew, ...props}) {
                 rounded={'lg'}
                 shadow="lg"
                 position="relative"
-                minH='256px'
-                w='100%'
+                minW='256px'
+                h='100%'
             >
                 {/* Base Color Image */}
                 <Image
@@ -34,38 +38,71 @@ function GalleryCard({name, images, isNew, ...props}) {
                 />
 
                 <Box p={6}>
-                    {/* New/Old Indicator */}
-                    <Box display="flex" alignItems="baseline">
-                        {isNew && (
-                            <Badge rounded="full" px="2" fontSize={'0.8em'} colorScheme='red'>
-                                New
-                            </Badge>
-                        )}
-                    </Box>
+                    <HStack justifyContent={'space-between'} alignItems={'center'}>
+                        {/* New/Old Indicator */}
+                        <Box display="flex"
+                        >
+                            {isNew && (
+                                <Badge rounded="full" px="2" fontSize={'0.8em'} colorScheme='red'>
+                                    New
+                                </Badge>
+                            )}
+                        </Box>
+                        <Box display='flex' flexGrow={1} />
+                        <Box display='flex' >
+                            <Tooltip label="View Material" fontSize={'md'} >
+                                <chakra.span>
+                                    <Icon
+                                        aria-label="Download"
+                                        color="gray.600"
+                                        h={7} w={7}
+                                        alignSelf={'center'}
+                                        as={MdPhotoLibrary}
+                                    />
+                                </chakra.span>
+                            </Tooltip>
 
+                            <Spacer px='1.5' />
+
+                            <Tooltip label="Download Material" fontSize={'md'} >
+                                <chakra.span>
+                                    <Icon
+                                        aria-label="Download"
+                                        color="gray.600"
+                                        h={7} w={7}
+                                        alignSelf={'center'}
+                                        as={MdDownload}
+                                    />
+                                </chakra.span>
+                            </Tooltip>
+                        </Box>
+
+                    </HStack>
                     <Flex mt='1' justifyContent={'space-between'} alignContent={'center'}>
+
                         {/* Material Name: */}
                         <Box
                             fontSize="xl" fontWeight="semibold" color="gray.800"
                             lineHeight="tight" isTruncated
                         >
-                            {(name) || ('Untitled Material')}
+                            {(formattedName) || ('Untitled Material')}
                         </Box>
-                        {/* Download Icon: */}
+
+                        {/* Material Info Icon/Tooltip: */}
                         <Tooltip
-                            label="Download"
-                            bg='white'
-                            placement={'top'}
-                            color='transparent'
-                            fontSize={'1em'}
+                            label={(name) || ('Untitled Material')}
+                            fontSize={'md'}
                         >
-                            <Icon
-                                aria-label="Download"
-                                color="gray.600"
-                                h={7} w={7} alignSelf={'center'}
-                                as={MdDownload}
-                            />
+                            <chakra.span>
+                                <Icon
+                                    aria-label="Info"
+                                    color="gray.600"
+                                    h={7} w={7} alignSelf={'center'}
+                                    as={MdInfoOutline}
+                                />
+                            </chakra.span>
                         </Tooltip>
+
                     </Flex>
 
                 </Box>

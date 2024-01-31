@@ -4,7 +4,7 @@ import RadioBtns from "./not_in_use/RadioBtns";
 import ToastPromiseButton from "./ToastPromiseButton";
 import GradientBG_Purple from "./GradientBackground";
 import FileUpload from "./not_in_use/FileUpload";
-import GradientHeader from "./GradientHeader";
+import StylishHeader from "./StylishHeader";
 import MotionContainer from "./MotionContainer";
 import StylishButton from "./StylishButton";
 
@@ -15,7 +15,7 @@ export {
     ToastPromiseButton,
     GradientBG_Purple,
     FileUpload,
-    GradientHeader,
+    StylishHeader,
     MotionContainer,
     StylishButton,
 

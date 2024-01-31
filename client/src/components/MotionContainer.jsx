@@ -15,8 +15,8 @@ export default function MotionContainer({
         <MotionBox
             position="relative"
             overflow="hidden"
-            minH="100vh"
-            width="100vw"
+            h='100%'
+            width="100%"
             display="flex"
             justifyContent="center"
             alignItems="center"

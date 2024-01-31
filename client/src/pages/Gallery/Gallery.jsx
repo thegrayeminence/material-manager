@@ -2,9 +2,9 @@ import React, {useState, useEffect} from 'react'
 import {Box, Grid, SimpleGrid} from '@chakra-ui/react'
 //local imports
 import {TextureDisplay} from './components'
-import {Header} from '../../components'
 import {GalleryCard} from './components'
 import {loadImagesFromFolder} from '../../config/loadImagesFromFolder'
+import {StylishHeader} from '../../components'
 
 function Gallery() {
 
@@ -25,20 +25,22 @@ function Gallery() {
 
 
   return (
-    <Box w='90vw' h='100vh'>
-      <SimpleGrid
-        columns={[1, 2, 3]}
-        spacing={8}
-        ml='10%'
-        mt='10%'
-
-
-      >
-        {materials.map(({folder, images}) => (
-          <GalleryCard key={folder} name={folder} images={images} isNew={true} />
-        ))}
-      </SimpleGrid>
-    </Box >
+    <Box width='100vw' h='100vh'>
+      <StylishHeader pt="10" text="MATERIALS" />
+      <Box w='90%' h='100%' >
+        <SimpleGrid
+          columns={[1, 1, 2, 3]}
+          spacing={8}
+          w='100%'
+          ml='10%'
+          mt='10%'
+        >
+          {materials.map(({folder, images}) => (
+            <GalleryCard key={folder} name={folder} images={images} isNew={true} />
+          ))}
+        </SimpleGrid>
+      </Box >
+    </Box>
   )
 }
 
