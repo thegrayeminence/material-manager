@@ -18,13 +18,15 @@ function LandingPageText() {
 
     const H1 = {
         bgClip: "text",
-        lineHeight: '75%',
-        letterSpacing: '-.5rem',
-        fontSize: ['2rem', '3rem', '4rem', '5rem'],
-        textAlign: 'center',
-        textShadow: "1px 1px 1px rgba(0, 0, 0, 0.25)",
-        fontFamily: "arial, sans-serif",
+        letterSpacing: '-.15rem',
+
+        fontSize: ['1rem', '2rem', '3rem', '4rem'],
+        textAlign: 'left',
+        // textShadow: "0 0 1px rgba(255, 255, 255, 0.8), 0 0 2px rgba(255, 255, 255, 0.1)", // Glowing effect
+        // textShadow: ` 0 0 .5px #7928CA, /* Glowing effect for the first color */ 0 0 .5px #FF0080, /* Glowing effect for the second color */ 0 0 .5px #7928CA, /* Enhanced glowing effect for the first color */ 0 0 .5px #FF0080 /* Enhanced glowing effect for the second color */ `,
+        fontFamily: "inter black, sans-serif",
         fontWeight: '900',
+        whiteSpace: 'nowrap',
 
     };
     const linearGradients = (index, dir) => {
@@ -98,20 +100,32 @@ function LandingPageText() {
                     <Box maxW={{base: "7xl", }} mt={'20%'} >
 
                         <Box mx="auto" w={'90%'} >
-                            {/* site logo */}
-                            <Box as="span" position="fixed" top={0} left={0} maxW={'25vw'} >
-                                <VStack >
-                                    <StylishHeader
-                                        bgGradient={linearGradients(1, 'r')}
-                                        text={"TEXTURE"} sx={H1} />
-                                    <StylishHeader
-                                        bgGradient={linearGradients(1, 'l')}
-                                        text={"FORGE"} sx={H1} />
-                                </VStack>
-                            </Box>
                             <Center>
-                                <Text py={'2rem'} sx={detailHeaderStyle} maxW={'xl'} >
-                                    Generate, Preview, and Download PBR Textures for 3D Materials
+                                {/* site logo */}
+                                <Box as="span" position="fixed" top={'5%'} maxW={'20vw'} >
+
+                                    <VStack  >
+
+                                        <StylishHeader
+
+                                            bgGradient={linearGradients(0, 'l')}
+                                            text={"TEXTURE"} sx={H1} />
+                                        <StylishHeader
+                                            mt={'-1.5rem'}
+                                            bgGradient={linearGradients(1, 'l')}
+                                            text={"FORGE"} sx={H1} />
+                                    </VStack>
+                                </Box>
+                            </Center>
+                            <Center>
+                                <Text py={'2rem'} sx={detailHeaderStyle} maxW={'full'} lineHeight={'150%'} >
+                                    Generate Textures With Text-to-Image AI;  <br />
+                                    Get Live Previews Of Your New 3D Materials;<br />
+                                    And Download Your Assets — Optimized, Fast, and Free <br />
+
+
+
+
                                 </Text>
                             </Center>
                         </Box>
