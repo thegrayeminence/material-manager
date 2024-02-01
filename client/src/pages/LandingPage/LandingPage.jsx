@@ -29,7 +29,7 @@ function LandingPageBackground() {
     return (
 
         <Box className="background-animation"
-            height={'80vh'} width={'100vw'} position={'absolute'} top={0} left={0} zIndex={-1}
+            height={'90vh'} width={'100vw'} position={'absolute'} top={0} left={0} zIndex={-1}
         >
         </Box>
 
@@ -53,7 +53,7 @@ function LandingPage() {
 
             </Box>
 
-            <Box position={'relative'} width={'100vw'} marginTop={'-20vh'}>
+            <Box position={'relative'} width={'100vw'} marginTop={'-10vh'}>
                 <Divider orientation='horizontal' borderWidth={'.25rem'} w={'full'} color='white.800' borderStyle={'solid'} />
 
                 <Features />

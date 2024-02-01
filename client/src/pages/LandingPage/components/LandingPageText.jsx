@@ -73,12 +73,9 @@ function LandingPageText() {
     };
 
     const detailHeaderStyle = {
-        //  bgGradient: "linear(to-r, #9bf8f4, #6f7bf7)",
         color: 'white.800',
         // bgClip: "text",
-        // letterSpacing: '.15rem',
-        fontSize: '1.9rem',
-        textAlign: 'center',
+        fontSize: '1.8rem',
         fontFamily: "poppins, sans-serif",
         fontWeight: '600',
 
@@ -102,7 +99,7 @@ function LandingPageText() {
                         <Box mx="auto" w={'90%'} >
                             <Center>
                                 {/* site logo */}
-                                <Box as="span" position="fixed" top={'5%'} maxW={'20vw'} >
+                                <Box as="span" position="absolute" mt={'-20%'} maxW={'20vw'} >
 
                                     <VStack  >
 
@@ -114,32 +111,34 @@ function LandingPageText() {
                                             mt={'-1.5rem'}
                                             bgGradient={linearGradients(1, 'l')}
                                             text={"FORGE"} sx={H1} />
+
                                     </VStack>
                                 </Box>
                             </Center>
                             <Center>
-                                <Text py={'2rem'} sx={detailHeaderStyle} maxW={'full'} lineHeight={'150%'} >
-                                    Generate Textures With Text-to-Image AI;  <br />
-                                    Get Live Previews Of Your New 3D Materials;<br />
-                                    And Download Your Assets — Optimized, Fast, and Free <br />
-
-
-
-
-                                </Text>
+                                <Box>
+                                    <Text textAlign="left" sx={detailHeaderStyle} lineHeight={'150%'} >
+                                        Generate PBR Textures With Text-to-Image AI  <br />
+                                        Get Live Previews Of Your New 3D Materials<br />
+                                        And Download Your Assets — Optimized, Fast, Free <br />
+                                    </Text>
+                                </Box>
                             </Center>
                         </Box>
+                        <Spacer py={'1rem'} />
                         <Center>
-                            <Divider textAlign={'center'} borderWidth={'.25rem'} maxW={'full'} color='white.800' borderStyle={'solid'} />
+                            <Divider textAlign={'center'} borderWidth={'.25rem'} maxW={'xl'} color='white.800' borderStyle={'solid'} />
                         </Center>
+                        <Spacer py={'1rem'} />
+
 
                         <Stack justifyContent="center" py={'2.5rem'} >
                             <HStack justifyContent={'center'}>
                                 <StylishButton mr='.5rem' handleClick={() => navigate('/preview')} text="Generate Maps" />
                                 <StylishButton ml='.5rem' handleClick={() => navigate('/gallery')} text="Download Maps" />
                             </HStack>
-                            <Box alignSelf={'center'} mt='5'>
-                                <Button colorScheme='white' variant='ghost'>How does it work? What is PBR? </Button>
+                            <Box alignSelf={'center'} mt='5' py={'1rem'}>
+                                <Button colorScheme='white' variant='ghost'> How does this work? What is PBR? And text-to-image AI? </Button>
                             </Box>
 
                         </Stack>
