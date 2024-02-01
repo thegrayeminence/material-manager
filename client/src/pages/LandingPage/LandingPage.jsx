@@ -1,6 +1,6 @@
 //lib imports
 import React, {useEffect} from 'react';
-import {Box, VStack, } from '@chakra-ui/react';
+import {Box, VStack, Divider, Center} from '@chakra-ui/react';
 import {AnimatePresence, motion, useScroll} from 'framer-motion';
 
 //components
@@ -29,7 +29,7 @@ function LandingPageBackground() {
     return (
 
         <Box className="background-animation"
-            height={'100vh'} width={'100vw'} margin={0} padding={0} position={'fixed'} top={0} left={0} zIndex={-1}
+            height={'80vh'} width={'100vw'} position={'absolute'} top={0} left={0} zIndex={-1}
         >
         </Box>
 
@@ -43,16 +43,21 @@ function LandingPage() {
 
     return (
 
-        <VStack spacing={0} width={'100vw'}>
+        <VStack spacing={0} width={'100vw'} overflow={'hidden'}>
             <Box
-                height={'auto'} width={'100vw'} position={'relative'}
+                height={'100vh'} width={'100vw'} position={'relative'}
             >
                 <LandingPageText />
                 <LandingPageBackground />
 
-            </Box>
-            <Features />
 
+            </Box>
+
+            <Box position={'relative'} width={'100vw'} marginTop={'-20vh'}>
+                <Divider orientation='horizontal' borderWidth={'.25rem'} w={'full'} color='white.800' borderStyle={'solid'} />
+
+                <Features />
+            </Box>
         </VStack>
 
     );

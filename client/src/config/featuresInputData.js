@@ -1,3 +1,11 @@
+// Here we have used react-icons package for the icons
+import {
+    MdOutlinePersonPin,
+    MdPermDeviceInformation,
+    MdOutlineFlashlightOn,
+    MdAccountTree
+} from "react-icons/md"
+
 export const featuresText = [
     {
         heading: "Learn with flashcards",

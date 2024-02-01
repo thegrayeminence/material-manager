@@ -1,26 +1,22 @@
-import {
-    Container,
-    Box,
-    chakra,
-    Text,
-    Icon,
-    SimpleGrid
-} from "@chakra-ui/react"
-// Here we have used react-icons package for the icons
-import {
-    MdOutlinePersonPin,
-    MdPermDeviceInformation,
-    MdOutlineFlashlightOn,
-    MdAccountTree
-} from "react-icons/md"
+import {Container, Box, chakra, Text, Icon, SimpleGrid} from '@chakra-ui/react';
+
+import {motion, useScroll} from 'framer-motion';
+
 
 import {featuresText} from '../../../config/featuresInputData'
 
+
 const Features = () => {
 
-    console.log(featuresText)
+
+    const features = featuresText
+
+
+
 
     return (
+
+
         <Container maxW="6xl" p={{base: 5, md: 10}}>
             <chakra.h3 fontSize="4xl" fontWeight="bold" mb={3} textAlign="center">
                 Features
@@ -43,6 +39,7 @@ const Features = () => {
                 ))}
             </SimpleGrid>
         </Container>
+
     )
 }
 

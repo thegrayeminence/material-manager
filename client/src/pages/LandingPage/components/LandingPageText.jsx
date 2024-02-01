@@ -17,7 +17,39 @@ import '@fontsource/inter';
 function LandingPageText() {
 
     const H1 = {
-        bgGradient: "linear(to-l, #7928CA, #FF0080)",
+        bgClip: "text",
+        lineHeight: '75%',
+        letterSpacing: '-.5rem',
+        fontSize: ['2rem', '3rem', '4rem', '5rem'],
+        textAlign: 'center',
+        textShadow: "1px 1px 1px rgba(0, 0, 0, 0.25)",
+        fontFamily: "arial, sans-serif",
+        fontWeight: '900',
+
+    };
+    const linearGradients = (index, dir) => {
+        const d = dir
+        const i = index
+        console.log(index)
+        const gradientsArray = [
+            `linear(to-${d}, #7928CA, #FF0080)`,
+            `linear(to-${d}, #40c9ff, #e81cff)`,
+            `linear(to-${d}, #f9c58d, #f492f0)`,
+            `linear(to-${d}, #57ebde, #aefb2a)`,
+            `linear(to-${d}, #f6d5f7, #fbe9d7)`,
+            `linear(to-${d}, #6274e7, #8752a3)`,
+            `linear(to-${d}, #9491e2, #aff2d8)`,
+            `linear(to-${d}, #9bf8f4, #6f7bf7)`,
+            `linear(to-${d}, #f6d5f7, #fbe9d7)`,
+            `linear(to-${d}, #6274e7, #8752a3)`,
+            `linear(to-${d}, #9491e2, #aff2d8)`]
+
+        return (
+            gradientsArray[i]
+        )
+    }
+    const H2 = {
+        bgGradient: "linear(to-r, teal.400, blue.400)",
         bgClip: "text",
         letterSpacing: '.15rem',
         fontSize: '7rem',
@@ -27,7 +59,7 @@ function LandingPageText() {
         fontWeight: '900',
     };
 
-    const H2 = {
+    const H3 = {
         bgGradient: "linear(to-r, teal.400, blue.400)",
         bgClip: "text",
         letterSpacing: '.15rem',
@@ -62,15 +94,21 @@ function LandingPageText() {
 
         <Box pos="relative" overflow="hidden">
             <Box maxW="7xl" mx="auto">
-                <Box pos="relative" w="full" border="solid 1px transparent" >
+                <Box pos="relative" w="full"  >
                     <Box maxW={{base: "7xl", }} mt={'20%'} >
 
-                        <Box textAlign="center" mx="auto" w={'90%'} >
-                            <StylishHeader text={"TEXTURE \n FORGE"} sx={H1} />
-                            {/* <StylishHeader text={"FORGE"} sx={H2} /> */}
-                            {/* <Center>
-                                <Divider textAlign={'center'} borderWidth={'.25rem'} width={'full'} color='white.800' borderStyle={'solid'} />
-                            </Center> */}
+                        <Box mx="auto" w={'90%'} >
+                            {/* site logo */}
+                            <Box as="span" position="fixed" top={0} left={0} maxW={'25vw'} >
+                                <VStack >
+                                    <StylishHeader
+                                        bgGradient={linearGradients(1, 'r')}
+                                        text={"TEXTURE"} sx={H1} />
+                                    <StylishHeader
+                                        bgGradient={linearGradients(1, 'l')}
+                                        text={"FORGE"} sx={H1} />
+                                </VStack>
+                            </Box>
                             <Center>
                                 <Text py={'2rem'} sx={detailHeaderStyle} maxW={'xl'} >
                                     Generate, Preview, and Download PBR Textures for 3D Materials
@@ -92,8 +130,11 @@ function LandingPageText() {
 
                         </Stack>
                     </Box>
+
                 </Box>
+
             </Box>
+
         </Box >
 
 
