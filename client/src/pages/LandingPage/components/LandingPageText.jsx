@@ -123,7 +123,8 @@ function LandingPageText() {
         <Box pos="relative" overflow="hidden">
             <Box maxW="7xl" mx="auto">
                 <Box pos="relative" w="full"  >
-                    <Box maxW={{base: "7xl", sm: 'xl', md: '3xl', lg: '7xl'}} mt={'20%'} >
+                    <Box
+                        mt={'20%'} >
 
                         <Box mx="auto" maxW={'80%'} >
                             <Center>
@@ -169,18 +170,22 @@ function LandingPageText() {
 
                         <Stack justifyContent="center" py={'2.5rem'} >
                             <HStack justifyContent={'center'}>
-                                <StylishButton mr='.5rem' handleClick={() => navigate('/preview')} text="Generate Maps" />
+                                <StylishButton
+
+
+                                    mr='.5rem' handleClick={() => navigate('/preview')} text="Generate Maps" />
                                 <StylishButton ml='.5rem' handleClick={() => navigate('/gallery')} text="Download Maps" />
                             </HStack>
                             <Box alignSelf={'center'} py={'2.5rem'}>
                                 <Button
-                                    borderColor={useColorModeValue('whiteAlpha.400', 'whiteAlpha.400')}
                                     variant='outline' onClick={onOpen}
                                     borderRadius={'lg'}
                                     size={{base: 'md', sm: 'md', md: 'md', lg: 'lg'}}
                                     padding={{base: '1.25rem', sm: '1.25rem', md: '1.75rem', lg: '2rem'}}
-                                    color={useColorModeValue('whiteAlpha.900', 'whiteAlpha.900')}
-
+                                    borderColor={useColorModeValue('whiteAlpha.400', 'whiteAlpha.400')}
+                                    color={useColorModeValue('whiteAlpha.800', 'whiteAlpha.900')}
+                                    bg='whiteAlpha.200'
+                                    _hover={{bg: 'whiteAlpha.300'}}
                                 > How does this work? What is 'PBR'? More questions? </Button>
                             </Box>
 

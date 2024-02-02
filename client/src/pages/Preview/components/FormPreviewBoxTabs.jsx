@@ -13,7 +13,7 @@ const FormPreviewBoxTabs = () => {
 
     const style1 = {
         fontWeight: 'medium',
-        color: 'teal.400',
+        color: useColorModeValue('teal.300', 'facebook.300'),
         letterSpacing: '.2rem',
         fontFamily: 'Avenir Next',
         lineHeight: '1.35rem',
@@ -22,7 +22,7 @@ const FormPreviewBoxTabs = () => {
 
     const style2 = {
         fontWeight: 'medium',
-        color: 'grey.400',
+        color: useColorModeValue('whiteAlpha.800', 'whiteAlpha.800'),
         letterSpacing: '.1rem',
         fontFamily: 'Avenir Next',
         lineHeight: '2rem',
@@ -32,7 +32,7 @@ const FormPreviewBoxTabs = () => {
 
     const style3 = {
         fontWeight: 'book',
-        color: 'teal.400',
+        color: useColorModeValue('teal.400', 'facebook.400'),
         letterSpacing: '.1rem',
         fontFamily: 'Avenir Next',
         lineHeight: '2rem',
@@ -60,7 +60,7 @@ const FormPreviewBoxTabs = () => {
                 px="2.5rem"
                 py={"1.5rem"}
                 bg={useColorModeValue('whiteAlpha.300', 'blackAlpha.400')}
-                borderColor={useColorModeValue('whiteAlpha.300', 'whiteAlpha.400')}
+                borderColor={useColorModeValue('twitter.300', 'purple.400')}
                 borderRadius="2rem"
                 backdropFilter="blur(10px)"
                 shadow="lg"
@@ -71,8 +71,14 @@ const FormPreviewBoxTabs = () => {
                 transition='all 0.2s cubic-bezier(.08,.52,.52,1)'
             >
 
-                <Tabs variant="enclosed" colorScheme="teal">
-                    <TabList color={'purple.400'}>
+                <Tabs variant="enclosed"
+                    colorScheme={useColorModeValue('twitter', 'purple')}
+
+
+                >
+                    <TabList
+                        color={useColorModeValue('twitter.400', 'purple.300')}
+                    >
                         <Tab>Text</Tab>
                         <Tab isDisabled>JSON Output</Tab>
                         <Tab isDisabled>Graphics</Tab>
@@ -80,7 +86,7 @@ const FormPreviewBoxTabs = () => {
                     <TabIndicator
                         mt="-1.5px"
                         height="2px"
-                        bg="teal.600"
+                        bg={useColorModeValue('twitter.400', 'purple.300')}
                         borderRadius="1px"
                     />
                     <TabPanels>

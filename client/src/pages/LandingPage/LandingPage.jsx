@@ -1,6 +1,6 @@
 //lib imports
 import React, {useEffect} from 'react';
-import {Box, VStack, Divider, Center} from '@chakra-ui/react';
+import {Box, VStack, Divider, Center, useColorModeValue} from '@chakra-ui/react';
 import {AnimatePresence, motion, useScroll} from 'framer-motion';
 import {Timeline} from './components';
 
@@ -54,9 +54,13 @@ function LandingPage() {
 
             </Box>
 
-            <Box position={'relative'} width={'100vw'} marginTop={'-20vh'}>
-                <Divider orientation='horizontal' borderWidth={'.25rem'} w={'full'} color='white.800' borderStyle={'solid'} />
-
+            <Box position={'relative'} width={'100vw'} marginTop={'-20vh'}
+                bg={useColorModeValue('gray.300', 'gray.700')}
+            >
+                <Divider textAlign={'center'} borderWidth={'.25rem'} w={'full'}
+                    borderStyle={'solid'}
+                    borderColor={useColorModeValue('blue.400', 'purple.400')}
+                />
                 <Features />
             </Box>
         </VStack>

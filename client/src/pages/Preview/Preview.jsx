@@ -42,7 +42,8 @@ function Preview() {
           overflowX={'scroll'}
           px="2.5rem"
           py={"1.5rem"}
-          bg={useColorModeValue('whiteAlpha.400', 'blackAlpha.400')}
+
+          bg={useColorModeValue('whiteAlpha.300', 'blackAlpha.400')}
           borderColor={useColorModeValue('twitter.400', 'purple.400')}
           borderRadius="2rem"
           backdropFilter="blur(10px)"

@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-    Box, Flex, useDisclosure, Breadcrumb, BreadcrumbItem, BreadcrumbLink, useColorMode
+    Box, Flex, Tooltip, useDisclosure, Breadcrumb, BreadcrumbItem, BreadcrumbLink, useColorMode
 } from '@chakra-ui/react';
 
 //icons:
@@ -47,6 +47,16 @@ const BreadcrumbIconLink = ({size, icon, ...props}) => {
     return (
         <BreadcrumbLink {...props}>
             <Box as={icon} size={size} />
+
+        </BreadcrumbLink>
+    );
+};
+
+const BreadcrumbTextLink = ({size, text, ...props}) => {
+    return (
+        <BreadcrumbLink {...props}>
+            <Box as={text} size={size} />
+
         </BreadcrumbLink>
     );
 };
@@ -99,6 +109,8 @@ function NavBar({isOpen, onOpen, onClose, ...props}) {
                         <BreadcrumbIconLink size={icon_size} icon={colorMode === 'light' ? MdOutlineLightMode : MdOutlineModeNight} href="#"
                             onClick={toggleColorMode}
                         />
+
+
                     </BreadcrumbItem>
                     <BreadcrumbItem>
                         <BreadcrumbIconLink size={icon_size} icon={MdInfoOutline} href="#" onClick={onOpen} />
