@@ -3,7 +3,7 @@ import React from 'react'
 import {useNavigate, useOutletContext} from 'react-router-dom';
 
 import {motion} from 'framer-motion';
-import {Stack, Center, VStack, HStack, useColorModeValue, Box, Button, Text, Spacer, chakra, Divider} from '@chakra-ui/react';
+import {Stack, Center, VStack, HStack, useColorModeValue, List, ListItem, ListIcon, Box, Button, Text, Spacer, chakra, Divider} from '@chakra-ui/react';
 import {StylishHeader, MotionContainer, StylishButton} from '../../../components';
 
 //fonts
@@ -123,9 +123,9 @@ function LandingPageText() {
         <Box pos="relative" overflow="hidden">
             <Box maxW="7xl" mx="auto">
                 <Box pos="relative" w="full"  >
-                    <Box maxW={{base: "7xl", }} mt={'20%'} >
+                    <Box maxW={{base: "7xl", sm: 'xl', md: '3xl', lg: '7xl'}} mt={'20%'} >
 
-                        <Box mx="auto" w={'90%'} >
+                        <Box mx="auto" maxW={'80%'} >
                             <Center>
                                 {/* site logo */}
                                 <Box as="span" position="absolute" mt={'-20%'} maxW={'20vw'} >
@@ -150,9 +150,9 @@ function LandingPageText() {
                                         // color={useColorModeValue('whiteAlpha.800, whiteAlpha.900')}
                                         color={useColorModeValue('whiteAlpha.900', 'whiteAlpha.900')}
                                         textAlign="left" sx={detailHeaderStyle} lineHeight={'150%'} >
-                                        Generate PBR Textures With Text-to-Image AI  <br />
-                                        Get Live Previews Of Your New 3D Materials<br />
-                                        And Download Your Assets — Optimized, Fast, Free <br />
+                                        ‣ Generate PBR Textures With Text-to-Image AI  <br />
+                                        ‣ Get Live Previews Of Your New 3D Materials<br />
+                                        ‣ And Download Your Assets — Optimized, Fast, Free <br />
                                     </Text>
                                 </Box>
                             </Center>

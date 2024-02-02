@@ -1,6 +1,6 @@
 //libs
 import React from 'react'
-import {Box, Spacer} from '@chakra-ui/react'
+import {Box, Spacer, useColorModeValue, Heading} from '@chakra-ui/react'
 import {motion} from 'framer-motion';
 
 //components/state
@@ -8,10 +8,10 @@ import {
   MaterialUploadForm,
   ProgressBar,
   FormPreviewBoxTabs,
+  PreviewBackgroundAnimation
 } from './components';
-import {GradientBG_Purple, Header} from '../../components';
+import {GradientBG_Purple, Header, StylishHeader} from '../../components';
 import {useProgressStore, useFormMode} from '../../store/store';
-// import {StylishHeader} from '../../components/StylishHeader'
 
 
 const MotionBox = motion(Box);
@@ -24,7 +24,11 @@ function Preview() {
     <>
       <Box py='2rem'>
         <Spacer py={'2.5rem'} />
-        <Header text={"GENERATE TEXTURES"} />
+        <Heading textAlign='center' fontSize={{base: '4xl', sm: '4xl', md: '5xl', lg: '6xl', xl: '7xl'}}
+          color={useColorModeValue('whiteAlpha.600', 'whiteApha.600')}
+        >
+          GENERATE TEXTURES
+        </Heading>
 
       </Box>
       <Box px='2rem' width={'80vw'} ml='10%'>
@@ -38,8 +42,8 @@ function Preview() {
           overflowX={'scroll'}
           px="2.5rem"
           py={"1.5rem"}
-          bg='blackAlpha.400'
-          borderColor='teal.500'
+          bg={useColorModeValue('whiteAlpha.400', 'blackAlpha.400')}
+          borderColor={useColorModeValue('twitter.400', 'purple.400')}
           borderRadius="2rem"
           backdropFilter="blur(10px)"
           shadow="lg"
@@ -61,7 +65,8 @@ function Preview() {
 
       <Box width={'100vw'} height={'100%'} margin={0} padding={0} position={'fixed'} top={0} left={0}
         zIndex={-1}>
-        <GradientBG_Purple />
+        {/* <GradientBG_Purple /> */}
+        <PreviewBackgroundAnimation />
       </Box>
     </>
 

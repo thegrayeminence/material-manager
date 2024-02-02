@@ -26,7 +26,7 @@ function Gallery() {
 
   return (
     <Box width='100vw' h='100vh'>
-      <StylishHeader sx={{textAlign: 'center'}} pt="10" text="ALL MATERIALS" />
+      <StylishHeader sx={{textAlign: 'center'}} pt="10" text="Materials Gallery" />
       <Box w='90%' h='100%' >
         <SimpleGrid
           columns={[1, 1, 2, 3]}

@@ -278,7 +278,9 @@ export default function MaterialUploadForm() {
 
     return (
         <>
-            <Box as="form" onSubmit={handleSubmit(handleFormSubmission)} p={5}>
+            <Box as="form" onSubmit={handleSubmit(handleFormSubmission)} p={5}
+                textColor={useColorModeValue('whiteAlpha.800', 'whiteAlpha.800')}
+            >
 
 
                 {/* Material Type Selection */}
@@ -448,20 +450,21 @@ export default function MaterialUploadForm() {
                 {/* Navigation Buttons; Next and Submit have diff functions based on progress state */}
                 <HStack spacing={4} py={'1rem'}>
 
-                    <Button colorScheme="blue" w="full" onClick={flushFormData}>Reset</Button>
+                    <Button color='white' bg={useColorModeValue('blue.800', 'purple.800')} w='full' onClick={flushFormData}>Reset</Button>
 
                     {progress > 0 && (
-                        <Button colorScheme="blue" w="full" onClick={() => decreaseProgress()}>Back</Button>
+                        <Button color='white' bg={useColorModeValue('blue.500', 'purple.500')} w='full' onClick={() => decreaseProgress()}>Back</Button>
                     )}
 
                     {/* Mode 0 : Default */}
                     {progress < 1 && mode === 0 && (
-                        <Button colorScheme="green" w="full" onClick={handleNext}>
+                        <Button color='white' bg={useColorModeValue('green.400', 'green.500')} w='full' onClick={handleNext}>
                             {'Next'}
                         </Button>
                     )}
                     {progress === 1 && mode === 0 && (
-                        <Button type="submit" colorScheme="green" w="full"
+                        <Button type="submit" bg={useColorModeValue('teal.400', 'green.500')} w="full"
+                            color='white'
                         //onClick={toastPromiseOnClick}
                         >
                             {'Submit'}

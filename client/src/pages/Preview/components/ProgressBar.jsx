@@ -6,7 +6,8 @@ import {
   StepSeparator,
   StepStatus,
   Stepper,
-  Text
+  Text,
+  useColorModeValue,
 } from '@chakra-ui/react'
 import React from 'react'
 
@@ -35,12 +36,15 @@ function ProgressBar({func}) {
 
 
   return (
-    <Stack>
+    <Stack >
       {mode === 0 && (
-        <Stepper size='md' index={progress} gap='0'>
+        <Stepper
+          colorScheme={useColorModeValue('twitter', 'purple')}
+          size='md' index={progress} gap='0'>
           {steps.map((step, index) => (
             <Step key={index} gap='0'>
-              <StepIndicator>
+              <StepIndicator
+              >
                 <StepStatus complete={<StepIcon />} />
               </StepIndicator>
               <StepSeparator _horizontal={{ml: '0'}} />
@@ -49,7 +53,10 @@ function ProgressBar({func}) {
         </Stepper>)}
 
       {mode === 1 && (
-        <Stepper size='md' index={progress} gap='0'>
+        <Stepper
+          colorScheme={useColorModeValue('twitter', 'purple')}
+
+          size='md' index={progress} gap='0'>
           {stepsMode1.map((step, index) => (
             <Step key={index} gap='0'>
               <StepIndicator>
@@ -59,7 +66,8 @@ function ProgressBar({func}) {
             </Step>
           ))}
         </Stepper>)}
-      <Text>
+      <Text color={useColorModeValue('whiteAlpha.800', 'whiteAlpha.800')}
+      >
         Step {progress + 1}: <b>{activeStepText}</b>
       </Text>
     </Stack>

@@ -3,6 +3,7 @@ import MaterialUploadForm from "./MaterialUploadForm";
 import FormPreviewBoxTabs from "./FormPreviewBoxTabs";
 import ProgressBar from "./ProgressBar";
 import SuggestionDisplay from "./SuggestionDisplay";
+import PreviewBackgroundAnimation from "./PreviewBackGroundAnimation";
 
 
 export {
@@ -11,4 +12,5 @@ export {
     FormPreviewBoxTabs,
     ProgressBar,
     SuggestionDisplay,
+    PreviewBackgroundAnimation,
 }
