@@ -7,34 +7,21 @@ import {MdDownload, MdInfoOutline, MdOutlinePreview, MdViewInAr, MdGridView, MdP
 import {useNavigate} from 'react-router-dom';
 
 
-function GalleryCard({name, images, isNew, ...props}) {
-
+function GalleryCard({name, images, isNew, showAllImages = false}) {
     const navigate = useNavigate();
-
-
     // const formatting = /[_-]/g
     // const formattedName = name.replace(formatting, ' ')
+
     return (
-        <Flex
-            p={5} w="full" alignItems={'center'} justifyContent={'center'}>
-            <Box
-                bg={'white'}
-                borderWidth={'1px'}
-                rounded={'lg'}
-                shadow="lg"
-                position="relative"
-                minW='256px'
-                h='100%'
-            >
-                {/* Base Color Image */}
-                <Image
-                    src={images[0]}
-                    alt={`${name}`}
-                    roundedTop={'lg'}
-                    fit="cover"
-
-                />
-
+        <Flex p={5} w="full" alignItems={'center'} justifyContent={'center'}>
+            <Box bg={'white'} borderWidth={'1px'} rounded={'lg'} shadow="lg" position="relative" minW='256px' h='100%'>
+                {showAllImages ? (
+                    images.map((src, index) => (
+                        <Image key={index} src={src} alt={`${name}-${index}`} roundedTop={index === 0 ? 'lg' : 'none'} fit="cover" />
+                    ))
+                ) : (
+                    <Image src={images[0]} alt={`${name}`} roundedTop={'lg'} fit="cover" />
+                )}
                 <Box p={6}>
                     <HStack justifyContent={'space-between'} alignItems={'center'}>
                         {/* New/Old Indicator */}

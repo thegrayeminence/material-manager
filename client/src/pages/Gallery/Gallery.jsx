@@ -1,10 +1,12 @@
 import React, {useState, useEffect} from 'react'
-import {Box, Grid, SimpleGrid} from '@chakra-ui/react'
+import {Box, Grid, SimpleGrid, VStack, Text} from '@chakra-ui/react'
 //local imports
 import {TextureDisplay} from './components'
 import {GalleryCard} from './components'
 import {loadImagesFromFolder} from '../../config/loadImagesFromFolder'
 import {StylishHeader} from '../../components'
+import {PreviewBackgroundAnimation} from '../Preview/components';
+
 
 function Gallery() {
 
@@ -26,20 +28,33 @@ function Gallery() {
 
   return (
     <Box width='100vw' h='100vh'>
-      <StylishHeader sx={{textAlign: 'center'}} pt="10" text="Materials Gallery" />
-      <Box w='90%' h='100%' >
+      <Text
+        fontFamily={'poppins, sans-serif'}
+        fontWeight={'800'}
+        mt='10%'
+        textAlign='center'
+        fontSize={{base: '4xl', sm: '4xl', md: '5xl', lg: '6xl', xl: '7xl'}}
+        color={'whiteAlpha.600'}>
+        {`MATERIALS GALLERY:`}
+      </Text>
+      <Box maxW='90%' h='100%' >
+
         <SimpleGrid
           columns={[1, 1, 2, 3]}
           spacing={8}
           w='100%'
-          ml='10%'
-          mt='10%'
+          ml='5%'
+
         >
           {materials.map(({folder, images}) => (
             <GalleryCard key={folder} name={folder} images={images} isNew={true} />
           ))}
         </SimpleGrid>
       </Box >
+      <Box width={'100vw'} height={'100%'} margin={0} padding={0} position={'fixed'} top={0} left={0}
+        zIndex={-1}>
+        <PreviewBackgroundAnimation />
+      </Box>
     </Box>
   )
 }
