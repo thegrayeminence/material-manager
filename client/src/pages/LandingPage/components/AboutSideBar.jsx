@@ -6,6 +6,7 @@ import {
 } from "@chakra-ui/react";
 import {motion} from 'framer-motion';
 import {Link} from "react-router-dom";
+import Timeline from './TimeLine';
 
 const MotionIcon = motion(Icon);
 const MotionText = motion(chakra.Text);
@@ -31,7 +32,7 @@ const AboutSideBar = ({isOpen, onClose}) => {
     return (
         <Drawer closeOnEsc={true} closeOnOverlayClick={true}
             placement='right' isOpen={isOpen} onClose={onClose}
-            isFullHeight={true} size='sm'
+            isFullHeight={true} size={['sm', 'md', 'lg', 'xl']}
         >
             <DrawerOverlay />
             <DrawerContent>
@@ -39,38 +40,23 @@ const AboutSideBar = ({isOpen, onClose}) => {
                 <DrawerHeader
                     sx={headerStyle}
                     pt='3rem' textAlign={'center'} fontSize='4xl'>
-                    ABOUT/FAQ:
+                    ABOUT & FAQ:
                 </DrawerHeader>
                 <DrawerBody fontSize={'2xl'}>
-                    <MotionText sx={headerStyle} variants={textVariants} initial="hidden" animate="visible">
-                        How It Works:
-                    </MotionText>
-                    <Spacer py={'1.5rem'} />
-                    <MotionText sx={bodyStyle} variants={textVariants} initial="hidden" animate="visible">
-                        1. User describes/classifies the properties of the material they want generated
-                    </MotionText>
-                    <Spacer py={'.5rem'} />
-                    <MotionText sx={bodyStyle} variants={textVariants} initial="hidden" animate="visible">
-                        2. TextureForge takes the descriptions and turns them into prompts optimally formatted for Stable Diffusion AI
-                    </MotionText>
-                    <Spacer py={'.5rem'} />
-                    <MotionText sx={bodyStyle} variants={textVariants} initial="hidden" animate="visible">
-                        3. Prompts are sent to API and used to generate the texture maps via two steps (text to image for Albedo map, image to image for other maps)
-                    </MotionText>
-                    <Spacer py={'.5rem'} />
-                    <MotionText sx={bodyStyle} variants={textVariants} initial="hidden" animate="visible">
-                        4. Once textures have been generated and loaded in browser, download and use the texture maps to your heart's content!
-                    </MotionText>
-                    <Spacer py={'2.5rem'} />
+                    <Timeline />
                     <Spacer py={'1rem'} />
-                    <MotionText sx={headerStyle} variants={textVariants} initial="hidden" animate="visible">
-                        What is 'PBR'?:
+
+                    <MotionText fontSize='4xl' textAlign={'center'} sx={headerStyle} variants={textVariants} initial="hidden" animate="visible">
+                        What is 'PBR'?: <br />
                     </MotionText>
                     <MotionText sx={bodyStyle} variants={textVariants} initial="hidden" animate="visible">
-                        Physically Based Rendering (PBR) engines utilize real-world equations to simulate the way that light interacts with surfaces.
-                        Texture maps are a big component in these systems — with each bitmap, typically between 4-7, representing a different channel
-                        of information to describe optical phenomena like diffusion (albedo/base_color), surface-geomtetry
-                        describe the way that light int
+                        <strong>P</strong>hysically <strong>B</strong>ased <strong>R</strong>endering is a method, used by most modern engines,
+                        in which real-world equations and specifically-formatted bitmaps are employed to realistically
+                        simulate the way that light interacts with surfaces and environments.
+                        In this system, a set of texture maps (typically b/t 4-7) are connected to a parent material,
+                        with each bitmap representing a different channel of information analagous to categories of optimical phenomena
+                        that might be relevant in describing a material — e.g. diffuse light (albedo/baseColor maps),
+                        reflectivity (specular/roughness/smoothness maps), and surface-geometry and shadows (normal/height/ao maps).
                     </MotionText>
                     <Spacer py={'.5rem'} />
                     <LinkBox mt="4" textAlign="center">

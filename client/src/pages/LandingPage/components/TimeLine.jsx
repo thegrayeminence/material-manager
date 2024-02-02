@@ -15,53 +15,78 @@ import {
 import {FaRegNewspaper} from "react-icons/fa"
 import {BsGithub} from "react-icons/bs"
 
-const milestones = [
+const timeLineData = [
     {
         id: 1,
-        categories: ["Frontend", "Request", "User Input"],
+        categories: ["Frontend", "User Input", "Request"],
         title: "User defines their material's properties via the form on TextureForge",
         icon: FaRegNewspaper,
         description: `User describes/classifies the properties of the material they want generated`,
-        date: "Average Time Required: 1 minute"
+        date: "Average Time Required: 30-60 seconds"
     },
     {
         id: 2,
         categories: ["Backend", "Database Storage"],
         title: "Prompts sent to backend and formatted/prepped for Stable Diffusion AI",
         icon: BsGithub,
-        description: `TextureForge takes the descriptions and turns them into prompts optimally formatted for Stable Diffusion AI`,
-        date: "Average Time Required: 15 seconds"
+        description: `TextureForge sends user descriptions to backend, stores them in the database, and then turns them into prompts optimally formatted for Stable Diffusion AI`,
+        date: "Average Time Required: 10 seconds"
     },
     {
         id: 3,
         categories: ["Backend", "API Call"],
-        title: "TextureForge sends prompts to API and generates texture maps",
+        title: "Prompts sent to SD to generate the first texture map (Albedo/BaseColor)",
         icon: BsGithub,
-        description: `Prompts are sent to API and used to generate the texture maps via two steps (text to image for Albedo map, image to image for other maps)`,
-        date: "Average Time Required: 30 seconds"
+        description: `TextureForge sends prompts to Stable Diffusion to generate the first texture map (Albedo/BaseColor), using a text-to-image model`,
+        date: "Average Time Required: 30-60 seconds"
     },
     {
         id: 4,
-        categories: ["Frontend"],
-        title: "User downloads and uses the texture maps",
-        icon: FaRegNewspaper,
-        description: `Once textures have been generated and loaded in browser, download and use the texture maps to your heart's content!`,
+        categories: ["Backend", "Database Storage", "Response"],
+        title: "Generated BaseColor texture map send to backend and stored in database",
+        icon: BsGithub,
+        description: `SD outputs Albedo/BaseColor texture map as a url; TextureForge stores url in database and sends it to frontend for user preview/download`,
         date: "Average Time Required: 15 seconds"
+    },
+    {
+        id: 5,
+        categories: ["Backend", "API Call"],
+        title: "Prompts sent to SD to generate secondary PBR texture maps",
+        icon: BsGithub,
+        description: `TextureForge sends Albedo/BaseColor texture map to SD to generate the rest of the PBR texture maps (normal, roughness, height, etc.), using an image-to-image model`,
+        date: "Average Time Required: 30 seconds to 2 minutes"
+    },
+    {
+        id: 6,
+        categories: ["Backend", "Database Storage", "Response"],
+        title: "Generated PBR Maps stored in database and sent to frontend for user preview",
+        icon: FaRegNewspaper,
+        description: `SD outputs PBR texture maps as urls; TextureForge stores urls in database and sends them to frontend for user preview/download`,
+        date: "Average Time Required: 15 seconds"
+    },
+
+    {
+        id: 7,
+        categories: ["Frontend"],
+        title: "User previews and downloads their new texture maps!",
+        icon: FaRegNewspaper,
+        description: `Generated texture maps are loaded in browser for user preview; user downloads new assets, zipped into folder with optimal file structure/naming, and then uses them to their heart's content!`,
+        date: "Average Time Required: N/A"
     }
 
 ]
 
 
-const Milestones = () => {
+const Timeline = () => {
     return (
         <Container maxWidth="4xl" p={{base: 2, sm: 10}}>
             <chakra.h3 fontSize="4xl" fontWeight="bold" mb={18} textAlign="center">
-                Articles
+                How It Works
             </chakra.h3>
-            {milestones.map((milestone, index) => (
+            {timeLineData.map((step, index) => (
                 <Flex key={index} mb="10px">
                     <LineWithDot />
-                    <Card {...milestone} />
+                    <Card {...step} />
                 </Flex>
             ))}
         </Container>
@@ -156,4 +181,4 @@ const LineWithDot = () => {
     )
 }
 
-export default Milestones
+export default Timeline
