@@ -50,13 +50,15 @@ const AboutSideBar = ({isOpen, onClose}) => {
                         What is 'PBR'?: <br />
                     </MotionText>
                     <MotionText sx={bodyStyle} variants={textVariants} initial="hidden" animate="visible">
-                        <strong>P</strong>hysically <strong>B</strong>ased <strong>R</strong>endering is a method, used by most modern engines,
-                        in which real-world equations and specifically-formatted bitmaps are employed to realistically
-                        simulate the way that light interacts with surfaces and environments.
-                        In this system, a set of texture maps (typically b/t 4-7) are connected to a parent material,
-                        with each bitmap representing a different channel of information analagous to categories of optimical phenomena
-                        that might be relevant in describing a material — e.g. diffuse light (albedo/baseColor maps),
-                        reflectivity (specular/roughness/smoothness maps), and surface-geometry and shadows (normal/height/ao maps).
+                        <strong>P</strong>hysically <strong>B</strong>ased <strong>R</strong>endering is a method
+                        in which real-world equations and bitmaps are employed to realistically
+                        compute/simulate the way that light interacts with surfaces and environments. <br /> <br />
+                        In PBR systems/engines, a set of specifically-formatted/complementary bitmaps (typically b/t 4-7) are connected to a parent material
+                        , with each image representing a different channel of information (—each analagous to a specific category of optimical phenomena
+                        that might be relevant to accurately describe their material's properties—)
+                        — e.g. diffuse light (albedo and baseColor maps),
+                        reflectivity (roughness and spec maps), environmental shadows (ao maps), and surface-geometry details (normal and height maps).
+                        <br /> <br />
                     </MotionText>
                     <Spacer py={'.5rem'} />
                     <LinkBox mt="4" textAlign="center">

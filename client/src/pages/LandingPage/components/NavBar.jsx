@@ -95,11 +95,11 @@ function NavBar() {
                     <BreadcrumbItem>
                         <BreadcrumbIconLink size={icon_size} icon={MdOutlineAddToPhotos} href="#" onClick={(e) => {e.preventDefault(); navigate('/preview')}} />
                     </BreadcrumbItem>
-                    {/* <BreadcrumbItem>
+                    <BreadcrumbItem>
                         <BreadcrumbIconLink size={icon_size} icon={colorMode === 'light' ? MdOutlineLightMode : MdOutlineModeNight} href="#"
                             onClick={toggleColorMode}
                         />
-                    </BreadcrumbItem> */}
+                    </BreadcrumbItem>
                     <BreadcrumbItem>
                         <BreadcrumbIconLink size={icon_size} icon={MdInfoOutline} href="#" onClick={onOpen} />
                     </BreadcrumbItem>

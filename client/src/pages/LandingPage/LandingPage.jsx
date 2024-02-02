@@ -2,6 +2,7 @@
 import React, {useEffect} from 'react';
 import {Box, VStack, Divider, Center} from '@chakra-ui/react';
 import {AnimatePresence, motion, useScroll} from 'framer-motion';
+import {Timeline} from './components';
 
 //components
 import {LandingPageText, Features} from './components';
@@ -55,7 +56,7 @@ function LandingPage() {
 
             <Box position={'relative'} width={'100vw'} marginTop={'-10vh'}>
                 <Divider orientation='horizontal' borderWidth={'.25rem'} w={'full'} color='white.800' borderStyle={'solid'} />
-
+                <Timeline />
                 <Features />
             </Box>
         </VStack>
