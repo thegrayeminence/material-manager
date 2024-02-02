@@ -1,83 +1,147 @@
 import React from 'react';
 import {FaGithub} from "react-icons/fa6";
 import {
-    Drawer, DrawerOverlay, DrawerContent, DrawerBody,
-    DrawerHeader, DrawerCloseButton, Icon, Spacer, chakra, LinkBox, LinkOverlay
+    Drawer, Box, HStack, VStack, DrawerOverlay, DrawerContent, DrawerBody,
+    DrawerHeader, DrawerCloseButton, Center, useColorModeValue, Icon, Spacer, chakra, LinkBox, LinkOverlay
 } from "@chakra-ui/react";
-import {motion} from 'framer-motion';
+import {color, motion} from 'framer-motion';
+import '@fontsource/poppins';
+import '@fontsource/inter';
 import {Link} from "react-router-dom";
 import Timeline from './TimeLine';
 
 const MotionIcon = motion(Icon);
 const MotionText = motion(chakra.Text);
 
+
+const colorThemeValues = {
+    light: {
+        bgMain: "gray.100",
+        bgDetail: "facebook.600",
+        componentMain: "gray.100",
+        componentDetail: "gray.200",
+        borderMain: "blue.300",
+        borderDetail: "twitter.300",
+        icon: "teal.300",
+        textMain: "gray.600",
+        textHeader: "blue.700",
+        textDetail: "gray.400",
+        highlight: "twitter.400",
+        hover: "purple.400",
+        headerFamily: "poppins, sans-serif",
+        bodyFamily: "inter, sans-serif",
+        detailFamily: "avenir, sans-serif",
+    },
+    dark: {
+        bgMain: "gray.800",
+        bgDetail: "purple.600",
+        componentMain: "gray.700",
+        componentDetail: "gray.600",
+        borderMain: "purple.800",
+        borderDetail: "purple.600",
+        icon: "purple.400",
+        textMain: "gray.300",
+        textHeader: "purple.600",
+        textDetail: "gray.400",
+        highlight: "purple.300",
+        hover: "twitter.400",
+        headerFamily: "poppins, sans-serif",
+        bodyFamily: "inter, sans-serif",
+        detailFamily: "avenir, sans-serif",
+    }
+};
 const headerStyle = {
-    fontWeight: 'semibold',
-    color: 'slateblue',
+    fontWeight: '800',
     letterSpacing: '.2rem',
-    fontFamily: 'Avenir Next, sans-serif',
     lineHeight: '1.35rem',
+    textAlign: 'center',
+    fontSize: ['xl', '2xl', '3xl', '4xl'],
+    fontFamily: 'poppins, sans-serif',
 };
 
 const bodyStyle = {
-    fontWeight: 'medium',
-    color: 'slategrey',
-    letterSpacing: '.1rem',
-    fontFamily: 'Avenir Next, sans-serif',
+    fontWeight: '200',
     lineHeight: '2rem',
-    fontSize: '1.25rem'
-};
+    fontSize: ['lg', 'lg', 'xl', '2xl'],
+    fontFamily: 'inter, sans-serif',
 
+};
 const AboutSideBar = ({isOpen, onClose}) => {
     return (
         <Drawer closeOnEsc={true} closeOnOverlayClick={true}
             placement='right' isOpen={isOpen} onClose={onClose}
             isFullHeight={true} size={['sm', 'md', 'lg', 'xl']}
+
         >
             <DrawerOverlay />
-            <DrawerContent>
+            <DrawerContent
+                bg={useColorModeValue(colorThemeValues.light.bgMain, colorThemeValues.dark.bgMain)}
+            >
                 <DrawerCloseButton />
                 <DrawerHeader
-                    sx={headerStyle}
-                    pt='3rem' textAlign={'center'} fontSize='4xl'>
+                    sx={headerStyle} color={useColorModeValue(colorThemeValues.light.textHeader, colorThemeValues.dark.textHeader)}
+                    pt='3rem' textAlign={'center'}
+                >
                     ABOUT & FAQ:
                 </DrawerHeader>
-                <DrawerBody fontSize={'2xl'}>
+                <DrawerBody>
                     <Timeline />
                     <Spacer py={'1rem'} />
+                    <Box
+                        padding={{base: '8', sm: '6', md: '12', lg: '16', xl: '20'}}>
+                        <Center>
 
-                    <MotionText fontSize='4xl' textAlign={'center'} sx={headerStyle} variants={textVariants} initial="hidden" animate="visible">
-                        What is 'PBR'?: <br />
-                    </MotionText>
-                    <MotionText sx={bodyStyle} variants={textVariants} initial="hidden" animate="visible">
-                        <strong>P</strong>hysically <strong>B</strong>ased <strong>R</strong>endering is a method
-                        in which real-world equations and bitmaps are employed to realistically
-                        compute/simulate the way that light interacts with surfaces and environments. <br /> <br />
-                        In PBR systems/engines, a set of specifically-formatted/complementary bitmaps (typically b/t 4-7) are connected to a parent material
-                        , with each image representing a different channel of information (—each analagous to a specific category of optimical phenomena
-                        that might be relevant to accurately describe their material's properties—)
-                        — e.g. diffuse light (albedo and baseColor maps),
-                        reflectivity (roughness and spec maps), environmental shadows (ao maps), and surface-geometry details (normal and height maps).
-                        <br /> <br />
-                    </MotionText>
-                    <Spacer py={'.5rem'} />
-                    <LinkBox mt="4" textAlign="center">
-                        <LinkOverlay href='https://github.com/thegrayeminence/material-manager/tree/work1' isExternal>
-                            <MotionText sx={headerStyle} variants={textVariants} initial="hidden" animate="visible">
-                                GitHub Repo:
+                            <MotionText
+                                color={useColorModeValue(colorThemeValues.light.textHeader, colorThemeValues.dark.textHeader)}
+                                sx={headerStyle}
+                                // variants={textVariants} initial="hidden" animate="visible"
+                                textAlign={'center'}
+                            >
+                                What is 'PBR'?: <br />
                             </MotionText>
-                        </LinkOverlay>
-                        <MotionIcon
-                            as={FaGithub} w='15%' height={'auto'}
-                            _hover={{transform: 'scale(1.1)'}}
-                            variants={iconVariants}
-                            initial="hidden"
-                            animate="visible"
-                        />
-                    </LinkBox>
+                        </Center>
+                        <Spacer py={'1.5rem'} />
+                        <MotionText sx={bodyStyle}
+                            color={useColorModeValue(colorThemeValues.light.textMain, colorThemeValues.dark.textMain)}
+                        // variants={textVariants} initial="hidden" animate="visible"
+                        >
+                            <strong>P</strong>hysically <strong>B</strong>ased <strong>R</strong>endering is a method
+                            in which real-world equations and bitmaps are employed in unison to realistically
+                            simulate the way that light interacts with surfaces and environments. <br /> <br />
+                            In PBR systems, a set of complementary bitmaps (typically between 4-7) are connected to specific inputs in a parent material.
+                            Each texture map corresponds a different channel of information,
+                            analagous to a specific category of optimical phenomena—e.g. diffuse light (albedo and baseColor maps),
+                            reflectivity (roughness and spec maps), environmental shadows (ao maps), and surface-geometry details (normal and height maps).
+                            <br /> <br />
+                        </MotionText>
+                        <Spacer py={'.5rem'} />
+                        <Center>
+                            <LinkBox mt="4" textAlign="center">
+                                <LinkOverlay href='https://github.com/thegrayeminence/material-manager/tree/main' isExternal>
+                                    <MotionText
+                                        sx={headerStyle}
+                                        color={useColorModeValue(colorThemeValues.light.textHeader, colorThemeValues.dark.textHeader)}
+                                    // initial="hidden" animate="visible" variants={textVariants}
+                                    >
+                                        More Info on GitHub:
+                                    </MotionText>
+                                </LinkOverlay>
+                                <Spacer py={'.5rem'} />
+                                <MotionIcon
+                                    as={FaGithub} w='15%' height={'auto'}
+                                    _hover={{transform: 'scale(1.1)'}}
+
+                                    color={useColorModeValue(colorThemeValues.light.icon, colorThemeValues.dark.icon)}
+                                // initial="hidden"
+                                // animate="visible"
+                                // variants={textVariants}
+                                />
+                            </LinkBox>
+                        </Center>
+                    </Box>
                 </DrawerBody>
             </DrawerContent>
-        </Drawer>
+        </Drawer >
     );
 };
 

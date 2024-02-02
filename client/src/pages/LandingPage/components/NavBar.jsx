@@ -51,10 +51,10 @@ const BreadcrumbIconLink = ({size, icon, ...props}) => {
     );
 };
 
-function NavBar() {
+function NavBar({isOpen, onOpen, onClose, ...props}) {
     //hooks
     const navigate = useNavigate();
-    const {isOpen, onOpen, onClose} = useDisclosure()
+    // const {isOpen, onOpen, onClose} = useDisclosure()
     const location = useLocation();
     const {colorMode, toggleColorMode} = useColorMode()
 

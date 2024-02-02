@@ -13,9 +13,13 @@ import {
     useColorModeValue
 } from "@chakra-ui/react"
 // Here we have used react-icons package for the icons
-import {FaRegNewspaper} from "react-icons/fa"
-import {BsGithub} from "react-icons/bs"
-import {PiNumberCircleOneThin, PiNumberCircleTwoThin, PiNumberCircleThreeThin, PiNumberCircleFourThin, PiNumberCircleFiveThin, PiNumberCircleSixThin, PiNumberCircleSevenThin, PiNumberCircleEightThin} from "react-icons/pi"
+import {FaRegNewspaper, FaWpforms, FaDatabase} from "react-icons/fa"
+import {BsGithub, BsDatabaseDown, BsDatabaseCheck, BsDatabaseUp} from "react-icons/bs"
+import {PiBrain, PiNumberCircleOneFill, PiNumberCircleTwoFill, PiNumberCircleThreeFill, PiNumberCircleFourFill, PiNumberCircleFiveFill, PiNumberCircleSixFill, PiNumberCircleSevenFill, PiNumberCircleEightThin} from "react-icons/pi"
+import {IoCloudDownloadOutline} from "react-icons/io5";
+import {AiOutlineSend} from "react-icons/ai";
+import {BiBrain} from "react-icons/bi";
+import {LuBrainCog} from "react-icons/lu";
 
 
 const timeLineData = [
@@ -23,15 +27,17 @@ const timeLineData = [
         id: 1,
         categories: ["Frontend", "User Input", "Request"],
         title: "User Defines Properties of Material to be Generated",
-        icon: PiNumberCircleOneThin,
-        description: `User describes/classifies the properties of the material they want generated via the site's form`,
+        icon: PiNumberCircleOneFill,
+        bigIcon: FaWpforms,
+        description: `User describes/classifies the properties of the material they want generated via the inputs on the site's form`,
         date: "Average Time Required: 30-60 seconds"
     },
     {
         id: 2,
         categories: ["Backend", "Database Storage"],
         title: "Descriptions Sent to Backend, Cached, and Re-Formatted as Prompts",
-        icon: PiNumberCircleTwoThin,
+        icon: PiNumberCircleTwoFill,
+        bigIcon: AiOutlineSend,
         description: `TextureForge sends user descriptions to backend, stores them in the database, and then turns them into prompts optimally formatted for Stable Diffusion AI`,
         date: "Average Time Required: 10 seconds"
     },
@@ -39,15 +45,17 @@ const timeLineData = [
         id: 3,
         categories: ["Backend", "API Call"],
         title: "Text Prompt Sent to SD to Generate First Texture Map",
-        icon: PiNumberCircleThreeThin,
+        icon: PiNumberCircleThreeFill,
+        bigIcon: LuBrainCog,
         description: `TextureForge sends prompts to Stable Diffusion to generate the first texture map (Albedo/BaseColor), using a text-to-image model`,
         date: "Average Time Required: 30-60 seconds"
     },
     {
         id: 4,
         categories: ["Backend", "Database Storage", "Response"],
-        title: "First Texture Map (BaseColor) Cached & Sent to Frontend for User Preview",
-        icon: PiNumberCircleFourThin,
+        title: "First Texture Map (BaseColor) Cached & Sent to Frontend",
+        icon: PiNumberCircleFourFill,
+        bigIcon: BsDatabaseCheck,
         description: `SD outputs Albedo/BaseColor texture map as a url; TextureForge stores url in database and sends it to frontend for user preview/download`,
         date: "Average Time Required: 15 seconds"
     },
@@ -55,15 +63,17 @@ const timeLineData = [
         id: 5,
         categories: ["Backend", "API Call"],
         title: "Image Prompt Sent to SD to Generate Rest of PBR Maps",
-        icon: PiNumberCircleFiveThin,
+        icon: PiNumberCircleFiveFill,
+        bigIcon: LuBrainCog,
         description: `TextureForge sends Albedo/BaseColor texture map to SD to generate the rest of the PBR texture maps (normal, roughness, height, etc.), using an image-to-image model`,
         date: "Average Time Required: 30 seconds to 2 minutes"
     },
     {
         id: 6,
         categories: ["Backend", "Database Storage", "Response"],
-        title: "Generated PBR Maps Cached & Sent to Frontend for User Preview/Download",
-        icon: PiNumberCircleSixThin,
+        title: "Generated PBR Maps Cached & Sent to Frontend",
+        icon: PiNumberCircleSixFill,
+        bigIcon: BsDatabaseCheck,
         description: `SD outputs PBR texture maps as urls; TextureForge stores urls in database and sends them to frontend for user preview/download`,
         date: "Average Time Required: 15 seconds"
     },
@@ -71,9 +81,10 @@ const timeLineData = [
     {
         id: 7,
         categories: ["Frontend"],
-        title: "User previews and downloads their new texture maps!",
-        icon: PiNumberCircleSevenThin,
-        description: `Generated texture maps are loaded in browser for user preview; user downloads new assets, zipped into folder with optimal file structure/naming, and then uses them to their heart's content!`,
+        title: "User Downloads New Assets and Uses Them to Their Heart's Content!",
+        icon: PiNumberCircleSevenFill,
+        bigIcon: IoCloudDownloadOutline,
+        description: `Generated texture maps are loaded in browser for user to preview; user downloads new assets, zipped into folder with optimal file structure/naming, and then imports them/uses them however they want!`,
         date: "Average Time Required: N/A"
     }
 
@@ -112,12 +123,13 @@ const colorThemeValues = {
 const Timeline = () => {
     return (
         <Container maxWidth="4xl" p={{base: 2, sm: 10}}>
-            <chakra.h3 fontSize="3xl" fontWeight="bold" mb={18} textAlign="center">
+            <chakra.h3 color={useColorModeValue(colorThemeValues.light.textMain, colorThemeValues.dark.textMain)}
+                fontWeight="bold" mb={18} textAlign="center" fontSize={{base: '3xl', sm: '2xl', lg: '4xl'}}>
                 How It Works:
             </chakra.h3>
             {timeLineData.map((step, index) => (
                 <Flex key={index} mb="10px">
-                    <LineWithDot />
+                    <LineWithDot {...step} />
                     <Card {...step} />
                 </Flex>
             ))}
@@ -125,40 +137,25 @@ const Timeline = () => {
     )
 }
 
-const Card = ({title, categories, description, icon, date}) => {
+const Card = ({title, categories, description, icon, bigIcon, date}) => {
 
     console.log(colorThemeValues.light.icon)
     return (
         <HStack
 
             p={{base: 3, sm: 6, md: 8, lg: 10}}
-            bg={useColorModeValue(colorThemeValues.light.componentMain, colorThemeValues.dark.componentMain)}
+            bg={useColorModeValue(colorThemeValues.light.bgMain, colorThemeValues.dark.bgMain)}
             spacing={5}
             rounded="xl"
             alignItems="center"
             pos="relative"
-            _before={{
-                content: `""`,
-                w: "0",
-                h: "0",
-                borderColor: `transparent ${useColorModeValue(
-                    "#edf2f6",
-                    "#1a202c"
-                )} transparent`,
-                borderStyle: "solid",
-                borderWidth: "15px 30px 15px 0",
-                borderLeftRadius: "10px",
-                borderRightRadius: "0px",
-                position: "absolute",
-                left: "-30px",
-                display: "block"
-            }}
+
         >
-            <Icon as={icon} w={12} h={12} color={useColorModeValue(colorThemeValues.light.icon, colorThemeValues.dark.icon)} />
+            <Icon as={bigIcon} w={12} h={12} color={useColorModeValue(colorThemeValues.light.icon, colorThemeValues.dark.icon)} />
             <Box>
-                <HStack spacing={2} mb={1}>
+                <HStack spacing={1} mb={1}>
                     {categories.map(cat => (
-                        <Text fontSize={{base: "sm", sm: "sm", xl: "sm"}} key={cat} color={useColorModeValue(colorThemeValues.light.textDetail, colorThemeValues.dark.textDetail)}
+                        <Text fontSize={{base: "sm", sm: "sm", xl: "sm"}} key={cat} noOfLines={1} color={useColorModeValue(colorThemeValues.light.textDetail, colorThemeValues.dark.textDetail)}
                         >
                             {cat}
                         </Text>
@@ -175,7 +172,8 @@ const Card = ({title, categories, description, icon, date}) => {
                     >
                         {title}
                     </chakra.h1>
-                    <Text fontWeight="600" fontSize={{base: "lg", sm: "md", md: "lg", xl: "xl"}} noOfLines={2} color={useColorModeValue(colorThemeValues.light.textMain, colorThemeValues.dark.textMain)}
+                    <Text fontWeight="600" fontSize={{base: "lg", sm: "md", md: "lg", xl: "xl"}}
+                        noOfLines={4} color={useColorModeValue(colorThemeValues.light.textMain, colorThemeValues.dark.textMain)}
                     >
                         {description}
                     </Text>
@@ -186,39 +184,40 @@ const Card = ({title, categories, description, icon, date}) => {
     )
 }
 
-const LineWithDot = () => {
+const LineWithDot = ({icon}) => {
 
 
 
     return (
-        <Flex pos="relative" alignItems="center" mr="40px">
-            <chakra.span
-                position="absolute"
+        <Flex pos="relative" alignItems="center" >
+            {/* <chakra.span
+                position="relative"
                 left="50%"
                 height="calc(100% + 10px)"
                 border="1px solid"
-                borderColor={useColorModeValue(colorThemeValues.light.borderMain, colorThemeValues.dark.borderMain)}
+                borderColor={useColorModeValue(colorThemeValues.light.borderDetail, colorThemeValues.dark.borderMain)}
                 top="0px"
-            ></chakra.span>
+            // zIndex={1}
+            ></chakra.span> */}
             <Box pos="relative" p="10px">
-                <Box
-                    pos="absolute"
+                <Icon
+                    as={icon}
+                    color={useColorModeValue(colorThemeValues.light.borderMain, colorThemeValues.dark.borderMain)}
+                    pos="relative"
+                    boxSize={{base: "40px", sm: "30px", md: "40px", lg: "50px"}}
                     width="100%"
                     height="100%"
                     bottom="0"
                     right="0"
                     top="0"
                     left="0"
-                    backgroundSize="cover"
-                    backgroundRepeat="no-repeat"
                     backgroundPosition="center center"
-                    backgroundColor={useColorModeValue(colorThemeValues.light.componentDetail, colorThemeValues.dark.componentDetail)}
                     borderRadius="100px"
-                    border="3px solid"
+                    border="2px solid"
                     borderColor={useColorModeValue(colorThemeValues.light.borderDetail, colorThemeValues.dark.borderDetail)}
-                    backgroundImage="none"
                     opacity={1}
-                ></Box>
+
+                ></Icon>
             </Box>
         </Flex>
     )

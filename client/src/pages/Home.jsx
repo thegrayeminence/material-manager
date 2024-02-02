@@ -1,19 +1,20 @@
 //libs
-import {Outlet} from 'react-router-dom';
+import {Outlet, useOutletContext} from 'react-router-dom';
 //components
 import NavBar from './LandingPage/components/NavBar'
+import {useDisclosure} from '@chakra-ui/react';
 
 
 
 const Home = () => {
 
-
+  const {isOpen, onOpen, onClose} = useDisclosure()
 
   return (
     <>
 
-      <NavBar />
-      <Outlet />
+      <NavBar isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
+      <Outlet context={{isOpen: isOpen, onOpen: onOpen, onClose: onClose}} />
     </>
   )
 }
