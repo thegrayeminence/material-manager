@@ -144,6 +144,11 @@ export default function MaterialUploadForm() {
             const materialId = textureResponse.data.material_id;
             const baseColorUrl = textureResponse.data.image_url;
 
+            //debugging: log formdata and materialdata
+            console.log({'formdata': formData, 'materialData': materialData});
+            //debugging: log material id and albedo url
+            console.log({"Material ID:": materialId, "Albedo URL:": baseColorUrl});
+
             // Set the albedo image in the store
             setAlbedoImage(baseColorUrl);
             console.log(`Albedo url ${baseColorUrl} added to store.`);
@@ -156,12 +161,13 @@ export default function MaterialUploadForm() {
             console.log("PBR maps generation initiated!");
 
             // PBR MAPS LOAD HERE!!!!!!!!
-
-            // Set PBR maps in the store
+            // Set PBR maps in zustand store
             const maps = pbrResponse.data.pbr_maps;
+            console.log("PBR maps generated sucessfully!", maps);
             setPBRImage('normal', maps.normal_map_url);
             setPBRImage('height', maps.height_map_url);
             setPBRImage('smoothness', maps.smoothness_map_url);
+
         } catch (error) {
             console.error("Error during form submission:", error);
             // Optionally handle the error, e.g., show toast
@@ -273,14 +279,11 @@ export default function MaterialUploadForm() {
                 {progress === 0 && (
                     <FormControl mb={4} isInvalid={errors.materialType}>
                         <FormLabel
-                            textColor={useColorModeValue('whiteAlpha.800', 'whiteAlpha.800')}
-
+                            textColor={'whiteAlpha.800'}
                             htmlFor="materialType">Material Type</FormLabel>
                         <Controller
-
                             name="materialType"
                             control={control}
-
                             rules={progress === 0 ? {required: "Material Type is required"} : {}}
                             render={({field}) => (
                                 <>
@@ -291,9 +294,6 @@ export default function MaterialUploadForm() {
                                         closeMenuOnSelect={true}
                                         variant="flushed"
                                     // colorScheme={useColorModeValue('blue', 'purple')}
-
-
-
                                     />
                                 </>
                             )}
@@ -308,7 +308,7 @@ export default function MaterialUploadForm() {
                 {progress === 0 && (
                     <FormControl mb={4} isInvalid={errors.materialTextures}>
                         <FormLabel
-                            textColor={useColorModeValue('whiteAlpha.800', 'whiteAlpha.800')}
+                            textColor={'whiteAlpha.800'}
 
                             htmlFor="materialTextures">Texture Maps</FormLabel>
                         <Controller
@@ -339,8 +339,7 @@ export default function MaterialUploadForm() {
                 {progress === 0 && (
                     <FormControl mb={4}>
                         <FormLabel
-                            textColor={useColorModeValue('whiteAlpha.800', 'whiteAlpha.800')}
-
+                            textColor={'whiteAlpha.800'}
                             htmlFor="materialMetadata">Additional Meta-Data</FormLabel>
                         <Controller
                             name="materialMetadata"
@@ -368,8 +367,7 @@ export default function MaterialUploadForm() {
                     <HStack spacing={4} py={'.5rem'}>
                         <FormControl mb={4}>
                             <FormLabel
-                                textColor={useColorModeValue('whiteAlpha.800', 'whiteAlpha.800')}
-
+                                textColor={'whiteAlpha.800'}
                                 htmlFor="color">Color/Luminance</FormLabel>
                             <Input
                                 id="color"
@@ -377,7 +375,7 @@ export default function MaterialUploadForm() {
                                 {...register('color')}
                                 placeholder={"e.g. red, bright, rich, dark, etc..."}
                                 onChange={(e) => onInputChange(e, 'color')}
-                                sx={manifestationSuggestion ? {color: useColorModeValue('white', 'white')} : {}}
+                                sx={manifestationSuggestion ? {color: 'white'} : {}}
 
                             />
                             <SuggestionDisplay inputValue={color} suggestions={colorSuggestion} />
@@ -386,8 +384,7 @@ export default function MaterialUploadForm() {
 
                         <FormControl mb={4}>
                             <FormLabel
-                                textColor={useColorModeValue('whiteAlpha.800', 'whiteAlpha.800')}
-
+                                textColor={'whiteAlpha.800'}
                                 htmlFor="elementType">Element/Type</FormLabel>
                             <Input
                                 id="elementType"
@@ -395,7 +392,7 @@ export default function MaterialUploadForm() {
                                 {...register('elementType')}
                                 placeholder={"e.g. wood, metal, fabric, ceramic, etc..."}
                                 onChange={(e) => onInputChange(e, 'elementType')}
-                                sx={manifestationSuggestion ? {color: useColorModeValue('white', 'white')} : {}}
+                                sx={manifestationSuggestion ? {color: 'white'} : {}}
 
                             />
                             <SuggestionDisplay inputValue={elementType} suggestions={elementTypeSuggestion} />
@@ -410,7 +407,7 @@ export default function MaterialUploadForm() {
                     <HStack spacing={4} py={'.5rem'}>
                         <FormControl mb={4}>
                             <FormLabel
-                                textColor={useColorModeValue('whiteAlpha.800', 'whiteAlpha.800')}
+                                textColor={'whiteAlpha.800'}
 
                                 htmlFor="manifestation">Manifestation/Form</FormLabel>
                             <Input
@@ -419,7 +416,7 @@ export default function MaterialUploadForm() {
                                 {...register('manifestation')}
                                 placeholder={"e.g. flooring, wall, tiles, counter, etc..."}
                                 onChange={(e) => onInputChange(e, 'manifestation')}
-                                sx={manifestationSuggestion ? {color: useColorModeValue('white', 'white')} : {}}
+                                sx={manifestationSuggestion ? {color: 'white'} : {}}
                             />
                             <SuggestionDisplay inputValue={manifestation} suggestions={manifestationSuggestion} />
 
@@ -427,7 +424,7 @@ export default function MaterialUploadForm() {
                         <FormControl mb={4}>
                             <FormLabel
 
-                                textColor={useColorModeValue('whiteAlpha.800', 'whiteAlpha.800')}
+                                textColor={'whiteAlpha.800'}
                                 htmlFor="condition">Condition/State</FormLabel>
                             <Input
                                 id="condition"
@@ -435,7 +432,7 @@ export default function MaterialUploadForm() {
                                 {...register('condition')}
                                 placeholder={"e.g. new, dusty, worn, etc..."}
                                 onChange={(e) => onInputChange(e, 'condition')}
-                                sx={manifestationSuggestion ? {color: useColorModeValue('white', 'white')} : {}}
+                                sx={manifestationSuggestion ? {color: 'white'} : {}}
                             />
                             <SuggestionDisplay inputValue={condition} suggestions={conditionSuggestion} />
                         </FormControl>
