@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react'
 import React from 'react'
 
-import {useFormMode, useProgressStore} from '../../../store/store'
+import {useProgressStore} from '../../../store/store'
 
 const steps = [
   {title: 'First', description: `Classify Material: Technical Specifications`},
@@ -28,7 +28,6 @@ const stepsMode1 = [
 
 function ProgressBar({func}) {
 
-  const {mode} = useFormMode();
   const progress = useProgressStore((state) => state.progress)
   const activeStepText = steps[progress].description
 
@@ -37,39 +36,21 @@ function ProgressBar({func}) {
 
   return (
     <Stack >
-      {mode === 0 && (
-        <Stepper
-          colorScheme={useColorModeValue('twitter', 'purple')}
-          size='md' index={progress} gap='0'>
-          {steps.map((step, index) => (
-            <Step key={index} gap='0'>
-              <StepIndicator
-              >
-                <StepStatus complete={<StepIcon />} />
-              </StepIndicator>
-              <StepSeparator _horizontal={{ml: '0'}} />
-            </Step>
-          ))}
-        </Stepper>)}
 
-      {mode === 1 && (
-        <Stepper
-          colorScheme={useColorModeValue('twitter', 'purple')}
+      <Stepper
+        colorScheme={useColorModeValue('twitter', 'purple')}
+        size='md' index={progress} gap='0'>
+        {steps.map((step, index) => (
+          <Step key={index} gap='0'>
+            <StepIndicator
+            >
+              <StepStatus complete={<StepIcon />} />
+            </StepIndicator>
+            <StepSeparator _horizontal={{ml: '0'}} />
+          </Step>
+        ))}
+      </Stepper>
 
-          size='md' index={progress} gap='0'>
-          {stepsMode1.map((step, index) => (
-            <Step key={index} gap='0'>
-              <StepIndicator>
-                <StepStatus complete={<StepIcon />} />
-              </StepIndicator>
-              <StepSeparator _horizontal={{ml: '0'}} />
-            </Step>
-          ))}
-        </Stepper>)}
-      <Text color={useColorModeValue('whiteAlpha.800', 'whiteAlpha.800')}
-      >
-        Step {progress + 1}: <b>{activeStepText}</b>
-      </Text>
     </Stack>
 
   )

@@ -1,17 +1,16 @@
 import React from 'react';
 import {useParams} from 'react-router-dom'; // Import useParams from react-router-dom
-import {Box} from '@chakra-ui/react';
-import {TextureDisplayById} from '.'
-import {StylishHeader} from '../../../components'
+import {Box, Heading} from '@chakra-ui/react';
+import TextureDisplayById from '../components/TextureDisplayById'
 
 function GalleryById() {
     const {id} = useParams(); // Get the 'id' parameter from the URL
 
     return (
         <>
-            <Box py='5rem'>
-                <StylishHeader sx={{textAlign: 'center'}} pt="10" text={`MATERIAL:${id}`} />
-            </Box>
+            {/* <Box py='5rem'>
+                <Header text={"PREVIEW MATERIALS"} />
+            </Box> */}
             <Box px='2rem' width={'80vw'} ml='10%'>
                 <TextureDisplayById materialId={id} /> {/* Pass it as 'materialId' */}
             </Box>

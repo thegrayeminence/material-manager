@@ -34,7 +34,7 @@ const routes = [
                 element: <GalleryDetailsView />
             },
             {
-                path: '/gallery/:id',
+                path: '/gallery_id/:id',
                 element: <GalleryById />
             },
 

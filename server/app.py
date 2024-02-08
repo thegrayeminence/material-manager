@@ -17,11 +17,9 @@ import logging
 from logging.handlers import RotatingFileHandler
 
 # Remote library imports
-from flask import send_from_directory
-from flask import make_response, request, session, jsonify, render_template
+from flask import make_response, request, session, jsonify, render_template,  send_from_directory, current_app
 from flask_restful import Resource
 import replicate
-from flask import current_app
 from dotenv import load_dotenv
 
 
@@ -445,7 +443,7 @@ def download_image(url, filename):
         raise Exception(f"Error downloading image: {e}")
 
 def create_summary_text(material):
-    # Constructing summary text with material details
+    # summary text file with material details
     summary_lines = [
         f"Material ID: {material.id}",
         f"Workflow: {material.workflow}",
@@ -465,8 +463,8 @@ def create_summary_text(material):
     return "\n".join(summary_lines)
 
 
-
 def create_downloadable_zip(material_id):
+    
     material = Material.query.get(material_id)
     if not material:
         raise FileNotFoundError("Material not found")
@@ -475,9 +473,12 @@ def create_downloadable_zip(material_id):
     folder_name = f"{material.color}_{material.element}_{material.manifestation}_{material.condition}"
     temp_images_dir = os.path.join(current_app.root_path, 'temp_images', folder_name)
     os.makedirs(temp_images_dir, exist_ok=True)
-
-    zip_filename = os.path.join(temp_images_dir, f"{folder_name}.zip")
     
+    app.logger.info(f"folder_name: {folder_name}")
+    
+    zip_filename = os.path.join(temp_images_dir, f"{folder_name}.zip")
+    app.logger.info(f"Creating zip file at: {zip_filename}")
+
     with zipfile.ZipFile(zip_filename, 'w') as zipf:
         for map_type, attribute_name in [('base_color', 'base_color_url'), ('normal', 'normal_map_url'), 
                                          ('height', 'height_map_url'), ('smoothness', 'smoothness_map_url')]:
@@ -490,21 +491,35 @@ def create_downloadable_zip(material_id):
 
     return zip_filename
 
+##gets proper filename for zip file/unzipped folder
+@app.route("/api/get_material_filename/<int:material_id>", methods=['GET'])
+def get_material_filename(material_id):
+    try:
+        material = Material.query.get(material_id)
+        if not material:
+            return jsonify({"error": "Material not found"}), 404
 
+        filename = f"{material.color}_{material.element}_{material.manifestation}_{material.condition}.zip"
+        return jsonify({"filename": filename})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route("/api/download_material/<int:material_id>", methods=['GET'])
 def download_material(material_id):
     try:
-        zip_filename = create_downloadable_zip(material_id)
-        directory = os.path.dirname(zip_filename)
-        response = send_from_directory(directory, os.path.basename(zip_filename), as_attachment=True)
-        cleanup_temporary_directory(directory)  # Clean up after sending the file
+        zip_file_path = create_downloadable_zip(material_id)
+        directory = os.path.dirname(zip_file_path)
+        filename = os.path.basename(zip_file_path)
+        
+        response = send_from_directory(directory, filename, as_attachment=True)
+        app.logger.info(f"Serving zip from: {zip_file_path} to: {directory} with filename: {filename}")
+        
+        # Clean up after sending the file
+        cleanup_temporary_directory(directory) 
         return response
-        # return send_from_directory(directory, os.path.basename(zip_filename), as_attachment=True)
     except Exception as e:
+        app.logger.error(f"Error in download_material: {e}")
         return jsonify({"error": str(e)}), 500
-
-
 
 
 

@@ -11,14 +11,13 @@ import {
   PreviewBackgroundAnimation
 } from './components';
 import {GradientBG_Purple, Header, StylishHeader} from '../../components';
-import {useProgressStore, useFormMode} from '../../store/store';
+import {useProgressStore} from '../../store/store';
 
 
 const MotionBox = motion(Box);
 
 function Preview() {
   const {progress} = useProgressStore()
-  const {mode} = useFormMode();
 
   return (
     <>
@@ -60,8 +59,7 @@ function Preview() {
       </Box>
 
       <Box py='2rem'>
-        {progress < 2 && mode === 0 && <FormPreviewBoxTabs />}
-        {progress < 3 && mode === 1 && <FormPreviewBoxTabs />}
+        {progress < 2 && <FormPreviewBoxTabs />}
       </Box>
 
       <Box width={'100vw'} height={'100%'} margin={0} padding={0} position={'fixed'} top={0} left={0}

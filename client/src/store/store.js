@@ -18,15 +18,6 @@ export const useIsLoadingStore = create((set) => ({
 }));
 
 
-// store for global values for form settings and options (e.g. AI generation mode/manual uploads)
-// mode 0 = default mode w/ AI generation ; mode 1 = manual mode w/o AI generation
-export const useFormMode = create((set) => ({
-  mode: 0,
-  incrementMode: () => set((state) => ({mode: state.mode + 1})),
-  decrementMode: () => set((state) => ({mode: state.mode - 1})),
-  resetMode: () => set({mode: 0}),
-}))
-
 
 // store for global state management of materialData/fileData/imagePreviews from form inputs
 export const useMaterialStore = create(set => ({
@@ -43,8 +34,8 @@ export const useMaterialStore = create(set => ({
   setJsonFormData: (jsonFormData) => set(state => ({formData: {...state.formData, jsonFormData}})),
 
   // Separate state for imagePreviews from manual file uploads
-  imagePreviews: [],
-  setImagePreviews: (imagePreviews) => set({imagePreviews}),
+  // imagePreviews: [],
+  // setImagePreviews: (imagePreviews) => set({imagePreviews}),
 
 }));
 

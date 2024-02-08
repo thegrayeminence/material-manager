@@ -4,21 +4,26 @@ import {useGeneratedImagesStore} from '../../../store/store';
 import {Box, SimpleGrid, Skeleton, Image, Heading, Flex} from '@chakra-ui/react';
 import {motion} from 'framer-motion';
 import {useParams} from 'react-router-dom'; // Import useParams from react-router-dom
-// import {API_URL} from './client/src/config/URLConfig.js'
 
 
 
 // helper function to download a material
 const handleDownload = async (materialId) => {
-    // const material_id = useGeneratedImagesStore(state => state.materialId);
     console.log("material_id:", materialId)
     try {
-        const response = await axios.get(`/api/download_material/${materialId}`, {responseType: 'blob'});
+
+        // First, fetch the filename
+        const filenameResponse = await axios.get(`http://localhost:3001/api/get_material_filename/${materialId}`);
+        const filename = filenameResponse.data.filename;
+        console.log("filename:", filename);
+
+        const response = await axios.get(`http://localhost:3001/api/download_material/${materialId}`, {
+            responseType: 'blob',
+        });
         const url = window.URL.createObjectURL(new Blob([response.data]));
         const link = document.createElement('a');
         link.href = url;
-        console.log("link:", link, "url:", url)
-        link.setAttribute('download', `material_${materialId}.zip`);
+        link.setAttribute('download', filename);
         document.body.appendChild(link);
         link.click();
         link.parentNode.removeChild(link);
@@ -43,11 +48,13 @@ const TextureDisplayById = () => {
     useEffect(() => {
         const fetchRecentAlbedo = async () => {
             try {
-                const response = await axios.get(`/api/get_albedo_by_id/${id}`); // Use 'id' as a string
+                const response = await axios.get(`http://localhost:3001/api/get_albedo_by_id/${id}`); // Use 'id' as a string
                 setAlbedoImage(response.data.image_url);
                 setMaterialId(response.data.material_id);
+                // console.log(materialId, store_materialId)
             } catch (error) {
                 console.error('Error fetching recent albedo:', error);
+                // console.log(materialId, store_materialId)
 
             }
         };
@@ -62,7 +69,7 @@ const TextureDisplayById = () => {
         const fetchMap = async (mapType) => {
             try {
                 console.log("Current materialId:", materialId);
-                const response = await axios.get(`/api/get_${mapType}_by_id/${id}`); // Use 'id' as a string
+                const response = await axios.get(`http://localhost:3001/api/get_${mapType}_by_id/${id}`); // Use 'id' as a string
                 return response.data.image_url;
             } catch (error) {
                 console.error(`Error fetching ${mapType} map:`, error);
