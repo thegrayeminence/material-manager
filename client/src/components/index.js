@@ -7,6 +7,7 @@ import FileUpload from "./not_in_use/FileUpload";
 import StylishHeader from "./StylishHeader";
 import MotionContainer from "./MotionContainer";
 import StylishButton from "./StylishButton";
+import GeometricBackgroundAnimation from "./GeometricBackgroundAnimation";
 
 export {
     Header,
@@ -18,6 +19,7 @@ export {
     StylishHeader,
     MotionContainer,
     StylishButton,
+    GeometricBackgroundAnimation,
 
 
 };

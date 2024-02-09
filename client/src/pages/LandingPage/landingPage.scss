@@ -12,3 +12,17 @@
         linear-gradient(60deg, rgb(255 0 0), rgb(120 86 255));
     background-blend-mode: overlay, overlay, difference, difference, difference, normal;
 }
+
+.background-animation-2 {
+    svg {
+        display: block;
+        width: 100vw;
+        height: 100vh;
+    }
+
+    body {
+        background: #000;
+        margin: 0;
+
+    }
+}

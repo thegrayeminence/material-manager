@@ -1,4 +1,4 @@
-import {Container, Box, chakra, Text, Icon, SimpleGrid} from '@chakra-ui/react';
+import {Container, Box, chakra, Text, Icon, SimpleGrid, useColorModeValue} from '@chakra-ui/react';
 
 import {motion, useScroll} from 'framer-motion';
 
@@ -15,10 +15,10 @@ const colorThemeValues = {
         componentDetail: "gray.200",
         borderMain: "blue.300",
         borderDetail: "twitter.300",
-        icon: "teal.300",
-        textMain: "gray.600",
+        icon: "twitter.400",
+        textMain: "blue.700",
         textHeader: "blue.700",
-        textDetail: "gray.400",
+        textDetail: "gray.700",
         highlight: "twitter.400",
         hover: "purple.400",
     },
@@ -32,7 +32,7 @@ const colorThemeValues = {
         icon: "purple.400",
         textMain: "gray.300",
         textHeader: "purple.600",
-        textDetail: "gray.600",
+        textDetail: "gray.400",
         highlight: "purple.300",
         hover: "twitter.400",
     }
@@ -49,8 +49,17 @@ const Features = () => {
     return (
 
 
-        <Container maxW="6xl" p={{base: 5, md: 10}}>
-            <chakra.h3 fontSize="4xl" fontWeight="bold" mb={3} textAlign="center">
+        <Box zIndex={-1} maxW="6xl" p={{base: 5, md: 10}}
+            // bg='transparent'
+            // backgroundBlendMode={'overlay'}
+            overflow="hidden"
+            bgClip="text"
+        >
+            <chakra.h3 bgClip="text" fontSize="4xl" fontWeight="bold" mb={3} textAlign="center"
+                color={useColorModeValue(colorThemeValues.light.textHeader, colorThemeValues.dark.textHeader)}
+                fontFamily={'avenir black, avenir, sans-serif'}
+
+            >
                 Features
             </chakra.h3>
             <SimpleGrid
@@ -62,15 +71,27 @@ const Features = () => {
             >
                 {features.map((feature, index) => (
                     <Box key={index} textAlign="center">
-                        <Icon as={feature.icon} w={10} h={10} color="blue.400" />
-                        <chakra.h3 fontWeight="semibold" fontSize="2xl">
+                        <Icon as={feature.icon} w={10} h={10}
+
+                            color={useColorModeValue(colorThemeValues.light.icon, colorThemeValues.dark.icon)}
+                        />
+                        <chakra.h3 fontWeight="semibold" fontSize="2xl"
+                            bgClip="text"
+                            fontFamily={'avenir black, avenir, sans-serif'}
+                            color={useColorModeValue(colorThemeValues.light.textMain, colorThemeValues.dark.textMain)}
+                        >
                             {feature.heading}
                         </chakra.h3>
-                        <Text fontSize="md">{feature.content}</Text>
+                        <Text
+                            bgClip="text"
+                            fontWeight={'500'}
+                            fontFamily={'avenir next, avenir, sans-serif'}
+                            color={useColorModeValue(colorThemeValues.light.textDetail, colorThemeValues.dark.textDetail)}
+                        >{feature.content}</Text>
                     </Box>
                 ))}
             </SimpleGrid>
-        </Container>
+        </Box>
 
     )
 }
