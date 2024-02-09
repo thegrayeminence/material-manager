@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import {useGeneratedImagesStore} from '../../../store/store';
-import {Box, SimpleGrid, Skeleton, Image, Heading, Flex} from '@chakra-ui/react';
+import {Box, SimpleGrid, Skeleton, Image, Heading, Flex, Button, Select} from '@chakra-ui/react';
 import {motion} from 'framer-motion';
 import {useParams} from 'react-router-dom'; // Import useParams from react-router-dom
 
@@ -15,7 +15,7 @@ const handleDownload = async (materialId) => {
         // First, fetch the filename
         const filenameResponse = await axios.get(`http://localhost:3001/api/get_material_filename/${materialId}`);
         const filename = filenameResponse.data.filename;
-        console.log("filename:", filename);
+        // console.log("filename:", filename);
 
         const response = await axios.get(`http://localhost:3001/api/download_material/${materialId}`, {
             responseType: 'blob',
@@ -51,10 +51,8 @@ const TextureDisplayById = () => {
                 const response = await axios.get(`http://localhost:3001/api/get_albedo_by_id/${id}`); // Use 'id' as a string
                 setAlbedoImage(response.data.image_url);
                 setMaterialId(response.data.material_id);
-                // console.log(materialId, store_materialId)
             } catch (error) {
                 console.error('Error fetching recent albedo:', error);
-                // console.log(materialId, store_materialId)
 
             }
         };
@@ -68,7 +66,6 @@ const TextureDisplayById = () => {
 
         const fetchMap = async (mapType) => {
             try {
-                console.log("Current materialId:", materialId);
                 const response = await axios.get(`http://localhost:3001/api/get_${mapType}_by_id/${id}`); // Use 'id' as a string
                 return response.data.image_url;
             } catch (error) {
@@ -90,9 +87,11 @@ const TextureDisplayById = () => {
                 }
             });
             setPbrMapUrls(newPbrMapUrls);
+            console.log('color url:', albedoImage, 'pbr urls:', newPbrMapUrls)
         };
 
         loadMaps();
+
     }, [materialId, setPBRImage, id]); // Include 'id' as a dependency
 
 
@@ -110,8 +109,34 @@ const TextureDisplayById = () => {
 
     const albedoBoxSize = "360px"; // 20% larger than PBR maps
     const pbrBoxSize = "300px";
+    const color_map_url = albedoImage;
+    const normal_map_url = pbrMapUrls.normal;
+    const height_map_url = pbrMapUrls.height;
+    const smoothness_map_url = pbrMapUrls.smoothness;
+    const [geometry_type, set_geometry_type] = useState('cylinder');
+
+    // function for pbr.one preview link
+    const redirectToExternalLink = () => {
+        const baseUrl = 'https://cdn.pbr.one/main/material-shading.html#';
+        const queryParams = new URLSearchParams({
+            color_url: color_map_url,
+            normal_url: normal_map_url,
+            roughness_url: smoothness_map_url,
+            displacement_url: height_map_url,
+            geometry_type: geometry_type,
+            displacement_scale: '0.01',
+            tiling_scale: '1.33',
+        }).toString();
+
+        const fullUrl = `${baseUrl}${queryParams}`;
+        // opens link in current tab
+        // window.location.href = fullUrl;
+        //opens link in new tab:
+        window.open(fullUrl, '_blank');
+    };
 
     return (
+
         <Box p={5}>
             {/* Albedo Image */}
             <Flex direction="column" align="center" mb={10}>
@@ -140,8 +165,20 @@ const TextureDisplayById = () => {
                     ))}
                 </SimpleGrid>
             </Flex>
+            <Flex direction="column" align="center" mt={5}>
+                <Select placeholder="Select geometry type" value={geometry_type} onChange={(e) => set_geometry_type(e.target.value)} mb={4}>
+                    <option value="sphere">Sphere</option>
+                    <option value="plane">Plane</option>
+                    <option value="cube">Cube</option>
+                    <option value="cylinder">Cylinder</option>
+                    <option value="torus">Torus</option>
+
+                </Select>
+                <Button colorScheme="blue" onClick={redirectToExternalLink}>Go to External Link</Button>
+            </Flex>
         </Box >
     );
 };
 
 export default TextureDisplayById;
+
