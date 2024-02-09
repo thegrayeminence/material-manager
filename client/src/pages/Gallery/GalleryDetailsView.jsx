@@ -58,11 +58,6 @@ function GalleryDetailsView() {
 
                                 backdropFilter="blur(10px)"
 
-                            // _hover={{
-                            //     scale: 1.05,
-                            //     backdropFilter: 'blur(20px)'
-                            // }}
-                            // transition='all 0.2s cubic-bezier(.08,.52,.52,1)'
                             >
                                 <Image src={src} alt={`${name} ${imageLabels[index]}`}
                                     fit="cover" mx='auto' w='full'

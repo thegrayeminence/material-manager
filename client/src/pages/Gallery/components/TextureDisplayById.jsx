@@ -1,21 +1,22 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import {useGeneratedImagesStore} from '../../../store/store';
-import {Box, SimpleGrid, Skeleton, Image, Heading, Flex, Button, Select} from '@chakra-ui/react';
+import {Box, Spacer, Divider, Text, SimpleGrid, Skeleton, Image, HStack, Heading, Flex, Button, Select, AspectRatio} from '@chakra-ui/react';
 import {motion} from 'framer-motion';
 import {useParams} from 'react-router-dom'; // Import useParams from react-router-dom
 
 
 
+
 // helper function to download a material
 const handleDownload = async (materialId) => {
+
     console.log("material_id:", materialId)
     try {
 
         // First, fetch the filename
         const filenameResponse = await axios.get(`http://localhost:3001/api/get_material_filename/${materialId}`);
         const filename = filenameResponse.data.filename;
-        // console.log("filename:", filename);
 
         const response = await axios.get(`http://localhost:3001/api/download_material/${materialId}`, {
             responseType: 'blob',
@@ -35,19 +36,21 @@ const handleDownload = async (materialId) => {
 
 const TextureDisplayById = () => {
     const {id} = useParams(); // Get the 'id' parameter from the URL as a string
-
     const {setPBRImage} = useGeneratedImagesStore();
+    const [materialName, setMaterialName] = useState(null);
     const [materialId, setMaterialId] = useState(null);
     const [albedoImage, setAlbedoImage] = useState(null);
     const [pbrMapUrls, setPbrMapUrls] = useState({normal: null, height: null, smoothness: null});
-    // const store_materialId = useGeneratedImagesStore(state => state.materialId);
 
     const MotionImageBox = motion(Box);
-
     // Fetch the most recent albedo image and its material ID
     useEffect(() => {
         const fetchRecentAlbedo = async () => {
             try {
+                const filenameResponse = await axios.get(`http://localhost:3001/api/get_material_filename/${id}`);
+                const filename = filenameResponse.data.filename;
+                const formattedFileName = filename.replace('.zip', '').replace(/[_]/g, " ").toUpperCase();
+                setMaterialName(formattedFileName);
                 const response = await axios.get(`http://localhost:3001/api/get_albedo_by_id/${id}`); // Use 'id' as a string
                 setAlbedoImage(response.data.image_url);
                 setMaterialId(response.data.material_id);
@@ -100,24 +103,31 @@ const TextureDisplayById = () => {
         boxShadow: "xl",
         borderRadius: "md",
         overflow: "hidden",
-        border: "2px solid",
-        borderColor: "gray.300",
-        bg: "gray.50",
+        border: "1px solid",
+        borderColor: "gray.400",
+        bg: "whiteAlpha.200",
+        backdropFilter: "blur(10px)",
         cursor: "pointer",
         transition: "all 0.3s ease-in-out"
     };
 
-    const albedoBoxSize = "360px"; // 20% larger than PBR maps
+
+    const albedoBoxSize = "300px";
     const pbrBoxSize = "300px";
+    const imageLabels = ['Normals', 'Height', 'Smoothness'];
+
+    //vars for pbr.one material preview
     const color_map_url = albedoImage;
     const normal_map_url = pbrMapUrls.normal;
     const height_map_url = pbrMapUrls.height;
     const smoothness_map_url = pbrMapUrls.smoothness;
     const [geometry_type, set_geometry_type] = useState('cylinder');
+    const [environment_type, set_environment_type] = useState(0);
+    const baseUrl = 'https://cdn.pbr.one/main/material-shading.html#';
+    const query_params = `color_url=${color_map_url}&normal_url=${normal_map_url}&roughness_url=${smoothness_map_url}&displacement_url=${height_map_url}&geometry_type=${geometry_type}&environment_index=${environment_type}&displacement_scale=0.01&tiling_scale=1.33&gui_enable=-1&watermark_enable=0`
 
     // function for pbr.one preview link
     const redirectToExternalLink = () => {
-        const baseUrl = 'https://cdn.pbr.one/main/material-shading.html#';
         const queryParams = new URLSearchParams({
             color_url: color_map_url,
             normal_url: normal_map_url,
@@ -126,6 +136,8 @@ const TextureDisplayById = () => {
             geometry_type: geometry_type,
             displacement_scale: '0.01',
             tiling_scale: '1.33',
+            gui_enable: '0',
+            watermark_enable: '0',
         }).toString();
 
         const fullUrl = `${baseUrl}${queryParams}`;
@@ -139,12 +151,21 @@ const TextureDisplayById = () => {
 
         <Box p={5}>
             {/* Albedo Image */}
+
             <Flex direction="column" align="center" mb={10}>
-                <Heading mb={4} color="purple.500">Albedo</Heading>
+                {materialName && (<Heading fontSize={{base: '2xl', sm: 'xl', md: '2xl', lg: '3xl', xl: '4xl'}} color="purple.600" py={4} mt={4}>
+                    {`${materialName}`}
+                </Heading>)}
                 {albedoImage ? (
+
                     <MotionImageBox {...imageBoxStyle}>
-                        <Image src={albedoImage} alt="Albedo Texture" boxSize={albedoBoxSize} objectFit="cover" onClick={() => handleDownload(materialId)} />
+                        <Image src={albedoImage} alt="Base Color Map" boxSize={albedoBoxSize} objectFit="cover" onClick={() => handleDownload(materialId)} />
+                        <Text mt="1" color='whiteAlpha.700' fontWeight={'500'} fontSize={{base: 'lg', sm: 'md', md: 'lg', lg: 'lg', xl: 'xl'}} fontFamily='avenir, sans-serif' textAlign="center" >
+                            Base Color Map
+                        </Text>
                     </MotionImageBox>
+
+
                 ) : (
                     <Skeleton height={albedoBoxSize} />
                 )}
@@ -152,29 +173,64 @@ const TextureDisplayById = () => {
 
             {/* PBR Images: Normal, Height, Smoothness */}
             <Flex direction="column" align="center">
-                <Heading mb={4} color="blue.500">PBR Maps</Heading>
                 <SimpleGrid columns={[2, null, 3]} spacing="30px" justifyContent="center">
                     {['normal', 'height', 'smoothness'].map((type, index) => (
                         pbrMapUrls[type] ? (
                             <MotionImageBox key={type} {...imageBoxStyle}>
-                                <Image src={pbrMapUrls[type]} alt={`${type} Texture`} boxSize={pbrBoxSize} objectFit="cover" />
+                                <Image src={pbrMapUrls[type]} alt={`${type} Map`} boxSize={pbrBoxSize} objectFit="cover" />
+                                <Text mt="1" color='whiteAlpha.700' fontWeight={'500'} fontSize={{base: 'lg', sm: 'md', md: 'lg', lg: 'lg', xl: 'xl'}} fontFamily='avenir, sans-serif' textAlign="center" >
+                                    {`${imageLabels[index]} Map`}
+                                </Text>
                             </MotionImageBox>
+
                         ) : (
                             <Skeleton key={index} height={pbrBoxSize} />
                         )
                     ))}
                 </SimpleGrid>
-            </Flex>
-            <Flex direction="column" align="center" mt={5}>
-                <Select placeholder="Select geometry type" value={geometry_type} onChange={(e) => set_geometry_type(e.target.value)} mb={4}>
-                    <option value="sphere">Sphere</option>
-                    <option value="plane">Plane</option>
-                    <option value="cube">Cube</option>
-                    <option value="cylinder">Cylinder</option>
-                    <option value="torus">Torus</option>
 
-                </Select>
-                <Button colorScheme="blue" onClick={redirectToExternalLink}>Go to External Link</Button>
+                {albedoImage && pbrMapUrls.normal && pbrMapUrls.height && pbrMapUrls.smoothness && (
+                    <Box>
+                        <Button onClick={() => handleDownload(materialId)} colorScheme="blue" variant="ghost" mt={5} size={{base: 'md', sm: 'md', md: 'md', lg: 'lg', xl: 'lg'}}>
+                            Download Material
+                        </Button>
+                    </Box>
+                )}
+            </Flex>
+
+            <Flex direction="column" align="center" mt={5}>
+                <Divider orientation='horizontal' borderWidth={'.1rem'} w={'full'} borderColor='twitter.600' borderStyle={'solid'} />
+                <Spacer py={2} />
+                <Heading fontSize={{base: 'xl', sm: 'lg', md: 'xl', lg: '2xl', xl: '4xl'}} color="purple.600" py={4}>
+                    Material Preview:
+                </Heading>
+                <Box as='iframe' maxW='750px' w={'100%'} height={'500px'} src={`${baseUrl}${query_params}`}>
+                </Box>
+                <Spacer py={2} />
+                <Text fontSize={{base: 'lg', sm: 'md', md: 'lg', lg: 'xl', xl: '2xl'}} color="purple.600" py={4}>
+                    Preview Settings:
+                </Text>
+                <HStack>
+
+                    <Select value={geometry_type} onChange={(e) => set_geometry_type(e.target.value)} mb={4}>
+                        <option value="sphere">Sphere</option>
+                        <option value="plane">Plane</option>
+                        <option value="cube">Cube</option>
+                        <option value="cylinder">Cylinder</option>
+                        <option value="torus">Torus</option>
+
+                    </Select>
+                    <Select value={environment_type} onChange={(e) => set_environment_type(e.target.value)} mb={4}>
+                        <option value="0">Studio</option>
+                        <option value="1">Dune</option>
+                        <option value="2">Forest</option>
+                        <option value="3">Field</option>
+                        <option value="4">Computer Lab</option>
+                        <option value="5">Night</option>
+                    </Select>
+                </HStack>
+
+
             </Flex>
         </Box >
     );
