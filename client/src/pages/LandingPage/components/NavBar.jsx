@@ -10,7 +10,7 @@ import {MdLightMode, MdOutlineLightMode, MdModeNight, MdOutlineModeNight, MdInfo
 
 
 //hooks and components
-import {useNavigate, useLocation} from 'react-router-dom';
+import {useNavigate, useLocation, useParams} from 'react-router-dom';
 import AboutSideBar from './AboutSideBar';
 
 
@@ -64,18 +64,22 @@ const BreadcrumbTextLink = ({size, text, ...props}) => {
 function NavBar({isOpen, onOpen, onClose, ...props}) {
     //hooks
     const navigate = useNavigate();
+    const {name, id} = useParams();
     // const {isOpen, onOpen, onClose} = useDisclosure()
     const location = useLocation();
     const {colorMode, toggleColorMode} = useColorMode()
 
 
     // Function to determine the breadcrumb label based on the path
+
     const breadcrumbLabel = (path) => {
         switch (path) {
             case '/': return 'Home';
             case '/preview': return 'Preview';
             case '/loading-textures': return 'Loading Textures';
             case '/gallery': return 'Gallery';
+            case `/gallery/${name}`: return 'Material Details';
+            case `/gallery_id/${id}`: return 'Material Details';
             default: return 'Page';
         }
     };

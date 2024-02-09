@@ -64,7 +64,7 @@ function GalleryDetailsView() {
                     >
                         {!isLoading && images.map((src, index) => (
                             <Box key={index}
-                                p={{base: 8, sm: 5, md: 8, lg: 8, xl: 10}}
+                                p={{base: 5, sm: 4, md: 5, lg: 6, xl: 8}}
                                 borderWidth="2px"
                                 borderColor={'whiteAlpha.400'}
                                 boxShadow={'xl'}

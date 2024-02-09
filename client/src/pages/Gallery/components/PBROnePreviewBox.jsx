@@ -4,8 +4,12 @@ import {Box, VStack, Select, HStack, Text, Spacer, Skeleton} from '@chakra-ui/re
 export default function PBROnePreviewBox({images}) {
 
     //vars for pbr.one material preview URL
-    const URI_BASE = 'http://localhost:3000';
+    const parsedUrl = new URL(window.location.href);
+    const origin = parsedUrl.origin;
+    const URI_BASE = origin;
     const color_map_url = `${URI_BASE}${images[0]}`;
+    console.log('parsedUrl Full', parsedUrl, 'origin', origin)
+    console.log('color_map_url', color_map_url)
     const normal_map_url = `${URI_BASE}${images[1]}`;
     const height_map_url = `${URI_BASE}${images[2]}`;
     const smoothness_map_url = `${URI_BASE}${images[3]}`;
