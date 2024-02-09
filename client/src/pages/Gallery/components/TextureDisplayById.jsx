@@ -126,26 +126,26 @@ const TextureDisplayById = () => {
     const baseUrl = 'https://cdn.pbr.one/main/material-shading.html#';
     const query_params = `color_url=${color_map_url}&normal_url=${normal_map_url}&roughness_url=${smoothness_map_url}&displacement_url=${height_map_url}&geometry_type=${geometry_type}&environment_index=${environment_type}&displacement_scale=0.01&tiling_scale=1.33&gui_enable=-1&watermark_enable=0`
 
-    // function for pbr.one preview link
-    const redirectToExternalLink = () => {
-        const queryParams = new URLSearchParams({
-            color_url: color_map_url,
-            normal_url: normal_map_url,
-            roughness_url: smoothness_map_url,
-            displacement_url: height_map_url,
-            geometry_type: geometry_type,
-            displacement_scale: '0.01',
-            tiling_scale: '1.33',
-            gui_enable: '0',
-            watermark_enable: '0',
-        }).toString();
+    // // function for pbr.one preview link
+    // const redirectToExternalLink = () => {
+    //     const queryParams = new URLSearchParams({
+    //         color_url: color_map_url,
+    //         normal_url: normal_map_url,
+    //         roughness_url: smoothness_map_url,
+    //         displacement_url: height_map_url,
+    //         geometry_type: geometry_type,
+    //         displacement_scale: '0.01',
+    //         tiling_scale: '1.33',
+    //         gui_enable: '0',
+    //         watermark_enable: '0',
+    //     }).toString();
 
-        const fullUrl = `${baseUrl}${queryParams}`;
-        // opens link in current tab
-        // window.location.href = fullUrl;
-        //opens link in new tab:
-        window.open(fullUrl, '_blank');
-    };
+    //     const fullUrl = `${baseUrl}${queryParams}`;
+    //     // opens link in current tab
+    //     // window.location.href = fullUrl;
+    //     //opens link in new tab:
+    //     window.open(fullUrl, '_blank');
+    // };
 
     return (
 
@@ -199,36 +199,42 @@ const TextureDisplayById = () => {
             </Flex>
 
             <Flex direction="column" align="center" mt={5}>
-                <Divider orientation='horizontal' borderWidth={'.1rem'} w={'full'} borderColor='twitter.600' borderStyle={'solid'} />
-                <Spacer py={2} />
-                <Heading fontSize={{base: 'xl', sm: 'lg', md: 'xl', lg: '2xl', xl: '4xl'}} color="purple.600" py={4}>
-                    Material Preview:
-                </Heading>
-                <Box as='iframe' maxW='750px' w={'100%'} height={'500px'} src={`${baseUrl}${query_params}`}>
-                </Box>
-                <Spacer py={2} />
-                <Text fontSize={{base: 'lg', sm: 'md', md: 'lg', lg: 'xl', xl: '2xl'}} color="purple.600" py={4}>
-                    Preview Settings:
-                </Text>
-                <HStack>
+                {albedoImage && pbrMapUrls.normal && pbrMapUrls.height && pbrMapUrls.smoothness && (
+                    <>
+                        <Divider orientation='horizontal' borderWidth={'.1rem'} w={'full'} borderColor='twitter.600' borderStyle={'solid'} />
+                        <Spacer py={2} />
 
-                    <Select value={geometry_type} onChange={(e) => set_geometry_type(e.target.value)} mb={4}>
-                        <option value="sphere">Sphere</option>
-                        <option value="plane">Plane</option>
-                        <option value="cube">Cube</option>
-                        <option value="cylinder">Cylinder</option>
-                        <option value="torus">Torus</option>
+                        <Heading fontSize={{base: 'xl', sm: 'lg', md: 'xl', lg: '2xl', xl: '4xl'}} color="purple.600" py={4}>
+                            Material Preview:
+                        </Heading>
+                        <Box as='iframe' maxW='750px' w={'100%'} height={'500px'} src={`${baseUrl}${query_params}`}>
+                        </Box>
+                        <Spacer py={1} />
+                        {/* <Text fontSize={{base: 'lg', sm: 'md', md: 'lg', lg: 'xl', xl: '2xl'}} color="whiteAlpha.600">
+                            Preview Settings:
+                        </Text> */}
 
-                    </Select>
-                    <Select value={environment_type} onChange={(e) => set_environment_type(e.target.value)} mb={4}>
-                        <option value="0">Studio</option>
-                        <option value="1">Dune</option>
-                        <option value="2">Forest</option>
-                        <option value="3">Field</option>
-                        <option value="4">Computer Lab</option>
-                        <option value="5">Night</option>
-                    </Select>
-                </HStack>
+                        <HStack>
+
+                            <Select value={geometry_type} onChange={(e) => set_geometry_type(e.target.value)} mb={4}>
+                                <option value="sphere">Sphere</option>
+                                <option value="plane">Plane</option>
+                                <option value="cube">Cube</option>
+                                <option value="cylinder">Cylinder</option>
+                                <option value="torus">Torus</option>
+
+                            </Select>
+                            <Select value={environment_type} onChange={(e) => set_environment_type(e.target.value)} mb={4}>
+                                <option value="0">Studio</option>
+                                <option value="1">Dune</option>
+                                <option value="2">Forest</option>
+                                <option value="3">Field</option>
+                                <option value="4">Computer Lab</option>
+                                <option value="5">Night</option>
+                            </Select>
+                        </HStack>
+                    </>
+                )}
 
 
             </Flex>

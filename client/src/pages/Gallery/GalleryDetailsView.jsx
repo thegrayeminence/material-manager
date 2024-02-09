@@ -1,21 +1,26 @@
 import React, {useState, useEffect} from 'react';
 import {useParams} from 'react-router-dom';
 import {loadImagesFromFolder} from '../../config/loadImagesFromFolder';
-import {Box, Image, SimpleGrid, Text, VStack, useColorModeValue, HStack, Heading} from '@chakra-ui/react';
+import {Box, Image, Spacer, SimpleGrid, Select, Button, Text, VStack, useToast, Skeleton, SkeletonText, useColorModeValue, HStack, Heading, Center} from '@chakra-ui/react';
 import {StylishHeader} from '../../components';
 import {PreviewBackgroundAnimation} from '../Preview/components';
+import {PBROnePreviewBox} from './components';
 import '@fontsource/poppins';
 import '@fontsource/inter';
 
 function GalleryDetailsView() {
     let {name} = useParams();
-
+    const toast = useToast();
     const [images, setImages] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const loadMaterial = async () => {
+            setIsLoading(true);
             const loadedImages = await loadImagesFromFolder(name);
+            console.log("loadedImages:", loadedImages[0])
             setImages(loadedImages);
+            setIsLoading(false);
         };
 
         loadMaterial();
@@ -23,39 +28,49 @@ function GalleryDetailsView() {
 
     const imageLabels = ['Base Color', 'Normals', 'Height', 'Smoothness'];
     const formattedName = name.replace(/[_]/g, " ").toUpperCase();
+    console.log("images length", images.length)
 
     return (
         <Box width='100vw' h='100vh'>
             <VStack spacing={0} width={'100%'} overflow={'hidden'} >
-                <Box position='relative' maxW='90vw' h='100%' >
+                <Box position='relative' maxW='85vw' h='100%' >
                     <Text
                         fontFamily={'poppins, sans-serif'}
                         fontWeight={'800'}
                         mt='10%'
                         textAlign='center'
                         fontSize={{base: '4xl', sm: '4xl', md: '5xl', lg: '6xl', xl: '7xl'}}
-                        color={'whiteAlpha.600'}>
+                        color={useColorModeValue('teal.600', 'purple.600')}
+                        opacity={0.75}
+                    >
+
                         {`${formattedName}`}
                     </Text>
-
+                    <Text
+                        fontFamily={'poppins, sans-serif'}
+                        fontWeight={'600'}
+                        pt={'10'}
+                        textAlign='center'
+                        fontSize={{base: '2xl', sm: '2xl', md: '3xl', lg: '4xl', xl: '6xl'}}
+                        color={'whiteAlpha.600'}>
+                        {`TEXTURE FILES:`}
+                    </Text>
 
                     <SimpleGrid
-                        columns={[1, 1, 2, 2]}
+                        columns={[2, 2, 2, 4]}
                         spacing={8}
-                        pt="10"
+                        pt={'2'}
                         ml='5%'
                     >
-                        {images.map((src, index) => (
+                        {!isLoading && images.map((src, index) => (
                             <Box key={index}
                                 p={{base: 8, sm: 5, md: 8, lg: 8, xl: 10}}
                                 borderWidth="2px"
                                 borderColor={'whiteAlpha.400'}
                                 boxShadow={'xl'}
                                 bg={'blackAlpha.400'}
-
                                 borderRadius="lg"
                                 overflow="hidden"
-
                                 backdropFilter="blur(10px)"
 
                             >
@@ -68,8 +83,64 @@ function GalleryDetailsView() {
 
                             </Box>
                         ))}
+                        {isLoading && [1, 2, 3, 4].map((_, index) => (
+                            <Box key={index}
+                                p={{base: 8, sm: 5, md: 8, lg: 8, xl: 10}}
+                                borderWidth="2px"
+                                borderColor={'whiteAlpha.400'}
+                                boxShadow={'xl'}
+                                bg={'blackAlpha.400'}
+                                borderRadius="lg"
+                                overflow="hidden"
+                                backdropFilter="blur(10px)"
+
+                            >
+                                <Skeleton width='100%' h={['200px', '250px', '300px', '350px']} />
+                                <SkeletonText mt="3" noOfLines={1} spacing="4" />
+                            </Box>
+                        ))}
+
                     </SimpleGrid>
+                    {!isLoading && (
+                        <Center>
+                            <Button colorScheme="gray" variant="outline" mt={5} size={{base: 'md', sm: 'md', md: 'md', lg: 'lg', xl: 'lg'}}
+                                onClick={() =>
+                                    toast({
+                                        title: 'This feature is not yet available!',
+                                        description: "Download functionality for static files is still under development. Please check back later.",
+                                        status: 'error',
+                                        duration: 4000,
+                                        position: 'top',
+                                        variant: 'subtle',
+                                        isClosable: true,
+                                    })
+                                }
+                            >
+                                DOWNLOAD
+                            </Button>
+                        </Center>
+                    )}
+
+                    <Spacer py={1} />
+                    <Box position='relative' w='80%' h='100%' mx='auto'>
+                        <Text
+                            fontFamily={'poppins, sans-serif'}
+                            fontWeight={'600'}
+                            mt='2.5%'
+                            textAlign='center'
+                            fontSize={{base: '2xl', sm: '2xl', md: '3xl', lg: '4xl', xl: '6xl'}}
+                            color={'whiteAlpha.600'}
+                        >
+                            {`LIVE PREVIEW:`}
+                        </Text>
+
+                        {
+                            !isLoading && <PBROnePreviewBox images={images} />
+                        }
+                    </Box>
+
                 </Box >
+
             </VStack>
             <Box width={'100vw'} height={'100%'} margin={0} padding={0} position={'fixed'} top={0} left={0}
                 zIndex={-1}>
