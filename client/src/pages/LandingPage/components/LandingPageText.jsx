@@ -59,7 +59,6 @@ function LandingPageText() {
     const linearGradients = (index, dir) => {
         const d = dir
         const i = index
-        console.log(index)
         const gradientsArray = [
             `linear(to-${d}, #7928CA, #FF0080)`,
             `linear(to-${d}, #40c9ff, #e81cff)`,
