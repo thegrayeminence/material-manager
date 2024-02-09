@@ -17,8 +17,9 @@ import logging
 from logging.handlers import RotatingFileHandler
 
 # Remote library imports
-from flask import make_response, request, session, jsonify, render_template,  send_from_directory, current_app
+from flask import make_response, request, session, jsonify, url_for, render_template,  send_from_directory, current_app
 from flask_restful import Resource
+from flask_cors import cross_origin
 import replicate
 from dotenv import load_dotenv
 
@@ -298,15 +299,34 @@ def get_albedo_maps():
         return jsonify({"error": str(e)}), 500
     
 
+# @app.route('/assets/images/<folder_name>/')
+# @cross_origin(origins=['https://pbr.one']) 
+# def serve_image_folder(folder_name):
+#     base_url = url_for('static', filename=f'assets/images/{folder_name}', _external=True)
+#     image_files = [f for f in os.listdir(app.static_folder + f'/assets/images/{folder_name}') if f.endswith('.png')]
+#     image_urls = [f'{base_url}/{file}' for file in image_files]
 
-# @app.get("/api/get_maps/<int:id>")
-# def get_maps_by_id(material_id):
-#     try:
-#         material = Material.query.get(material_id)
-#         images_urls = [material.base_color_url, material.normal_map_url, material.height_map_url, material.smoothness_map_url]
-#         return jsonify({'image_urls': images_urls}), 200
-#     except Exception as e:
-#         return jsonify({"error": str(e)}), 500
+#     return jsonify(image_urls)
+
+@app.route('/assets/images/<folder_name>/')
+@cross_origin(origins=['https://pbr.one'])  # Adjust origins as needed
+def serve_image_folder(folder_name):
+    # Construct the absolute path to the folder
+    folder_path = os.path.join(app.static_folder, 'assets', 'images', folder_name)
+    
+    # Validate if folder exists
+    if not os.path.exists(folder_path) or not os.path.isdir(folder_path):
+        return jsonify({"error": "Folder not found"}), 404
+
+    try:
+        # List all .png files in the folder
+        image_files = [f for f in os.listdir(folder_path) if f.endswith('.png')]
+        # Generate URLs for each image file
+        image_urls = [url_for('static', filename=f'assets/images/{folder_name}/{file}', _external=True) for file in image_files]
+
+        return jsonify(image_urls)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.get("/api/get_maps/<int:material_id>")
 def get_maps_by_id(material_id):

@@ -13,9 +13,10 @@ from sqlalchemy import MetaData
 # Instantiate app, set attributes
 app = Flask(
     __name__,
-    static_url_path='',
-    static_folder='../client/dist',  # Updated from build to dist
-    template_folder='../client/dist' # Updated from build to dist
+    # static_url_path='',
+    # static_folder='../client/dist',
+    static_folder='./static',
+    template_folder='../client/dist' 
 )
 
 
@@ -47,6 +48,10 @@ db.init_app(app)
 api = Api(app)
 
 # Instantiate CORS
-CORS(app, resources={r"/api/*": {"origins": ["https://textureforge.onrender.com/", "http://localhost:3000"]}})
+CORS(app, resources={
+    r"/api/*": {"origins": ["https://textureforge.onrender.com/", "http://localhost:3000"]},
+    r"/static/*": {"origins": ["https://textureforge.onrender.com/", "http://localhost:3000"]}
+
+    })
 
 

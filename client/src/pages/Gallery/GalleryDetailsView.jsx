@@ -12,8 +12,48 @@ function GalleryDetailsView() {
     let {name} = useParams();
     const toast = useToast();
     const [images, setImages] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
+    const [backendImages, setbackendImages] = useState([]);
 
+    const [isLoading, setIsLoading] = useState(true);
+    const [isLoadingBackend, setisLoadingBackend] = useState(true);
+
+    // testing new endpoint for backend static image assets
+    useEffect(() => {
+        const loadMaterialTextures = async () => {
+            setisLoadingBackend(true);
+            // Use the environment variable VITE_API_URL to construct the request URL
+            const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001'; // Fallback to localhost if VITE_API_URL is not set
+            const folderUrl = `${apiUrl}assets/images/${name}/`; // Construct the URL to fetch images from the specific folder
+            console.log("folderUrl:", folderUrl)
+            console.log("apiUrl:", apiUrl)
+            try {
+                const response = await fetch(folderUrl);
+                console.log("response:", response)
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const imageUrls = await response.json(); // Expecting the response to be a JSON array of image URLs
+                console.log("imageUrls:", imageUrls)
+                setbackendImages(imageUrls);
+            } catch (error) {
+                console.error("Failed to load texture images:", error);
+                toast({
+                    title: 'Error loading texture files',
+                    description: error.message,
+                    status: 'error',
+                    duration: 5000,
+                    isClosable: true,
+                });
+            } finally {
+                setisLoadingBackend(false);
+            }
+        };
+
+        loadMaterialTextures();
+    }, [name]); // Re-run when 'name' changes or toast is updated
+
+
+    //old way of loading images from public folder on frontend
     useEffect(() => {
         const loadMaterial = async () => {
             setIsLoading(true);
