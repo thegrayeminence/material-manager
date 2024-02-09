@@ -48,12 +48,15 @@ db.init_app(app)
 api = Api(app)
 
 # Instantiate CORS
-# CORS(app, resources={
-#     r"/api/*": {"origins": ["https://textureforge.onrender.com/", "http://localhost:3000"]},
-#     r"/static/*": {"origins": ["https://textureforge.onrender.com/", "http://localhost:3000"]}
+CORS(app, resources={
+    r"/api/*": {"origins": ["https://textureforge.onrender.com/", "http://localhost:3000"]},
+    r"/static/*": {"origins": ["https://textureforge.onrender.com/", "http://localhost:3000"]}
 
-#     })
-CORS(app, supports_credentials=True, origins='*')
+    })
+
+# unsafe cors settings (dev only)
+# CORS(app, resources={r"/api/*": {"origins": "*"}, r"/static/*": {"origins": "*"}})
+# CORS(app, origins='*')
 
 
 

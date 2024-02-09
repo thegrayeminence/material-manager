@@ -22,8 +22,7 @@ function GalleryDetailsView() {
         const loadMaterialTextures = async () => {
             setisLoadingBackend(true);
             // Use the environment variable VITE_API_URL to construct the request URL
-            // const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001/'; // Fallback to localhost if VITE_API_URL is not set
-            const apiUrl = 'http://localhost:3001/'; // Fallback to localhost if VITE_API_URL is not set
+            const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001/'; // Fallback to localhost if VITE_API_URL is not set
 
             const folderUrl = `${apiUrl}assets/images/${name}/`; // Construct the URL to fetch images from the specific folder
             console.log("backend response: \n folderUrl:", folderUrl)

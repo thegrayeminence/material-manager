@@ -308,8 +308,8 @@ def get_albedo_maps():
 
 #     return jsonify(image_urls)
 
-@app.route('/assets/images/<folder_name>/')
-@cross_origin(origins=['https://pbr.one'])  # Adjust origins as needed
+@app.get('/assets/images/<folder_name>/')
+@cross_origin(origins='*')  # Adjust origins as needed
 def serve_image_folder(folder_name):
     # Construct the absolute path to the folder
     folder_path = os.path.join(app.static_folder, 'assets', 'images', folder_name)
