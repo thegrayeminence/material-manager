@@ -18,7 +18,7 @@ function GalleryDetailsView() {
     const [isLoadingBackend, setisLoadingBackend] = useState(true);
 
     // testing new endpoint for backend static image assets
-    /*
+
     useEffect(() => {
         const loadMaterialTextures = async () => {
             // setisLoadingBackend(true);
@@ -54,7 +54,7 @@ function GalleryDetailsView() {
         loadMaterialTextures();
     }, [name]);
 
-*/
+
     //old way of loading images from public folder on frontend
     useEffect(() => {
         const loadMaterial = async () => {
