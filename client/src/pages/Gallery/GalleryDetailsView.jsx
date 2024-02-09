@@ -29,22 +29,22 @@ function GalleryDetailsView() {
             console.log("backend response: \n apiUrl:", apiUrl)
             try {
                 const response = await fetch(folderUrl);
-                // console.log("backend response: \n response full:", response)
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
+                console.log("backend response: \n response full:", response)
+                // if (!response.ok) {
+                //     throw new Error(`HTTP error! status: ${response.status}`);
+                // }
                 const imageUrls = await response.json(); // Expecting the response to be a JSON array of image URLs
                 console.log("backend response: \n imageUrls:", imageUrls)
                 setbackendImages(imageUrls);
             } catch (error) {
                 console.error("Failed to load texture images:", error);
-                toast({
-                    title: 'Error loading texture files',
-                    description: error.message,
-                    status: 'error',
-                    duration: 5000,
-                    isClosable: true,
-                });
+                // toast({
+                //     title: 'Error loading texture files',
+                //     description: error.message,
+                //     status: 'error',
+                //     duration: 5000,
+                //     isClosable: true,
+                // });
             } finally {
                 setisLoadingBackend(false);
             }
