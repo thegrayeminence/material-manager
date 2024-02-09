@@ -20,16 +20,15 @@ function GalleryDetailsView() {
     // testing new endpoint for backend static image assets
     useEffect(() => {
         const loadMaterialTextures = async () => {
-            setisLoadingBackend(true);
+            // setisLoadingBackend(true);
             // Use the environment variable VITE_API_URL to construct the request URL
             const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001/'; // Fallback to localhost if VITE_API_URL is not set
 
             const folderUrl = `${apiUrl}assets/images/${name}/`; // Construct the URL to fetch images from the specific folder
-            console.log("backend response: \n folderUrl:", folderUrl)
-            console.log("backend response: \n apiUrl:", apiUrl)
+            // console.log("backend response: \n folderUrl:", folderUrl)
+            // console.log("backend response: \n apiUrl:", apiUrl)
             try {
                 const response = await fetch(folderUrl);
-                console.log("backend response: \n response full:", response)
                 // if (!response.ok) {
                 //     throw new Error(`HTTP error! status: ${response.status}`);
                 // }
@@ -45,9 +44,10 @@ function GalleryDetailsView() {
                 //     duration: 5000,
                 //     isClosable: true,
                 // });
-            } finally {
-                setisLoadingBackend(false);
             }
+            // finally {
+            //     setisLoadingBackend(false);
+            // }
         };
 
         loadMaterialTextures();

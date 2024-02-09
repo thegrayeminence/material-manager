@@ -309,7 +309,26 @@ def get_albedo_maps():
 #     return jsonify(image_urls)
 
 @app.get('/assets/images/<folder_name>/')
-@cross_origin(origins='*')  # Adjust origins as needed
+@cross_origin(origins='*')  # Adjust origins as needed@app.route('/assets/images/<folder_name>/')
+#@cross_origin(origins=['https://pbr.one'])  # Adjust origins as needed
+def serve_image_folder(folder_name):
+    # Construct the absolute path to the folder
+    folder_path = os.path.join(app.static_folder, 'assets', 'images', folder_name)
+    
+    # Validate if folder exists
+    if not os.path.exists(folder_path) or not os.path.isdir(folder_path):
+        return jsonify({"error": "Folder not found"}), 404
+
+    try:
+        # List all .png files in the folder
+        image_files = [f for f in os.listdir(folder_path) if f.endswith('.png')]
+        # Generate URLs for each image file
+        image_urls = [url_for('static', filename=f'assets/images/{folder_name}/{file}', _external=True) for file in image_files]
+
+        return jsonify(image_urls)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 def serve_image_folder(folder_name):
     # Construct the absolute path to the folder
     folder_path = os.path.join(app.static_folder, 'assets', 'images', folder_name)
