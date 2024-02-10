@@ -119,7 +119,7 @@ function LandingPageText() {
 
     return (
 
-        <Box pos="relative" overflow="hidden">
+        <Box pos="relative">
             <Box maxW="7xl" mx="auto">
                 <Box pos="relative" w="full"  >
                     <Box

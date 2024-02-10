@@ -181,6 +181,8 @@ export default function MaterialUploadForm() {
                     status: "error",
                     duration: 5000,
                     isClosable: true,
+                    variant: 'subtle',
+                    colorScheme: 'purple',
                     position: "top",
                 });
                 return;
@@ -199,6 +201,7 @@ export default function MaterialUploadForm() {
                 });
                 return;
             }
+            increaseProgress();
         }
     };
 
@@ -224,9 +227,10 @@ export default function MaterialUploadForm() {
 
 
     return (
-        <>
+        <Box >
+
             <Box as="form" onSubmit={handleSubmit(handleFormSubmission)} p={5}
-                textColor={useColorModeValue('blackAlpha.800', 'whiteAlpha.800')}
+            // textColor={useColorModeValue('blackAlpha.800', 'whiteAlpha.800')}
             >
 
 
@@ -248,7 +252,6 @@ export default function MaterialUploadForm() {
                                         placeholder="Select Material Type"
                                         closeMenuOnSelect={true}
                                         variant="flushed"
-                                    // colorScheme={useColorModeValue('blue', 'purple')}
                                     />
                                 </>
                             )}
@@ -418,7 +421,17 @@ export default function MaterialUploadForm() {
                     {progress === 1 && (
                         <Button color='white' type="submit" bg={useColorModeValue('teal.400', 'green.500')} w="full"
 
-                        //onClick={toastPromiseOnClick}
+                            onClick={() =>
+                                toast({
+                                    title: 'Your Prompt Has Been Submitted! 🎉',
+                                    description: "You will be redirected to the gallery page once your material is ready!",
+                                    status: 'success',
+                                    duration: 9000,
+                                    position: 'top',
+                                    variant: 'subtle',
+                                    isClosable: true,
+                                })
+                            }
                         >
                             Submit
                         </Button>
@@ -429,6 +442,6 @@ export default function MaterialUploadForm() {
 
             </Box>
 
-        </>
+        </Box>
     );
 }

@@ -20,18 +20,23 @@ function Preview() {
   const {progress} = useProgressStore()
 
   return (
-    <>
+    <Box width='100vw' h='100vh' opacity='.99'>
+
       <Box py='2rem'>
         <Spacer py={'2.5rem'} />
         <Heading textAlign='center' fontSize={{base: '4xl', sm: '4xl', md: '5xl', lg: '6xl', xl: '7xl'}}
-          color={useColorModeValue('whiteAlpha.600', 'whiteApha.600')}
+          color={useColorModeValue('teal.600', 'purple.600')}
+          opacity={0.8}
+
         >
           GENERATE TEXTURES
         </Heading>
 
       </Box>
-      <Box px='2rem' width={'80vw'} ml='10%'>
+      <Box px='2rem' width={'80vw'} ml='10%' >
         <MotionBox
+
+
           w="100%"
           maxW="75rem"
           position="relative"
@@ -41,8 +46,7 @@ function Preview() {
           overflowX={'scroll'}
           px="2.5rem"
           py={"1.5rem"}
-
-          bg={useColorModeValue('whiteAlpha.300', 'blackAlpha.400')}
+          // bg={useColorModeValue('whiteAlpha.300', 'blackAlpha.400')}
           borderColor={useColorModeValue('twitter.400', 'purple.400')}
           borderRadius="2rem"
           backdropFilter="blur(10px)"
@@ -64,10 +68,9 @@ function Preview() {
 
       <Box width={'100vw'} height={'100%'} margin={0} padding={0} position={'fixed'} top={0} left={0}
         zIndex={-1}>
-        {/* <GradientBG_Purple /> */}
         <PreviewBackgroundAnimation />
       </Box>
-    </>
+    </Box>
 
   )
 }

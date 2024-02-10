@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import {Box, Grid, SimpleGrid, VStack, Text} from '@chakra-ui/react'
+import {Box, Grid, SimpleGrid, VStack, Text, useColorModeValue} from '@chakra-ui/react'
 //local imports
 import {TextureDisplay} from './components'
 import {GalleryCard} from './components'
@@ -27,14 +27,22 @@ function Gallery() {
 
 
   return (
-    <Box width='100vw' h='100vh'>
+    <Box width='100vw' h='100vh'
+      opacity={'99.9%'}
+    // backgroundBlendMode={'difference'}
+    >
       <Text
+        backgroundClip={'text'}
+
         fontFamily={'poppins, sans-serif'}
         fontWeight={'800'}
         mt='10%'
         textAlign='center'
         fontSize={{base: '4xl', sm: '4xl', md: '5xl', lg: '6xl', xl: '7xl'}}
-        color={'whiteAlpha.600'}>
+        color={useColorModeValue('teal.600', 'purple.600')}
+        opacity={0.8}
+
+      >
         {`MATERIALS GALLERY:`}
       </Text>
       <Box maxW='90%' h='100%' >

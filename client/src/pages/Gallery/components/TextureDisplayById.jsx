@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import {useGeneratedImagesStore} from '../../../store/store';
-import {Box, Spacer, Divider, Text, SimpleGrid, Skeleton, Image, HStack, Heading, Flex, Button, Select, AspectRatio} from '@chakra-ui/react';
+import {Box, Spacer, Divider, Text, SimpleGrid, Skeleton, Image, HStack, Heading, Flex, Button, Select, AspectRatio, useColorModeValue} from '@chakra-ui/react';
 import {motion} from 'framer-motion';
 import {useParams} from 'react-router-dom'; // Import useParams from react-router-dom
 
@@ -41,11 +41,15 @@ const TextureDisplayById = () => {
     const [materialId, setMaterialId] = useState(null);
     const [albedoImage, setAlbedoImage] = useState(null);
     const [pbrMapUrls, setPbrMapUrls] = useState({normal: null, height: null, smoothness: null});
+    const [albedoIsLoading, setAlbedoIsLoading] = useState(true);
+    const [pbrIsLoading, setPbrIsLoading] = useState(true);
+
 
     const MotionImageBox = motion(Box);
     // Fetch the most recent albedo image and its material ID
     useEffect(() => {
         const fetchRecentAlbedo = async () => {
+            setAlbedoIsLoading(true);
             try {
                 const filenameResponse = await axios.get(`http://localhost:3001/api/get_material_filename/${id}`);
                 const filename = filenameResponse.data.filename;
@@ -54,6 +58,7 @@ const TextureDisplayById = () => {
                 const response = await axios.get(`http://localhost:3001/api/get_albedo_by_id/${id}`); // Use 'id' as a string
                 setAlbedoImage(response.data.image_url);
                 setMaterialId(response.data.material_id);
+                setAlbedoIsLoading(false);
             } catch (error) {
                 console.error('Error fetching recent albedo:', error);
 
@@ -68,15 +73,18 @@ const TextureDisplayById = () => {
         if (!materialId) return;
 
         const fetchMap = async (mapType) => {
+            setPbrIsLoading(true);
             try {
                 const response = await axios.get(`http://localhost:3001/api/get_${mapType}_by_id/${id}`); // Use 'id' as a string
                 return response.data.image_url;
+                setPbrIsLoading(false);
             } catch (error) {
                 console.error(`Error fetching ${mapType} map:`, error);
                 return null;
             }
         };
         const loadMaps = async () => {
+
             console.log("Current materialId:", materialId);
             const mapTypes = ['normal', 'height', 'smoothness'];
             const mapPromises = mapTypes.map(mapType => fetchMap(mapType));
@@ -149,14 +157,22 @@ const TextureDisplayById = () => {
 
     return (
 
-        <Box p={5}>
+        <Box
+        // position='absolute'
+        // w='full'
+        // bg={useColorModeValue('gray.600', 'black')}
+        >
             {/* Albedo Image */}
 
-            <Flex direction="column" align="center" mb={10}>
+            <Flex direction="column" align="center" mb={10} >
                 {materialName && (<Heading fontSize={{base: '2xl', sm: 'xl', md: '2xl', lg: '3xl', xl: '4xl'}} color="purple.600" py={4} mt={4}>
                     {`${materialName}`}
                 </Heading>)}
-                {albedoImage ? (
+                {albedoIsLoading && (
+                    <Skeleton height={albedoBoxSize} />
+                )}
+
+                {!albedoIsLoading && (
 
                     <MotionImageBox {...imageBoxStyle}>
                         <Image src={albedoImage} alt="Base Color Map" boxSize={albedoBoxSize} objectFit="cover" onClick={() => handleDownload(materialId)} />
@@ -165,9 +181,6 @@ const TextureDisplayById = () => {
                         </Text>
                     </MotionImageBox>
 
-
-                ) : (
-                    <Skeleton height={albedoBoxSize} />
                 )}
             </Flex>
 
@@ -191,7 +204,7 @@ const TextureDisplayById = () => {
 
                 {albedoImage && pbrMapUrls.normal && pbrMapUrls.height && pbrMapUrls.smoothness && (
                     <Box>
-                        <Button onClick={() => handleDownload(materialId)} colorScheme="blue" variant="ghost" mt={5} size={{base: 'md', sm: 'md', md: 'md', lg: 'lg', xl: 'lg'}}>
+                        <Button onClick={() => handleDownload(materialId)} colorScheme={useColorModeValue('purple', 'purple')} variant="outline" mt={5} size={{base: 'md', sm: 'md', md: 'md', lg: 'lg', xl: 'lg'}}>
                             Download Material
                         </Button>
                     </Box>
@@ -207,7 +220,13 @@ const TextureDisplayById = () => {
                         <Heading fontSize={{base: 'xl', sm: 'lg', md: 'xl', lg: '2xl', xl: '4xl'}} color="purple.600" py={4}>
                             Material Preview:
                         </Heading>
-                        <Box as='iframe' maxW='750px' w={'100%'} height={'500px'} src={`${baseUrl}${query_params}`}>
+                        <Box
+                            boxShadow="xl"
+                            borderRadius="md"
+                            overflow="hidden"
+                            border="1px solid"
+                            borderColor="gray.400"
+                            as='iframe' maxW='750px' w={'100%'} height={'500px'} src={`${baseUrl}${query_params}`}>
                         </Box>
                         <Spacer py={1} />
                         {/* <Text fontSize={{base: 'lg', sm: 'md', md: 'lg', lg: 'xl', xl: '2xl'}} color="whiteAlpha.600">
@@ -216,7 +235,7 @@ const TextureDisplayById = () => {
 
                         <HStack>
 
-                            <Select value={geometry_type} onChange={(e) => set_geometry_type(e.target.value)} mb={4}>
+                            <Select boxShadow="xl" value={geometry_type} onChange={(e) => set_geometry_type(e.target.value)} mb={4}>
                                 <option value="sphere">Sphere</option>
                                 <option value="plane">Plane</option>
                                 <option value="cube">Cube</option>
@@ -224,7 +243,9 @@ const TextureDisplayById = () => {
                                 <option value="torus">Torus</option>
 
                             </Select>
-                            <Select value={environment_type} onChange={(e) => set_environment_type(e.target.value)} mb={4}>
+                            <Select
+                                boxShadow="xl"
+                                value={environment_type} onChange={(e) => set_environment_type(e.target.value)} mb={4}>
                                 <option value="0">Studio</option>
                                 <option value="1">Dune</option>
                                 <option value="2">Forest</option>

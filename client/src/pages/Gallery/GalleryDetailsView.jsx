@@ -73,7 +73,7 @@ function GalleryDetailsView() {
     // console.log("images length", images.length)
 
     return (
-        <Box width='100vw' h='100vh'>
+        <Box width='100vw' h='100vh' opacity='.99'>
             <VStack spacing={0} width={'100%'} overflow={'hidden'} >
                 <Box position='relative' maxW='85vw' h='100%' >
                     <Text

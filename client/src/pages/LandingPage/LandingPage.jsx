@@ -85,15 +85,16 @@ function LandingPage() {
 
             <Box
                 height={'100vh'} width={'100vw'} position={'relative'}
-                // marginTop={'-5vh'}
-                bg='transparent'
-            // bg={useColorModeValue('gray.300', 'gray.800')}
+            // marginTop={'-5vh'}
+
+
             >
                 <Divider textAlign={'center'} borderWidth={'.25rem'} w={'full'}
                     borderStyle={'solid'}
                     borderColor={useColorModeValue('blue.400', 'purple.400')}
                 />
-                <Features bg={useColorModeValue('gray.900', 'black')}
+                <Features
+                    bg={useColorModeValue('gray.900', 'black')}
                 />
                 <LandingPageBottomBackground />
             </Box>
