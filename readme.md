@@ -53,16 +53,30 @@ Texture Forge utilizes user input (via a series of elements on a form) to genera
 
 ### FAQ
 #### What Is 'PBR'?
-**P**hysically **B**ased **R**endering is a method in which real-world equations and bitmaps are employed in unison to realistically simulate the way that light interacts with surfaces and environments.  
+PBR stands for Physically Based Rendering. It's a technique used in computer graphics to render images that closely resemble real-life by mimicking the physical properties of materials and following the laws of optics. The core idea behind PBR is to ensure that objects interact with light in a realistic manner, making digital scenes look more believable.
 
-In PBR systems, a set of complementary bitmaps (typically between 4-7) are connected to specific inputs in a parent material. Each texture map corresponds a different channel of information, analagous to a specific category of optimical phenomena—e.g. diffuse light (albedo and baseColor maps), reflectivity (roughness and spec maps), environmental shadows (ao maps), and surface-geometry details (normal and height maps).
+PBR uses algorithms (based on real-world equations) to process a set of textures/bitmaps (each analogous to different optical phenomena) to reflect how materials absorb, reflect, refract, scatter, or diffuse light. This can involve:
+
+**Base Color**: Captures the true color of a material without shadows or reflections.<br>
+**Roughness**: Determines the surface's microtexture, influencing how it scatters light.<br>
+**Metallic**: Define the material's metallic attributes, differentiating between metallic and non-metallic surfaces. <br>
+**Ambient Occlusion**: Simulates how light is occluded in crevices and corners.<br>
+**Normal/Height Maps**: Add surface detail by simulating additional geometry. <br>
+
+By applying this combination of real-world equations and optically-analagous bitmaps, PBR systems can achieve consistent results under different lighting conditions, making them a standard in creating realistic/photo-realistic 3D visuals.
 
 ### Built With
-#### Primary Frameworks:
+#### Primary Frameworks/Libraries Used:
 - Frontend:
-  - JS/ReactJS/ChakraUI
+  - Main: ReactJS
+  - Styling/Styled Components: ChakraUI, SCSS
+  - Other Functionality: 
+    - State Management: Zustand
+    - Requests/Responses/Forms: React Hook Forms, Axios
+    - Routing: React Router
+    - API/AI: Replicate, Stable Diffusion
 - Backend:
-  - Python/Flask/SQLAlchemy
+  - Main: Python, Standard Library, Flask, SQLAlchemy
   
 For complete list of dependencies and libraries used, see prerequisites section below.
 
