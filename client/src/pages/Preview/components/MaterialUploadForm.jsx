@@ -102,10 +102,13 @@ export default function MaterialUploadForm() {
         try {
 
             const materialData = {...formData.materialData, ...data};
+            const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001/api/';
 
-            // API call to generate the albedo texture
-            const textureResponse = await axios.post(`${import.meta.env.VITE_API_URL}generate_albedo`, {materialData});
+            console.log("logging API URL:\n", apiUrl);
+
+            const textureResponse = await axios.post(`${apiUrl}generate_albedo`, {materialData: data});
             console.log("Albedo texture generation initiated!");
+
             const materialId = textureResponse.data.material_id;
             const baseColorUrl = textureResponse.data.image_url;
 
@@ -121,10 +124,9 @@ export default function MaterialUploadForm() {
             navigate(`/gallery_id/${materialId}`);
 
             // Second API call to generate PBR maps
-            const pbrResponse = await axios.post(`${import.meta.env.VITE_API_URL}generate_pbr_maps`, {base_color_url: baseColorUrl, material_id: materialId});
+            const pbrResponse = await axios.post(`${apiUrl}generate_pbr_maps`, {base_color_url: baseColorUrl, material_id: materialId});
             console.log("PBR maps generation initiated!");
 
-            // PBR MAPS LOAD HERE!!!!!!!!
             // Set PBR maps in zustand store
             const maps = pbrResponse.data.pbr_maps;
             console.log("PBR maps generated sucessfully!", pbrResponse.data);
@@ -421,11 +423,14 @@ export default function MaterialUploadForm() {
                         </Button>
                     )}
                     {progress === 1 && (
-                        <Button color='white' type="submit" bg={useColorModeValue('teal.400', 'green.500')} w="full"
+                        <Button color='white' type="submit"
+                            bg='green.500'
+                            // bg={useColorModeValue('teal.400', 'green.500')} 
+                            w="full"
 
                             onClick={() =>
                                 toast({
-                                    title: 'Your Prompt Has Been Submitted! 🎉',
+                                    title: 'Your Prompt Has Been Submitted!',
                                     description: "You will be redirected to the gallery page once your material is ready!",
                                     status: 'success',
                                     duration: 9000,

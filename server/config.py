@@ -49,20 +49,25 @@ api = Api(app)
 
 # Instantiate CORS
 CORS(app, resources={
+    
+    
     r"/api/*": {
-        "origins": "https://textureforge.onrender.com",
+        "origins": ["https://textureforge.onrender.com", "http://localhost:3000"],
         "methods": ["GET", "POST", "PUT", "DELETE"]
     },
     r"/static/*": {
-        "origins": "https://textureforge.onrender.com",
-        "methods": ["GET"]
-    }
+        "origins": ["https://textureforge.onrender.com", "http://localhost:3000"],
+        "methods": ["GET", "POST", "PUT", "DELETE"]
+    },
     
 })
 
-# unsafe cors settings (dev only)
+# unsafe cors settings (dev/testing only)
+# CORS(app, resources={r"/api/*": {"origins": ["http://localhost:3000"]}})
 # CORS(app, resources={r"/api/*": {"origins": "*"}, r"/static/*": {"origins": "*"}})
-# CORS(app, origins='*')
+# CORS(app, supports_credentials=True, origins='*')
+# CORS(app, supports_credentials=True)  
+
 
 
 
