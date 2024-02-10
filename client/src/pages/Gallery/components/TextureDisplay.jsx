@@ -7,6 +7,7 @@ import {motion} from 'framer-motion';
 
 // helper function to download a material
 const handleDownload = async (materialId) => {
+
     // const material_id = useGeneratedImagesStore(state => state.materialId);
     console.log("material_id:", materialId)
     try {

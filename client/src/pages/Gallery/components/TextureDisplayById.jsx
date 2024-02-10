@@ -11,14 +11,15 @@ import {useParams} from 'react-router-dom'; // Import useParams from react-route
 // helper function to download a material
 const handleDownload = async (materialId) => {
 
+
     console.log("material_id:", materialId)
     try {
 
         // First, fetch the filename
-        const filenameResponse = await axios.get(`http://localhost:3001/api/get_material_filename/${materialId}`);
+        const filenameResponse = await axios.get(`/api/get_material_filename/${materialId}`);
         const filename = filenameResponse.data.filename;
 
-        const response = await axios.get(`http://localhost:3001/api/download_material/${materialId}`, {
+        const response = await axios.get(`/api/download_material/${materialId}`, {
             responseType: 'blob',
         });
         const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -45,17 +46,18 @@ const TextureDisplayById = () => {
     const [pbrIsLoading, setPbrIsLoading] = useState(true);
 
 
+
     const MotionImageBox = motion(Box);
     // Fetch the most recent albedo image and its material ID
     useEffect(() => {
         const fetchRecentAlbedo = async () => {
             setAlbedoIsLoading(true);
             try {
-                const filenameResponse = await axios.get(`http://localhost:3001/api/get_material_filename/${id}`);
+                const filenameResponse = await axios.get(`/api/get_material_filename/${id}`);
                 const filename = filenameResponse.data.filename;
                 const formattedFileName = filename.replace('.zip', '').replace(/[_]/g, " ").toUpperCase();
                 setMaterialName(formattedFileName);
-                const response = await axios.get(`http://localhost:3001/api/get_albedo_by_id/${id}`); // Use 'id' as a string
+                const response = await axios.get(`/api/get_albedo_by_id/${id}`); // Use 'id' as a string
                 setAlbedoImage(response.data.image_url);
                 setMaterialId(response.data.material_id);
                 setAlbedoIsLoading(false);
@@ -75,7 +77,7 @@ const TextureDisplayById = () => {
         const fetchMap = async (mapType) => {
             setPbrIsLoading(true);
             try {
-                const response = await axios.get(`http://localhost:3001/api/get_${mapType}_by_id/${id}`); // Use 'id' as a string
+                const response = await axios.get(`/api/get_${mapType}_by_id/${id}`); // Use 'id' as a string
                 return response.data.image_url;
                 setPbrIsLoading(false);
             } catch (error) {

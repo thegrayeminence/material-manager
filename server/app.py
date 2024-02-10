@@ -324,23 +324,6 @@ def serve_image_folder(folder_name):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-# def serve_image_folder(folder_name):
-#     # Construct the absolute path to the folder
-#     folder_path = os.path.join(app.static_folder, 'assets', 'images', folder_name)
-    
-#     # Validate if folder exists
-#     if not os.path.exists(folder_path) or not os.path.isdir(folder_path):
-#         return jsonify({"error": "Folder not found"}), 404
-
-#     try:
-#         # List all .png files in the folder
-#         image_files = [f for f in os.listdir(folder_path) if f.endswith('.png')]
-#         # Generate URLs for each image file
-#         image_urls = [url_for('static', filename=f'assets/images/{folder_name}/{file}', _external=True) for file in image_files]
-
-#         return jsonify(image_urls)
-#     except Exception as e:
-#         return jsonify({"error": str(e)}), 500
 
 @app.get("/api/get_maps/<int:material_id>")
 def get_maps_by_id(material_id):

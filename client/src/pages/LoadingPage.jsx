@@ -3,6 +3,7 @@ import {Box, Heading, Text, Flex, CircularProgress, Spacer, Image, SimpleGrid, S
 import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import {motion} from 'framer-motion';
+
 // import {API_URL} from './client/src/config/URLConfig.js';
 
 
@@ -25,6 +26,7 @@ const LoadingMessages = [
 ];
 
 const LoadingPage = () => {
+
     const [currentMessage, setCurrentMessage] = useState(0);
     const [albedoImage, setAlbedoImage] = useState(null);
     const [pbrMapUrls, setPbrMapUrls] = useState({normal: null, height: null, smoothness: null});

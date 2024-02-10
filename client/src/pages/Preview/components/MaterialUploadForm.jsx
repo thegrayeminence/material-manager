@@ -15,11 +15,13 @@ import {Select} from "chakra-react-select";
 import {textureMapOptionsPBRMetalRough, textureMapOptionsPBRGlossSpec, textureMapOptionsCommon, materialTypeOptions, metaDataOptions} from '../../../config/formInputData';
 import {useMaterialStore, useProgressStore, useAutosuggestionStore, useIsLoadingStore, useGeneratedImagesStore} from '../../../store/store';
 import SuggestionDisplay from './SuggestionDisplay';
-// import {API_URL} from './client/src/config/URLConfig.js'
-// import { getClosestMatch } from '../config/helperfunctions';
+
+
 
 
 export default function MaterialUploadForm() {
+
+
 
 
 

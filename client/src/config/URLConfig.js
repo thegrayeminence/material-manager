@@ -1,1 +1,1 @@
-export const API_URL = process.env.VITE_API_URL || 'http://localhost:3001';
+export const VITE_API_URL = env.VITE_API_URL || 'http://localhost:3001';

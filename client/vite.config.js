@@ -1,15 +1,21 @@
-import {defineConfig} from 'vite'
 import react from '@vitejs/plugin-react'
+import {defineConfig, loadEnv} from "vite";
 
 
-const API_URL = process.env.VITE_API_URL || 'http://localhost:3001';
 
-export default defineConfig({
-  plugins: [react()],
-  server: {
-    port: process.env.PORT || 3000,
-    proxy: {
-      '/api': API_URL,
+
+export default defineConfig(({mode}) => {
+  const env = loadEnv(mode, process.cwd());
+
+  const VITE_API_URL = process.env.VITE_API_URL || 'http://localhost:3001/';
+
+  return {
+    plugins: [react()],
+    server: {
+      port: env.PORT,
+      proxy: {
+        '/api': VITE_API_URL,
+      },
     },
-  },
+  };
 });
