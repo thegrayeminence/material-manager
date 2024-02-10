@@ -105,14 +105,22 @@ const AboutSideBar = ({isOpen, onClose}) => {
                             color={useColorModeValue(colorThemeValues.light.textMain, colorThemeValues.dark.textMain)}
                         // variants={textVariants} initial="hidden" animate="visible"
                         >
-                            <strong>P</strong>hysically <strong>B</strong>ased <strong>R</strong>endering is a method
-                            in which real-world equations and bitmaps are employed in unison to realistically
-                            simulate the way that light interacts with surfaces and environments. <br /> <br />
-                            In PBR systems, a set of complementary bitmaps (typically between 4-7) are connected to specific inputs in a parent material.
-                            Each texture map corresponds a different channel of information,
-                            analagous to a specific category of optimical phenomena—e.g. diffuse light (albedo and baseColor maps),
-                            reflectivity (roughness and spec maps), environmental shadows (ao maps), and surface-geometry details (normal and height maps).
-                            <br /> <br />
+
+                            PBR stands for Physically Based Rendering. It's a technique used in computer graphics to render images that mimick the laws of optics and closely resemble the physical properties of real-life surfaces.
+
+                            The core idea behind PBR is to ensure that objects interact with light in a realistic manner, making digital scenes look more believable.<br /><br />
+
+                            PBR uses algorithms (based on real-world equations) to process a set of textures/bitmaps (each analogous to different optical phenomena) to reflect how materials absorb, reflect, refract, scatter, or diffuse light. This can involve:<br /><br />
+
+                            <strong>Base Color</strong>: Captures the true color of a material without shadows or reflections.<br />
+                            <strong>Roughness</strong>: Determines the surface's microtexture, influencing how it scatters light.<br />
+                            <strong>Metallic</strong>: Define the material's metallic attributes, differentiating between metallic and non-metallic surfaces. <br />
+                            <strong>Ambient Occlusion</strong>: Simulates how light is occluded in crevices and corners.<br />
+                            <strong>Normal/Height</strong>: Add surface detail by simulating additional geometry. <br />
+
+                            By applying this combination of real-world equations and optically-analagous bitmaps, PBR systems can achieve consistent results under different lighting conditions, making them a standard in creating realistic/photo-realistic 3D visuals.<br /> <br />
+
+
                         </MotionText>
                         <Spacer py={'.5rem'} />
                         <Center>

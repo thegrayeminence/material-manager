@@ -1,4 +1,4 @@
-import {Container, Box, chakra, Text, Icon, SimpleGrid, useColorModeValue} from '@chakra-ui/react';
+import {Container, Box, Center, chakra, Text, Icon, SimpleGrid, useColorModeValue} from '@chakra-ui/react';
 
 import {motion, useScroll} from 'framer-motion';
 
@@ -48,50 +48,53 @@ const Features = () => {
 
     return (
 
-
-        <Box zIndex={-1} maxW="6xl" p={{base: 5, md: 10}}
-            // bg='transparent'
-            // backgroundBlendMode={'overlay'}
-            overflow="hidden"
-            bgClip="text"
-        >
-            <chakra.h3 bgClip="text" fontSize="4xl" fontWeight="bold" mb={3} textAlign="center"
-                color={useColorModeValue(colorThemeValues.light.textHeader, colorThemeValues.dark.textHeader)}
-                fontFamily={'avenir black, avenir, sans-serif'}
+        <Center>
+            <Box zIndex={-1} maxW="6xl" p={{base: 5, md: 10}}
+                // bg='transparent'
+                // backgroundBlendMode={'overlay'}
+                overflow="hidden"
+                bgClip="text"
 
             >
-                Features
-            </chakra.h3>
-            <SimpleGrid
-                columns={{base: 1, md: 2}}
-                placeItems="center"
-                spacing={16}
-                mt={12}
-                mb={4}
-            >
-                {features.map((feature, index) => (
-                    <Box key={index} textAlign="center">
-                        <Icon as={feature.icon} w={10} h={10}
 
-                            color={useColorModeValue(colorThemeValues.light.icon, colorThemeValues.dark.icon)}
-                        />
-                        <chakra.h3 fontWeight="semibold" fontSize="2xl"
-                            bgClip="text"
-                            fontFamily={'avenir black, avenir, sans-serif'}
-                            color={useColorModeValue(colorThemeValues.light.textMain, colorThemeValues.dark.textMain)}
-                        >
-                            {feature.heading}
-                        </chakra.h3>
-                        <Text
-                            bgClip="text"
-                            fontWeight={'500'}
-                            fontFamily={'avenir next, avenir, sans-serif'}
-                            color={useColorModeValue(colorThemeValues.light.textDetail, colorThemeValues.dark.textDetail)}
-                        >{feature.content}</Text>
-                    </Box>
-                ))}
-            </SimpleGrid>
-        </Box>
+                <chakra.h3 bgClip="text" fontSize="4xl" fontWeight="bold" mb={3} textAlign="center"
+                    color={useColorModeValue(colorThemeValues.light.textHeader, colorThemeValues.dark.textHeader)}
+                    fontFamily={'avenir black, avenir, sans-serif'}
+
+                >
+                    Features
+                </chakra.h3>
+                <SimpleGrid
+                    columns={{base: 1, md: 2}}
+                    placeItems="center"
+                    spacing={16}
+                    mt={12}
+                    mb={4}
+                >
+                    {features.map((feature, index) => (
+                        <Box key={index} textAlign="center">
+                            <Icon as={feature.icon} w={10} h={10}
+
+                                color={useColorModeValue(colorThemeValues.light.icon, colorThemeValues.dark.icon)}
+                            />
+                            <chakra.h3 fontWeight="semibold" fontSize="2xl"
+                                bgClip="text"
+                                fontFamily={'avenir black, avenir, sans-serif'}
+                                color={useColorModeValue(colorThemeValues.light.textMain, colorThemeValues.dark.textMain)}
+                            >
+                                {feature.heading}
+                            </chakra.h3>
+                            <Text
+                                bgClip="text"
+                                fontWeight={'500'}
+                                fontFamily={'avenir next, avenir, sans-serif'}
+                                color={useColorModeValue(colorThemeValues.light.textDetail, colorThemeValues.dark.textDetail)}
+                            >{feature.content}</Text>
+                        </Box>
+                    ))}
+                </SimpleGrid>
+            </Box>
+        </Center>
 
     )
 }
