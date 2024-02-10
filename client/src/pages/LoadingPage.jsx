@@ -43,7 +43,7 @@ const LoadingPage = () => {
     useEffect(() => {
         const fetchRecentAlbedo = async () => {
             try {
-                const response = await axios.get(`/api/get_recent_albedo`);
+                const response = await axios.get(`${import.meta.env.VITE_API_URL}get_recent_albedo`);
                 setAlbedoImage(response.data.image_url);
                 loadPBRMaps(response.data.material_id);
             } catch (error) {
@@ -56,7 +56,7 @@ const LoadingPage = () => {
 
     const loadPBRMaps = async (materialId) => {
         const mapTypes = ['normal', 'height', 'smoothness'];
-        const mapPromises = mapTypes.map(mapType => axios.get(`/api/get_${mapType}_by_id/${materialId}`));
+        const mapPromises = mapTypes.map(mapType => axios.get(`${import.meta.env.VITE_API_URL}get_${mapType}_by_id/${materialId}`));
 
         try {
             const maps = await Promise.all(mapPromises);

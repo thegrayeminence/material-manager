@@ -104,7 +104,7 @@ export default function MaterialUploadForm() {
             const materialData = {...formData.materialData, ...data};
 
             // API call to generate the albedo texture
-            const textureResponse = await axios.post('/api/generate_albedo', {materialData});
+            const textureResponse = await axios.post(`${import.meta.env.VITE_API_URL}generate_albedo`, {materialData});
             console.log("Albedo texture generation initiated!");
             const materialId = textureResponse.data.material_id;
             const baseColorUrl = textureResponse.data.image_url;
@@ -121,7 +121,7 @@ export default function MaterialUploadForm() {
             navigate(`/gallery_id/${materialId}`);
 
             // Second API call to generate PBR maps
-            const pbrResponse = await axios.post('/api/generate_pbr_maps', {base_color_url: baseColorUrl, material_id: materialId});
+            const pbrResponse = await axios.post(`${import.meta.env.VITE_API_URL}generate_pbr_maps`, {base_color_url: baseColorUrl, material_id: materialId});
             console.log("PBR maps generation initiated!");
 
             // PBR MAPS LOAD HERE!!!!!!!!
