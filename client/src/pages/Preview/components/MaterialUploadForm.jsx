@@ -96,16 +96,44 @@ export default function MaterialUploadForm() {
 
     const handleFormSubmission = async (data) => {
 
+        if (!color || !elementType || !manifestation || !condition) {
+            toast({
+                title: "Validation Error",
+                description: "Please fill in all required fields.",
+                status: "error",
+                duration: 5000,
+                isClosable: true,
+                position: "top",
+                variant: 'subtle',
+                colorScheme: 'purple',
+
+            });
+            return;
+        };
+
         clearImages();       // Clear any existing images before loading new ones
         setIsLoading(true);  // Start loading indicator
 
         try {
 
+
+
             const materialData = {...formData.materialData, ...data};
             const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001/api/';
 
             console.log("logging API URL:\n", apiUrl);
-
+            {
+                () =>
+                    toast({
+                        title: 'Your Prompt Has Been Submitted!',
+                        description: "You will be redirected to the gallery page once your material is ready!",
+                        status: 'success',
+                        duration: 9000,
+                        position: 'top',
+                        variant: 'subtle',
+                        isClosable: true,
+                    })
+            }
             const textureResponse = await axios.post(`${apiUrl}generate_albedo`, {materialData: data});
             console.log("Albedo texture generation initiated!");
 
@@ -192,21 +220,22 @@ export default function MaterialUploadForm() {
                 return;
             }
             increaseProgress();
-        } else if (progress === 1) {
-            if (!color || !elementType || !manifestation || !condition) {
-                toast({
-                    title: "Validation Error",
-                    description: "Please fill in all required fields.",
-                    status: "error",
-                    duration: 5000,
-                    isClosable: true,
-                    position: "top",
-
-                });
-                return;
-            }
-            increaseProgress();
         }
+        // else if (progress === 1) {
+        //     if (!color || !elementType || !manifestation || !condition) {
+        //         toast({
+        //             title: "Validation Error",
+        //             description: "Please fill in all required fields.",
+        //             status: "error",
+        //             duration: 5000,
+        //             isClosable: true,
+        //             position: "top",
+
+        //         });
+        //         return;
+        //     }
+        //     increaseProgress();
+        // }
     };
 
 
@@ -428,7 +457,7 @@ export default function MaterialUploadForm() {
                             // bg={useColorModeValue('teal.400', 'green.500')} 
                             w="full"
 
-                            onClick={() =>
+                            onSubmit={() =>
                                 toast({
                                     title: 'Your Prompt Has Been Submitted!',
                                     description: "You will be redirected to the gallery page once your material is ready!",
