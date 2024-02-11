@@ -14,9 +14,10 @@ from sqlalchemy import MetaData
 app = Flask(
     __name__,
     static_url_path='',
-    static_folder='../client/dist',
+    static_folder='/client/dist',
     # static_folder='./static',
-    template_folder='../client/dist' 
+    template_folder='/client/dist' 
+    
 )
 
 
@@ -52,11 +53,11 @@ CORS(app, resources={
     
     
     r"/api/*": {
-        "origins": ["https://textureforge.onrender.com", "http://localhost:3000"],
+        "origins": ["https://textureforge.onrender.com","http://textureforge.onrender.com", "http://localhost:3000"],
         "methods": ["GET", "POST", "PUT", "DELETE"]
     },
     r"/static/*": {
-        "origins": ["https://textureforge.onrender.com", "http://localhost:3000"],
+        "origins": ["https://textureforge.onrender.com","http://textureforge.onrender.com", "http://localhost:3000"],
         "methods": ["GET", "POST", "PUT", "DELETE"]
     },
     
