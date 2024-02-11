@@ -196,7 +196,7 @@ def generate_pbr_from_albedo(base_color_url, map_type):
 ##----------------------------------------##
 
 ## first endpoint for generating albedo
-@app.route("/api/generate_albedo", methods=["GET", "POST", "PUT", "DELETE"])
+@app.route("/api/generate_albedo", methods=["POST"])
 def generate_albedo():
     
     ##model_identifier options (custom vs public mat diffusion models)
@@ -248,12 +248,10 @@ def generate_albedo():
         db.session.rollback()
         app.logger.error('Error in generate_albedo: %s', str(e))
         return jsonify({"error": str(e)}), 500
-    # return jsonify({"message": "Success"}), 200
-
     
 
 #second endpoint for generating pbr maps from albedo
-@app.route("/api/generate_pbr_maps", methods=["GET", "POST", "PUT", "DELETE"])
+@app.route("/api/generate_pbr_maps", methods=["POST"])
 def generate_pbr_maps():
     try:
         data = request.get_json()
@@ -326,6 +324,23 @@ def serve_image_folder(folder_name):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+# def serve_image_folder(folder_name):
+#     # Construct the absolute path to the folder
+#     folder_path = os.path.join(app.static_folder, 'assets', 'images', folder_name)
+    
+#     # Validate if folder exists
+#     if not os.path.exists(folder_path) or not os.path.isdir(folder_path):
+#         return jsonify({"error": "Folder not found"}), 404
+
+#     try:
+#         # List all .png files in the folder
+#         image_files = [f for f in os.listdir(folder_path) if f.endswith('.png')]
+#         # Generate URLs for each image file
+#         image_urls = [url_for('static', filename=f'assets/images/{folder_name}/{file}', _external=True) for file in image_files]
+
+#         return jsonify(image_urls)
+#     except Exception as e:
+#         return jsonify({"error": str(e)}), 500
 
 @app.get("/api/get_maps/<int:material_id>")
 def get_maps_by_id(material_id):
@@ -598,8 +613,11 @@ def handle_500_error(e):
 
     
 if __name__ == '__main__':
-
+    # Retrieve the port number from the environment variable 'PORT'
+    # If 'PORT' is not set, default to 5000 (common default for Flask)
     port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port, debug=True)
+    # Run the application on the host '0.0.0.0' and the retrieved port
+    app.run(host='0.0.0.0', port=port, debug=False)
 
-
+    
+    
