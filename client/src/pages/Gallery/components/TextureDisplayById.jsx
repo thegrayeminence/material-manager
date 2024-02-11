@@ -161,14 +161,12 @@ const TextureDisplayById = () => {
     return (
 
         <Box
-        // position='absolute'
-        // w='full'
-        // bg={useColorModeValue('gray.600', 'black')}
         >
             {/* Albedo Image */}
+
             <Flex direction="column" align="center" mb={10} >
 
-                {materialName && (<Heading fontSize={{base: '2xl', sm: 'xl', md: '2xl', lg: '3xl', xl: '4xl'}} color="purple.600" py={4} mt={4}>
+                {materialName && (<Heading fontSize={{base: '2xl', sm: 'xl', md: '2xl', lg: '3xl', xl: '4xl'}} color={useColorModeValue('twitter.600', 'purple.600')} py={4} mt={4}>
                     {`${materialName}`}
                 </Heading>)}
 
@@ -209,8 +207,8 @@ const TextureDisplayById = () => {
 
                 {albedoImage && pbrMapUrls.normal && pbrMapUrls.height && pbrMapUrls.smoothness && (
                     <Box>
-                        <Button onClick={() => handleDownload(materialId)} colorScheme='purple' variant="outline" mt={5} size={{base: 'md', sm: 'md', md: 'md', lg: 'lg', xl: 'lg'}}>
-                            Download Material
+                        <Button onClick={() => handleDownload(materialId)} colorScheme={useColorModeValue('facebook', 'gray')} variant="solid" mt={5} size={{base: 'md', sm: 'md', md: 'md', lg: 'lg', xl: 'lg'}}>
+                            Download
                         </Button>
                     </Box>
                 )}
@@ -219,10 +217,10 @@ const TextureDisplayById = () => {
             <Flex direction="column" align="center" mt={5}>
                 {albedoImage && pbrMapUrls.normal && pbrMapUrls.height && pbrMapUrls.smoothness && (
                     <>
-                        <Divider orientation='horizontal' borderWidth={'.1rem'} w={'full'} borderColor='twitter.600' borderStyle={'solid'} />
+                        <Divider orientation='horizontal' borderWidth={'.1rem'} w={'full'} borderColor={useColorModeValue('purple.600', 'twitter.600')} borderStyle={'solid'} />
                         <Spacer py={2} />
 
-                        <Heading fontSize={{base: 'xl', sm: 'lg', md: 'xl', lg: '2xl', xl: '4xl'}} color="purple.600" py={4}>
+                        <Heading fontSize={{base: 'xl', sm: 'lg', md: 'xl', lg: '2xl', xl: '4xl'}} color={useColorModeValue('twitter.600', 'purple.600')} py={4}>
                             Material Preview:
                         </Heading>
                         <Box

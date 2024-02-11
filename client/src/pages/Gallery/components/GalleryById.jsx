@@ -10,12 +10,12 @@ function GalleryById() {
         <Box width='100vw' h='100vh'
             // opacity={'99.9%'}
             // backgroundBlendMode={'difference'}
-            bg={useColorModeValue('gray.400', 'black')}
+            bg={useColorModeValue('gray.400', 'gray.800')}
 
         >
 
             <Box
-                bg={useColorModeValue('gray.400', 'black')}
+                bg={useColorModeValue('gray.400', 'gray.800')}
 
                 px='2rem' width={'100%'}>
                 <TextureDisplayById materialId={id} /> {/* Pass it as 'materialId' */}
