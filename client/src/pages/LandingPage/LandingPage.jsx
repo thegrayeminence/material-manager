@@ -73,9 +73,14 @@ function LandingPage() {
 
     return (
 
-        <VStack spacing={0} width={'100vw'} overflow={'hidden'}>
+        <VStack spacing={0} width={'100vw'}
+
+
+        >
             <Box
-                height={'100vh'} width={'100vw'} position={'relative'}
+                height={'100vh'} width={'100vw'}
+
+                position={'relative'}
             >
                 <LandingPageText />
                 <LandingPageBackground />
@@ -84,7 +89,9 @@ function LandingPage() {
             </Box>
 
             <Box
-                height={'100vh'} width={'100vw'} position={'relative'}
+                height={'100vh'} width={'100vw'}
+                position={'relative'}
+                overflow={'scroll'}
             // marginTop={'-5vh'}
 
 

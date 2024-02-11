@@ -71,6 +71,7 @@ const AboutSideBar = ({isOpen, onClose}) => {
         <Drawer closeOnEsc={true} closeOnOverlayClick={true}
             placement='right' isOpen={isOpen} onClose={onClose}
             isFullHeight={true} size={['sm', 'md', 'lg', 'xl']}
+            overflowY={'scroll'}
 
         >
             <DrawerOverlay />

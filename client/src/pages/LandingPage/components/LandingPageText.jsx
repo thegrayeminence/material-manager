@@ -114,7 +114,6 @@ function LandingPageText() {
 
 
     const navigate = useNavigate();
-    const MotionBox = motion(Box);
     const {onOpen} = useOutletContext()
 
     return (
@@ -123,7 +122,8 @@ function LandingPageText() {
             <Box maxW="7xl" mx="auto">
                 <Box pos="relative" w="full"  >
                     <Box
-                        mt={'20%'} >
+                        mt={'20%'}
+                    >
 
                         <Box mx="auto" maxW={'80%'} >
                             <Center>
@@ -147,7 +147,6 @@ function LandingPageText() {
                             <Center>
                                 <Box>
                                     <Text
-                                        // color={useColorModeValue('whiteAlpha.800, whiteAlpha.900')}
                                         color={useColorModeValue('whiteAlpha.900', 'whiteAlpha.900')}
                                         textAlign="left" sx={detailHeaderStyle} lineHeight={'150%'} >
                                         ‣ Generate PBR Textures With Text-to-Image AI  <br />
