@@ -14,7 +14,7 @@ from sqlalchemy import MetaData
 app = Flask(
     __name__,
     #static_url_path='',
-    static_folder='/client/dist/static',
+    static_folder='../client/dist',
     # static_folder='./static',
     template_folder='../client/dist' 
     
@@ -26,7 +26,7 @@ app = Flask(
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def catch_all(path):
-    return render_template("index.html", path='../client/dist/index.html')
+    return render_template("index.html")
 
 
 # isss a secret, no looksy precious

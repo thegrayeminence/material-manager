@@ -49,11 +49,11 @@ def setup_logging():
     
 setup_logging()
 
-##sets up default/fallback flask route to html file
-@app.route('/', defaults={'path': ''})
-@app.route('/<path:path>')
-def index(path):
-    return render_template("index.html")
+# ##sets up default/fallback flask route to html file
+# @app.route('/', defaults={'path': ''})
+# @app.route('/<path:path>')
+# def index(path):
+#     return render_template("index.html")
 
 
 
@@ -598,11 +598,8 @@ def handle_500_error(e):
 
     
 if __name__ == '__main__':
-    # Retrieve the port number from the environment variable 'PORT'
-    # If 'PORT' is not set, default to 5000 (common default for Flask)
+
     port = int(os.environ.get('PORT', 5000))
-    # Run the application on the host '0.0.0.0' and the retrieved port
     app.run(host='0.0.0.0', port=port, debug=True)
 
-    
-    
+
