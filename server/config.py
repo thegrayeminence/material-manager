@@ -13,10 +13,11 @@ from sqlalchemy import MetaData
 # Instantiate app, set attributes
 app = Flask(
     __name__,
-    static_url_path='',
-    static_folder='/client/dist',
+    #static_url_path='',
+    static_folder='/client/dist/static',
     # static_folder='./static',
-    template_folder='/client/dist' 
+    template_folder='../client/dist' 
+    
     
 )
 
