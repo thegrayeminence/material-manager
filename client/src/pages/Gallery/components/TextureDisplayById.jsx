@@ -51,13 +51,13 @@ const TextureDisplayById = () => {
     // Fetch the most recent albedo image and its material ID
     useEffect(() => {
         const fetchRecentAlbedo = async () => {
-            setAlbedoIsLoading(true);
             try {
+                setAlbedoIsLoading(true);
                 const filenameResponse = await axios.get(`${import.meta.env.VITE_API_URL}get_material_filename/${id}`);
                 const filename = filenameResponse.data.filename;
                 const formattedFileName = filename.replace('.zip', '').replace(/[_]/g, " ").toUpperCase();
                 setMaterialName(formattedFileName);
-                const response = await axios.get(`${import.meta.env.VITE_API_URL}get_albedo_by_id/${id}`); // Use 'id' as a string
+                const response = await axios.get(`${import.meta.env.VITE_API_URL}get_albedo_by_id/${id}`);
                 setAlbedoImage(response.data.image_url);
                 setMaterialId(response.data.material_id);
                 setAlbedoIsLoading(false);
@@ -75,18 +75,18 @@ const TextureDisplayById = () => {
         if (!materialId) return;
 
         const fetchMap = async (mapType) => {
-            setPbrIsLoading(true);
+
             try {
                 const response = await axios.get(`${import.meta.env.VITE_API_URL}get_${mapType}_by_id/${id}`); // Use 'id' as a string
                 return response.data.image_url;
-                setPbrIsLoading(false);
+
             } catch (error) {
                 console.error(`Error fetching ${mapType} map:`, error);
                 return null;
             }
         };
         const loadMaps = async () => {
-
+            setPbrIsLoading(true);
             console.log("Current materialId:", materialId);
             const mapTypes = ['normal', 'height', 'smoothness'];
             const mapPromises = mapTypes.map(mapType => fetchMap(mapType));
@@ -100,6 +100,7 @@ const TextureDisplayById = () => {
                 }
             });
             setPbrMapUrls(newPbrMapUrls);
+            setPbrIsLoading(false);
             console.log('color url:', albedoImage, 'pbr urls:', newPbrMapUrls)
         };
 
@@ -165,48 +166,50 @@ const TextureDisplayById = () => {
         // bg={useColorModeValue('gray.600', 'black')}
         >
             {/* Albedo Image */}
-
             <Flex direction="column" align="center" mb={10} >
+
                 {materialName && (<Heading fontSize={{base: '2xl', sm: 'xl', md: '2xl', lg: '3xl', xl: '4xl'}} color="purple.600" py={4} mt={4}>
                     {`${materialName}`}
                 </Heading>)}
-                {albedoIsLoading && (
-                    <Skeleton height={albedoBoxSize} />
+
+
+
+                {albedoImage && albedoImage.length > 0 && (
+                    <Skeleton isLoaded={albedoImage} position='relative' boxSize={albedoBoxSize} >
+                        <MotionImageBox {...imageBoxStyle}>
+
+                            <Image src={albedoImage} alt="Base Color Map" boxSize={albedoBoxSize} objectFit="cover" onClick={() => handleDownload(materialId)} />
+                            <Text mt="1" color='whiteAlpha.700' fontWeight={'500'} fontSize={{base: 'lg', sm: 'md', md: 'lg', lg: 'lg', xl: 'xl'}} fontFamily='avenir, sans-serif' textAlign="center" >
+                                Base Color Map
+                            </Text>
+
+                        </MotionImageBox>
+                    </Skeleton>
+
                 )}
 
-                {!albedoIsLoading && (
-
-                    <MotionImageBox {...imageBoxStyle}>
-                        <Image src={albedoImage} alt="Base Color Map" boxSize={albedoBoxSize} objectFit="cover" onClick={() => handleDownload(materialId)} />
-                        <Text mt="1" color='whiteAlpha.700' fontWeight={'500'} fontSize={{base: 'lg', sm: 'md', md: 'lg', lg: 'lg', xl: 'xl'}} fontFamily='avenir, sans-serif' textAlign="center" >
-                            Base Color Map
-                        </Text>
-                    </MotionImageBox>
-
-                )}
             </Flex>
-
             {/* PBR Images: Normal, Height, Smoothness */}
             <Flex direction="column" align="center">
                 <SimpleGrid columns={[2, null, 3]} spacing="30px" justifyContent="center">
-                    {['normal', 'height', 'smoothness'].map((type, index) => (
-                        pbrMapUrls[type] ? (
-                            <MotionImageBox key={type} {...imageBoxStyle}>
-                                <Image src={pbrMapUrls[type]} alt={`${type} Map`} boxSize={pbrBoxSize} objectFit="cover" />
-                                <Text mt="1" color='whiteAlpha.700' fontWeight={'500'} fontSize={{base: 'lg', sm: 'md', md: 'lg', lg: 'lg', xl: 'xl'}} fontFamily='avenir, sans-serif' textAlign="center" >
-                                    {`${imageLabels[index]} Map`}
-                                </Text>
-                            </MotionImageBox>
+                    {pbrMapUrls && pbrMapUrls['smoothness'] && pbrMapUrls['normal'] && pbrMapUrls['height'] && (
 
-                        ) : (
-                            <Skeleton key={index} height={pbrBoxSize} />
-                        )
-                    ))}
+                        ['normal', 'height', 'smoothness'].map((type, index) => (
+                            <Skeleton isLoaded={pbrMapUrls[type]} key={type}  >
+                                <MotionImageBox key={type} {...imageBoxStyle}>
+                                    <Image src={pbrMapUrls[type]} alt={`${type} Map`} boxSize={pbrBoxSize} objectFit="cover" />
+                                    <Text mt="1" color='whiteAlpha.700' fontWeight={'500'} fontSize={{base: 'lg', sm: 'md', md: 'lg', lg: 'lg', xl: 'xl'}} fontFamily='avenir, sans-serif' textAlign="center" >
+                                        {`${imageLabels[index]} Map`}
+                                    </Text>
+                                </MotionImageBox>
+                            </Skeleton>
+                        )))}
+
                 </SimpleGrid>
 
                 {albedoImage && pbrMapUrls.normal && pbrMapUrls.height && pbrMapUrls.smoothness && (
                     <Box>
-                        <Button onClick={() => handleDownload(materialId)} colorScheme={useColorModeValue('purple', 'purple')} variant="outline" mt={5} size={{base: 'md', sm: 'md', md: 'md', lg: 'lg', xl: 'lg'}}>
+                        <Button onClick={() => handleDownload(materialId)} colorScheme='purple' variant="outline" mt={5} size={{base: 'md', sm: 'md', md: 'md', lg: 'lg', xl: 'lg'}}>
                             Download Material
                         </Button>
                     </Box>

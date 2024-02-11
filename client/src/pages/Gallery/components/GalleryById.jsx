@@ -13,9 +13,7 @@ function GalleryById() {
             bg={useColorModeValue('gray.400', 'black')}
 
         >
-            {/* <Box py='5rem'>
-                <Header text={"PREVIEW MATERIALS"} />
-            </Box> */}
+
             <Box
                 bg={useColorModeValue('gray.400', 'black')}
 
