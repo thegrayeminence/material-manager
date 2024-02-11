@@ -1,7 +1,7 @@
 # Standard library imports
 import re, os, pathlib
 # Remote library imports
-from flask import Flask, render_template
+from flask import Flask, render_template, send_from_directory
 from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_restful import Api
@@ -20,17 +20,29 @@ BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', ''))
 #     template_folder='../client/dist' 
     
 # )
-app = Flask(
-    __name__,
-    static_folder=os.path.join(BASE_DIR, 'client', 'dist'),
-    template_folder=os.path.join(BASE_DIR, 'client', 'dist')
-)
+app = Flask(__name__, 
+            static_folder='../client/dist', 
+            static_url_path='/', 
+            template_folder='../client/dist')
+
+# @app.route('/', defaults={'path': ''})
+# @app.route('/<path:path>')
+# def catch_all(path):
+#     return app.send_static_file('index.html')
+
+
+@app.route('/<path:path>', methods=['GET'])
+def static_proxy(path):
+    # Serve the file (if it exists) from client/dist folder
+    return send_from_directory('../client/dist', path)
+
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def catch_all(path):
-    return app.send_static_file('index.html')
+    # Fallback to serving index.html
+    return send_from_directory('../client/dist', 'index.html')
 
-# ##sets up default/fallback flask route to html file
+# ##OLD:sets up default/fallback flask route to html file
 # @app.route('/', defaults={'path': ''})
 # @app.route('/<path:path>')
 # def catch_all(path):
@@ -65,10 +77,10 @@ CORS(app, resources={
         "origins": ["https://textureforge.onrender.com","http://textureforge.onrender.com", "http://localhost:3000"],
         "methods": ["GET", "POST", "PUT", "DELETE"]
     },
-    r"/static/*": {
-        "origins": ["https://textureforge.onrender.com","https://textureforge.onrender.com", "http://localhost:3000"],
-        "methods": ["GET", "POST", "PUT", "DELETE"]
-    },
+    # r"/static/*": {
+    #     "origins": ["https://textureforge.onrender.com","https://textureforge.onrender.com", "http://localhost:3000"],
+    #     "methods": ["GET", "POST", "PUT", "DELETE"]
+    # },
     
 })
 

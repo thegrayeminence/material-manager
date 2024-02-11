@@ -15,6 +15,7 @@ import {Select} from "chakra-react-select";
 import {textureMapOptionsPBRMetalRough, textureMapOptionsPBRGlossSpec, textureMapOptionsCommon, materialTypeOptions, metaDataOptions} from '../../../config/formInputData';
 import {useMaterialStore, useProgressStore, useAutosuggestionStore, useIsLoadingStore, useGeneratedImagesStore} from '../../../store/store';
 import SuggestionDisplay from './SuggestionDisplay';
+import {text} from 'd3';
 
 
 
@@ -116,26 +117,38 @@ export default function MaterialUploadForm() {
 
         try {
 
-
+            toast({
+                title: 'Form Submitted Successfully!',
+                description: "Please wait while we generate the first texture for your material. This may take a few moments.",
+                status: 'success',
+                duration: 6000,
+                position: 'top',
+                variant: 'subtle',
+                isClosable: true,
+            });
 
             const materialData = {...formData.materialData, ...data};
             const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001/api/';
 
+
             console.log("logging API URL:\n", apiUrl);
-            {
-                () =>
-                    toast({
-                        title: 'Your Prompt Has Been Submitted!',
-                        description: "You will be redirected to the gallery page once your material is ready!",
-                        status: 'success',
-                        duration: 9000,
-                        position: 'top',
-                        variant: 'subtle',
-                        isClosable: true,
-                    })
-            }
+
             const textureResponse = await axios.post(`${apiUrl}generate_albedo`, {materialData: data});
             console.log("Albedo texture generation initiated!");
+
+            if (textureResponse) {
+                toast({
+                    title: 'First Prompt Submitted Successfully! Initiating Second Prompt...',
+                    description: "Please wait while we generate the PBR maps for your material. This may take a few moments.",
+                    status: 'loading',
+                    duration: 6000,
+                    position: 'top',
+                    variant: 'subtle',
+                    isClosable: true,
+
+                })
+            }
+
 
             const materialId = textureResponse.data.material_id;
             const baseColorUrl = textureResponse.data.image_url;
@@ -145,6 +158,7 @@ export default function MaterialUploadForm() {
 
             // Set the albedo image in the store
             setAlbedoImage(baseColorUrl);
+
             console.log(`Albedo ID ${materialId} url ${baseColorUrl} added to store.`);
 
             // Navigate to the loading page with materialId
@@ -457,17 +471,7 @@ export default function MaterialUploadForm() {
                             // bg={useColorModeValue('teal.400', 'green.500')} 
                             w="full"
 
-                            onSubmit={() =>
-                                toast({
-                                    title: 'Your Prompt Has Been Submitted!',
-                                    description: "You will be redirected to the gallery page once your material is ready!",
-                                    status: 'success',
-                                    duration: 9000,
-                                    position: 'top',
-                                    variant: 'subtle',
-                                    isClosable: true,
-                                })
-                            }
+
                         >
                             Submit
                         </Button>
