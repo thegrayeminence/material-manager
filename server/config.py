@@ -8,24 +8,33 @@ from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
 
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', ''))
 
 
 # Instantiate app, set attributes
+# app = Flask(
+#     __name__,
+#     static_url_path='',
+#     static_folder='../client/dist',
+#     # static_folder='./static',
+#     template_folder='../client/dist' 
+    
+# )
 app = Flask(
     __name__,
-    static_url_path='',
-    static_folder='/client/dist',
-    # static_folder='./static',
-    template_folder='/client/dist' 
-    
+    static_folder=os.path.join(BASE_DIR, 'client', 'dist'),
+    template_folder=os.path.join(BASE_DIR, 'client', 'dist')
 )
-
-
-##sets up default/fallback flask route to html file
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def catch_all(path):
-    return render_template("index.html")
+    return app.send_static_file('index.html')
+
+# ##sets up default/fallback flask route to html file
+# @app.route('/', defaults={'path': ''})
+# @app.route('/<path:path>')
+# def catch_all(path):
+#     return render_template("index.html")
 
 
 # isss a secret, no looksy precious
@@ -57,7 +66,7 @@ CORS(app, resources={
         "methods": ["GET", "POST", "PUT", "DELETE"]
     },
     r"/static/*": {
-        "origins": ["https://textureforge.onrender.com","http://textureforge.onrender.com", "http://localhost:3000"],
+        "origins": ["https://textureforge.onrender.com","https://textureforge.onrender.com", "http://localhost:3000"],
         "methods": ["GET", "POST", "PUT", "DELETE"]
     },
     
