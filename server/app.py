@@ -366,7 +366,9 @@ def serve_image_folder(folder_name):
 
     try:
         # List all .png files in the folder
-        image_files = [f for f in os.listdir(folder_path) if f.endswith('.png')]
+        #image_files = [f for f in os.listdir(folder_path) if f.endswith('.png')]
+        image_files = [f for f in os.listdir(folder_path)]
+
         # Generate URLs for each image file
         image_urls = [url_for('static', filename=f'assets/images/{folder_name}/{file}', _external=True) for file in image_files]
 

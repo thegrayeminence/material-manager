@@ -7,6 +7,7 @@ import {PreviewBackgroundAnimation} from '../Preview/components';
 import {PBROnePreviewBox} from './components';
 import '@fontsource/poppins';
 import '@fontsource/inter';
+import axios from 'axios';
 
 function GalleryDetailsView() {
     let {name} = useParams();
@@ -23,32 +24,30 @@ function GalleryDetailsView() {
         const loadMaterialTextures = async () => {
             setisLoadingBackend(true);
             // Use the environment variable VITE_API_URL to construct the request URL
+            // setAlbedoImage(response.data.image_url);
+            // setMaterialId(response.data.material_id);
 
             const folderUrl = `${import.meta.env.VITE_API_URL}assets/images/${name}/`; // Construct the URL to fetch images from the specific folder
-            console.log("backend response: \n folderUrl:", folderUrl)
-            console.log("backend response: \n apiUrl:", `${import.meta.env.VITE_API_URL}`)
-            console.log("backend response: \n folderName:", `${name}`)
+            console.log("backend response: \n folderUrl:", folderUrl, "\n folderName:", `${name}`)
+
             try {
-                const response = await fetch(folderUrl);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const imageUrls = await response.json(); // Expecting the response to be a JSON array of image URLs
-                console.log("backend response: \n imageUrls:", imageUrls)
+                const response = await axios.get(`${import.meta.env.VITE_API_URL}assets/images/${name}`);
+
+                // if (!response.ok) {
+                //     throw new Error(`HTTP error! status: ${response.status}`);
+                // }
+                const imageUrls = response.data;
+                console.log("backend response:", imageUrls)
                 setbackendImages(imageUrls);
+                setisLoadingBackend(false);
+
             } catch (error) {
                 console.error("Failed to load texture images:", error);
-                // toast({
-                //     title: 'Error loading texture files',
-                //     description: error.message,
-                //     status: 'error',
-                //     duration: 5000,
-                //     isClosable: true,
-                // });
+
             }
-            finally {
-                setisLoadingBackend(false);
-            }
+            // finally {
+            //     setisLoadingBackend(false);
+            // }
         };
 
         loadMaterialTextures();
