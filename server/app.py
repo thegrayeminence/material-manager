@@ -370,7 +370,7 @@ def get_images(folder_name):
         map_types = ['base_color.png', 'height.png', 'normal.png', 'smoothness.png']
         images = [f"{dynamic_base_path}/{folder_name}/{folder_name}_{map_type}" for map_type in map_types]
         
-        return make_response({"image_urls": images}, 200)
+        return make_response(images, 200)
     
     except Exception as e:
         return jsonify({"error": str(e)}), 500
