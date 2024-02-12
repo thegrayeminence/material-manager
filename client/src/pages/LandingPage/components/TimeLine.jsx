@@ -146,6 +146,7 @@ const Timeline = () => {
                 fontWeight="bold" mb={18} textAlign="center" fontSize={{base: '3xl', sm: '2xl', lg: '4xl'}}>
                 How It Works:
             </chakra.h3>
+            <Spacer h={4} />
             <Divider
                 textAlign={'center'} borderWidth={'.2rem'} w={'full'}
                 borderStyle={'solid'}
@@ -172,8 +173,6 @@ const Card = ({title, categories, description, icon, bigIcon, date}) => {
 
     return (
         <HStack
-
-
             p={{base: 3, sm: 6, md: 8, lg: 10}}
             spacing={5}
             rounded="xl"
@@ -181,12 +180,12 @@ const Card = ({title, categories, description, icon, bigIcon, date}) => {
             pos="relative"
             bg={useColorModeValue('blackAlpha.200', colorThemeValues.dark.componentMain)}
             boxShadow={'xl'}
-            _hover={{transform: 'scale(1.05)'}}
-            transition={'transform 0.3s'}
         >
             <Icon as={bigIcon} w={12} h={12}
                 color={useColorModeValue(colorThemeValues.light.icon, colorThemeValues.dark.icon)} />
+
             <Box  >
+
                 <HStack spacing={1} mb={1}>
                     {categories.map(cat => (
                         <Badge size='sm' key={cat} noOfLines={1} isTruncated
@@ -199,7 +198,6 @@ const Card = ({title, categories, description, icon, bigIcon, date}) => {
                 </HStack>
                 <VStack spacing={2} mb={3} textAlign="left">
                     <chakra.h1
-                        _hover={{color: useColorModeValue(colorThemeValues.light.hover, colorThemeValues.dark.hover)}}
                         color={useColorModeValue(colorThemeValues.light.textHeader, colorThemeValues.dark.textHeader)}
                         fontSize={{base: "xl", sm: "lg", md: "xl", xl: "2xl"}}
                         lineHeight={1.2}

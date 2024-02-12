@@ -102,7 +102,8 @@ const AboutSideBar = ({isOpen, onClose}) => {
                     <Spacer py={'1rem'} />
 
                     <Divider
-                        textAlign={'center'} borderWidth={'.2rem'} w={'full'}
+                        textAlign={'center'} borderWidth={'.2rem'} w={'90%'}
+                        mx='auto'
                         borderStyle={'solid'}
                         borderColor={useColorModeValue('teal.400', 'facebook.600')}
                     />
@@ -160,7 +161,8 @@ const AboutSideBar = ({isOpen, onClose}) => {
 
                             </MotionText>
                             <Divider
-                                textAlign={'center'} borderWidth={'.2rem'} w={'full'}
+                                textAlign={'center'} borderWidth={'.2rem'} w={'100%'}
+                                mx='auto'
                                 borderStyle={'solid'}
                                 borderColor={useColorModeValue('teal.400', 'facebook.600')}
 
@@ -184,7 +186,7 @@ const AboutSideBar = ({isOpen, onClose}) => {
                                 <Spacer py={'.5rem'} />
                                 <Icon
                                     as={FaGithub} height={'auto'}
-                                    _hover={{transform: 'scale(1.1)', color: useColorModeValue(colorThemeValues.light.hover, colorThemeValues.dark.hover)}}
+                                    // _hover={{transform: 'scale(1.1)', color: useColorModeValue(colorThemeValues.light.hover, colorThemeValues.dark.hover)}}
                                     width={{base: '4rem', sm: '4rem', md: '5rem', lg: '6rem', xl: '6.5rem'}}
                                     color={useColorModeValue(colorThemeValues.light.icon, colorThemeValues.dark.icon)}
                                 // initial="hidden"
