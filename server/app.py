@@ -196,7 +196,7 @@ def generate_pbr_from_albedo(base_color_url, map_type):
 ##----------------------------------------##
 
 ## first endpoint for generating albedo
-@app.route("/api/generate_albedo", methods=["POST"])
+@app.route("/api/generate_albedo", methods=["GET", "POST", "PUT"])
 def generate_albedo():
     
     ##model_identifier options (custom vs public mat diffusion models)
@@ -251,7 +251,7 @@ def generate_albedo():
     
 
 #second endpoint for generating pbr maps from albedo
-@app.route("/api/generate_pbr_maps", methods=["POST"])
+@app.route("/api/generate_pbr_maps", methods=["GET", "POST", "PUT"])
 def generate_pbr_maps():
     try:
         data = request.get_json()
@@ -351,7 +351,7 @@ def get_recent_albedo():
 
 
 
-@app.get('/assets/images/<folder_name>/')
+@app.route('/assets/images/<folder_name>/', methods=["GET", "POST", "PUT"])
 @cross_origin(origins='*') 
 #@cross_origin(origins=['https://pbr.one'])
 def serve_image_folder(folder_name):
@@ -455,7 +455,7 @@ def create_downloadable_zip(material_id):
     return zip_filename
 
 ##gets proper filename for zip file/unzipped folder
-@app.route("/api/get_material_filename/<int:material_id>", methods=['GET'])
+@app.route("/api/get_material_filename/<int:material_id>", methods=["GET", "POST", "PUT"])
 def get_material_filename(material_id):
     try:
         material = Material.query.get(material_id)
@@ -468,7 +468,7 @@ def get_material_filename(material_id):
         return jsonify({"error": str(e)}), 500
     
 
-@app.route("/api/download_material/<int:material_id>", methods=['GET'])
+@app.route("/api/download_material/<int:material_id>", methods=["GET", "POST", "PUT"])
 def download_material(material_id):
     try:
         zip_file_path = create_downloadable_zip(material_id)
