@@ -11,7 +11,6 @@ import axios from 'axios';
 
 function GalleryDetailsView() {
     let {name} = useParams();
-    const toast = useToast();
     const [images, setImages] = useState([]);
     const [backendImages, setbackendImages] = useState([]);
 
@@ -23,31 +22,26 @@ function GalleryDetailsView() {
     useEffect(() => {
         const loadMaterialTextures = async () => {
             setisLoadingBackend(true);
-            // Use the environment variable VITE_API_URL to construct the request URL
-            // setAlbedoImage(response.data.image_url);
-            // setMaterialId(response.data.material_id);
 
-            const folderUrl = `${import.meta.env.VITE_API_URL}assets/images/${name}/`; // Construct the URL to fetch images from the specific folder
-            console.log("backend response: \n folderUrl:", folderUrl, "\n folderName:", `${name}`)
+            // const requestUrl = `${import.meta.env.VITE_STATIC_URL}assets/images/${name}`; // Construct the URL to fetch images from the specific folder
+            // console.log("backend response: \n folderUrl:", requestUrl, "\n folderName:", `${name}`)
 
             try {
-                const response = await axios.get(`${import.meta.env.VITE_API_URL}assets/images/${name}`);
+                const response = await axios.get(`${import.meta.env.VITE_STATIC_URL}assets/images/${name}`);
 
-                // if (!response.ok) {
-                //     throw new Error(`HTTP error! status: ${response.status}`);
-                // }
-                const imageUrls = response.data;
-                console.log("backend response:", imageUrls)
-                setbackendImages(imageUrls);
-                setisLoadingBackend(false);
+
+                const image_urls = response.data;
+                setbackendImages(image_urls);
+                console.log("response:", response, "response.data:", response.data)
+
 
             } catch (error) {
                 console.error("Failed to load texture images:", error);
 
             }
-            // finally {
-            //     setisLoadingBackend(false);
-            // }
+            finally {
+                setisLoadingBackend(false);
+            }
         };
 
         loadMaterialTextures();
@@ -59,7 +53,7 @@ function GalleryDetailsView() {
         const loadMaterial = async () => {
             setIsLoading(true);
             const loadedImages = await loadImagesFromFolder(name);
-            console.log("loadedImages frontend src:", loadedImages)
+            console.log("loadedImages frontend src:", loadedImages, "folder name:", name)
             setImages(loadedImages);
             setIsLoading(false);
         };
@@ -68,8 +62,9 @@ function GalleryDetailsView() {
     }, [name]);
 
     const imageLabels = ['Base Color', 'Normals', 'Height', 'Smoothness'];
-    const formattedName = name.replace(/[_]/g, " ").toUpperCase();
-    // console.log("images length", images.length)
+    const textureTypes = ['_base_color', '_normal', '_height', '_smoothness'];
+    const displayName = name.replace(/[_]/g, " ").toUpperCase();
+    console.log("images length", backendImages.length)
 
     return (
         <Box width='100vw' h='100vh' opacity='.99'>
@@ -85,7 +80,7 @@ function GalleryDetailsView() {
                         opacity={0.75}
                     >
 
-                        {`${formattedName}`}
+                        {`${displayName}`}
                     </Text>
                     <Text
                         fontFamily={'poppins, sans-serif'}
@@ -103,7 +98,7 @@ function GalleryDetailsView() {
                         pt={'2'}
                         ml='5%'
                     >
-                        {!isLoading && images.map((src, index) => (
+                        {!isLoadingBackend && backendImages.map((src, index) => (
                             <Box key={index}
                                 p={{base: 5, sm: 4, md: 5, lg: 6, xl: 8}}
                                 borderWidth="2px"
@@ -144,7 +139,7 @@ function GalleryDetailsView() {
                     </SimpleGrid>
                     {!isLoading && (
                         <Center>
-                            <Button colorScheme={useColorModeValue('purple', 'blue')}
+                            <Button colorScheme={'blue'}
                                 variant="outline" mt={5} size={{base: 'md', sm: 'md', md: 'md', lg: 'lg', xl: 'lg'}}
                             >
                                 DOWNLOAD
@@ -166,7 +161,7 @@ function GalleryDetailsView() {
                         </Text>
 
                         {
-                            !isLoading && <PBROnePreviewBox images={images} />
+                            !isLoading && <PBROnePreviewBox images={backendImages} />
                         }
                     </Box>
 
