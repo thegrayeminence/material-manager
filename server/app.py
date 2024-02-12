@@ -351,7 +351,7 @@ def get_recent_albedo():
 
 
 
-@app.get('/static/assets/images/<folder_name>/')
+@app.get('/assets/images/<folder_name>/')
 @cross_origin(origins='*') 
 #@cross_origin(origins=['https://pbr.one'])
 def serve_image_folder(folder_name):
