@@ -18,6 +18,7 @@ export default function PBROnePreviewBox({images}) {
     const smoothness_map_url = `${URI_BASE}${images[3]}`;
     const [geometry_type, set_geometry_type] = useState('sphere');
     const [environment_type, set_environment_type] = useState(0);
+
     const baseUrl = 'https://cdn.pbr.one/main/material-shading.html#';
     const query_params = `color_url=${color_map_url}&normal_url=${normal_map_url}&roughness_url=${smoothness_map_url}&displacement_url=${height_map_url}&geometry_type=${geometry_type}&environment_index=${environment_type}&displacement_scale=0.01&tiling_scale=1.33&gui_enable=-1&watermark_enable=0`
 

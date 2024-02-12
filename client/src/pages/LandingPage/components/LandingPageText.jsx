@@ -194,7 +194,6 @@ function LandingPageText() {
                                         }}
 
                                         isTruncated
-                                        truncateOverflow='ellipsis'
                                         fontFamily={'inter black, sans-serif'}
                                         textShadow=".2px .2px 0 rgba(0, 0, 0, 0.5), -.2px -.2px 0 rgba(0, 0, 0, 0.5), .2px -.2px 0 rgba(0, 0, 0, 0.5), -.2px .2px 0 rgba(0, 0, 0, 0.5)"
                                     > How does this work? What is 'PBR'? </Button>

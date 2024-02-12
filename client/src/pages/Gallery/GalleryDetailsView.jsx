@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {useParams} from 'react-router-dom';
 import {loadImagesFromFolder} from '../../config/loadImagesFromFolder';
-import {Box, Image, Spacer, SimpleGrid, Select, Button, Text, VStack, useToast, Skeleton, SkeletonText, useColorModeValue, HStack, Heading, Center} from '@chakra-ui/react';
+import {Box, Image, Spacer, SimpleGrid, Select, Button, Text, VStack, useToast, Skeleton, SkeletonText, useColorModeValue, HStack, Heading, Center, } from '@chakra-ui/react';
 import {StylishHeader} from '../../components';
 import {PreviewBackgroundAnimation} from '../Preview/components';
 import {PBROnePreviewBox} from './components';
@@ -21,17 +21,17 @@ function GalleryDetailsView() {
 
     useEffect(() => {
         const loadMaterialTextures = async () => {
-            // setisLoadingBackend(true);
+            setisLoadingBackend(true);
             // Use the environment variable VITE_API_URL to construct the request URL
 
             const folderUrl = `${import.meta.env.VITE_API_URL}assets/images/${name}/`; // Construct the URL to fetch images from the specific folder
-            // console.log("backend response: \n folderUrl:", folderUrl)
-            // console.log("backend response: \n apiUrl:", apiUrl)
+            console.log("backend response: \n folderUrl:", folderUrl)
+            console.log("backend response: \n apiUrl:", apiUrl)
             try {
                 const response = await fetch(folderUrl);
-                // if (!response.ok) {
-                //     throw new Error(`HTTP error! status: ${response.status}`);
-                // }
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
                 const imageUrls = await response.json(); // Expecting the response to be a JSON array of image URLs
                 console.log("backend response: \n imageUrls:", imageUrls)
                 setbackendImages(imageUrls);
@@ -45,9 +45,9 @@ function GalleryDetailsView() {
                 //     isClosable: true,
                 // });
             }
-            // finally {
-            //     setisLoadingBackend(false);
-            // }
+            finally {
+                setisLoadingBackend(false);
+            }
         };
 
         loadMaterialTextures();
@@ -144,18 +144,8 @@ function GalleryDetailsView() {
                     </SimpleGrid>
                     {!isLoading && (
                         <Center>
-                            <Button colorScheme="gray" variant="outline" mt={5} size={{base: 'md', sm: 'md', md: 'md', lg: 'lg', xl: 'lg'}}
-                                onClick={() =>
-                                    toast({
-                                        title: 'This feature is not yet available!',
-                                        description: "Download functionality for static files is still under development. Please check back later.",
-                                        status: 'error',
-                                        duration: 4000,
-                                        position: 'top',
-                                        variant: 'subtle',
-                                        isClosable: true,
-                                    })
-                                }
+                            <Button colorScheme={useColorModeValue('purple', 'blue')}
+                                variant="outline" mt={5} size={{base: 'md', sm: 'md', md: 'md', lg: 'lg', xl: 'lg'}}
                             >
                                 DOWNLOAD
                             </Button>
