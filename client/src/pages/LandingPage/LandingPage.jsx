@@ -1,6 +1,6 @@
 //lib imports
 import React, {useEffect} from 'react';
-import {Box, VStack, Divider, Center, useColorModeValue, Spacer} from '@chakra-ui/react';
+import {Box, VStack, Divider, Center, useColorModeValue, Spacer, Container} from '@chakra-ui/react';
 import {AnimatePresence, motion, useScroll} from 'framer-motion';
 import {Timeline} from './components';
 
@@ -94,7 +94,7 @@ function LandingPage() {
                 height={'auto'}
                 width={'100vw'}
                 position={'relative'}
-                bg={useColorModeValue('whiteAlpha.300', 'blackAlpha.600')}
+                bg={useColorModeValue('gray.200', 'gray.800')}
 
 
             >
@@ -103,8 +103,25 @@ function LandingPage() {
                     borderStyle={'solid'}
                     borderColor={useColorModeValue('blue.400', 'purple.400')}
                 />
-                <Features
-                />
+                <Spacer py={'1.5rem'} />
+
+                {/* Features Section Container  */}
+                <Container
+                    zIndex={-1}
+                    maxW={'80%'}
+                    borderRadius={'xl'}
+                    boxShadow={'xl'}
+                    borderStyle={'solid'}
+                    borderWidth={'.15rem'}
+                    borderColor={useColorModeValue('blackAlpha.200', 'whiteAlpha.300')}
+                    // _hover={{transform: 'scale(1.05)'}} transition={'transform 0.3s'}
+                    p={{base: '2', sm: '4', md: '6', lg: '8', xl: '10'}}
+                    bg={useColorModeValue('gray.100', 'gray.700')}
+                >
+
+                    <Features zIndex={-1}
+                    />
+                </Container>
                 <Spacer py={'3.5rem'} />
                 <Divider textAlign={'center'} borderWidth={'.25rem'} w={'full'}
                     borderStyle={'solid'}
@@ -113,7 +130,7 @@ function LandingPage() {
 
             </Box>
 
-        </VStack>
+        </VStack >
 
     );
 }

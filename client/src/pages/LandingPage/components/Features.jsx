@@ -1,4 +1,4 @@
-import {Container, Box, Center, chakra, Text, Icon, SimpleGrid, useColorModeValue} from '@chakra-ui/react';
+import {Container, Box, Center, chakra, Text, Icon, SimpleGrid, useColorModeValue, Spacer} from '@chakra-ui/react';
 
 import {motion, useScroll} from 'framer-motion';
 
@@ -52,9 +52,7 @@ const Features = () => {
             <Box
                 maxW="6xl"
                 p={{base: 5, md: 10}}
-                // bg='transparent'
-                // backgroundBlendMode={'overlay'}
-                // overflow="hidden"
+
                 bgClip="text"
 
             >
@@ -71,6 +69,7 @@ const Features = () => {
                 >
                     Features
                 </chakra.h3>
+                <Spacer py={3} />
                 <SimpleGrid
                     columns={{base: 1, sm: 1, md: 1, lg: 2, xl: 2}}
                     placeItems="center"

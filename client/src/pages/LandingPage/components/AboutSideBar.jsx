@@ -2,7 +2,7 @@ import React from 'react';
 import {FaGithub} from "react-icons/fa6";
 import {
     Drawer, Box, HStack, VStack, DrawerOverlay, DrawerContent, DrawerBody,
-    DrawerHeader, Container, DrawerCloseButton, Center, useColorModeValue, Icon, Spacer, chakra, LinkBox, LinkOverlay, Text,
+    DrawerHeader, Container, DrawerCloseButton, Center, useColorModeValue, Icon, Divider, Spacer, chakra, LinkBox, LinkOverlay, Text,
 } from "@chakra-ui/react";
 import {color, motion} from 'framer-motion';
 import '@fontsource/poppins';
@@ -13,6 +13,15 @@ import Timeline from './TimeLine';
 const MotionIcon = motion(Icon);
 const MotionText = motion(chakra.text);
 
+const textVariants = {
+    hidden: {opacity: 0, y: 20},
+    visible: {opacity: 1, y: 0, transition: {duration: 0.8}}
+};
+
+const iconVariants = {
+    hidden: {rotate: -180},
+    visible: {rotate: 0, transition: {duration: 0.8}}
+};
 
 const colorThemeValues = {
     light: {
@@ -61,7 +70,7 @@ const headerStyle = {
 
 const bodyStyle = {
     fontWeight: '200',
-    lineHeight: '2rem',
+    lineHeight: '2.25rem',
     fontSize: ['lg', 'lg', 'xl', '2xl'],
     fontFamily: 'inter, sans-serif',
 
@@ -71,8 +80,8 @@ const AboutSideBar = ({isOpen, onClose}) => {
         <Drawer closeOnEsc={true} closeOnOverlayClick={true}
             placement='right' isOpen={isOpen} onClose={onClose}
             isFullHeight={true} size={['sm', 'md', 'lg', 'xl']}
-        // overflowY={'scroll'}
-
+            // overflowY={'scroll'}
+            z-index={1000}
         >
             <DrawerOverlay />
             <DrawerContent
@@ -85,34 +94,50 @@ const AboutSideBar = ({isOpen, onClose}) => {
                 >
                     ABOUT & FAQ:
                 </DrawerHeader>
+
                 <DrawerBody >
+
                     <Timeline />
+
                     <Spacer py={'1rem'} />
+
+                    <Divider
+                        textAlign={'center'} borderWidth={'.2rem'} w={'full'}
+                        borderStyle={'solid'}
+                        borderColor={useColorModeValue('teal.400', 'facebook.600')}
+                    />
+
                     <Box
                         padding={{base: '8', sm: '6', md: '12', lg: '16', xl: '20'}}>
+
+
                         <Center>
+
 
                             <MotionText
                                 color={useColorModeValue(colorThemeValues.light.textHeader, colorThemeValues.dark.textHeader)}
                                 sx={headerStyle}
-                                // variants={textVariants} initial="hidden" animate="visible"
                                 textAlign={'center'}
                             >
                                 What is 'PBR'?: <br />
                             </MotionText>
                         </Center>
+
                         <Spacer py={'1.5rem'} />
+
+                        {/* Container for floating box effect for 'what is pbr' */}
+
                         <Container
-                            _hover={{transform: 'scale(1.05)'}}
-                            transition={'transform 0.3s'}
-                            borderRadius={'lg'}
-                            boxShadow={'base'}
-                            p={{base: '2', sm: '4', md: '6', lg: '8', xl: '10'}}
-                            bg={useColorModeValue('blackAlpha.200', colorThemeValues.dark.componentMain)}
+                        // borderRadius={'lg'}
+                        // boxShadow={'base'}
+                        // w='full'
+                        // p={{base: '2', sm: '4', md: '6', lg: '8', xl: '10'}}
+                        // bg={useColorModeValue('gray.200', colorThemeValues.dark.componentMain)}
                         >
                             <MotionText sx={bodyStyle}
                                 color={useColorModeValue(colorThemeValues.light.textMain, colorThemeValues.dark.textMain)}
                             // variants={textVariants} initial="hidden" animate="visible"
+
 
                             >
                                 <br />
@@ -128,12 +153,23 @@ const AboutSideBar = ({isOpen, onClose}) => {
                                 <strong>Ambient Occlusion</strong>: Simulates how light is occluded in crevices and corners.<br />
                                 <strong>Normal/Height</strong>: Add surface detail by simulating additional geometry. <br />
                                 <br />
-                                By applying this combination of real-world equations and carefully-curated bitmaps, PBR systems can achieve consistent results under different lighting conditions, making them a standard in creating photo-realistic 3D visuals.<br /> <br />
+                                By applying this combination of real-world equations and bitmaps,
+                                PBR materials can achieve consistent results under different lighting conditions,
+                                making them the current standard in creating photo-realistic 3D renders.<br /> <br />
 
 
                             </MotionText>
+                            <Divider
+                                textAlign={'center'} borderWidth={'.2rem'} w={'full'}
+                                borderStyle={'solid'}
+                                borderColor={useColorModeValue('teal.400', 'facebook.600')}
+
+
+                            />
                         </Container>
+
                         <Spacer py={'2.5rem'} />
+
                         <Center>
                             <LinkBox textAlign="center">
                                 <LinkOverlay href='https://github.com/thegrayeminence/material-manager/tree/main' isExternal>
@@ -142,7 +178,7 @@ const AboutSideBar = ({isOpen, onClose}) => {
                                         color={useColorModeValue(colorThemeValues.light.textHeader, colorThemeValues.dark.textHeader)}
                                     // initial="hidden" animate="visible" variants={textVariants}
                                     >
-                                        More Info on GitHub:
+                                        More Info On GitHub:
                                     </MotionText>
                                 </LinkOverlay>
                                 <Spacer py={'.5rem'} />
@@ -164,14 +200,6 @@ const AboutSideBar = ({isOpen, onClose}) => {
     );
 };
 
-const textVariants = {
-    hidden: {opacity: 0, y: 20},
-    visible: {opacity: 1, y: 0, transition: {duration: 0.8}}
-};
 
-const iconVariants = {
-    hidden: {rotate: -180},
-    visible: {rotate: 0, transition: {duration: 0.8}}
-};
 
 export default AboutSideBar;

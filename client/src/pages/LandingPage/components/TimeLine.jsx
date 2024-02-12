@@ -12,6 +12,7 @@ import {
     Badge,
     useColorModeValue,
     Spacer,
+    Divider,
 
 } from "@chakra-ui/react"
 // Here we have used react-icons package for the icons
@@ -36,52 +37,52 @@ const timeLineData = [
         icon: PiNumberCircleOneFill,
         bigIcon: FaWpforms,
         description: `User describes/classifies the properties of the material they want generated via the inputs on the site's form`,
-        date: "Average Time Required: 30-60 seconds"
+        date: "Time Required: 30-60 seconds"
     },
     {
         id: 2,
-        categories: ["Backend", "Database Storage"],
-        title: "Descriptions Sent to Backend, Cached, and Re-Formatted as Prompts",
+        categories: ["Backend", "DB Storage"],
+        title: "Descriptions Sent to Backend and Re-Formatted as Prompts for SD",
         icon: PiNumberCircleTwoFill,
         bigIcon: AiOutlineSend,
         description: `TextureForge sends user descriptions to backend, stores them in the database, and then turns them into prompts optimally formatted for Stable Diffusion AI`,
-        date: "Average Time Required: 10 seconds"
+        date: "Time Required: 10 seconds"
     },
     {
         id: 3,
-        categories: ["Backend", "API Call"],
+        categories: ["Backend", "Text-to-Image AI", "Stable Diffusion"],
         title: "Text Prompt Sent to SD to Generate First Texture Map",
         icon: PiNumberCircleThreeFill,
         bigIcon: LuBrainCog,
         description: `TextureForge sends prompts to Stable Diffusion to generate the first texture map (Albedo/BaseColor), using a text-to-image model`,
-        date: "Average Time Required: 30-60 seconds"
+        date: "Time Required: 30-60 seconds"
     },
     {
         id: 4,
-        categories: ["Backend", "Database Storage", "Response"],
-        title: "First Texture Map (BaseColor) Cached & Sent to Frontend",
+        categories: ["Backend", "DB Storage", "Response"],
+        title: "First Texture Map (Color) Generated & Sent to Frontend",
         icon: PiNumberCircleFourFill,
         bigIcon: BsDatabaseCheck,
         description: `SD outputs Albedo/BaseColor texture map as a url; TextureForge stores url in database and sends it to frontend for user preview/download`,
-        date: "Average Time Required: 15 seconds"
+        date: "Time Required: 15 seconds"
     },
     {
         id: 5,
-        categories: ["Backend", "API Call"],
+        categories: ["Backend", "Image-to-Image AI", "Stable Diffusion"],
         title: "Image Prompt Sent to SD to Generate Rest of PBR Maps",
         icon: PiNumberCircleFiveFill,
         bigIcon: LuBrainCog,
         description: `TextureForge sends Albedo/BaseColor texture map to SD to generate the rest of the PBR texture maps (normal, roughness, height, etc.), using an image-to-image model`,
-        date: "Average Time Required: 30 seconds to 2 minutes"
+        date: "Time Required: 30 seconds to 2 minutes"
     },
     {
         id: 6,
-        categories: ["Backend", "Database Storage", "Response"],
+        categories: ["Backend", "DB Storage", "Response"],
         title: "Generated PBR Maps Cached & Sent to Frontend",
         icon: PiNumberCircleSixFill,
         bigIcon: BsDatabaseCheck,
         description: `SD outputs PBR texture maps as urls; TextureForge stores urls in database and sends them to frontend for user preview/download`,
-        date: "Average Time Required: 15 seconds"
+        date: "Time Required: 15 seconds"
     },
 
     {
@@ -91,7 +92,7 @@ const timeLineData = [
         icon: PiNumberCircleSevenFill,
         bigIcon: IoCloudDownloadOutline,
         description: `Generated texture maps are loaded in browser for user to preview; user downloads new assets, zipped into folder with optimal file structure/naming, and then imports them/uses them however they want!`,
-        date: "Average Time Required: N/A"
+        date: "Time Required: N/A"
     }
 
 ]
@@ -126,20 +127,40 @@ const colorThemeValues = {
     }
 };
 
+const headerStyle = {
+    fontWeight: '800',
+    letterSpacing: '.2rem',
+    lineHeight: '1.35rem',
+    textAlign: 'center',
+    fontSize: ['xl', '2xl', '3xl', '4xl'],
+    fontFamily: 'poppins, sans-serif',
+};
+
 const Timeline = () => {
     return (
         <Container maxWidth="4xl" p={{base: 2, sm: 10}}>
+
             <chakra.h3
-                color={useColorModeValue(colorThemeValues.light.textMain, colorThemeValues.dark.textMain)}
+                sx={headerStyle}
+                color={useColorModeValue(colorThemeValues.light.textHeader, colorThemeValues.dark.textHeader)}
                 fontWeight="bold" mb={18} textAlign="center" fontSize={{base: '3xl', sm: '2xl', lg: '4xl'}}>
                 How It Works:
             </chakra.h3>
+            <Divider
+                textAlign={'center'} borderWidth={'.2rem'} w={'full'}
+                borderStyle={'solid'}
+                borderColor={useColorModeValue('teal.400', 'facebook.600')}
+
+
+            />
+
+            <Spacer h={4} />
             {timeLineData.map((step, index) => (
                 <Flex key={index}  >
                     <LineWithDot  {...step} />
                     <Box >
                         <Card  {...step} />
-                        <Spacer h={2} />
+                        <Spacer h={4} />
                     </Box>
                 </Flex>
             ))}
@@ -168,10 +189,12 @@ const Card = ({title, categories, description, icon, bigIcon, date}) => {
             <Box  >
                 <HStack spacing={1} mb={1}>
                     {categories.map(cat => (
-                        <Text fontSize={{base: "sm", sm: "sm", xl: "sm"}} key={cat} noOfLines={1} color={useColorModeValue(colorThemeValues.light.textDetail, colorThemeValues.dark.textDetail)}
+                        <Badge size='sm' key={cat} noOfLines={1} isTruncated
+                            colorScheme={useColorModeValue('facebook', 'purple')}
+                            variant='subtle'
                         >
-                            {`| ${cat} `}
-                        </Text>
+                            {`${cat}`}
+                        </Badge>
                     ))}
                 </HStack>
                 <VStack spacing={2} mb={3} textAlign="left">
