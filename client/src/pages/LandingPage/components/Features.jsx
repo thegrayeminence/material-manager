@@ -50,14 +50,18 @@ const Features = () => {
 
         <Center>
             <Box zIndex={-1} maxW="6xl" p={{base: 5, md: 10}}
+
                 // bg='transparent'
                 // backgroundBlendMode={'overlay'}
-                overflow="hidden"
+                // overflow="hidden"
                 bgClip="text"
 
             >
 
-                <chakra.h3 bgClip="text" fontSize="4xl" fontWeight="bold" mb={3} textAlign="center"
+                <chakra.h3
+
+
+                    bgClip="text" fontSize="4xl" fontWeight="bold" mb={3} textAlign="center"
                     color={useColorModeValue(colorThemeValues.light.textHeader, colorThemeValues.dark.textHeader)}
                     fontFamily={'avenir black, avenir, sans-serif'}
 

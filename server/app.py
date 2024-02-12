@@ -360,32 +360,6 @@ def get_albedo_by_id(material_id):
         return jsonify({"error": "Material not found"}), 404
     
 
-@app.get("/api/get_normal_by_id/<int:material_id>")
-def get_normal_by_id(material_id):
-    material_urls = get_material_urls(material_id)
-    if material_urls:
-        return jsonify({'image_url': material_urls['normal_map_url'], 'material_id': material_id}), 200
-    else:
-        return jsonify({"error": "Material not found"}), 404
-
-
-@app.get("/api/get_height_by_id/<int:material_id>")
-def get_height_by_id(material_id):
-    material_urls = get_material_urls(material_id)
-    if material_urls:
-        return jsonify({'image_url': material_urls['height_map_url'], 'material_id': material_id}), 200
-    else:
-        return jsonify({"error": "Material not found"}), 404
-
-@app.get("/api/get_smoothness_by_id/<int:material_id>")
-def get_smoothness_by_id(material_id):
-    material_urls = get_material_urls(material_id)
-    if material_urls:
-        return jsonify({'image_url': material_urls['smoothness_map_url'], 'material_id': material_id}), 200
-    else:
-        return jsonify({"error": "Material not found"}), 404
-
-
 @app.get("/api/get_recent_pbrs")
 def get_recent_pbrs():
     try:
@@ -412,54 +386,6 @@ def get_recent_albedo():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
-@app.get("/api/get_recent_normal")
-def get_recent_normal():
-    try:
-        material = Material.query.order_by(Material.id.desc()).first()
-        if material:
-            material_urls = get_material_urls(material.id)
-            return jsonify({'image_url': material_urls['normal_map_url'], 'material_id': material.id}), 200
-        else:
-            return jsonify({"error": "No recent normal map found"}), 404
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
-@app.get("/api/get_recent_height")
-def get_recent_height():
-    try:
-        material = Material.query.order_by(Material.id.desc()).first()
-        if material:
-            material_urls = get_material_urls(material.id)
-            return jsonify({'image_url': material_urls['height_map_url'], 'material_id': material.id}), 200
-        else:
-            return jsonify({"error": "No recent height map found"}), 404
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
-@app.get("/api/get_recent_smoothness")
-def get_recent_smoothness():
-    try:
-        material = Material.query.order_by(Material.id.desc()).first()
-        if material:
-            material_urls = get_material_urls(material.id)
-            return jsonify({'image_url': material_urls['smoothness_map_url'], 'material_id': material.id}), 200
-        else:
-            return jsonify({"error": "No recent smoothness map found"}), 404
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
-
-## Get 10 most recent materials:
-@app.get("/api/get_10_recent_materials")
-def get_recent_materials():
-    try:
-        materials = Material.query.order_by(Material.id.desc()).limit(10).all()
-        return jsonify({'materials': [material.to_dict() for material in materials]}), 200
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
-
-
 
 ##-------------------------------------##
 ## Download Functionality ##
