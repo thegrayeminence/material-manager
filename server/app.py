@@ -350,7 +350,7 @@ def get_recent_albedo():
 ##-------------------------------------##
 ## Image Serving/Download Functionality ##
 
-@app.route('/api/get_all_images', methods=["GET", "POST", "PUT"])
+@app.route('/api/get_static_images', methods=["GET", "POST", "PUT"])
 @cross_origin(origins='*')
 def get_all_images():
     base_url = os.getenv('IMAGE_BASE_URL', 'http://localhost:3000/assets/images')
