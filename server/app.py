@@ -353,9 +353,10 @@ def get_recent_albedo():
 
 
 @app.route('/api/images/<folder_name>', methods=["GET", "POST", "PUT"])
+@cross_origin(origins="*", supports_credentials=True)
 def get_images(folder_name):
     # folder_path = os.path.join(app.static_folder, 'assets', 'images', folder_name)
-    dynamic_base_path = os.getenv('IMAGE_BASE_URL', 'http://localhost:3000') 
+    # dynamic_base_path = os.getenv('IMAGE_BASE_URL', 'http://localhost:3000') 
     base_path = f"https://textureforgestatic.onrender.com/assets/images"
     
     # Validate if folder exists
@@ -367,7 +368,7 @@ def get_images(folder_name):
         # image_urls = [url_for('static', filename=f'assets/images/{folder_name}/{file}', _external=True) for file in image_files]
        
         map_types = ['base_color.png', 'height.png', 'normal.png', 'smoothness.png']
-        images = [f"{dynamic_base_path}/{folder_name}/{folder_name}_{map_type}" for map_type in map_types]
+        images = [f"https://textureforgestatic.onrender.com/assets/images/{folder_name}/{folder_name}_{map_type}" for map_type in map_types]
         
         return make_response(images, 200)
     
@@ -528,7 +529,7 @@ def handle_500_error(e):
 if __name__ == '__main__':
 
     port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port, debug=True)
+    app.run(host='0.0.0.0', port=port)
 
     
     
