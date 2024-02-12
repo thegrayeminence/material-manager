@@ -350,7 +350,32 @@ def get_recent_albedo():
 ##-------------------------------------##
 ## Image Serving/Download Functionality ##
 
+@app.route('/api/images/all', methods=["GET"])
+@cross_origin(origins='*')
+def get_all_images():
+    base_url = os.getenv('IMAGE_BASE_URL', 'http://localhost:3000/assets/images')
+    images_dir_path = os.path.join(app.static_folder, 'assets', 'images')
 
+    folders = [name for name in os.listdir(images_dir_path) if os.path.isdir(os.path.join(images_dir_path, name))]
+    
+    all_folders_images = []
+    
+    try:
+        for folder_name in folders:
+            map_types = ['base_color.png', 'height.png', 'normal.png', 'smoothness.png']
+            images = [f"{base_url}/{folder_name}/{folder_name}_{map_type}" for map_type in map_types]
+            folder_images = {
+                "folder": folder_name,
+                "images": images
+            }
+            all_folders_images.append(folder_images)
+        
+        return make_response(jsonify(all_folders_images), 200)
+    
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+            
+        
 
 @app.route('/api/images/<folder_name>', methods=["GET", "POST", "PUT"])
 @cross_origin(origins='*')  
@@ -370,7 +395,7 @@ def get_images(folder_name):
         map_types = ['base_color.png', 'height.png', 'normal.png', 'smoothness.png']
         images = [f"{dynamic_base_path}/{folder_name}/{folder_name}_{map_type}" for map_type in map_types]
         
-        return make_response(images, 200)
+        return make_response({"folder": folder_name, "images": images}, 200)
     
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -437,6 +462,7 @@ def create_downloadable_zip(material_id):
                 zipf.write(filepath, filename)
 
     return zip_filename
+
 
 ##gets proper filename for zip file/unzipped folder
 @app.route("/api/get_material_filename/<int:material_id>", methods=["GET", "POST", "PUT"])
