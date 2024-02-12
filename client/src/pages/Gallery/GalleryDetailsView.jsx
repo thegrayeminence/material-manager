@@ -18,10 +18,10 @@ function GalleryDetailsView() {
             setIsLoading(true);
             try {
                 const apiUrl = import.meta.env.VITE_API_URL;
-                // console.log("apiUrl:", apiUrl)
+                console.log("apiUrl:", apiUrl)
                 const response = await axios.get(`${apiUrl}images/${name}`);
-                setImages(response.data.images);
-                console.log("load image response:", response, "folder name:", name, "images:", response.data.images)
+                setImages(response.data);
+                console.log("load image response:", response, "folder name:", name)
             } catch (error) {
                 console.error("Failed to load images:", error);
             } finally {

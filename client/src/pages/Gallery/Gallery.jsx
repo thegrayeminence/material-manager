@@ -6,37 +6,24 @@ import {GalleryCard} from './components'
 import {loadImagesFromFolder} from '../../config/loadImagesFromFolder'
 import {StylishHeader} from '../../components'
 import {PreviewBackgroundAnimation} from '../Preview/components';
-import axios from 'axios'
 
 
 function Gallery() {
 
   const [materials, setMaterials] = useState([])
-  const [isLoading, setIsLoading] = useState(true);
-
+  const folderNames = ['Stone_Slate_Tiles_Ornate', 'Rich_Maple_Flooring_Varnished', 'Rich_Mahagony_Flooring_Varnished', 'Dark_Cedar_Flooring_Worn', 'Blue_Ceramic_Flooring_Glossy', 'Brown_Oak_Flooring_Stained', 'Weathered_Cherry_Flooring_Varnished']
 
   useEffect(() => {
     const loadMaterials = async () => {
-      setIsLoading(true);
-      try {
-        //const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001/api/';
-        console.log(`${import.meta.env.VITE_API_URL}get_static_images`)
-
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}get_static_images`);
-        setMaterials(response.data);
-        console.log('response.data:', response.data)
-
-      } catch (error) {
-        console.error("Failed to load materials:", error);
-      } finally {
-        setIsLoading(false);
+      const loadedMaterials = [];
+      for (let folder of folderNames) {
+        const images = await loadImagesFromFolder(folder);
+        loadedMaterials.push({folder, images})
       }
+      setMaterials(loadedMaterials);
     };
-
     loadMaterials();
   }, []);
-
-
 
 
   return (
