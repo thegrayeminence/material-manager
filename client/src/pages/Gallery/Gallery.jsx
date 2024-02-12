@@ -19,9 +19,10 @@ function Gallery() {
     const loadMaterials = async () => {
       setIsLoading(true);
       try {
-        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001/api/';
-        console.log("apiUrl:", apiUrl)
-        const response = await axios.get(`${apiUrl}images/all`);
+        //const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001/api/';
+        console.log(`${import.meta.env.VITE_API_URL}images/all`)
+
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}images/all`);
         setMaterials(response.data);
         console.log('response.data:', response.data)
 
