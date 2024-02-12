@@ -4,18 +4,18 @@ import {Box, VStack, Select, HStack, Text, Spacer, Skeleton} from '@chakra-ui/re
 export default function PBROnePreviewBox({images}) {
 
     //vars for pbr.one material preview URL
-    // below functionality works for getting origin of current page, for old method of loading images from public folder
-    // const parsedUrl = new URL(window.location.href);
-    // const origin = parsedUrl.origin;
-    // const URI_BASE = origin;
 
+    const parsedUrl = new URL(window.location.href);
+    const origin = parsedUrl.origin;
+    const URI_BASE = origin;
+    const color_map_url = `${URI_BASE}${images[0]}`;
 
     // console.log('parsedUrl Full', parsedUrl, 'origin', origin)
-    console.log('color_map_url_pbrone_src:', images[0])
-    const color_map_url = images[0];
-    const normal_map_url = images[1];
-    const height_map_url = images[2];
-    const smoothness_map_url = images[3];
+    // console.log('color_map_url', color_map_url)
+
+    const normal_map_url = `${URI_BASE}${images[1]}`;
+    const height_map_url = `${URI_BASE}${images[2]}`;
+    const smoothness_map_url = `${URI_BASE}${images[3]}`;
     const [geometry_type, set_geometry_type] = useState('sphere');
     const [environment_type, set_environment_type] = useState(0);
 

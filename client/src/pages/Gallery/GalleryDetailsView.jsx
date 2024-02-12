@@ -21,26 +21,21 @@ function GalleryDetailsView() {
 
     useEffect(() => {
         const loadMaterialTextures = async () => {
-            setisLoadingBackend(true);
 
             // const requestUrl = `${import.meta.env.VITE_STATIC_URL}assets/images/${name}`; // Construct the URL to fetch images from the specific folder
             // console.log("backend response: \n folderUrl:", requestUrl, "\n folderName:", `${name}`)
 
             try {
+                setisLoadingBackend(true);
                 const response = await axios.get(`${import.meta.env.VITE_STATIC_URL}assets/images/${name}`);
-
-
                 const image_urls = response.data;
+
                 setbackendImages(image_urls);
                 console.log("response:", response, "response.data:", response.data)
-
+                setisLoadingBackend(false);
 
             } catch (error) {
                 console.error("Failed to load texture images:", error);
-
-            }
-            finally {
-                setisLoadingBackend(false);
             }
         };
 
@@ -62,9 +57,9 @@ function GalleryDetailsView() {
     }, [name]);
 
     const imageLabels = ['Base Color', 'Normals', 'Height', 'Smoothness'];
-    const textureTypes = ['_base_color', '_normal', '_height', '_smoothness'];
+    const textureTypes = ['base_color', '_normal', '_height', 'smoothness'];
     const displayName = name.replace(/[_]/g, " ").toUpperCase();
-    console.log("images length", backendImages.length)
+    console.table("backend images length", backendImages.length, "backend images:", backendImages, "frontend images length", images.length, "frontend images:", images, "isLoading:", isLoading, "isLoadingBackend:", isLoadingBackend)
 
     return (
         <Box width='100vw' h='100vh' opacity='.99'>
@@ -98,7 +93,7 @@ function GalleryDetailsView() {
                         pt={'2'}
                         ml='5%'
                     >
-                        {!isLoadingBackend && backendImages.map((src, index) => (
+                        {!isLoading && images.map((src, index) => (
                             <Box key={index}
                                 p={{base: 5, sm: 4, md: 5, lg: 6, xl: 8}}
                                 borderWidth="2px"
@@ -161,7 +156,7 @@ function GalleryDetailsView() {
                         </Text>
 
                         {
-                            !isLoading && <PBROnePreviewBox images={backendImages} />
+                            !isLoading && <PBROnePreviewBox images={images} />
                         }
                     </Box>
 
