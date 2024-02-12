@@ -174,25 +174,35 @@ function LandingPageText() {
                                     mr='.5rem' handleClick={() => navigate('/preview')} text="Generate Maps" />
                                 <StylishButton ml='.5rem' handleClick={() => navigate('/gallery')} text="Download Maps" />
                             </HStack>
-                            <Box alignSelf={'center'} py={'2.5rem'} maxW={'80%'}>
-                                <Button
-                                    variant='outline' onClick={onOpen}
-                                    borderRadius={'lg'}
-                                    size={{base: 'md', sm: 'sm', md: 'md', lg: 'lg', xl: 'xl'}}
-                                    padding={{base: '1.65rem', sm: '1.5rem', md: '1.75rem', lg: '2.5rem'}}
-                                    borderColor={useColorModeValue('twitter.600', 'purple.500')}
-                                    textColor={useColorModeValue('green.200', 'violet')}
-                                    bg={useColorModeValue('whiteAlpha.300', 'whiteAlpha.300')}
 
-                                    _hover={{
-                                        bg: useColorModeValue('blackAlpha.500', 'blackAlpha.500'),
-                                        textColor: useColorModeValue('orange.300', 'pink.200')
-                                    }}
-                                    fontFamily={'inter black, sans-serif'}
-                                    textShadow=".2px .2px 0 rgba(0, 0, 0, 0.5), -.2px -.2px 0 rgba(0, 0, 0, 0.5), .2px -.2px 0 rgba(0, 0, 0, 0.5), -.2px .2px 0 rgba(0, 0, 0, 0.5)"
-                                > How does this work? What is 'PBR'? More questions? </Button>
+                            <Box alignSelf={'center'} py={'2.5rem'} maxW='80%' >
+                                <Center>
+                                    <Button
+
+                                        variant='outline' onClick={onOpen}
+                                        borderRadius={'lg'}
+                                        size={{base: 'md', sm: 'sm', md: 'md', lg: 'lg', xl: 'xl'}}
+                                        padding={{base: '1.5rem', sm: '1.5rem', md: '1.6rem', lg: '1.75rem'}}
+                                        borderColor={useColorModeValue('twitter.600', 'purple.500')}
+                                        textColor={useColorModeValue('green.200', 'violet')}
+                                        bg={useColorModeValue('whiteAlpha.300', 'whiteAlpha.300')}
+                                        fontSize={{base: 'sm', sm: 'sm', md: 'md', lg: 'lg', xl: 'lg'}}
+
+                                        _hover={{
+                                            bg: useColorModeValue('blackAlpha.500', 'blackAlpha.500'),
+                                            textColor: useColorModeValue('orange.300', 'pink.200')
+                                        }}
+
+                                        isTruncated
+                                        truncateOverflow='ellipsis'
+                                        fontFamily={'inter black, sans-serif'}
+                                        textShadow=".2px .2px 0 rgba(0, 0, 0, 0.5), -.2px -.2px 0 rgba(0, 0, 0, 0.5), .2px -.2px 0 rgba(0, 0, 0, 0.5), -.2px .2px 0 rgba(0, 0, 0, 0.5)"
+                                    > How does this work? What is 'PBR'? </Button>
+
+
+
+                                </Center>
                             </Box>
-
                         </Stack>
                     </Box>
 

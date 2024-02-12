@@ -17,7 +17,7 @@ const colorThemeValues = {
         borderDetail: "twitter.300",
         icon: "twitter.400",
         textMain: "blue.700",
-        textHeader: "blue.700",
+        textHeader: "facebook.500",
         textDetail: "gray.700",
         highlight: "twitter.400",
         hover: "purple.400",
@@ -49,8 +49,9 @@ const Features = () => {
     return (
 
         <Center>
-            <Box zIndex={-1} maxW="6xl" p={{base: 5, md: 10}}
-
+            <Box
+                maxW="6xl"
+                p={{base: 5, md: 10}}
                 // bg='transparent'
                 // backgroundBlendMode={'overlay'}
                 // overflow="hidden"
@@ -61,7 +62,9 @@ const Features = () => {
                 <chakra.h3
 
 
-                    bgClip="text" fontSize="4xl" fontWeight="bold" mb={3} textAlign="center"
+                    bgClip="text" fontSize="4xl"
+                    fontWeight="bold"
+                    textAlign="center"
                     color={useColorModeValue(colorThemeValues.light.textHeader, colorThemeValues.dark.textHeader)}
                     fontFamily={'avenir black, avenir, sans-serif'}
 
@@ -69,16 +72,15 @@ const Features = () => {
                     Features
                 </chakra.h3>
                 <SimpleGrid
-                    columns={{base: 1, md: 2}}
+                    columns={{base: 1, sm: 1, md: 1, lg: 2, xl: 2}}
                     placeItems="center"
                     spacing={16}
-                    mt={12}
-                    mb={4}
+
                 >
                     {features.map((feature, index) => (
                         <Box key={index} textAlign="center">
-                            <Icon as={feature.icon} w={10} h={10}
-
+                            <Icon as={feature.icon}
+                                w={10} h={10}
                                 color={useColorModeValue(colorThemeValues.light.icon, colorThemeValues.dark.icon)}
                             />
                             <chakra.h3 fontWeight="semibold" fontSize="2xl"
