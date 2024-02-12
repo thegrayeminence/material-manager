@@ -356,7 +356,7 @@ def get_recent_albedo():
 @cross_origin(origins="*", supports_credentials=True)
 def get_images(folder_name):
     # folder_path = os.path.join(app.static_folder, 'assets', 'images', folder_name)
-    # dynamic_base_path = os.getenv('IMAGE_BASE_URL', 'http://localhost:3000') 
+    dynamic_base_path = os.getenv('IMAGE_BASE_URL', 'http://localhost:3000/assets/images') 
     base_path = f"https://textureforgestatic.onrender.com/assets/images"
     
     # Validate if folder exists
@@ -367,10 +367,16 @@ def get_images(folder_name):
         # image_files = [f for f in os.listdir(folder_path) if f.endswith('.png')]
         # image_urls = [url_for('static', filename=f'assets/images/{folder_name}/{file}', _external=True) for file in image_files]
        
-        map_types = ['base_color.png', 'height.png', 'normal.png', 'smoothness.png']
-        images = [f"https://textureforgestatic.onrender.com/assets/images/{folder_name}/{folder_name}_{map_type}" for map_type in map_types]
+        # map_types = ['base_color.png', 'height.png', 'normal.png', 'smoothness.png']
+        # images = [f"https://textureforgestatic.onrender.com/assets/images/{folder_name}/{folder_name}_{map_type}" for map_type in map_types]
         
-        return make_response(images, 200)
+        # return make_response(images, 200)
+        
+        map_types = ['base_color.png', 'height.png', 'normal.png', 'smoothness.png']
+        images = [f"{dynamic_base_path}/{folder_name}/{folder_name}_{map_type}" for map_type in map_types]
+        
+        return make_response({"folder": folder_name, "images": images}, 200)
+
     
     except Exception as e:
         return jsonify({"error": str(e)}), 500

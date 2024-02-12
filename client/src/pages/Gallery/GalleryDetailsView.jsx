@@ -21,7 +21,7 @@ function GalleryDetailsView() {
                 console.log("request:", `${apiUrl}images/${name}`)
                 const response = await axios.get(`${apiUrl}images/${name}`);
                 // const response = await axios.get(`https://textureforge.onrender.com/api/images/${name}`);
-                setImages(response.data);
+                setImages(response.data.images);
                 console.log("load image response:", response, "folder name:", name)
             } catch (error) {
                 console.error("Failed to load images:", error);
