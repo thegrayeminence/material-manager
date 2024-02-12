@@ -10,8 +10,8 @@ export default function PBROnePreviewBox({images}) {
     const URI_BASE = origin;
     const color_map_url = `${URI_BASE}${images[0]}`;
 
-    // console.log('parsedUrl Full', parsedUrl, 'origin', origin)
-    // console.log('color_map_url', color_map_url)
+    console.log('parsedUrl Full', parsedUrl, 'origin', origin)
+    console.log('color_map_url', color_map_url)
 
     const normal_map_url = `${URI_BASE}${images[1]}`;
     const height_map_url = `${URI_BASE}${images[2]}`;

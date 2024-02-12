@@ -59,7 +59,7 @@ function GalleryDetailsView() {
     const imageLabels = ['Base Color', 'Normals', 'Height', 'Smoothness'];
     const textureTypes = ['base_color', '_normal', '_height', 'smoothness'];
     const displayName = name.replace(/[_]/g, " ").toUpperCase();
-    console.table("backend images length", backendImages.length, "backend images:", backendImages, "frontend images length", images.length, "frontend images:", images, "isLoading:", isLoading, "isLoadingBackend:", isLoadingBackend)
+    // console.table("backend images length", backendImages.length, "backend images:", backendImages, "frontend images length", images.length, "frontend images:", images, "isLoading:", isLoading, "isLoadingBackend:", isLoadingBackend)
 
     return (
         <Box width='100vw' h='100vh' opacity='.99'>
