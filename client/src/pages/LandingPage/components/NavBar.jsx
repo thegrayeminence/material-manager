@@ -78,8 +78,8 @@ function NavBar({isOpen, onOpen, onClose, ...props}) {
             case '/preview': return 'Preview';
             case '/loading-textures': return 'Loading Textures';
             case '/gallery': return 'Gallery';
-            case `/gallery/${name}`: return 'Material Details';
-            case `/gallery_id/${id}`: return 'Material Details';
+            case `/gallery/${name}`: return `Material: ${name}`;
+            case `/gallery_id/${id}`: return `Material ID: ${id}`;
             default: return 'Page';
         }
     };

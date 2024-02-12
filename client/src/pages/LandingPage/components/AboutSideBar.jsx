@@ -2,7 +2,7 @@ import React from 'react';
 import {FaGithub} from "react-icons/fa6";
 import {
     Drawer, Box, HStack, VStack, DrawerOverlay, DrawerContent, DrawerBody,
-    DrawerHeader, DrawerCloseButton, Center, useColorModeValue, Icon, Spacer, chakra, LinkBox, LinkOverlay
+    DrawerHeader, DrawerCloseButton, Center, useColorModeValue, Icon, Spacer, chakra, LinkBox, LinkOverlay, Text,
 } from "@chakra-ui/react";
 import {color, motion} from 'framer-motion';
 import '@fontsource/poppins';
@@ -11,7 +11,7 @@ import {Link} from "react-router-dom";
 import Timeline from './TimeLine';
 
 const MotionIcon = motion(Icon);
-const MotionText = motion(chakra.Text);
+const MotionText = motion(chakra.text);
 
 
 const colorThemeValues = {
@@ -71,7 +71,7 @@ const AboutSideBar = ({isOpen, onClose}) => {
         <Drawer closeOnEsc={true} closeOnOverlayClick={true}
             placement='right' isOpen={isOpen} onClose={onClose}
             isFullHeight={true} size={['sm', 'md', 'lg', 'xl']}
-            overflowY={'scroll'}
+        // overflowY={'scroll'}
 
         >
             <DrawerOverlay />
@@ -123,9 +123,9 @@ const AboutSideBar = ({isOpen, onClose}) => {
 
 
                         </MotionText>
-                        <Spacer py={'.5rem'} />
+                        <Spacer py={'2.5rem'} />
                         <Center>
-                            <LinkBox mt="4" textAlign="center">
+                            <LinkBox textAlign="center">
                                 <LinkOverlay href='https://github.com/thegrayeminence/material-manager/tree/main' isExternal>
                                     <MotionText
                                         sx={headerStyle}
@@ -136,10 +136,10 @@ const AboutSideBar = ({isOpen, onClose}) => {
                                     </MotionText>
                                 </LinkOverlay>
                                 <Spacer py={'.5rem'} />
-                                <MotionIcon
-                                    as={FaGithub} w='15%' height={'auto'}
-                                    _hover={{transform: 'scale(1.1)'}}
-
+                                <Icon
+                                    as={FaGithub} height={'auto'}
+                                    _hover={{transform: 'scale(1.1)', color: useColorModeValue(colorThemeValues.light.hover, colorThemeValues.dark.hover)}}
+                                    width={{base: '4rem', sm: '4rem', md: '5rem', lg: '6rem', xl: '6.5rem'}}
                                     color={useColorModeValue(colorThemeValues.light.icon, colorThemeValues.dark.icon)}
                                 // initial="hidden"
                                 // animate="visible"
