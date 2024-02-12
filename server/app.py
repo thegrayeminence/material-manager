@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 # Standard library imports
-from email.mime import base
+from email.mime import base, image
 from datetime import datetime, timedelta
 from hmac import new
 from nis import maps
@@ -248,6 +248,7 @@ def generate_albedo():
         db.session.rollback()
         app.logger.error('Error in generate_albedo: %s', str(e))
         return jsonify({"error": str(e)}), 500
+
     
 
 #second endpoint for generating pbr maps from albedo
@@ -351,44 +352,30 @@ def get_recent_albedo():
 
 
 
-@app.route('/static/assets/images/<folder_name>/', methods=["GET", "POST", "PUT"])
-def serve_image_folder(folder_name):
-    folder_path = os.path.join(app.static_folder, 'assets', 'images', folder_name)
+@app.route('/api/images/<folder_name>', methods=["GET", "POST", "PUT"])
+# @cross_origin(origins=['https://pbr.one', '*'])  
+def get_images(folder_name):
+    # folder_path = os.path.join(app.static_folder, 'assets', 'images', folder_name)
+    dynamic_base_path = os.getenv('IMAGE_BASE_URL', 'http://localhost:3000') 
+    base_path = f"https://textureforgestatic.onrender.com/assets/images"
     
-    app.logger.info(f"folder_path: {folder_path}, static_folder: {app.static_folder}")
     # Validate if folder exists
-    if not os.path.exists(folder_path) or not os.path.isdir(folder_path):
-        return jsonify({"error": f"Folder not found; folder info \n path_static:{folder_path} \n "}), 404
+    # if not os.path.exists(folder_path) or not os.path.isdir(folder_path):
+    #     return jsonify({"error": f"Folder not found; folder info \n path_static:{folder_path} \n "}), 404
 
     try:
-        # List all .png files in the folder
-        #image_files = [f for f in os.listdir(folder_path) if f.endswith('.png')]
-        image_files = [f for f in os.listdir(folder_path)]
-
-        # Generate URLs for each image file
-        image_urls = [url_for('static', filename=f'assets/images/{folder_name}/{file}', _external=True) for file in image_files]
-
-        return jsonify(image_urls)
+        # image_files = [f for f in os.listdir(folder_path) if f.endswith('.png')]
+        # image_urls = [url_for('static', filename=f'assets/images/{folder_name}/{file}', _external=True) for file in image_files]
+       
+        map_types = ['base_color.png', 'height.png', 'normal.png', 'smoothness.png']
+        images = [f"{dynamic_base_path}/{folder_name}/{folder_name}_{map_type}" for map_type in map_types]
+        
+        return make_response({"image_urls": images}, 200)
+    
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-# def serve_image_folder(folder_name):
-#     # Construct the absolute path to the folder
-#     folder_path = os.path.join(app.static_folder, 'assets', 'images', folder_name)
-    
-#     # Validate if folder exists
-#     if not os.path.exists(folder_path) or not os.path.isdir(folder_path):
-#         return jsonify({"error": "Folder not found"}), 404
 
-#     try:
-#         # List all .png files in the folder
-#         image_files = [f for f in os.listdir(folder_path) if f.endswith('.png')]
-#         # Generate URLs for each image file
-#         image_urls = [url_for('static', filename=f'assets/images/{folder_name}/{file}', _external=True) for file in image_files]
-
-#         return jsonify(image_urls)
-#     except Exception as e:
-#         return jsonify({"error": str(e)}), 500
 
 def download_image(url, filename):
     try:

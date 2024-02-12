@@ -3,7 +3,7 @@ import {Box, VStack, Select, HStack, Text, Spacer, Skeleton} from '@chakra-ui/re
 
 export default function PBROnePreviewBox({images}) {
 
-    //vars for pbr.one material preview URL
+
 
     const parsedUrl = new URL(window.location.href);
     const origin = parsedUrl.origin;

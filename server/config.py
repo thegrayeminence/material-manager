@@ -14,8 +14,7 @@ from sqlalchemy import MetaData
 app = Flask(
     __name__,
     static_url_path='',
-    #static_folder='../client/dist',
-    static_folder='./static',
+    static_folder='../client/dist',
     template_folder='../client/dist'
 )
 
@@ -47,15 +46,18 @@ db.init_app(app)
 # Instantiate REST API
 api = Api(app)
 
-# Instantiate CORS
-CORS(app, resources={
-    r"/api/*": {"origins": ["https://textureforge.onrender.com","https://textureforgestatic.onrender.com", "http://localhost:3000", "https://cdn.pbr.one"],},
-    r"/static/*": {"origins": ["https://textureforge.onrender.com", "https://textureforgestatic.onrender.com" , "http://localhost:3000", "https://cdn.pbr.one"]}
+# CORS settings
+cors_config = {
+    "origins": ["https://textureforgestatic.onrender.com", "http://pbr.one.com", "https://cdn.pbr.one", "http://localhost:3000", "http://localhost:5000"],
+    "supports_credentials": True,
+    "allow_headers": ["Content-Type", "Authorization", "X-Requested-With", "X-CSRFToken", "Cache-Control"],
+    "expose_headers": ["Content-Disposition", "X-Suggested-Filename"],
+    "methods": ["GET", "POST", "PUT", "DELETE"],
+}
 
-    })
+CORS(app, resources={r"/api/*": cors_config})
 
 # unsafe cors settings (dev only)
-# CORS(app, resources={r"/api/*": {"origins": "*"}, r"/static/*": {"origins": "*"}})
 # CORS(app, origins='*')
 
 
