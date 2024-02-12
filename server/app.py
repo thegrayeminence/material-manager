@@ -49,11 +49,11 @@ def setup_logging():
     
 setup_logging()
 
-# ##sets up default/fallback flask route to html file
-# @app.route('/', defaults={'path': ''})
-# @app.route('/<path:path>')
-# def index(path):
-#     return render_template("index.html")
+##sets up default/fallback flask route to html file
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def index(path):
+    return render_template("index.html")
 
 
 
@@ -353,7 +353,7 @@ def get_recent_albedo():
 @app.route('/api/get_static_images', methods=["GET", "POST", "PUT"])
 @cross_origin(origins='*')
 def get_all_images():
-    base_url = os.getenv('IMAGE_BASE_URL', 'http://localhost:3000/assets/images')
+    base_url = os.getenv('IMAGE_BASE_URL', 'http://localhost:3000/')
     images_dir_path = os.path.join(app.static_folder, 'assets', 'images')
 
     folders = [name for name in os.listdir(images_dir_path) if os.path.isdir(os.path.join(images_dir_path, name))]
@@ -378,23 +378,24 @@ def get_all_images():
         
 
 @app.route('/api/images/<folder_name>', methods=["GET", "POST", "PUT"])
+@cross_origin(origins='*')
 def get_images(folder_name):
-    # folder_path = os.path.join(app.static_folder, 'assets', 'images', folder_name)
-    dynamic_base_path = os.getenv('IMAGE_BASE_URL', 'http://localhost:3000/assets/images') 
-    base_path = f"https://textureforgestatic.onrender.com/assets/images"
+    folder_path = os.path.join(app.static_folder, 'assets', 'images', folder_name)
+    # dynamic_base_path = os.getenv('IMAGE_BASE_URL', 'http://localhost:3000/assets/images') 
+
     
-    # Validate if folder exists
-    # if not os.path.exists(folder_path) or not os.path.isdir(folder_path):
-    #     return jsonify({"error": f"Folder not found; folder info \n path_static:{folder_path} \n "}), 404
+    
+    if not os.path.exists(folder_path) or not os.path.isdir(folder_path):
+        return jsonify({"error": f"Folder not found; folder info \n path_static:{folder_path} \n "}), 404
 
     try:
-        # image_files = [f for f in os.listdir(folder_path) if f.endswith('.png')]
-        # image_urls = [url_for('static', filename=f'assets/images/{folder_name}/{file}', _external=True) for file in image_files]
+        image_files = [f for f in os.listdir(folder_path) if f.endswith('.png')]
+        image_urls = [url_for('static', filename=f'assets/images/{folder_name}/{file}', _external=True) for file in image_files]
        
-        map_types = ['base_color.png', 'height.png', 'normal.png', 'smoothness.png']
-        images = [f"{dynamic_base_path}/{folder_name}/{folder_name}_{map_type}" for map_type in map_types]
+        # map_types = ['base_color.png', 'height.png', 'normal.png', 'smoothness.png']
+        # images = [f"{dynamic_base_path}/{folder_name}/{folder_name}_{map_type}" for map_type in map_types]
         
-        return make_response({"folder": folder_name, "images": images}, 200)
+        return make_response({"folder": folder_name, "images": image_urls}, 200)
     
     except Exception as e:
         return jsonify({"error": str(e)}), 500

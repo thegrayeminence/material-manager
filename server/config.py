@@ -19,12 +19,6 @@ app = Flask(
 )
 
 
-##sets up default/fallback flask route to html file
-@app.route('/', defaults={'path': ''})
-@app.route('/<path:path>')
-def catch_all(path):
-    return render_template("index.html")
-
 
 # isss a secret, no looksy precious
 app.secret_key = os.environ.get("SECRET_KEY")
@@ -48,14 +42,14 @@ api = Api(app)
 
 # CORS settings
 cors_config = {
-    "origins": ["https://textureforgestatic.onrender.com", "https://cdn.pbr.one", "http://localhost:3000", "http://localhost:5000"],
+    "origins": ["https://textureforgestatic.onrender.com", "https://cdn.pbr.one", "http://localhost:3000"],
     "supports_credentials": True,
     # "allow_headers": ["Content-Type", "Authorization", "X-Requested-With", "X-CSRFToken", "Cache-Control"],
     # "expose_headers": ["Content-Disposition", "X-Suggested-Filename"],
     # "methods": ["GET", "POST", "PUT", "DELETE"],
 }
 
-CORS(app, resources={r"/*": cors_config, 
+CORS(app, resources={r"/api/*": cors_config, 
                      })
 
 # unsafe cors settings (dev only)
