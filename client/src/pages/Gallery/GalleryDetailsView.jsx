@@ -26,7 +26,8 @@ function GalleryDetailsView() {
 
             const folderUrl = `${import.meta.env.VITE_API_URL}assets/images/${name}/`; // Construct the URL to fetch images from the specific folder
             console.log("backend response: \n folderUrl:", folderUrl)
-            console.log("backend response: \n apiUrl:", apiUrl)
+            console.log("backend response: \n apiUrl:", VITE_API_URL)
+            console.log("backend response: \n folderName:", `${name}`)
             try {
                 const response = await fetch(folderUrl);
                 if (!response.ok) {
