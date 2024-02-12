@@ -79,7 +79,8 @@ const Features = () => {
                 >
                     {features.map((feature, index) => (
                         <Box key={index} textAlign="center">
-                            <Icon as={feature.icon}
+                            <Icon
+                                as={feature.icon}
                                 w={10} h={10}
                                 color={useColorModeValue(colorThemeValues.light.icon, colorThemeValues.dark.icon)}
                             />

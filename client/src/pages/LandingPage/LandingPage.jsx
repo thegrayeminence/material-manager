@@ -1,6 +1,6 @@
 //lib imports
 import React, {useEffect} from 'react';
-import {Box, VStack, Divider, Center, useColorModeValue} from '@chakra-ui/react';
+import {Box, VStack, Divider, Center, useColorModeValue, Spacer} from '@chakra-ui/react';
 import {AnimatePresence, motion, useScroll} from 'framer-motion';
 import {Timeline} from './components';
 
@@ -104,6 +104,11 @@ function LandingPage() {
                     borderColor={useColorModeValue('blue.400', 'purple.400')}
                 />
                 <Features
+                />
+                <Spacer py={'3.5rem'} />
+                <Divider textAlign={'center'} borderWidth={'.25rem'} w={'full'}
+                    borderStyle={'solid'}
+                    borderColor={useColorModeValue('blue.400', 'purple.400')}
                 />
 
             </Box>

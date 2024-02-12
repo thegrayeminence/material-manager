@@ -10,7 +10,9 @@ import {
     Flex,
     Icon,
     Badge,
-    useColorModeValue
+    useColorModeValue,
+    Spacer,
+
 } from "@chakra-ui/react"
 // Here we have used react-icons package for the icons
 import {FaRegNewspaper, FaWpforms, FaDatabase} from "react-icons/fa"
@@ -22,6 +24,10 @@ import {BiBrain} from "react-icons/bi";
 import {LuBrainCog} from "react-icons/lu";
 
 
+const utfNumbersCircledRaw = ['\u24EA', '\u2461', '\u2462', '\u2463', '\u2464', '\u2465', '\u2466', '\u2467', '\u2468', '\u2469']
+const utfNumbersCircled = [
+    `⓵`, `⓶`, `⓷`, `⓸`, `⓹`, `⓺`, `⓻`, `⓼`, `⓽`, `⓾`
+]
 const timeLineData = [
     {
         id: 1,
@@ -80,7 +86,7 @@ const timeLineData = [
 
     {
         id: 7,
-        categories: ["Frontend"],
+        categories: ["Frontend", "User Input"],
         title: "User Downloads New Assets and Uses Them to Their Heart's Content!",
         icon: PiNumberCircleSevenFill,
         bigIcon: IoCloudDownloadOutline,
@@ -123,14 +129,18 @@ const colorThemeValues = {
 const Timeline = () => {
     return (
         <Container maxWidth="4xl" p={{base: 2, sm: 10}}>
-            <chakra.h3 color={useColorModeValue(colorThemeValues.light.textMain, colorThemeValues.dark.textMain)}
+            <chakra.h3
+                color={useColorModeValue(colorThemeValues.light.textMain, colorThemeValues.dark.textMain)}
                 fontWeight="bold" mb={18} textAlign="center" fontSize={{base: '3xl', sm: '2xl', lg: '4xl'}}>
                 How It Works:
             </chakra.h3>
             {timeLineData.map((step, index) => (
-                <Flex key={index} mb="10px">
-                    <LineWithDot {...step} />
-                    <Card {...step} />
+                <Flex key={index}  >
+                    <LineWithDot  {...step} />
+                    <Box >
+                        <Card  {...step} />
+                        <Spacer h={2} />
+                    </Box>
                 </Flex>
             ))}
         </Container>
@@ -139,25 +149,28 @@ const Timeline = () => {
 
 const Card = ({title, categories, description, icon, bigIcon, date}) => {
 
-    console.log(colorThemeValues.light.icon)
     return (
         <HStack
 
+
             p={{base: 3, sm: 6, md: 8, lg: 10}}
-            bg={useColorModeValue(colorThemeValues.light.bgMain, colorThemeValues.dark.bgMain)}
             spacing={5}
             rounded="xl"
             alignItems="center"
             pos="relative"
-
+            bg={useColorModeValue('blackAlpha.200', colorThemeValues.dark.componentMain)}
+            boxShadow={'xl'}
+            _hover={{transform: 'scale(1.05)'}}
+            transition={'transform 0.3s'}
         >
-            <Icon as={bigIcon} w={12} h={12} color={useColorModeValue(colorThemeValues.light.icon, colorThemeValues.dark.icon)} />
-            <Box>
+            <Icon as={bigIcon} w={12} h={12}
+                color={useColorModeValue(colorThemeValues.light.icon, colorThemeValues.dark.icon)} />
+            <Box  >
                 <HStack spacing={1} mb={1}>
                     {categories.map(cat => (
                         <Text fontSize={{base: "sm", sm: "sm", xl: "sm"}} key={cat} noOfLines={1} color={useColorModeValue(colorThemeValues.light.textDetail, colorThemeValues.dark.textDetail)}
                         >
-                            {cat}
+                            {`| ${cat} `}
                         </Text>
                     ))}
                 </HStack>
@@ -189,24 +202,26 @@ const LineWithDot = ({icon}) => {
 
 
     return (
-        <Flex pos="relative" alignItems="center" >
-            {/* <chakra.span
+        <Flex pos="relative" alignItems="center"  >
+            <chakra.span
                 position="relative"
-                left="50%"
-                height="calc(100% + 10px)"
+
+                height="calc((100%) - 20%)"
                 border="1px solid"
                 borderColor={useColorModeValue(colorThemeValues.light.borderDetail, colorThemeValues.dark.borderMain)}
                 top="0px"
-            // zIndex={1}
-            ></chakra.span> */}
-            <Box pos="relative" p="10px">
+                zIndex={-1}
+                opacity={.5}
+            // bgClip={'text'}
+            ></chakra.span>
+            <Box pos="relative" p="10px" >
                 <Icon
                     as={icon}
+
                     color={useColorModeValue(colorThemeValues.light.borderMain, colorThemeValues.dark.borderMain)}
                     pos="relative"
-                    boxSize={{base: "40px", sm: "30px", md: "40px", lg: "50px"}}
-                    width="100%"
-                    height="100%"
+                    w={8}
+                    h={8}
                     bottom="0"
                     right="0"
                     top="0"
@@ -215,9 +230,12 @@ const LineWithDot = ({icon}) => {
                     borderRadius="100px"
                     border="2px solid"
                     borderColor={useColorModeValue(colorThemeValues.light.borderDetail, colorThemeValues.dark.borderDetail)}
-                    opacity={1}
+                    opacity={.8}
 
-                ></Icon>
+                >
+
+
+                </Icon>
             </Box>
         </Flex>
     )

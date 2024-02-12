@@ -2,7 +2,7 @@ import React from 'react';
 import {FaGithub} from "react-icons/fa6";
 import {
     Drawer, Box, HStack, VStack, DrawerOverlay, DrawerContent, DrawerBody,
-    DrawerHeader, DrawerCloseButton, Center, useColorModeValue, Icon, Spacer, chakra, LinkBox, LinkOverlay, Text,
+    DrawerHeader, Container, DrawerCloseButton, Center, useColorModeValue, Icon, Spacer, chakra, LinkBox, LinkOverlay, Text,
 } from "@chakra-ui/react";
 import {color, motion} from 'framer-motion';
 import '@fontsource/poppins';
@@ -76,7 +76,7 @@ const AboutSideBar = ({isOpen, onClose}) => {
         >
             <DrawerOverlay />
             <DrawerContent
-                bg={useColorModeValue(colorThemeValues.light.bgMain, colorThemeValues.dark.bgMain)}
+                bg={useColorModeValue('gray.100', 'gray.800')}
             >
                 <DrawerCloseButton />
                 <DrawerHeader
@@ -85,7 +85,7 @@ const AboutSideBar = ({isOpen, onClose}) => {
                 >
                     ABOUT & FAQ:
                 </DrawerHeader>
-                <DrawerBody>
+                <DrawerBody >
                     <Timeline />
                     <Spacer py={'1rem'} />
                     <Box
@@ -102,27 +102,37 @@ const AboutSideBar = ({isOpen, onClose}) => {
                             </MotionText>
                         </Center>
                         <Spacer py={'1.5rem'} />
-                        <MotionText sx={bodyStyle}
-                            color={useColorModeValue(colorThemeValues.light.textMain, colorThemeValues.dark.textMain)}
-                        // variants={textVariants} initial="hidden" animate="visible"
+                        <Container
+                            _hover={{transform: 'scale(1.05)'}}
+                            transition={'transform 0.3s'}
+                            borderRadius={'lg'}
+                            boxShadow={'base'}
+                            p={{base: '2', sm: '4', md: '6', lg: '8', xl: '10'}}
+                            bg={useColorModeValue('blackAlpha.200', colorThemeValues.dark.componentMain)}
                         >
+                            <MotionText sx={bodyStyle}
+                                color={useColorModeValue(colorThemeValues.light.textMain, colorThemeValues.dark.textMain)}
+                            // variants={textVariants} initial="hidden" animate="visible"
 
-                            PBR stands for Physically Based Rendering. It's a technique used in computer graphics to render images that mimick the laws of optics and closely resemble the physical properties of real-life surfaces.
+                            >
+                                <br />
+                                PBR stands for Physically Based Rendering. It's a technique used in computer graphics to render images that mimick the laws of optics and closely resemble the material properties of real-life surfaces.
 
-                            The core idea behind PBR is to ensure that objects interact with light in a realistic manner, making digital scenes look more believable.<br /><br />
+                                The core idea behind PBR is to ensure that objects interact with light in a realistic manner, making digital scenes look more believable.<br /><br />
 
-                            PBR uses algorithms (based on real-world equations) to process a set of textures/bitmaps (each analogous to different optical phenomena) to reflect how materials absorb, reflect, refract, scatter, or diffuse light. This can involve:<br /><br />
+                                PBR uses algorithms (based on real-world equations) to process a set of textures/bitmaps (each analogous to different optical phenomena) to reflect how materials absorb, reflect, refract, scatter, or diffuse light. This can involve:<br /><br />
 
-                            <strong>Base Color</strong>: Captures the true color of a material without shadows or reflections.<br />
-                            <strong>Roughness</strong>: Determines the surface's microtexture, influencing how it scatters light.<br />
-                            <strong>Metallic</strong>: Define the material's metallic attributes, differentiating between metallic and non-metallic surfaces. <br />
-                            <strong>Ambient Occlusion</strong>: Simulates how light is occluded in crevices and corners.<br />
-                            <strong>Normal/Height</strong>: Add surface detail by simulating additional geometry. <br />
+                                <strong>Base Color</strong>: Captures the true color of a material without shadows or reflections.<br />
+                                <strong>Roughness</strong>: Determines the surface's microtexture, influencing how it scatters light.<br />
+                                <strong>Metallic</strong>: Define the material's metallic attributes, differentiating between metallic and non-metallic surfaces. <br />
+                                <strong>Ambient Occlusion</strong>: Simulates how light is occluded in crevices and corners.<br />
+                                <strong>Normal/Height</strong>: Add surface detail by simulating additional geometry. <br />
+                                <br />
+                                By applying this combination of real-world equations and carefully-curated bitmaps, PBR systems can achieve consistent results under different lighting conditions, making them a standard in creating photo-realistic 3D visuals.<br /> <br />
 
-                            By applying this combination of real-world equations and optically-analagous bitmaps, PBR systems can achieve consistent results under different lighting conditions, making them a standard in creating realistic/photo-realistic 3D visuals.<br /> <br />
 
-
-                        </MotionText>
+                            </MotionText>
+                        </Container>
                         <Spacer py={'2.5rem'} />
                         <Center>
                             <LinkBox textAlign="center">
