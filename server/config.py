@@ -50,12 +50,12 @@ api = Api(app)
 cors_config = {
     "origins": ["https://textureforgestatic.onrender.com", "https://cdn.pbr.one", "http://localhost:3000", "http://localhost:5000"],
     "supports_credentials": True,
-    "allow_headers": ["Content-Type", "Authorization", "X-Requested-With", "X-CSRFToken", "Cache-Control"],
-    "expose_headers": ["Content-Disposition", "X-Suggested-Filename"],
-    "methods": ["GET", "POST", "PUT", "DELETE"],
+    # "allow_headers": ["Content-Type", "Authorization", "X-Requested-With", "X-CSRFToken", "Cache-Control"],
+    # "expose_headers": ["Content-Disposition", "X-Suggested-Filename"],
+    # "methods": ["GET", "POST", "PUT", "DELETE"],
 }
 
-CORS(app, resources={r"/api/*": cors_config, 
+CORS(app, resources={r"/*": cors_config, 
                      })
 
 # unsafe cors settings (dev only)
