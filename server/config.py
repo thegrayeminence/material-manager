@@ -49,8 +49,8 @@ api = Api(app)
 
 # Instantiate CORS
 CORS(app, resources={
-    r"/api/*": {"origins": ["https://textureforge.onrender.com/", "http://localhost:3000"]},
-    r"/static/*": {"origins": ["https://textureforge.onrender.com/", "http://localhost:3000"]}
+    r"/api/*": {"origins": ["https://textureforge.onrender.com","https://textureforgestatic.onrender.com", "http://localhost:3000"],},
+    r"/static/*": {"origins": ["https://textureforge.onrender.com", "https://textureforgestatic.onrender.com" , "http://localhost:3000", "https://cdn.pbr.one"]}
 
     })
 
