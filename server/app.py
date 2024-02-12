@@ -356,14 +356,14 @@ def get_recent_albedo():
 #@cross_origin(origins=['https://pbr.one'])
 def serve_image_folder(folder_name):
     # Construct the absolute path to the folder
-    #folder_path = os.path.join(app.static_folder, 'assets', 'images', folder_name)
+    folder_path_flaskapp = os.path.join(app.static_folder, 'assets', 'images', folder_name)
     folder_path = os.path.join('./static', 'assets', 'images', folder_name)
 
     
     app.logger.info(f"folder_path: {folder_path}, static_folder: {app.static_folder}")
     # Validate if folder exists
     if not os.path.exists(folder_path) or not os.path.isdir(folder_path):
-        return jsonify({"error": "Folder not found"}), 404
+        return jsonify({"error": f"Folder not found; folder info \n relative:{folder_path} \n flask.app:{folder_path_flaskapp} \n "}), 404
 
     try:
         # List all .png files in the folder
