@@ -353,7 +353,7 @@ def get_recent_albedo():
 
 
 @app.route('/api/images/<folder_name>', methods=["GET", "POST", "PUT"])
-# @cross_origin(origins=['https://pbr.one', '*'])  
+@cross_origin(origins='*')  
 def get_images(folder_name):
     # folder_path = os.path.join(app.static_folder, 'assets', 'images', folder_name)
     dynamic_base_path = os.getenv('IMAGE_BASE_URL', 'http://localhost:3000') 

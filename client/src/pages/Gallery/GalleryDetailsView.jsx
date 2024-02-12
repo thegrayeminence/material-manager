@@ -17,7 +17,9 @@ function GalleryDetailsView() {
         const loadImages = async () => {
             setIsLoading(true);
             try {
-                const response = await axios.get(`${import.meta.env.VITE_STATIC_URL}api/images/${name}`);
+                const apiUrl = import.meta.env.VITE_API_URL;
+                console.log("apiUrl:", apiUrl)
+                const response = await axios.get(`${apiUrl}images/${name}`);
                 setImages(response.data);
                 console.log("load image response:", response, "folder name:", name)
             } catch (error) {
@@ -31,24 +33,9 @@ function GalleryDetailsView() {
     }, [name]);
 
 
-
-    //old way of loading images from public folder on frontend
-    // useEffect(() => {
-    //     const loadMaterial = async () => {
-    //         setIsLoading(true);
-    //         const loadedImages = await loadImagesFromFolder(name);
-    //         console.log("loadedImages frontend src:", loadedImages, "folder name:", name)
-    //         setImages(loadedImages);
-    //         setIsLoading(false);
-    //     };
-
-    //     loadMaterial();
-    // }, [name]);
-
     const imageLabels = ['Base Color', 'Normals', 'Height', 'Smoothness'];
     const textureTypes = ['base_color', '_normal', '_height', 'smoothness'];
     const displayName = name.replace(/[_]/g, " ").toUpperCase();
-    // console.table("backend images length", backendImages.length, "backend images:", backendImages, "frontend images length", images.length, "frontend images:", images, "isLoading:", isLoading, "isLoadingBackend:", isLoadingBackend)
 
     return (
         <Box width='100vw' h='100vh' opacity='.99'>

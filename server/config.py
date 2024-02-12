@@ -55,7 +55,8 @@ cors_config = {
     "methods": ["GET", "POST", "PUT", "DELETE"],
 }
 
-CORS(app, resources={r"/api/*": cors_config})
+CORS(app, resources={r"/*": cors_config, 
+                     })
 
 # unsafe cors settings (dev only)
 # CORS(app, origins='*')
