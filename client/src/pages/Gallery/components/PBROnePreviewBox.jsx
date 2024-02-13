@@ -3,12 +3,26 @@ import {Box, VStack, Select, HStack, Text, Spacer, Skeleton} from '@chakra-ui/re
 
 export default function PBROnePreviewBox({images}) {
 
-    // console.log('images', images)
+    //vars for pbr.one material preview URL
+
+    const parsedUrl = new URL(window.location.href);
+    const origin = parsedUrl.origin;
+    const URI_BASE = origin;
+    const color_map_url = `${URI_BASE}${images[0]}`;
+
+    console.log('parsedUrl Full', parsedUrl, 'origin', origin)
+    console.log('color_map_url', color_map_url)
+
+    const normal_map_url = `${URI_BASE}${images[1]}`;
+    const height_map_url = `${URI_BASE}${images[2]}`;
+    const smoothness_map_url = `${URI_BASE}${images[3]}`;
     const [geometry_type, set_geometry_type] = useState('sphere');
     const [environment_type, set_environment_type] = useState(0);
 
     const baseUrl = 'https://cdn.pbr.one/main/material-shading.html#';
-    const query_params = `color_url=${images[0]}&normal_url=${images[2]}&roughness_url=${images[3]}&displacement_url=${images[1]}&geometry_type=${geometry_type}&environment_index=${environment_type}&displacement_scale=0.01&tiling_scale=1.33&gui_enable=-1&watermark_enable=0`
+    const query_params = `color_url=${color_map_url}&normal_url=${normal_map_url}&roughness_url=${smoothness_map_url}&displacement_url=${height_map_url}&geometry_type=${geometry_type}&environment_index=${environment_type}&displacement_scale=0.01&tiling_scale=1.33&gui_enable=-1&watermark_enable=0`
+
+    // console.log('pbr_component_urls', images)
 
     return (
         <>
@@ -72,4 +86,3 @@ export default function PBROnePreviewBox({images}) {
         </>
     )
 }
-
