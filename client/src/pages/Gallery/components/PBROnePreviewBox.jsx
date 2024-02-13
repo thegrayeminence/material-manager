@@ -13,8 +13,8 @@ export default function PBROnePreviewBox({images}) {
     console.log('parsedUrl Full', parsedUrl, 'origin', origin)
     console.log('color_map_url', color_map_url)
 
-    const normal_map_url = `${URI_BASE}${images[1]}`;
-    const height_map_url = `${URI_BASE}${images[2]}`;
+    const normal_map_url = `${URI_BASE}${images[2]}`;
+    const height_map_url = `${URI_BASE}${images[1]}`;
     const smoothness_map_url = `${URI_BASE}${images[3]}`;
     const [geometry_type, set_geometry_type] = useState('sphere');
     const [environment_type, set_environment_type] = useState(0);
