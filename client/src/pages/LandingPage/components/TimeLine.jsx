@@ -180,13 +180,16 @@ const Card = ({title, categories, description, icon, bigIcon, date}) => {
             pos="relative"
             bg={useColorModeValue('blackAlpha.200', colorThemeValues.dark.componentMain)}
             boxShadow={'xl'}
+
+
+
         >
             <Icon as={bigIcon} w={12} h={12}
                 color={useColorModeValue(colorThemeValues.light.icon, colorThemeValues.dark.icon)} />
 
             <Box  >
 
-                <HStack spacing={1} mb={1}>
+                <HStack spacing={1} mb={1} >
                     {categories.map(cat => (
                         <Badge size='sm' key={cat} noOfLines={1} isTruncated
                             colorScheme={useColorModeValue('facebook', 'purple')}
@@ -203,11 +206,21 @@ const Card = ({title, categories, description, icon, bigIcon, date}) => {
                         lineHeight={1.2}
                         fontWeight="800"
                         w="100%"
+                        // isTruncated
+                        // noOfLines={2}
+                        whiteSpace={'wrap'}
+                        overflow={'hidden'}
+                        textOverflow={'ellipsis'}
                     >
                         {title}
                     </chakra.h1>
                     <Text fontWeight="600" fontSize={{base: "lg", sm: "md", md: "lg", xl: "xl"}}
-                        noOfLines={4} color={useColorModeValue(colorThemeValues.light.textMain, colorThemeValues.dark.textMain)}
+                        color={useColorModeValue(colorThemeValues.light.textMain, colorThemeValues.dark.textMain)}
+                        whiteSpace={'wrap'}
+                        overflow={'hidden'}
+                        textOverflow={'ellipsis'}
+                    // isTruncated
+                    // noOfLines={2}
                     >
                         {description}
                     </Text>

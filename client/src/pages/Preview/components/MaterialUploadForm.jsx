@@ -6,7 +6,7 @@ import axios from 'axios';
 import {
     Box, Button, VStack, FormControl, FormLabel, Image, Input, Textarea,
     HStack, useBoolean, useTheme, useColorModeValue, FormErrorMessage,
-    useToast,
+    useToast, AlertIcon, AlertTitle, AlertDescription, CloseButton, useDisclosure,
 } from '@chakra-ui/react';
 
 import {Select} from "chakra-react-select";
@@ -16,7 +16,6 @@ import {textureMapOptionsPBRMetalRough, textureMapOptionsPBRGlossSpec, textureMa
 import {useMaterialStore, useProgressStore, useAutosuggestionStore, useIsLoadingStore, useGeneratedImagesStore} from '../../../store/store';
 import SuggestionDisplay from './SuggestionDisplay';
 import {text} from 'd3';
-
 
 
 
@@ -466,16 +465,28 @@ export default function MaterialUploadForm() {
                         </Button>
                     )}
                     {progress === 1 && (
-                        <Button color='white' type="submit"
+                        <Button color='white'
                             bg='green.500'
                             // bg={useColorModeValue('teal.400', 'green.500')} 
                             w="full"
-
+                            onClick={() =>
+                                toast({
+                                    title: 'Prompt submission is currently available!',
+                                    description: "The server is currently undergoing maintenance. Please check back in a few days!",
+                                    status: 'error',
+                                    duration: 6000,
+                                    position: 'top',
+                                    variant: 'solid',
+                                    isClosable: true,
+                                    colorScheme: 'red',
+                                })
+                            }
 
                         >
                             Submit
                         </Button>
                     )}
+
 
                 </HStack>
 

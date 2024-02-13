@@ -12,7 +12,7 @@ import axios from 'axios';
 function GalleryDetailsView() {
     let {name} = useParams();
     const [images, setImages] = useState([]);
-
+    const toast = useToast();
     const [isLoading, setIsLoading] = useState(true);
 
     // testing new endpoint for backend static image assets
@@ -134,6 +134,19 @@ function GalleryDetailsView() {
                         <Center>
                             <Button colorScheme={'blue'}
                                 variant="outline" mt={5} size={{base: 'md', sm: 'md', md: 'md', lg: 'lg', xl: 'lg'}}
+                                onClick={() =>
+                                    toast({
+                                        title: 'This feature is not yet available!',
+                                        description: "Download functionality for static files is still under development. Please check back later.",
+                                        status: 'error',
+                                        duration: 4000,
+                                        position: 'top',
+                                        variant: 'solid',
+                                        isClosable: true,
+                                        colorScheme: 'blue',
+                                    })
+                                }
+
                             >
                                 DOWNLOAD
                             </Button>

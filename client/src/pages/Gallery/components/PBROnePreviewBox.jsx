@@ -10,11 +10,10 @@ export default function PBROnePreviewBox({images}) {
     const URI_BASE = origin;
     const color_map_url = `${URI_BASE}${images[0]}`;
 
-    console.log('parsedUrl Full', parsedUrl, 'origin', origin)
-    console.log('color_map_url', color_map_url)
+    console.log('pbr_component_urls', images, images[0], images[1], images[2], images[3])
 
-    const normal_map_url = `${URI_BASE}${images[2]}`;
-    const height_map_url = `${URI_BASE}${images[1]}`;
+    const normal_map_url = `${URI_BASE}${images[1]}`;
+    const height_map_url = `${URI_BASE}${images[2]}`;
     const smoothness_map_url = `${URI_BASE}${images[3]}`;
     const [geometry_type, set_geometry_type] = useState('sphere');
     const [environment_type, set_environment_type] = useState(0);
