@@ -9,12 +9,11 @@ export default defineConfig(({mode}) => {
       react()
     ],
     server: {
-      port: process.env.PORT || 3000, // Specify the port for the Vite dev server
-      // Conditional proxy configuration for development mode
+      port: process.env.PORT || 3000,
       ...(isDevelopment && {
         proxy: {
           '/api': {
-            target: process.env.VITE_API_URL || 'http://localhost:3000', // Proxy API requests to Flask backend
+            target: process.env.VITE_API_URL || 'http://localhost:3000',
             changeOrigin: true,
             rewrite: (path) => path.replace(/^\/api/, ''),
           },
@@ -23,7 +22,7 @@ export default defineConfig(({mode}) => {
     },
 
     define: {
-      'process.env': process.env, // Consider security implications
+      'process.env': process.env,
     }
   };
 });

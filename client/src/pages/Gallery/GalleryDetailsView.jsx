@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {useParams} from 'react-router-dom';
 import {loadImagesFromFolder} from '../../config/loadImagesFromFolder';
 import {Box, Image, Spacer, SimpleGrid, Select, Button, Text, VStack, useToast, Skeleton, SkeletonText, useColorModeValue, HStack, Heading, Center, } from '@chakra-ui/react';
+import {StylishHeader} from '../../components';
 import {PreviewBackgroundAnimation} from '../Preview/components';
 import {PBROnePreviewBox} from './components';
 import '@fontsource/poppins';
@@ -11,32 +12,52 @@ import axios from 'axios';
 function GalleryDetailsView() {
     let {name} = useParams();
     const [images, setImages] = useState([]);
+
     const [isLoading, setIsLoading] = useState(true);
 
+    // testing new endpoint for backend static image assets
+
+    // useEffect(() => {
+    //     const loadMaterialTextures = async () => {
+
+    //         // const requestUrl = `${import.meta.env.VITE_STATIC_URL}assets/images/${name}`; // Construct the URL to fetch images from the specific folder
+    //         // console.log("backend response: \n folderUrl:", requestUrl, "\n folderName:", `${name}`)
+
+    //         try {
+    //             setisLoadingBackend(true);
+    //             const response = await axios.get(`${import.meta.env.VITE_STATIC_URL}assets/images/${name}`);
+    //             const image_urls = response.data;
+
+    //             setbackendImages(image_urls);
+    //             console.log("response:", response, "response.data:", response.data)
+    //             setisLoadingBackend(false);
+
+    //         } catch (error) {
+    //             console.error("Failed to load texture images:", error);
+    //         }
+    //     };
+
+    //     loadMaterialTextures();
+    // }, [name]);
+
+
+    //old way of loading images from public folder on frontend
     useEffect(() => {
-        const loadImages = async () => {
+        const loadMaterial = async () => {
             setIsLoading(true);
-            try {
-                const apiUrl = import.meta.env.VITE_API_URL;
-                console.log("request:", `${apiUrl}images/${name}`)
-                const response = await axios.get(`${apiUrl}images/${name}`);
-                // const response = await axios.get(`https://textureforge.onrender.com/api/images/${name}`);
-                setImages(response.data.images);
-                console.log("load image response:", response, "folder name:", name)
-            } catch (error) {
-                console.error("Failed to load images:", error);
-            } finally {
-                setIsLoading(false);
-            }
+            const loadedImages = await loadImagesFromFolder(name);
+            console.log("loadedImages frontend src:", loadedImages, "folder name:", name)
+            setImages(loadedImages);
+            setIsLoading(false);
         };
 
-        loadImages();
+        loadMaterial();
     }, [name]);
 
-
     const imageLabels = ['Base Color', 'Normals', 'Height', 'Smoothness'];
-    const textureTypes = ['base_color', '_normal', '_height', 'smoothness'];
+    // const textureTypes = ['base_color', '_normal', '_height', 'smoothness'];
     const displayName = name.replace(/[_]/g, " ").toUpperCase();
+    // console.table("backend images length", backendImages.length, "backend images:", backendImages, "frontend images length", images.length, "frontend images:", images, "isLoading:", isLoading, "isLoadingBackend:", isLoadingBackend)
 
     return (
         <Box width='100vw' h='100vh' opacity='.99'>
@@ -132,9 +153,9 @@ function GalleryDetailsView() {
                             {`LIVE PREVIEW:`}
                         </Text>
 
-                        {/* {
+                        {
                             !isLoading && <PBROnePreviewBox images={images} />
-                        } */}
+                        }
                     </Box>
 
                 </Box >

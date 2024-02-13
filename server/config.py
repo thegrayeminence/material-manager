@@ -18,7 +18,10 @@ app = Flask(
     template_folder='../client/dist'
 )
 
-
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def catch_all(path):
+    return render_template("index.html")
 
 # isss a secret, no looksy precious
 app.secret_key = os.environ.get("SECRET_KEY")
@@ -41,16 +44,21 @@ db.init_app(app)
 api = Api(app)
 
 # CORS settings
-cors_config = {
-    "origins": ["https://textureforgestatic.onrender.com", "https://cdn.pbr.one", "http://localhost:3000"],
-    "supports_credentials": True,
+CORS(app, resources={
+    r"/api/*": {"origins": ["https://textureforge.onrender.com","https://textureforgestatic.onrender.com", "http://localhost:3000", "https://cdn.pbr.one"],},
+    r"/static/*": {"origins": ["https://textureforge.onrender.com", "https://textureforgestatic.onrender.com" , "http://localhost:3000", "https://cdn.pbr.one"]}
+
+    })
+
+# cors_config = {
+#     "origins": ["https://textureforgestatic.onrender.com", "https://cdn.pbr.one", "http://localhost:3000"],
+#     "supports_credentials": True,
     # "allow_headers": ["Content-Type", "Authorization", "X-Requested-With", "X-CSRFToken", "Cache-Control"],
     # "expose_headers": ["Content-Disposition", "X-Suggested-Filename"],
     # "methods": ["GET", "POST", "PUT", "DELETE"],
-}
-
-CORS(app, resources={r"/api/*": cors_config, 
-                     })
+# }
+# CORS(app, resources={r"/api/*": cors_config, 
+#                      })
 
 # unsafe cors settings (dev only)
 # CORS(app, origins='*')
