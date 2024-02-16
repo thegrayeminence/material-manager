@@ -132,14 +132,15 @@ export default function MaterialUploadForm() {
 
             const textureResponse = await axios.post(apiUrl + "generate_albedo",
                 {materialData: data},
-                {
-                    // withCredentials: true,
-                    headers: {
-                        'Access-Control-Allow-Origin': '*',
-                        'Content-Type': 'application/json',
-                        'Access-Control-Allow-Credentials': 'true',
-                    }
-                }
+                //headers for backend issues. dont work
+                // {
+                //     // withCredentials: true,
+                //     headers: {
+                //         'Access-Control-Allow-Origin': '*',
+                //         'Content-Type': 'application/json',
+                //         'Access-Control-Allow-Credentials': 'true',
+                //     }
+                // }
 
             );
             console.log("Albedo texture generation initiated!");
