@@ -126,13 +126,13 @@ export default function MaterialUploadForm() {
             });
 
             const materialData = {...formData.materialData, ...data};
-            // const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001/api/';
+            const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001/api/';
             console.log('logging form data!:', {'formdata': formData, 'materialData': materialData});
 
 
 
 
-            const textureResponse = await axios.post(`/api/generate_albedo`, {materialData: data});
+            const textureResponse = await axios.post(`${import.meta.env.VITE_API_URL}generate_albedo`, {materialData: data});
             console.log("Albedo texture generation initiated!");
 
             if (textureResponse) {
