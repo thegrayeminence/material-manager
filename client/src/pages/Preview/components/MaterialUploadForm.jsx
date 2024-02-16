@@ -143,18 +143,18 @@ export default function MaterialUploadForm() {
             );
             console.log("Albedo texture generation initiated!");
 
-            if (textureResponse) {
-                toast({
-                    title: 'First Prompt Submitted Successfully! Initiating Second Prompt...',
-                    description: "Please wait while we generate the PBR maps for your material. This may take a few moments.",
-                    status: 'loading',
-                    duration: 6000,
-                    position: 'top',
-                    variant: 'subtle',
-                    isClosable: true,
+            // if (textureResponse) {
+            //     toast({
+            //         title: 'First Prompt Submitted Successfully! Initiating Second Prompt...',
+            //         description: "Please wait while we generate the PBR maps for your material. This may take a few moments.",
+            //         status: 'loading',
+            //         duration: 6000,
+            //         position: 'top',
+            //         variant: 'subtle',
+            //         isClosable: true,
 
-                })
-            }
+            //     })
+            // }
 
 
             const materialId = textureResponse.data.material_id;
