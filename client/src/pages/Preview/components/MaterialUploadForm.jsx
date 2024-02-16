@@ -130,9 +130,17 @@ export default function MaterialUploadForm() {
             console.log('logging form data!:', {'formdata': formData, 'materialData': materialData});
 
 
+            const textureResponse = await axios.post(apiUrl + "generate_albedo",
+                {materialData: data},
+                {
+                    withCredentials: true,
+                    headers: {
+                        'Access-Control-Allow-Origin': '*',
+                        'Content-Type': 'application/json'
+                    }
+                }
 
-
-            const textureResponse = await axios.post("https://textureforge.onrender.com/api/generate_albedo", {materialData: data});
+            );
             console.log("Albedo texture generation initiated!");
 
             if (textureResponse) {

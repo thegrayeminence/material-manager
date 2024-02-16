@@ -250,8 +250,8 @@ def generate_albedo():
         return jsonify({"error": str(e)}), 500
 
 
-# @app.route("/api/generate_albedo",  methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
-# def generate_albedo():  
+# @app.route("/api/generate_albedo_test",  methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
+# def generate_albedo_test():  
 #     return make_response(jsonify({"message": "Test endpoint success"}), 200)
 
 #second endpoint for generating pbr maps from albedo

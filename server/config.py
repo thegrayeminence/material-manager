@@ -18,10 +18,10 @@ app = Flask(
     template_folder='../client/dist'
 )
 
-# @app.route('/', defaults={'path': ''})
-# @app.route('/<path:path>')
-# def catch_all(path):
-#     return render_template("index.html")
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def catch_all(path):
+    return render_template("index.html")
 
 # isss a secret, no looksy precious
 app.secret_key = os.environ.get("SECRET_KEY")
@@ -41,7 +41,7 @@ migrate = Migrate(app, db)
 db.init_app(app)
 
 # Instantiate REST API
-# api = Api(app)
+api = Api(app)
 
 # CORS settings
 # CORS(app, resources={r"/api/*": {"origins": "*" }}
@@ -64,7 +64,7 @@ cors_config = {
     "supports_credentials": True,
     "allow_headers": ["Content-Type", "Authorization", "X-Requested-With", "X-CSRFToken", "Cache-Control"],
     "expose_headers": ["Content-Disposition", "X-Suggested-Filename"],
-    "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],  # Explicitly allowing all these methods
+    "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
 }
 
 CORS(app, **cors_config)
