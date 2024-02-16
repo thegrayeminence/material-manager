@@ -41,24 +41,32 @@ migrate = Migrate(app, db)
 db.init_app(app)
 
 # Instantiate REST API
-api = Api(app)
+# api = Api(app)
 
 # CORS settings
 # CORS(app, resources={r"/api/*": {"origins": "*" }}
 #      )
 
+# cors_config = {
+#     "origins": "*",
+#     "supports_credentials": True,
+#     "allow_headers": ["Content-Type", "Authorization", "X-Requested-With", "X-CSRFToken", "Cache-Control"],
+#     "expose_headers": ["Content-Disposition", "X-Suggested-Filename"],
+#     "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+# }
+# CORS(app, resources={
+#                      r"/*": cors_config, 
+#                      r"/api/*": cors_config,
+#                      })
+
 cors_config = {
-    "origins": "*",
+    "origins": "*",  # Allows all domains, consider narrowing this down in production for security
     "supports_credentials": True,
     "allow_headers": ["Content-Type", "Authorization", "X-Requested-With", "X-CSRFToken", "Cache-Control"],
     "expose_headers": ["Content-Disposition", "X-Suggested-Filename"],
-    "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],  # Explicitly allowing all these methods
 }
-CORS(app, resources={
-                     r"/*": cors_config, 
-                     r"/api/*": cors_config,
-                     })
 
-
+CORS(app, **cors_config)
 
 
