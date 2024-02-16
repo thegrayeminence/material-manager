@@ -196,7 +196,7 @@ def generate_pbr_from_albedo(base_color_url, map_type):
 ##----------------------------------------##
 
 ## first endpoint for generating albedo
-@app.route("/api/generate_albedo",  methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
+@app.post("/api/generate_albedo")
 def generate_albedo():
     
     ##model_identifier options (custom vs public mat diffusion models)
@@ -243,7 +243,7 @@ def generate_albedo():
         db.session.commit()
         app.logger.info("Albedo map generated successfully.")
         response = jsonify({'image_url': image_url, 'material_id': new_material.id})
-        response.headers.add('Access-Control-Allow-Origin', '*')
+        # response.headers.add('Access-Control-Allow-Origin', '*')
         return make_response(response, 200)
     
     except Exception as e:
