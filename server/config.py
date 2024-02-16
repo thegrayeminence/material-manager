@@ -44,18 +44,20 @@ db.init_app(app)
 api = Api(app)
 
 # CORS settings
-CORS(app, resources={r"/api/*": {"origins": "*" }}
-     )
+# CORS(app, resources={r"/api/*": {"origins": "*" }}
+#      )
 
-# cors_config = {
-#     "origins": ["https://textureforgestatic.onrender.com", "https://cdn.pbr.one", "http://localhost:3000"],
-#     "supports_credentials": True,
-    # "allow_headers": ["Content-Type", "Authorization", "X-Requested-With", "X-CSRFToken", "Cache-Control"],
-    # "expose_headers": ["Content-Disposition", "X-Suggested-Filename"],
-    # "methods": ["GET", "POST", "PUT", "DELETE"],
-# }
-# CORS(app, resources={r"/api/*": cors_config, 
-#                      })
+cors_config = {
+    "origins": "*",
+    "supports_credentials": True,
+    "allow_headers": ["Content-Type", "Authorization", "X-Requested-With", "X-CSRFToken", "Cache-Control"],
+    "expose_headers": ["Content-Disposition", "X-Suggested-Filename"],
+    "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+}
+CORS(app, resources={
+                     r"/*": cors_config, 
+                     r"/api/*": cors_config,
+                     })
 
 
 
