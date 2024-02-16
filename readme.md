@@ -15,7 +15,7 @@
   - [FAQ](#faq)
     - [What Is 'PBR'?](#what-is-pbr)
   - [Built With](#built-with)
-    - [Primary Frameworks:](#primary-frameworks)
+    - [Primary Frameworks/Libraries Used:](#primary-frameworkslibraries-used)
 - [Installation/Setup](#installationsetup)
   - [Backend](#backend)
     - [For Setting Up Server Folder, Run The Following In Your Terminal:](#for-setting-up-server-folder-run-the-following-in-your-terminal)
@@ -74,9 +74,9 @@ Users can quickly generate their desired PBR textures via a series of prompts, p
 
 ### FAQ
 #### What Is 'PBR'?
-PBR stands for Physically Based Rendering. It's a technique used in computer graphics to render images that closely resemble real-life by mimicking the physical properties of materials and following the laws of optics. The core idea behind PBR is to ensure that objects interact with light in a realistic manner, making digital scenes look more believable.
+PBR stands for Physically Based Rendering. It's a technique used in computer graphics to render images that mimick the laws of optics and closely resemble the material properties of real-life surfaces. The core idea behind PBR is to ensure that objects interact with light in a realistic manner, making digital scenes look more believable in a diverse range of lighting conditions.
 
-PBR uses algorithms (based on real-world equations) to process a set of textures/bitmaps (each analogous to different optical phenomena) to reflect how materials absorb, reflect, refract, scatter, or diffuse light. This can involve:
+PBR uses algorithms (based on real-world equations) to process a set of textures/bitmaps (each analogous to different optical phenomena) to reflect how materials absorb/reflect/refract/scatter/etc light. This can involve:
 
 **Base Color**: Captures the true color of a material without shadows or reflections.<br>
 **Roughness**: Determines the surface's microtexture, influencing how it scatters light.<br>
@@ -84,7 +84,7 @@ PBR uses algorithms (based on real-world equations) to process a set of textures
 **Ambient Occlusion**: Simulates how light is occluded in crevices and corners.<br>
 **Normal/Height Maps**: Add surface detail by simulating additional geometry. <br>
 
-By applying this combination of real-world equations and optically-analagous bitmaps, PBR systems can achieve consistent results under different lighting conditions, making them a standard in creating realistic/photo-realistic 3D visuals.
+By applying this combination of real-world equations and standardized bitmaps, PBR materials can achieve consistent results under different lighting conditions, making them the current standard in creating photo-realistic 3D renders.
 
 ### Built With
 #### Primary Frameworks/Libraries Used:
