@@ -15,7 +15,6 @@ import {Select} from "chakra-react-select";
 import {textureMapOptionsPBRMetalRough, textureMapOptionsPBRGlossSpec, textureMapOptionsCommon, materialTypeOptions, metaDataOptions} from '../../../config/formInputData';
 import {useMaterialStore, useProgressStore, useAutosuggestionStore, useIsLoadingStore, useGeneratedImagesStore} from '../../../store/store';
 import SuggestionDisplay from './SuggestionDisplay';
-import {text} from 'd3';
 
 
 
@@ -127,12 +126,13 @@ export default function MaterialUploadForm() {
             });
 
             const materialData = {...formData.materialData, ...data};
-            const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001/api/';
+            // const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001/api/';
+            console.log('logging form data!:', {'formdata': formData, 'materialData': materialData});
 
 
-            console.log("logging API URL:\n", apiUrl);
 
-            const textureResponse = await axios.post(`${apiUrl}generate_albedo`, {materialData: data});
+
+            const textureResponse = await axios.post(`/api/generate_albedo`, {materialData: data});
             console.log("Albedo texture generation initiated!");
 
             if (textureResponse) {
@@ -153,7 +153,6 @@ export default function MaterialUploadForm() {
             const baseColorUrl = textureResponse.data.image_url;
 
             //debugging: log formdata and materialdata
-            console.log('logging form data!:', {'formdata': formData, 'materialData': materialData});
 
             // Set the albedo image in the store
             setAlbedoImage(baseColorUrl);
@@ -165,7 +164,7 @@ export default function MaterialUploadForm() {
             navigate(`/gallery_id/${materialId}`);
 
             // Second API call to generate PBR maps
-            const pbrResponse = await axios.post(`${apiUrl}generate_pbr_maps`, {base_color_url: baseColorUrl, material_id: materialId});
+            const pbrResponse = await axios.post(`/api/generate_pbr_maps`, {base_color_url: baseColorUrl, material_id: materialId});
             console.log("PBR maps generation initiated!");
 
             // Set PBR maps in zustand store
@@ -469,18 +468,19 @@ export default function MaterialUploadForm() {
                             bg='green.500'
                             // bg={useColorModeValue('teal.400', 'green.500')} 
                             w="full"
-                            onClick={() =>
-                                toast({
-                                    title: 'Prompt submission is currently available!',
-                                    description: "The server is currently undergoing maintenance. Please check back in a few days!",
-                                    status: 'error',
-                                    duration: 6000,
-                                    position: 'top',
-                                    variant: 'solid',
-                                    isClosable: true,
-                                    colorScheme: 'red',
-                                })
-                            }
+                            // onClick={() =>
+                            //     toast({
+                            //         title: 'Prompt submission is currently available!',
+                            //         description: "The server is currently undergoing maintenance. Please check back in a few days!",
+                            //         status: 'error',
+                            //         duration: 6000,
+                            //         position: 'top',
+                            //         variant: 'solid',
+                            //         isClosable: true,
+                            //         colorScheme: 'red',
+                            //     })
+                            // }
+                            type="submit"
 
                         >
                             Submit

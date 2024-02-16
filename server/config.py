@@ -44,12 +44,8 @@ db.init_app(app)
 api = Api(app)
 
 # CORS settings
-CORS(app, resources={
-    r"/api/*": {"origins": ["https://textureforge.onrender.com","https://textureforgestatic.onrender.com", "http://localhost:3000", "https://cdn.pbr.one","http://cdn.pbr.one"],},
-    r"/*": {"origins": ["https://textureforge.onrender.com", "https://textureforgestatic.onrender.com" , "http://localhost:3000", "https://cdn.pbr.one","http://cdn.pbr.one"]},
-    r"/assets/*": {"origins": ["https://textureforge.onrender.com", "https://textureforgestatic.onrender.com" , "http://localhost:3000", "https://cdn.pbr.one","http://cdn.pbr.one"]}
-
-    })
+CORS(app, resources={r"/api/*": {"origins": "*" }}
+     )
 
 # cors_config = {
 #     "origins": ["https://textureforgestatic.onrender.com", "https://cdn.pbr.one", "http://localhost:3000"],
@@ -61,7 +57,6 @@ CORS(app, resources={
 # CORS(app, resources={r"/api/*": cors_config, 
 #                      })
 
-# unsafe cors settings (dev only)
-# CORS(app, origins='*')
+
 
 

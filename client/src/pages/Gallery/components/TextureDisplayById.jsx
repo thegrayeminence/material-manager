@@ -16,10 +16,10 @@ const handleDownload = async (materialId) => {
     try {
 
         // First, fetch the filename
-        const filenameResponse = await axios.get(`${import.meta.env.VITE_API_URL}get_material_filename/${materialId}`);
+        const filenameResponse = await axios.get(`/api/get_material_filename/${materialId}`);
         const filename = filenameResponse.data.filename;
 
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}download_material/${materialId}`, {
+        const response = await axios.get(`/api/download_material/${materialId}`, {
             responseType: 'blob',
         });
         const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -53,11 +53,11 @@ const TextureDisplayById = () => {
         const fetchRecentAlbedo = async () => {
             try {
                 setAlbedoIsLoading(true);
-                const filenameResponse = await axios.get(`${import.meta.env.VITE_API_URL}get_material_filename/${id}`);
+                const filenameResponse = await axios.get(`/api/get_material_filename/${id}`);
                 const filename = filenameResponse.data.filename;
                 const formattedFileName = filename.replace('.zip', '').replace(/[_]/g, " ").toUpperCase();
                 setMaterialName(formattedFileName);
-                const response = await axios.get(`${import.meta.env.VITE_API_URL}get_albedo_by_id/${id}`);
+                const response = await axios.get(`/api/get_albedo_by_id/${id}`);
                 setAlbedoImage(response.data.image_url);
                 setMaterialId(response.data.material_id);
                 setAlbedoIsLoading(false);
@@ -77,7 +77,7 @@ const TextureDisplayById = () => {
         const fetchMap = async (mapType) => {
 
             try {
-                const response = await axios.get(`${import.meta.env.VITE_API_URL}get_${mapType}_by_id/${id}`); // Use 'id' as a string
+                const response = await axios.get(`/api/get_${mapType}_by_id/${id}`); // Use 'id' as a string
                 return response.data.image_url;
 
             } catch (error) {

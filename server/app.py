@@ -196,7 +196,7 @@ def generate_pbr_from_albedo(base_color_url, map_type):
 ##----------------------------------------##
 
 ## first endpoint for generating albedo
-@app.route("/api/generate_albedo", methods=["GET", "POST", "PUT"])
+@app.route("/api/generate_albedo",  methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
 def generate_albedo():
     
     ##model_identifier options (custom vs public mat diffusion models)
@@ -252,7 +252,7 @@ def generate_albedo():
     
 
 #second endpoint for generating pbr maps from albedo
-@app.route("/api/generate_pbr_maps", methods=["GET", "POST", "PUT"])
+@app.route("/api/generate_pbr_maps", methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
 def generate_pbr_maps():
     try:
         data = request.get_json()
@@ -290,7 +290,7 @@ def generate_pbr_maps():
 ######## Server-->Client ENDPOINTS ######
 ##-------------------------------------##
 ## GET Generated Images from DB ####
-@app.get("/api/get_albedo_maps")
+@app.route("/api/get_albedo_maps",  methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
 def get_albedo_maps():
     try:
         materials = Material.query.all()
@@ -302,7 +302,7 @@ def get_albedo_maps():
 
 
 
-@app.get("/api/get_maps/<int:material_id>")
+@app.route("/api/get_maps/<int:material_id>",  methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
 def get_maps_by_id(material_id):
     material_urls = get_material_urls(material_id)
     if material_urls:
@@ -311,7 +311,7 @@ def get_maps_by_id(material_id):
         return jsonify({"error": "Material not found"}), 404
 
 
-@app.get("/api/get_albedo_by_id/<int:material_id>")
+@app.route("/api/get_albedo_by_id/<int:material_id>",  methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
 def get_albedo_by_id(material_id):
     material_urls = get_material_urls(material_id)
     if material_urls:
@@ -320,7 +320,7 @@ def get_albedo_by_id(material_id):
         return jsonify({"error": "Material not found"}), 404
     
 
-@app.get("/api/get_recent_pbrs")
+@app.route("/api/get_recent_pbrs",  methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
 def get_recent_pbrs():
     try:
         material = Material.query.order_by(Material.id.desc()).first()
@@ -334,7 +334,7 @@ def get_recent_pbrs():
         return jsonify({"error": str(e)}), 500
     
     
-@app.get("/api/get_recent_albedo")
+@app.route("/api/get_recent_albedo",  methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
 def get_recent_albedo():
     try:
         material = Material.query.order_by(Material.id.desc()).first()
@@ -350,8 +350,7 @@ def get_recent_albedo():
 ##-------------------------------------##
 ## Image Serving/Download Functionality ##
 
-@app.route('/api/get_static_images', methods=["GET", "POST", "PUT"])
-@cross_origin(origins='*')
+@app.route('/api/get_static_images',  methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
 def get_all_images():
     base_url = os.getenv('IMAGE_BASE_URL', 'http://localhost:3000/')
     images_dir_path = os.path.join(app.static_folder, 'assets', 'images')
@@ -377,14 +376,11 @@ def get_all_images():
             
         
 
-@app.route('/api/images/<folder_name>', methods=["GET", "POST", "PUT"])
-@cross_origin(origins='*')
+@app.route('/api/images/<folder_name>', methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
 def get_images(folder_name):
     folder_path = os.path.join(app.static_folder, 'assets', 'images', folder_name)
     # dynamic_base_path = os.getenv('IMAGE_BASE_URL', 'http://localhost:3000/assets/images') 
 
-    
-    
     if not os.path.exists(folder_path) or not os.path.isdir(folder_path):
         return jsonify({"error": f"Folder not found; folder info \n path_static:{folder_path} \n "}), 404
 
@@ -465,7 +461,7 @@ def create_downloadable_zip(material_id):
 
 
 ##gets proper filename for zip file/unzipped folder
-@app.route("/api/get_material_filename/<int:material_id>", methods=["GET", "POST", "PUT"])
+@app.route("/api/get_material_filename/<int:material_id>",  methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
 def get_material_filename(material_id):
     try:
         material = Material.query.get(material_id)
@@ -478,7 +474,7 @@ def get_material_filename(material_id):
         return jsonify({"error": str(e)}), 500
     
 
-@app.route("/api/download_material/<int:material_id>", methods=["GET", "POST", "PUT"])
+@app.route("/api/download_material/<int:material_id>",  methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
 def download_material(material_id):
     try:
         zip_file_path = create_downloadable_zip(material_id)
