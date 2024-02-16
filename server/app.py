@@ -196,7 +196,7 @@ def generate_pbr_from_albedo(base_color_url, map_type):
 ##----------------------------------------##
 
 ## first endpoint for generating albedo
-@app.route('/api/generate_albedo', methods=['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'])
+@app.route("/api/generate_albedo",  methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
 def generate_albedo():
     
     ##model_identifier options (custom vs public mat diffusion models)
@@ -207,47 +207,47 @@ def generate_albedo():
     ##mat diffusion model to use; CHANGE THIS VAR to switch between models for text-->image generation
     model_identifier = mat_diffusion
     
-    # try:
-    ##values/parameters for generate_image_from_prompt() argument
-    material_data = request.get_json().get('materialData', {})
-    prompt = construct_prompt_from_material_data(material_data)
-    params = {
-        "width": 512, 
-        "height": 512, 
-        "prompt": prompt, 
-        "scheduler": "K-LMS", 
-        "num_outputs": 1, 
-        "guidance_scale": 7.5, 
-        "prompt_strength": 0.8, 
-        "num_inference_steps": 50
-    }
+    try:
+        ##values/parameters for generate_image_from_prompt() argument
+        material_data = request.get_json().get('materialData', {})
+        prompt = construct_prompt_from_material_data(material_data)
+        params = {
+            "width": 512, 
+            "height": 512, 
+            "prompt": prompt, 
+            "scheduler": "K-LMS", 
+            "num_outputs": 1, 
+            "guidance_scale": 7.5, 
+            "prompt_strength": 0.8, 
+            "num_inference_steps": 50
+        }
 
+        
+        ##generating image_uri from matdata/prompt/params/etc values
+        image_url = generate_image_from_prompt(model_identifier, prompt, params)
+        app.logger.info(image_url)
+        
+        ##instantiating new material to store in db
+        new_material = Material(
+            workflow=material_data.get('materialType', {}).get('label', ''),
+            maps=json.dumps(material_data.get('materialTextures', [])),
+            software=json.dumps(material_data.get('materialMetadata', [])),
+            color=material_data.get('color', ''),
+            element=material_data.get('elementType', ''),
+            condition=material_data.get('condition', ''),
+            manifestation=material_data.get('manifestation', ''),
+            prompt=prompt,
+            base_color_url=image_url
+        )
+        db.session.add(new_material)
+        db.session.commit()
+        app.logger.info("Albedo map generated successfully.")
+        return jsonify({'image_url': image_url, 'material_id': new_material.id}), 200
     
-    ##generating image_uri from matdata/prompt/params/etc values
-    image_url = generate_image_from_prompt(model_identifier, prompt, params)
-    app.logger.info(image_url)
-    
-    ##instantiating new material to store in db
-    new_material = Material(
-        workflow=material_data.get('materialType', {}).get('label', ''),
-        maps=json.dumps(material_data.get('materialTextures', [])),
-        software=json.dumps(material_data.get('materialMetadata', [])),
-        color=material_data.get('color', ''),
-        element=material_data.get('elementType', ''),
-        condition=material_data.get('condition', ''),
-        manifestation=material_data.get('manifestation', ''),
-        prompt=prompt,
-        base_color_url=image_url
-    )
-    db.session.add(new_material)
-    db.session.commit()
-    app.logger.info("Albedo map generated successfully.")
-    return jsonify({'image_url': image_url, 'material_id': new_material.id}), 200
-    
-    # except Exception as e:
-    #     db.session.rollback()
-    #     app.logger.error('Error in generate_albedo: %s', str(e))
-    #     return jsonify({"error": str(e)}), 500
+    except Exception as e:
+        db.session.rollback()
+        app.logger.error('Error in generate_albedo: %s', str(e))
+        return jsonify({"error": str(e)}), 500
 
 
 # @app.route("/api/generate_albedo",  methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])

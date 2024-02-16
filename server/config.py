@@ -18,10 +18,10 @@ app = Flask(
     template_folder='../client/dist'
 )
 
-@app.route('/', defaults={'path': ''})
-@app.route('/<path:path>')
-def catch_all(path):
-    return render_template("index.html")
+# @app.route('/', defaults={'path': ''})
+# @app.route('/<path:path>')
+# def catch_all(path):
+#     return render_template("index.html")
 
 # isss a secret, no looksy precious
 app.secret_key = os.environ.get("SECRET_KEY")
