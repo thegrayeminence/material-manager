@@ -11,7 +11,7 @@ from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.dialects.postgresql import JSON  # Assuming PostgreSQL
 
 ##local imports
-from config import db
+from app import db
 
 
 class Material(db.Model, SerializerMixin):
