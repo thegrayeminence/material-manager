@@ -39,31 +39,34 @@ db.init_app(app)
 # Instantiate REST API
 api = Api(app)
 
-# CORS settings
-# CORS(app, resources={r"/api/*": {"origins": "*" }}
-#      )
+cors_config = {
+    "origins": "*",
+    "supports_credentials": True,
+    "allow_headers": ["Content-Type", "Authorization", "X-Requested-With", "X-CSRFToken", "Cache-Control"],
+    "expose_headers": ["Content-Disposition", "X-Suggested-Filename"],
+    "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+}
+CORS(app, resources={
+                     r"/*": cors_config, 
+                     r"/api/*": cors_config,
+                     })
 
-# cors_config = {
-#     "origins": "*",
-#     "supports_credentials": True,
-#     "allow_headers": ["Content-Type", "Authorization", "X-Requested-With", "X-CSRFToken", "Cache-Control"],
-#     "expose_headers": ["Content-Disposition", "X-Suggested-Filename"],
-#     "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-# }
-# CORS(app, resources={
-#                      r"/*": cors_config, 
-#                      r"/api/*": cors_config,
-#                      })
 
-# cors_config = {
-#     "origins": "*",  # Allows all domains, consider narrowing this down in production for security
-#     "supports_credentials": True,
-#     "allow_headers": ["Content-Type", "Authorization", "X-Requested-With", "X-CSRFToken", "Cache-Control"],
-#     "expose_headers": ["Content-Disposition", "X-Suggested-Filename"],
-#     "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-# }
-# CORS(app, **cors_config)
-CORS(app, supports_credentials=True, resources={r"*": {"origins": "*"}})
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def catch_all(path):
+    return render_template("index.html")
+
+# @app.after_request
+# def after_request(response):
+#     # response.headers["Access-Control-Allow-Origin"] = "*"
+#     # response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
+#     # response.headers["Access-Control-Allow-Headers"] = "Content-Type, X-Requested-With"
+#     response.headers.add('Access-Control-Allow-Origin', '*')
+#     response.headers.add('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+#     response.headers.add('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, OPTIONS')
+    
+#     return response
 
 
 
