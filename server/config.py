@@ -39,6 +39,9 @@ db.init_app(app)
 # Instantiate REST API
 api = Api(app)
 
+# CORS settings
+# CORS(app, resources={r"/api/*": {"origins": "*" }}
+#      )
 cors_config = {
     "origins": "*",
     "supports_credentials": True,
@@ -49,6 +52,7 @@ cors_config = {
 CORS(app, resources={
                      r"/*": cors_config, 
                      r"/api/*": cors_config,
+                     r"/assets/*": cors_config,
                      })
 
 
