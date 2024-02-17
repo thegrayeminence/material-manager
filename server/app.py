@@ -35,7 +35,7 @@ from dotenv import load_dotenv
 
 
 # Local imports
-from models import db, Material
+from models import Material
 # from config import app, api
 
 
