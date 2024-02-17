@@ -17,12 +17,11 @@ import logging
 from logging.handlers import RotatingFileHandler
 
 # Remote library imports
-from flask import make_response, request, session, jsonify, url_for, render_template,  send_from_directory, current_app
+from flask import make_response, request, session, jsonify, url_for, render_template,  send_from_directory, current_app, after_this_request
 from flask_restful import Resource
 from flask_cors import cross_origin
 import replicate
 from dotenv import load_dotenv
-
 
 
 # Local imports
@@ -49,11 +48,23 @@ def setup_logging():
     
 setup_logging()
 
-##sets up default/fallback flask route to html file
-# @app.route('/', defaults={'path': ''})
-# @app.route('/<path:path>')
-# def index(path):
-#     return render_template("index.html")
+
+
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def catch_all(path):
+    return render_template("index.html")
+
+@app.after_request
+def after_request(response):
+    # response.headers["Access-Control-Allow-Origin"] = "*"
+    # response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
+    # response.headers["Access-Control-Allow-Headers"] = "Content-Type, X-Requested-With"
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, OPTIONS')
+    
+    return response
 
 
 
@@ -195,6 +206,16 @@ def generate_pbr_from_albedo(base_color_url, map_type):
 ## CLIENT --> SERVER ENDPOINTS ####:
 ##----------------------------------------##
 
+## test endpoint for flask endpoints 
+@app.route("/api/test",  methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
+def test():
+    try:
+        app.logger.info("Test endpoint is working")
+        return make_response({"message": "Test endpoint is working"}), 200
+    except Exception as e:
+        app.logger.error('Error in test: %s', str(e))
+        return make_response({"error": str(e)}), 500
+
 ## first endpoint for generating albedo
 @app.post("/api/generate_albedo")
 def generate_albedo():
@@ -251,10 +272,6 @@ def generate_albedo():
         app.logger.error('Error in generate_albedo: %s', str(e))
         return jsonify({"error": str(e)}), 500
 
-
-# @app.route("/api/generate_albedo_test",  methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
-# def generate_albedo_test():  
-#     return make_response(jsonify({"message": "Test endpoint success"}), 200)
 
 #second endpoint for generating pbr maps from albedo
 @app.route("/api/generate_pbr_maps", methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
@@ -357,7 +374,6 @@ def get_recent_albedo():
 
 @app.route('/api/get_static_images',  methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
 def get_all_images():
-    base_url = os.getenv('IMAGE_BASE_URL', 'http://localhost:3000/')
     images_dir_path = os.path.join(app.static_folder, 'assets', 'images')
 
     folders = [name for name in os.listdir(images_dir_path) if os.path.isdir(os.path.join(images_dir_path, name))]

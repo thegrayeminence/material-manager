@@ -92,6 +92,7 @@ export default function MaterialUploadForm() {
 
     //HTTP POST REQUESTS & ASYNCHRONOUS STUFF//
     // ---------------- //
+    axios.defaults.withCredentials = true;
 
     const handleFormSubmission = async (data) => {
 
@@ -126,11 +127,11 @@ export default function MaterialUploadForm() {
             });
 
             const materialData = {...formData.materialData, ...data};
-            const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001/api/';
+            const apiUrl = import.meta.env.VITE_API_URL
             console.log('logging form data!:', {'formdata': formData, 'materialData': materialData});
 
 
-            const textureResponse = await axios.post(apiUrl + "generate_albedo",
+            const textureResponse = await axios.post(apiUrl + "/api/generate_albedo",
                 {materialData: data},
                 //headers for backend issues. dont work
                 // {
@@ -162,7 +163,7 @@ export default function MaterialUploadForm() {
             const materialId = textureResponse.data.material_id;
             const baseColorUrl = textureResponse.data.image_url;
 
-            //debugging: log formdata and materialdata
+
 
             // Set the albedo image in the store
             setAlbedoImage(baseColorUrl);
@@ -174,7 +175,9 @@ export default function MaterialUploadForm() {
             navigate(`/gallery_id/${materialId}`);
 
             // Second API call to generate PBR maps
-            const pbrResponse = await axios.post(`/api/generate_pbr_maps`, {base_color_url: baseColorUrl, material_id: materialId});
+            const pbrResponse = await axios.post(apiUrl + `/api/generate_pbr_maps`,
+                {base_color_url: baseColorUrl, material_id: materialId}
+            );
             console.log("PBR maps generation initiated!");
 
             // Set PBR maps in zustand store

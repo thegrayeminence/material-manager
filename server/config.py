@@ -18,18 +18,6 @@ app = Flask(
     template_folder='../client/dist'
 )
 
-@app.route('/', defaults={'path': ''})
-@app.route('/<path:path>')
-def catch_all(path):
-    return render_template("index.html")
-
-@app.after_request
-def handle_options(response):
-    response.headers["Access-Control-Allow-Origin"] = "*"
-    response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
-    response.headers["Access-Control-Allow-Headers"] = "Content-Type, X-Requested-With"
-
-    return response
 
 # isss a secret, no looksy precious
 app.secret_key = os.environ.get("SECRET_KEY")
@@ -67,14 +55,15 @@ api = Api(app)
 #                      r"/api/*": cors_config,
 #                      })
 
-cors_config = {
-    "origins": "*",  # Allows all domains, consider narrowing this down in production for security
-    "supports_credentials": True,
-    "allow_headers": ["Content-Type", "Authorization", "X-Requested-With", "X-CSRFToken", "Cache-Control"],
-    "expose_headers": ["Content-Disposition", "X-Suggested-Filename"],
-    "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-}
+# cors_config = {
+#     "origins": "*",  # Allows all domains, consider narrowing this down in production for security
+#     "supports_credentials": True,
+#     "allow_headers": ["Content-Type", "Authorization", "X-Requested-With", "X-CSRFToken", "Cache-Control"],
+#     "expose_headers": ["Content-Disposition", "X-Suggested-Filename"],
+#     "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+# }
+# CORS(app, **cors_config)
+CORS(app, supports_credentials=True, resources={r"*": {"origins": "*"}})
 
-CORS(app, **cors_config)
 
 
