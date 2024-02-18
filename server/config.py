@@ -316,9 +316,9 @@ def generate_albedo():
         db.session.commit()
         # app.logger.info("Albedo map generated successfully.")
         response = jsonify({'base_color_url': base_color_url, 'material_id': new_material.id})
-        response.headers.add('Access-Control-Allow-Origin', '*')
-        response.headers.add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-        response.headers.add("Access-Control-Allow-Headers", "Content-Type");
+        # response.headers.add('Access-Control-Allow-Origin', '*')
+        # response.headers.add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+        # response.headers.add("Access-Control-Allow-Headers", "Content-Type");
         return response, 200
     
     except Exception as e:
