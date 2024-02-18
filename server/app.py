@@ -190,20 +190,36 @@ def generate_pbr_from_albedo(base_color_url, map_type):
 
 
 
+# @app.route('/', defaults={'path': ''})
+# @app.route('/<path:path>')
+# def catch_all(path):
+#     return render_template("index.html")
 
+# @app.after_request
+# def after_request(response):
+#     # response.headers["Access-Control-Allow-Origin"] = "*"
+#     # response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
+#     # response.headers["Access-Control-Allow-Headers"] = "Content-Type, X-Requested-With"
+#     response.headers.add('Access-Control-Allow-Origin', '*')
+#     response.headers.add('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+#     response.headers.add('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, OPTIONS')
+    
+#     return response
 
 ## CLIENT --> SERVER ENDPOINTS ####:
 ##----------------------------------------##
 
 ## test endpoint for flask endpoints 
-@app.route("/api/test",  methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
+@app.get("/api/test",  methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
 def test():
-    try:
-        app.logger.info("Test endpoint is working")
-        return make_response({"message": "Test endpoint is working"}), 200
-    except Exception as e:
-        app.logger.error('Error in test: %s', str(e))
-        return make_response({"error": str(e)}), 500
+    return make_response({"message": "Test endpoint is working"}), 200
+    # try:
+    #     app.logger.info("Test endpoint is working")
+    #     return make_response({"message": "Test endpoint is working"}), 200
+    # except Exception as e:
+    #     app.logger.error('Error in test: %s', str(e))
+    #     return make_response({"error": str(e)}), 500
+    
 
 ## first endpoint for generating albedo
 @app.post("/api/generate_albedo")
@@ -363,6 +379,7 @@ def get_recent_albedo():
 
 @app.route('/api/get_static_images',  methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
 def get_all_images():
+    # base_url = os.getenv('IMAGE_BASE_URL', 'http://localhost:3000/assets/images')
     images_dir_path = os.path.join(app.static_folder, 'assets', 'images')
 
     folders = [name for name in os.listdir(images_dir_path) if os.path.isdir(os.path.join(images_dir_path, name))]
@@ -372,7 +389,7 @@ def get_all_images():
     try:
         for folder_name in folders:
             map_types = ['base_color.png', 'height.png', 'normal.png', 'smoothness.png']
-            images = [f"{base_url}/{folder_name}/{folder_name}_{map_type}" for map_type in map_types]
+            images = [f"{images_dir_path}/{folder_name}/{folder_name}_{map_type}" for map_type in map_types]
             folder_images = {
                 "folder": folder_name,
                 "images": images
@@ -537,31 +554,31 @@ def cleanup_temporary_directory(directory):
 
 ##-------------------------------------##
 ## error handlers: catch errors thrown from @validates and other exceptions
-@app.errorhandler(Exception)
-def handle_general_error(e):
-    app.logger.error(f'An unexpected error occurred: {str(e)}')
-    return jsonify({"error": f"An unexpected error occurred: {str(e)}"}), 500
+# @app.errorhandler(Exception)
+# def handle_general_error(e):
+#     app.logger.error(f'An unexpected error occurred: {str(e)}')
+#     return jsonify({"error": f"An unexpected error occurred: {str(e)}"}), 500
 
-@app.errorhandler(404)
-def handle_404(e):
-    app.logger.warning("Resource not found")
-    return jsonify({"error": "Resource not found"}), 404
+# @app.errorhandler(404)
+# def handle_404(e):
+#     app.logger.warning("Resource not found")
+#     return jsonify({"error": "Resource not found"}), 404
 
-@app.errorhandler(400)
-def handle_400(e):
-    app.logger.warning("Bad request")
-    return jsonify({"error": "Bad request"}), 400
+# @app.errorhandler(400)
+# def handle_400(e):
+#     app.logger.warning("Bad request")
+#     return jsonify({"error": "Bad request"}), 400
 
-@app.errorhandler(500)
-def handle_500_error(e):
-    app.logger.error(f"Internal server error: {e}")
-    return jsonify(error=str(e)), 500
+# @app.errorhandler(500)
+# def handle_500_error(e):
+#     app.logger.error(f"Internal server error: {e}")
+#     return jsonify(error=str(e)), 500
 
     
 if __name__ == '__main__':
-
-    port = int(os.environ.get('PORT', 8000))
-    app.run(host='0.0.0.0', port=port, debug=False)
+    app.run(host="0.0.0.0", port=10000)
+    # port = int(os.environ.get('PORT', 10000))
+    # app.run(host='0.0.0.0', port=port, debug=False)
 
     
     

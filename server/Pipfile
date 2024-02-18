@@ -20,6 +20,7 @@ requests = "*"
 faker = "*"
 replicate = "*"
 python-dotenv = "*"
+gunicorn = "*"
 
 [dev-packages]
 pytest = "*"
