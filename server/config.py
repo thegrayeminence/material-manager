@@ -29,8 +29,7 @@ app = Flask(
 )
 
 
-print(os.environ.get('DATABASE_URI')) 
-print(os.environ.get('PORT')) 
+
 
 # @app.route('/', defaults={'path': ''})
 # @app.route('/<path:path>', methods=['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'])
@@ -226,7 +225,6 @@ def generate_pbr_from_albedo(base_color_url, map_type):
         
     except Exception as e:
         # app.logger.error('Error in generate_pbr_from_albedo: %s', str(e))
-        print(e)
         return make_response({"error in generate_pbr_from_albedo": str(e)}, 500)
           
           
@@ -315,7 +313,7 @@ def generate_albedo():
 
 
 # #second endpoint for generating pbr maps from albedo
-@app.route("/api/generate_pbr_maps", methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
+@app.post("/api/generate_pbr_maps")
 def generate_pbr_maps():
     try:
         data = request.get_json()
@@ -337,7 +335,7 @@ def generate_pbr_maps():
             material.smoothness_map_url = pbr_maps.get("albedo2smoothness")
             db.session.commit()
             # app.logger.info("PBR maps generated successfully.")
-            return make_response({"pbr_maps": pbr_maps, "material_id": material_id}, 200)
+            return make_response({'pbr_maps': pbr_maps}), 200
         else:
             return make_response({"error": "Material not found"}, 404)
     
