@@ -94,23 +94,23 @@ api_token = os.getenv("REPLICATE_API_TOKEN")
 os.environ["REPLICATE_API_TOKEN"] = api_token
 
 # Setup Logging
-def setup_logging():
-    if app.config['LOG_WITH_GUNICORN']:
-        gunicorn_error_logger = logging.getLogger('gunicorn.error')
-        app.logger.handlers.extend(gunicorn_error_logger.handlers)
-        app.logger.setLevel(logging.DEBUG)
-    else:
-        if not os.path.exists('logs'):
-            os.makedirs('logs')
-        file_handler = RotatingFileHandler('logs/app.log', maxBytes=10240, backupCount=10)
-        file_handler.setFormatter(logging.Formatter(
-            '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
-        file_handler.setLevel(logging.INFO)
-        app.logger.addHandler(file_handler)
-        app.logger.setLevel(logging.INFO)
-        app.logger.info('Application startup')
+# def setup_logging():
+#     if app.config['LOG_WITH_GUNICORN']:
+#         gunicorn_error_logger = logging.getLogger('gunicorn.error')
+#         app.logger.handlers.extend(gunicorn_error_logger.handlers)
+#         app.logger.setLevel(logging.DEBUG)
+#     else:
+#         if not os.path.exists('logs'):
+#             os.makedirs('logs')
+#         file_handler = RotatingFileHandler('logs/app.log', maxBytes=10240, backupCount=10)
+#         file_handler.setFormatter(logging.Formatter(
+#             '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
+#         file_handler.setLevel(logging.INFO)
+#         app.logger.addHandler(file_handler)
+#         app.logger.setLevel(logging.INFO)
+#         app.logger.info('Application startup')
     
-setup_logging()
+# setup_logging()
 
 
 
@@ -150,11 +150,13 @@ def construct_prompt_from_material_data(material_data):
     
       # Construct prompt
       prompt = f"{condition} {color} {elementType} {manifestation} seamless texture, trending on artstation, base color, albedo, 4k"
-      app.logger.info("Generated prompt: %s", prompt)
+    #   app.logger.info("Generated prompt: %s", prompt)
+      print(prompt)
       return prompt
     
     except Exception as e:
-        app.logger.error('Error in construct_prompt_from_material_data: %s', str(e))
+        # app.logger.error('Error in construct_prompt_from_material_data: %s', str(e))
+        print(e)
         raise
 
 
@@ -168,7 +170,8 @@ def generate_image_from_prompt(model_identifier, prompt, params):
     try:
         ##PUBLIC MODEL SETUP:
         output = replicate.run(model_identifier, input=params)
-        app.logger.info("Output from Replicate: %s", output)
+        # app.logger.info("Output from Replicate: %s", output)
+        print(output)
 
         # Check if the output is a list with a valid URL
         if output and isinstance(output[0], str):
@@ -192,7 +195,8 @@ def generate_image_from_prompt(model_identifier, prompt, params):
     #     print(f"An error occurred: {e}")
     #     raise Exception(f"Failed to generate image: {e}")
     except Exception as e:
-        app.logger.error('Error in generate_image_from_prompt: %s', str(e))
+        # app.logger.error('Error in generate_image_from_prompt: %s', str(e))
+        print(e)
         raise
   
 # ##SECOND API CALL FOR ALBEDO TO PBR MAPS:  
@@ -300,7 +304,8 @@ def generate_albedo():
         
         ##generating image_uri from matdata/prompt/params/etc values
         image_url = generate_image_from_prompt(model_identifier, prompt, params)
-        app.logger.info(image_url)
+        # app.logger.info(image_url)
+        print(image_url)
         
         ##instantiating new material to store in db
         new_material = Material(
@@ -316,14 +321,16 @@ def generate_albedo():
         )
         db.session.add(new_material)
         db.session.commit()
-        app.logger.info("Albedo map generated successfully.")
+        # app.logger.info("Albedo map generated successfully.")
+        print("Albedo map generated successfully.")
         response = jsonify({'image_url': image_url, 'material_id': new_material.id})
         # response.headers.add('Access-Control-Allow-Origin', '*')
         return make_response(response, 200)
     
     except Exception as e:
         db.session.rollback()
-        app.logger.error('Error in generate_albedo: %s', str(e))
+        # app.logger.error('Error in generate_albedo: %s', str(e))
+        print(e)
         return jsonify({"error": str(e)}), 500
 
 
