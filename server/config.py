@@ -450,7 +450,7 @@ def get_recent_albedo():
 # ##-------------------------------------##
 # ## Image Serving/Download Functionality ##
 
-@app.route('/api/all_images/',  methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
+@app.route('/api/all_images',  methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
 def get_all_images():
     images_dir_path = os.path.join(app.static_folder, 'assets', 'images')
 
