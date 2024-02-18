@@ -450,12 +450,12 @@ def get_recent_albedo():
 # ##-------------------------------------##
 # ## Image Serving/Download Functionality ##
 
-@app.route('/api/all_images',  methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
+@app.route('/api/all_images/',  methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
 def get_all_images():
     images_dir_path = os.path.join(app.static_folder, 'assets', 'images')
 
     folders = [name for name in os.listdir(images_dir_path) if os.path.isdir(os.path.join(images_dir_path, name))]
-    
+    print(folders)
     all_folders_images = []
     
     try:
@@ -468,20 +468,20 @@ def get_all_images():
             }
             all_folders_images.append(folder_images)
         
-        return make_response(jsonify(all_folders_images), 200)
+        return jsonify(all_folders_images), 200
     
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return make_response({f"error in fetching folders from {images_dir_path}": str(e)}), 500
             
         
 
 @app.route('/api/images/<folder_name>', methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
 def get_images(folder_name):
+    # folder_path = os.path.join(app.static_folder, 'assets', 'images', folder_name)
+    # dynamic_base_path = os.getenv('VITE_API_URL', app.static_folder) 
     folder_path = os.path.join(app.static_folder, 'assets', 'images', folder_name)
-    # dynamic_base_path = os.getenv('IMAGE_BASE_URL', 'http://localhost:3000/assets/images') 
-
-    if not os.path.exists(folder_path) or not os.path.isdir(folder_path):
-        return jsonify({"error": f"Folder not found; folder info \n path_static:{folder_path} \n "}), 404
+    # if not os.path.exists(folder_path) or not os.path.isdir(folder_path):
+    #     return jsonify({"error": f"Folder not found; folder info \n path_static:{folder_path} \n "}), 404
 
     try:
         image_files = [f for f in os.listdir(folder_path) if f.endswith('.png')]

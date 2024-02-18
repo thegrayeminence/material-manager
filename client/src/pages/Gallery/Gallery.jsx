@@ -11,20 +11,53 @@ import {PreviewBackgroundAnimation} from '../Preview/components';
 function Gallery() {
 
   const [materials, setMaterials] = useState([])
-  const folderNames = ['Stone_Slate_Tiles_Ornate', 'Rich_Maple_Flooring_Varnished', 'Rich_Mahagony_Flooring_Varnished', 'Dark_Cedar_Flooring_Worn', 'Blue_Ceramic_Flooring_Glossy', 'Brown_Oak_Flooring_Stained', 'Weathered_Cherry_Flooring_Varnished']
+  const folderNamesOld = ['Stone_Slate_Tiles_Ornate', 'Rich_Maple_Flooring_Varnished', 'Rich_Mahagony_Flooring_Varnished', 'Dark_Cedar_Flooring_Worn', 'Blue_Ceramic_Flooring_Glossy', 'Brown_Oak_Flooring_Stained', 'Weathered_Cherry_Flooring_Varnished']
+  const [isLoading, setisLoading] = useState(true)
+
+
+  // useEffect(() => {
+  //   const loadMaterials = async () => {
+  //     const loadedMaterials = [];
+  //     for (let folder of folderNamesOld) {
+  //       const images = await loadImagesFromFolder(folder);
+  //       loadedMaterials.push({folder, images})
+  //     }
+  //     setMaterials(loadedMaterials);
+  //   };
+  //   loadMaterials();
+  // }, []);
+
 
   useEffect(() => {
-    const loadMaterials = async () => {
-      const loadedMaterials = [];
-      for (let folder of folderNames) {
-        const images = await loadImagesFromFolder(folder);
-        loadedMaterials.push({folder, images})
-      }
-      setMaterials(loadedMaterials);
-    };
-    loadMaterials();
-  }, []);
+    const loadMaterialsOnServer = async () => {
+      // setisLoadingBackend(true);
+      setisLoading(true);
+      const apiUrl = import.meta.env.VITE_API_URL
 
+      const requestUrl = `${apiUrl}/api/all_images`;
+      console.log("backend request", requestUrl)
+
+      try {
+        const response = await axios.get(requestUrl);
+        setMaterials(response.data);
+        console.log("materials", response.data)
+        setisLoading(false);
+
+      } catch (error) {
+        console.error("Failed to load texture images:", error);
+        // toast({
+        //     title: 'Error loading texture files',
+        //     description: error.message,
+        //     status: 'error',
+        //     duration: 5000,
+        //     isClosable: true,
+        // });
+      }
+
+    };
+
+    loadMaterialsOnServer();
+  }, []);
 
   return (
     <Box width='100vw' h='100vh'
