@@ -151,12 +151,10 @@ def construct_prompt_from_material_data(material_data):
       # Construct prompt
       prompt = f"{condition} {color} {elementType} {manifestation} seamless texture, trending on artstation, base color, albedo, 4k"
     #   app.logger.info("Generated prompt: %s", prompt)
-      print(prompt)
       return prompt
     
     except Exception as e:
         # app.logger.error('Error in construct_prompt_from_material_data: %s', str(e))
-        print(e)
         return make_response({"error in construct_prompt_from_material_data": str(e)}, 500)
         
 
@@ -172,7 +170,6 @@ def generate_image_from_prompt(model_identifier, prompt, params):
         ##PUBLIC MODEL SETUP:
         output = replicate.run(model_identifier, input=params)
         # app.logger.info("Output from Replicate: %s", output)
-        print(output)
 
         # Check if the output is a list with a valid URL
         if output and isinstance(output[0], str):
@@ -197,40 +194,40 @@ def generate_image_from_prompt(model_identifier, prompt, params):
     #     raise Exception(f"Failed to generate image: {e}")
     except Exception as e:
         # app.logger.error('Error in generate_image_from_prompt: %s', str(e))
-        print(e)
         return make_response({"error in generate_image_from_prompt": str(e)}, 500)
   
 # ##SECOND API CALL FOR ALBEDO TO PBR MAPS:  
-# def generate_pbr_from_albedo(base_color_url, map_type):
-#     try:
-#         ##PUBLIC MODEL SETUP:
-#         params = {"model": map_type, "imagepath": base_color_url}
-#         model_identifier = "tommoore515/pix2pix_tf_albedo2pbrmaps:21bd96b6e69f40e54502d67798f9025ab9e4a9e08f2a1b51dde5131b129a825e"
-#         app.logger.info(f"Attempting to generate {map_type} map from {base_color_url}")
-#         output = replicate.run(model_identifier, input=params)
+def generate_pbr_from_albedo(base_color_url, map_type):
+    try:
+        ##PUBLIC MODEL SETUP:
+        params = {"model": map_type, "imagepath": base_color_url}
+        model_identifier = "tommoore515/pix2pix_tf_albedo2pbrmaps:21bd96b6e69f40e54502d67798f9025ab9e4a9e08f2a1b51dde5131b129a825e"
+        # app.logger.info(f"Attempting to generate {map_type} map from {base_color_url}")
+        output = replicate.run(model_identifier, input=params)
 
-#         if output and isinstance(output, str):
-#             app.logger.info(f"{map_type} Map generated: {output}")
-#             return output
-#         else:
-#             raise Exception(f"Invalid output format for {map_type}")
+        if output and isinstance(output, str):
+            # app.logger.info(f"{map_type} Map generated: {output}")
+            return output
+        else:
+            raise Exception(f"Invalid output format for {map_type}")
         
-#         #CUSTOM MODEL SETUP:
-#         # model_identifier = "thegrayeminence/albedo-to-pbr-generator"
-#         # params = {"model": map_type, "imagepath": base_color_url}
-#         # deployment = replicate.deployments.get(model_identifier)
-#         # prediction = deployment.predictions.create(input=params)
-#         # prediction.wait()
+        #CUSTOM MODEL SETUP:
+        # model_identifier = "thegrayeminence/albedo-to-pbr-generator"
+        # params = {"model": map_type, "imagepath": base_color_url}
+        # deployment = replicate.deployments.get(model_identifier)
+        # prediction = deployment.predictions.create(input=params)
+        # prediction.wait()
         
-#         # if prediction.status == 'succeeded':
-#         #     return prediction.output
-#         # else:
-#         #     raise Exception(f"Failed to generate PBR map: {prediction.status}")
+        # if prediction.status == 'succeeded':
+        #     return prediction.output
+        # else:
+        #     raise Exception(f"Failed to generate PBR map: {prediction.status}")
         
         
-#     except Exception as e:
-#         app.logger.error('Error in generate_pbr_from_albedo: %s', str(e))
-#         raise
+    except Exception as e:
+        # app.logger.error('Error in generate_pbr_from_albedo: %s', str(e))
+        print(e)
+        return make_response({"error in generate_pbr_from_albedo": str(e)}, 500)
           
           
           
@@ -253,21 +250,6 @@ def generate_image_from_prompt(model_identifier, prompt, params):
 
 
 
-# # @app.route('/', defaults={'path': ''})
-# # @app.route('/<path:path>')
-# # def catch_all(path):
-# #     return render_template("index.html")
-
-# # @app.after_request
-# # def after_request(response):
-# #     # response.headers["Access-Control-Allow-Origin"] = "*"
-# #     # response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
-# #     # response.headers["Access-Control-Allow-Headers"] = "Content-Type, X-Requested-With"
-# #     response.headers.add('Access-Control-Allow-Origin', '*')
-# #     response.headers.add('Access-Control-Allow-Headers', 'Content-Type, Authorization')
-# #     response.headers.add('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, OPTIONS')
-    
-# #     return response
 
 # ## CLIENT --> SERVER ENDPOINTS ####:
 # ##----------------------------------------##
@@ -306,7 +288,6 @@ def generate_albedo():
         ##generating image_uri from matdata/prompt/params/etc values
         image_url = generate_image_from_prompt(model_identifier, prompt, params)
         # app.logger.info(image_url)
-        print(image_url)
         
         ##instantiating new material to store in db
         new_material = Material(
@@ -323,7 +304,6 @@ def generate_albedo():
         db.session.add(new_material)
         db.session.commit()
         # app.logger.info("Albedo map generated successfully.")
-        print("Albedo map generated successfully.")
         # response = jsonify({'image_url': image_url, 'material_id': new_material.id})
         # response.headers.add('Access-Control-Allow-Origin', '*')
         return make_response({'image_url': image_url, 'material_id': new_material.id}), 200
@@ -331,41 +311,40 @@ def generate_albedo():
     except Exception as e:
         db.session.rollback()
         # app.logger.error('Error in generate_albedo: %s', str(e))
-        print(e)
         return make_response({"error in generate_albedo": str(e)}, 500)
 
 
 # #second endpoint for generating pbr maps from albedo
-# @app.route("/api/generate_pbr_maps", methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
-# def generate_pbr_maps():
-#     try:
-#         data = request.get_json()
-#         material_id = data.get('material_id')
-#         base_color_url = data.get('base_color_url')
-#         map_types = ["albedo2normal", "albedo2height", "albedo2smoothness"]
-#         pbr_maps = {}
+@app.route("/api/generate_pbr_maps", methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
+def generate_pbr_maps():
+    try:
+        data = request.get_json()
+        material_id = data.get('material_id')
+        base_color_url = data.get('base_color_url')
+        map_types = ["albedo2normal", "albedo2height", "albedo2smoothness"]
+        pbr_maps = {}
         
-#         print("Preparing to generate pbrs from albedo...")
-#         for map_type in map_types:
-#             print(f"Generating {map_type} map...")
-#             pbr_map_url = generate_pbr_from_albedo( base_color_url, map_type)
-#             pbr_maps[map_type] = pbr_map_url
+        print("Preparing to generate pbrs from albedo...")
+        for map_type in map_types:
+            print(f"Generating {map_type} map...")
+            pbr_map_url = generate_pbr_from_albedo( base_color_url, map_type)
+            pbr_maps[map_type] = pbr_map_url
 
-#         material = Material.query.get(material_id)
-#         if material:
-#             material.normal_map_url = pbr_maps.get("albedo2normal")
-#             material.height_map_url = pbr_maps.get("albedo2height")
-#             material.smoothness_map_url = pbr_maps.get("albedo2smoothness")
-#             db.session.commit()
-#             app.logger.info("PBR maps generated successfully.")
-#             return jsonify({'pbr_maps': pbr_maps}), 200
-#         else:
-#             return jsonify({"error": "Material not found"}), 404
+        material = Material.query.get(material_id)
+        if material:
+            material.normal_map_url = pbr_maps.get("albedo2normal")
+            material.height_map_url = pbr_maps.get("albedo2height")
+            material.smoothness_map_url = pbr_maps.get("albedo2smoothness")
+            db.session.commit()
+            # app.logger.info("PBR maps generated successfully.")
+            return make_response({"pbr_maps": pbr_maps, "material_id": material_id}, 200)
+        else:
+            return make_response({"error": "Material not found"}, 404)
     
-#     except Exception as e:
-#             db.session.rollback()
-#             app.logger.error('Error in generate_pbr_maps: %s', str(e))
-#             return jsonify({"error": str(e)}), 500
+    except Exception as e:
+            db.session.rollback()
+            # app.logger.error('Error in generate_pbr_maps: %s', str(e))
+            return make_response({"error in generate_pbr_maps": str(e)}, 500)
 
 
 
@@ -629,6 +608,24 @@ def generate_albedo():
 # # def handle_500_error(e):
 # #     app.logger.error(f"Internal server error: {e}")
 # #     return jsonify(error=str(e)), 500
+
+
+# # @app.route('/', defaults={'path': ''})
+# # @app.route('/<path:path>')
+# # def catch_all(path):
+# #     return render_template("index.html")
+
+# # @app.after_request
+# # def after_request(response):
+# #     # response.headers["Access-Control-Allow-Origin"] = "*"
+# #     # response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
+# #     # response.headers["Access-Control-Allow-Headers"] = "Content-Type, X-Requested-With"
+# #     response.headers.add('Access-Control-Allow-Origin', '*')
+# #     response.headers.add('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+# #     response.headers.add('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, OPTIONS')
+    
+# #     return response
+
 
     
 # if __name__ == '__main__':
