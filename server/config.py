@@ -49,21 +49,21 @@ db.init_app(app)
 
 # Instantiate REST API
 # api = Api(app)
-CORS(app)
+# CORS(app)
 # CORS settings
 # CORS(app, resources={r"/api/*": {"origins": "*" }}
 #      )
-# cors_config = {
-#     "origins": "*",
-#     "supports_credentials": True,
-#     "allow_headers": ["Content-Type", "Authorization", "X-Requested-With", "X-CSRFToken", "Cache-Control"],
-#     "expose_headers": ["Content-Disposition", "X-Suggested-Filename"],
-#     "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-# }
-# CORS(app, resources={
-#                      r"/api/*": cors_config,
-#                      r"/assets/*": cors_config,
-#                      })
+cors_config = {
+    "origins": "*",
+    "supports_credentials": True,
+    "allow_headers": ["Content-Type", "Authorization", "X-Requested-With", "X-CSRFToken", "Cache-Control"],
+    "expose_headers": ["Content-Disposition", "X-Suggested-Filename"],
+    "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+}
+CORS(app, resources={
+                     r"/api/*": cors_config,
+                     r"/assets/*": cors_config,
+                     })
 
 
 
