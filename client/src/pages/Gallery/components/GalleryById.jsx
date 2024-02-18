@@ -18,7 +18,7 @@ function GalleryById() {
                 bg={useColorModeValue('gray.400', 'gray.800')}
 
                 px='2rem' width={'100%'}>
-                <TextureDisplayById materialId={id} /> {/* Pass it as 'materialId' */}
+                <TextureDisplayById materialId={id} />
             </Box>
         </Box>
     );

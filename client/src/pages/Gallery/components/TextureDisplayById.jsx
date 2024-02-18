@@ -3,6 +3,7 @@ import axios from 'axios';
 import {Box, Spacer, Divider, Text, SimpleGrid, Skeleton, Image, HStack, Heading, Flex, Button, Select, AspectRatio, useColorModeValue} from '@chakra-ui/react';
 import {motion} from 'framer-motion';
 import {useParams} from 'react-router-dom'; // Import useParams from react-router-dom
+import {set} from 'animejs';
 
 
 
@@ -45,20 +46,22 @@ const TextureDisplayById = () => {
     const [pbrIsLoading, setPbrIsLoading] = useState(true);
 
 
-
     const MotionImageBox = motion(Box);
-    // Fetch the most recent albedo image and its material ID
+    setMaterialId(id);
+
     useEffect(() => {
+        const apiUrl = import.meta.env.VITE_API_URL
         const fetchRecentAlbedo = async () => {
             try {
+
                 setAlbedoIsLoading(true);
-                const filenameResponse = await axios.get(`/api/get_material_filename/${id}`);
+                const filenameResponse = await axios.get(apiUrl + `/api/get_material_filename/${id}`);
                 const filename = filenameResponse.data.filename;
                 const formattedFileName = filename.replace('.zip', '').replace(/[_]/g, " ").toUpperCase();
                 setMaterialName(formattedFileName);
-                const response = await axios.get(`/api/get_albedo_by_id/${id}`);
+
+                const response = await axios.get(apiUrl + `/api/get_albedo_by_id/${id}`);
                 setAlbedoImage(response.data.base_color_url);
-                setMaterialId(response.data.material_id);
                 setAlbedoIsLoading(false);
             } catch (error) {
                 console.error('Error fetching recent albedo:', error);
@@ -67,16 +70,16 @@ const TextureDisplayById = () => {
         };
 
         fetchRecentAlbedo();
-    }, [id]);
+    }, [id, materialId]);
 
-    // Fetch the PBR maps using the material ID
+
     useEffect(() => {
-        if (!materialId) return;
-
+        if (!albedoImage) return;
+        const apiUrl = import.meta.env.VITE_API_URL
         const fetchMap = async (mapType) => {
 
             try {
-                const response = await axios.get(`/api/get_${mapType}_by_id/${id}`);
+                const response = await axios.get(apiUrl + `/api/get_${mapType}_by_id/${id}`);
                 return response.data.image_url;
 
             } catch (error) {
