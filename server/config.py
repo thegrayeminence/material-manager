@@ -400,7 +400,7 @@ def get_albedo_by_id(material_id):
 def get_pbr_by_id(material_id):
     material_urls = get_material_urls(material_id)
     if material_urls:
-        image_urls = [material_urls['normal_map_url'], material_urls['height_map_url'], material_urls['smoothness_map_url']]
+        image_urls = {'normal': material_urls['normal_map_url'], 'height': material_urls['height_map_url'], 'smoothness': material_urls['smoothness_map_url']}
         return make_response({'image_urls': image_urls}), 200
     else:
         return make_response({"error": "Material not found"}), 404
