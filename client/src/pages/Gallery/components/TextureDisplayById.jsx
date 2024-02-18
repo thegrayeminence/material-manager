@@ -76,7 +76,7 @@ const TextureDisplayById = () => {
         const fetchMap = async (mapType) => {
 
             try {
-                const response = await axios.get(`/api/get_${mapType}_by_id/${id}`); // Use 'id' as a string
+                const response = await axios.get(`/api/get_${mapType}_by_id/${id}`);
                 return response.data.image_url;
 
             } catch (error) {

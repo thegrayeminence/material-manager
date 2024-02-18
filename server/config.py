@@ -395,6 +395,31 @@ def get_albedo_by_id(material_id):
         return make_response({'base_color_url': material_urls['base_color_url'], 'material_id': material_id}), 200
     else:
         return make_response({"error": "Material not found"}), 404
+
+
+@app.get("/api/get_normal_by_id/<int:material_id>")
+def get_normal_by_id(material_id):
+    material_urls = get_material_urls(material_id)
+    if material_urls:
+        return make_response({'image_url': material_urls['normal_map_url'], 'material_id': material_id}), 200
+    else:
+        return make_response({"error": "Material not found"}), 404
+
+@app.get("/api/get_height_by_id/<int:material_id>")
+def get_height_by_id(material_id):
+    material_urls = get_material_urls(material_id)
+    if material_urls:
+        return make_response({'image_url': material_urls['height_map_url'], 'material_id': material_id}), 200
+    else:
+        return make_response({"error": "Material not found"}), 404
+
+@app.get("/api/get_smoothness_by_id/<int:material_id>")
+def get_smoothness_by_id(material_id):
+    material_urls = get_material_urls(material_id)
+    if material_urls:
+        return make_response({'image_url': material_urls['smoothness_map_url'], 'material_id': material_id}), 200
+    else:
+        return make_response({"error": "Material not found"}), 404
     
 
 @app.route("/api/get_recent_pbrs",  methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
@@ -536,18 +561,18 @@ def get_recent_albedo():
 #     return zip_filename
 
 
-# ##gets proper filename for zip file/unzipped folder
-# @app.route("/api/get_material_filename/<int:material_id>",  methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
-# def get_material_filename(material_id):
-#     try:
-#         material = Material.query.get(material_id)
-#         if not material:
-#             return jsonify({"error": "Material not found"}), 404
+##gets proper filename for zip file/unzipped folder
+@app.route("/api/get_material_filename/<int:material_id>",  methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
+def get_material_filename(material_id):
+    try:
+        material = Material.query.get(material_id)
+        if not material:
+            return jsonify({"error": "Material not found"}), 404
 
-#         filename = f"{material.color}_{material.element}_{material.manifestation}_{material.condition}.zip"
-#         return jsonify({"filename": filename})
-#     except Exception as e:
-#         return jsonify({"error": str(e)}), 500
+        filename = f"{material.color}_{material.element}_{material.manifestation}_{material.condition}.zip"
+        return jsonify({"filename": filename})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
     
 
 # @app.route("/api/download_material/<int:material_id>",  methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
