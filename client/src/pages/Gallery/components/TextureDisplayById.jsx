@@ -11,14 +11,15 @@ import {useParams} from 'react-router-dom'; // Import useParams from react-route
 const handleDownload = async (materialId) => {
 
 
-    console.log("material_id:", materialId)
+
     try {
-
+        const apiUrl = import.meta.env.VITE_API_URL
         // First, fetch the filename
-        const filenameResponse = await axios.get(`/api/get_material_filename/${materialId}`);
+        const filenameResponse = await axios.get(apiUrl + `/api/get_material_filename/${id}`);
         const filename = filenameResponse.data.filename;
+        console.log("handle download for: material_id:", materialId, "filename:", filename, "apiUrl:", apiUrl)
 
-        const response = await axios.get(`/api/download_material/${materialId}`, {
+        const response = await axios.get(apiUrl + `/api/download_material/${materialId}`, {
             responseType: 'blob',
         });
         const url = window.URL.createObjectURL(new Blob([response.data]));
