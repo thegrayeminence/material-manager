@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import {Box, Spacer, Divider, Text, SimpleGrid, Skeleton, SkeletonText, Image, HStack, Heading, Flex, Button, Select, AspectRatio, useColorModeValue} from '@chakra-ui/react';
-import {motion} from 'framer-motion';
+import {m, motion} from 'framer-motion';
 import {useParams} from 'react-router-dom'; // Import useParams from react-router-dom
 
 
@@ -45,7 +45,7 @@ const TextureDisplayById = () => {
     const [albedoIsLoading, setAlbedoIsLoading] = useState(true);
     const [pbrIsLoading, setPbrIsLoading] = useState(true);
 
-
+    setMaterialId(id);
     const MotionImageBox = motion(Box);
 
 
@@ -70,7 +70,7 @@ const TextureDisplayById = () => {
         };
 
         fetchRecentAlbedo();
-    }, []);
+    }, [id]);
 
     useEffect(() => {
         const fetchRecentPbrs = async () => {
@@ -189,7 +189,7 @@ const TextureDisplayById = () => {
 
             <Flex direction="column" align="center" mb={10} >
                 {/* <SkeletonText isLoaded={materialName} noOfLines={1} w="50%" py={4} mt={4} /> */}
-                {materialId && materialName && (
+                {materialId && (
 
                     <Heading fontSize={{base: '2xl', sm: 'xl', md: '2xl', lg: '3xl', xl: '4xl'}} color={useColorModeValue('twitter.600', 'purple.600')} py={4} mt={4}>
                         {`${materialName}`}

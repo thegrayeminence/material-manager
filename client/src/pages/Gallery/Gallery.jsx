@@ -116,7 +116,7 @@ function Gallery() {
         opacity={0.8}
 
       >
-        {`MATERIALS GALLERY:`}
+        {`COMMUNITY GALLERY:`}
       </Text>
       <Box maxW='90%' h='100%' >
 
