@@ -120,9 +120,8 @@ export default function MaterialUploadForm() {
                 title: 'Form Submitted Successfully!',
                 description: "Please wait while we initiate the image generation process! This may take a few moments.",
                 status: 'success',
-                duration: 3000,
-                position: 'bottom',
-                variant: 'subtle',
+                duration: 5000,
+                position: 'top',
                 isClosable: true,
 
             });
@@ -148,8 +147,7 @@ export default function MaterialUploadForm() {
                     title: 'First Prompt Submitted Successfully! Initiating Second Prompt...',
                     description: "Please wait while we generate the secondary PBR maps for your material. This may take a few moments.",
                     status: 'loading',
-                    position: 'bottom',
-                    variant: 'subtle',
+                    position: 'top',
                     isClosable: true,
                     duration: 10000,
                 })

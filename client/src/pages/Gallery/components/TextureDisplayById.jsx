@@ -3,6 +3,7 @@ import axios from 'axios';
 import {Box, Spacer, Divider, Text, SimpleGrid, Skeleton, SkeletonText, Image, HStack, Heading, Flex, Button, Select, AspectRatio, useColorModeValue} from '@chakra-ui/react';
 import {motion} from 'framer-motion';
 import {useParams} from 'react-router-dom'; // Import useParams from react-router-dom
+import {set} from 'react-hook-form';
 
 
 
@@ -39,14 +40,14 @@ const TextureDisplayById = () => {
     const {id} = useParams(); // Get the 'id' parameter from the URL as a string
     // const {setPBRImage} = useGeneratedImagesStore();
     const [materialName, setMaterialName] = useState(null);
-    const [materialId, setMaterialId] = useState(null);
+    const [materialId, setMaterialId] = useState(id);
     const [albedoImage, setAlbedoImage] = useState(null);
     const [pbrMapUrls, setPbrMapUrls] = useState({normal: null, height: null, smoothness: null});
     const [albedoIsLoading, setAlbedoIsLoading] = useState(true);
     const [pbrIsLoading, setPbrIsLoading] = useState(true);
 
     const MotionImageBox = motion(Box);
-    setMaterialId(id);
+
 
     useEffect(() => {
         const fetchRecentAlbedo = async () => {
@@ -69,7 +70,7 @@ const TextureDisplayById = () => {
         };
 
         fetchRecentAlbedo();
-    }, [materialId]);
+    }, []);
 
     useEffect(() => {
         const fetchRecentPbrs = async () => {
