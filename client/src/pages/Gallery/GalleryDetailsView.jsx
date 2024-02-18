@@ -136,14 +136,14 @@ function GalleryDetailsView() {
                                 variant="outline" mt={5} size={{base: 'md', sm: 'md', md: 'md', lg: 'lg', xl: 'lg'}}
                                 onClick={() =>
                                     toast({
-                                        title: 'This feature is not yet available!',
-                                        description: "Download functionality for static files is still under development. Please check back later.",
+                                        title: 'Downloads of community/static files not currently available!',
+                                        description: "Server undergoing maintanenance — try generating new images for downloading via the form...or check back here later!",
                                         status: 'error',
-                                        duration: 4000,
+                                        duration: 8000,
                                         position: 'top',
-                                        variant: 'solid',
+                                        variant: 'subtle',
                                         isClosable: true,
-                                        colorScheme: 'blue',
+                                        colorScheme: 'purple',
                                     })
                                 }
 

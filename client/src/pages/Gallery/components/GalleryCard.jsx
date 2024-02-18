@@ -1,7 +1,7 @@
 import React from 'react'
 import {
     Flex, Circle, Box, Image, Badge,
-    useColorModeValue, Icon, chakra, Tooltip, HStack, Spacer,
+    useColorModeValue, Icon, chakra, Tooltip, HStack, Spacer, useToast,
 } from "@chakra-ui/react"
 import {MdDownload, MdInfoOutline, MdOutlinePreview, MdViewInAr, MdGridView, MdPhotoLibrary} from "react-icons/md";
 import {useNavigate} from 'react-router-dom';
@@ -9,6 +9,7 @@ import {useNavigate} from 'react-router-dom';
 
 function GalleryCard({name, images, isNew, showAllImages = false}) {
     const navigate = useNavigate();
+    const toast = useToast();
     // const formatting = /[_-]/g
     // const formattedName = name.replace(formatting, ' ')
 
@@ -51,13 +52,26 @@ function GalleryCard({name, images, isNew, showAllImages = false}) {
                             <Spacer px='1.5' />
 
                             <Tooltip label="Download Material" fontSize={'md'} >
-                                <chakra.span>
+                                <chakra.span
+                                >
                                     <Icon
                                         aria-label="Download"
                                         color="gray.600"
                                         h={7} w={7}
                                         alignSelf={'center'}
                                         as={MdDownload}
+                                        onClick={() =>
+                                            toast({
+                                                title: 'Downloads of community/static files not currently available!',
+                                                description: "Server undergoing maintanenance — try generating new images for downloading via the form...or check back here later!",
+                                                status: 'error',
+                                                duration: 8000,
+                                                position: 'top',
+                                                variant: 'subtle',
+                                                isClosable: true,
+                                                colorScheme: 'purple',
+                                            })
+                                        }
                                     />
                                 </chakra.span>
                             </Tooltip>
