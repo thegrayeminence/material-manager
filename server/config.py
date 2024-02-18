@@ -453,7 +453,8 @@ def get_recent_albedo():
 
 @app.route('/api/all_images',  methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
 def get_all_images():
-    images_dir_path = os.path.join(app.static_folder, 'static', 'images')
+    BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', ''))
+    images_dir_path = os.path.join(BASE_DIR, 'client', 'dist', 'assets', 'images')
 
 
     folders = [name for name in os.listdir(images_dir_path) if os.path.isdir(os.path.join(images_dir_path, name))]
@@ -481,10 +482,10 @@ def get_all_images():
             
 @app.get('/api/get_foldernames')
 def get_foldernames():
-    # relative_path = '../client/dist/'
-    images_dir_path = os.path.join(app.static_folder, 'static', 'images')
-
+    BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', ''))
+    images_dir_path = os.path.join(BASE_DIR, 'client', 'dist', 'assets', 'images')
     print(images_dir_path)
+    
     folders = [name for name in os.listdir(images_dir_path) if os.path.isdir(os.path.join(images_dir_path, name))]
     print(folders)
     all_folders_names = []
@@ -500,13 +501,14 @@ def get_foldernames():
 
 @app.route('/api/images/<folder_name>', methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
 def get_images(folder_name):
-    folder_path = os.path.join(app.static_folder, 'static', 'images', folder_name)
+    BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', ''))
+    images_dir_path = os.path.join(BASE_DIR, 'client', 'dist', 'assets', 'images', folder_name)
     # dynamic_base_path = os.getenv('VITE_API_URL', app.static_folder) 
     # if not os.path.exists(folder_path) or not os.path.isdir(folder_path):
     #     return jsonify({"error": f"Folder not found; folder info \n path_static:{folder_path} \n "}), 404
 
     try:
-        image_files = [f for f in os.listdir(folder_path) if f.endswith('.png')]
+        image_files = [f for f in os.listdir(path=images_dir_path) if f.endswith('.png')]
         image_urls = [url_for('static', filename=f'assets/images/{folder_name}/{file}', _external=True) for file in image_files]
        
         # map_types = ['base_color.png', 'height.png', 'normal.png', 'smoothness.png']
