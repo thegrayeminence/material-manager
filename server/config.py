@@ -119,17 +119,17 @@ os.environ["REPLICATE_API_TOKEN"] = api_token
 # ##-------------------------------##
 
 # ##gets image urls for endpoints; limits redundancies
-# def get_material_urls(material_id):
-#     material = Material.query.get(material_id)
-#     if material:
-#         return {
-#             'base_color_url': material.base_color_url,
-#             'normal_map_url': material.normal_map_url,
-#             'height_map_url': material.height_map_url,
-#             'smoothness_map_url': material.smoothness_map_url
-#         }
-#     else:
-#         return None
+def get_material_urls(material_id):
+    material = Material.query.get(material_id)
+    if material:
+        return {
+            'base_color_url': material.base_color_url,
+            'normal_map_url': material.normal_map_url,
+            'height_map_url': material.height_map_url,
+            'smoothness_map_url': material.smoothness_map_url
+        }
+    else:
+        return None
 
 
 
@@ -353,61 +353,61 @@ def generate_pbr_maps():
 # ######## Server-->Client ENDPOINTS ######
 # ##-------------------------------------##
 # ## GET Generated Images from DB ####
-# @app.route("/api/get_albedo_maps",  methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
-# def get_albedo_maps():
-#     try:
-#         materials = Material.query.all()
-#         images_urls = [material.base_color_url for material in materials]
-#         return jsonify({'image_urls': images_urls}), 200
-#     except Exception as e:
-#         return jsonify({"error": str(e)}), 500
+@app.route("/api/get_albedo_maps",  methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
+def get_albedo_maps():
+    try:
+        materials = Material.query.all()
+        images_urls = [material.base_color_url for material in materials]
+        return jsonify({'image_urls': images_urls}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
     
 
 
 
-# @app.route("/api/get_maps/<int:material_id>",  methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
-# def get_maps_by_id(material_id):
-#     material_urls = get_material_urls(material_id)
-#     if material_urls:
-#         return jsonify({'image_urls': material_urls}), 200
-#     else:
-#         return jsonify({"error": "Material not found"}), 404
+@app.route("/api/get_maps/<int:material_id>",  methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
+def get_maps_by_id(material_id):
+    material_urls = get_material_urls(material_id)
+    if material_urls:
+        return make_response({'image_urls': material_urls}), 200
+    else:
+        return make_response({"error": "Material not found"}), 404
 
 
-# @app.route("/api/get_albedo_by_id/<int:material_id>",  methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
-# def get_albedo_by_id(material_id):
-#     material_urls = get_material_urls(material_id)
-#     if material_urls:
-#         return jsonify({'image_url': material_urls['base_color_url'], 'material_id': material_id}), 200
-#     else:
-#         return jsonify({"error": "Material not found"}), 404
+@app.route("/api/get_albedo_by_id/<int:material_id>",  methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
+def get_albedo_by_id(material_id):
+    material_urls = get_material_urls(material_id)
+    if material_urls:
+        return make_response({'image_url': material_urls['base_color_url'], 'material_id': material_id}), 200
+    else:
+        return make_response({"error": "Material not found"}), 404
     
 
-# @app.route("/api/get_recent_pbrs",  methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
-# def get_recent_pbrs():
-#     try:
-#         material = Material.query.order_by(Material.id.desc()).first()
-#         if material:
-#             material_urls = get_material_urls(material.id)
-#             image_urls = [material_urls['normal_map_url'], material_urls['height_map_url'], material_urls['smoothness_map_url']]
-#             return jsonify({'image_url': image_urls, 'material_id': material.id}), 200
-#         else:
-#             return jsonify({"error": "No recent PBRs found"}), 404
-#     except Exception as e:
-#         return jsonify({"error": str(e)}), 500
+@app.route("/api/get_recent_pbrs",  methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
+def get_recent_pbrs():
+    try:
+        material = Material.query.order_by(Material.id.desc()).first()
+        if material:
+            material_urls = get_material_urls(material.id)
+            image_urls = [material_urls['normal_map_url'], material_urls['height_map_url'], material_urls['smoothness_map_url']]
+            return make_response({'image_url': image_urls, 'material_id': material.id}), 200
+        else:
+            return make_response({"error": "No recent PBRs found"}), 404
+    except Exception as e:
+        return make_response({"error": str(e)}), 500
     
     
-# @app.route("/api/get_recent_albedo",  methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
-# def get_recent_albedo():
-#     try:
-#         material = Material.query.order_by(Material.id.desc()).first()
-#         if material:
-#             material_urls = get_material_urls(material.id)
-#             return jsonify({'image_url': material_urls['base_color_url'], 'material_id': material.id}), 200
-#         else:
-#             return jsonify({"error": "No recent albedo found"}), 404
-#     except Exception as e:
-#         return jsonify({"error": str(e)}), 500
+@app.route("/api/get_recent_albedo",  methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
+def get_recent_albedo():
+    try:
+        material = Material.query.order_by(Material.id.desc()).first()
+        if material:
+            material_urls = get_material_urls(material.id)
+            return make_response({'image_url': material_urls['base_color_url'], 'material_id': material.id}), 200
+        else:
+            return make_response({"error": "No recent albedo found"}), 404
+    except Exception as e:
+        return make_response({"error": str(e)}), 500
     
 
 # ##-------------------------------------##
