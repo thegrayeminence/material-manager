@@ -119,11 +119,12 @@ export default function MaterialUploadForm() {
             toast({
                 title: 'Form Submitted Successfully!',
                 description: "Please wait while we generate the first texture for your material. This may take a few moments.",
-                status: 'success',
-                duration: 6000,
+                status: 'loading',
+                duration: 8000,
                 position: 'top',
                 variant: 'subtle',
                 isClosable: true,
+
             });
 
             const materialData = {...formData.materialData, ...data};
@@ -133,16 +134,6 @@ export default function MaterialUploadForm() {
 
             const textureResponse = await axios.post(apiUrl + "/api/generate_albedo",
                 {materialData: data}
-                //headers for backend issues. dont work
-                // {
-                //     // withCredentials: true,
-                //     headers: {
-                //         'Access-Control-Allow-Origin': '*',
-                //         'Content-Type': 'application/json',
-                //         'Access-Control-Allow-Credentials': 'true',
-                //     }
-                // }
-
             );
             console.log("Albedo texture generation initiated!");
 
@@ -157,13 +148,15 @@ export default function MaterialUploadForm() {
                     isClosable: true,
 
                 })
+
+
             }
 
 
             const materialId = textureResponse.data.material_id;
             const baseColorUrl = textureResponse.data.base_color_url;
 
-
+            navigate(`/gallery_id/${materialId}`);
 
             // Set the albedo image in the store
             //setAlbedoImage(baseColorUrl);
@@ -172,7 +165,7 @@ export default function MaterialUploadForm() {
 
             // Navigate to the loading page with materialId
             // navigate('/loading-textures', {state: {materialId}});
-            // navigate(`/gallery_id/${materialId}`);
+
 
             // Second API call to generate PBR maps
             const pbrResponse = await axios.post(apiUrl + `/api/generate_pbr_maps`,
@@ -180,15 +173,16 @@ export default function MaterialUploadForm() {
             );
             console.log("PBR maps generation initiated!");
 
+
             // Set PBR maps in zustand store
             const maps = pbrResponse.data.pbr_maps;
             console.log("PBR maps generated sucessfully!", maps);
             // setPBRImage('normal', maps.normal_map_url);
             // setPBRImage('height', maps.height_map_url);
             // setPBRImage('smoothness', maps.smoothness_map_url);
-            if (pbrResponse.data.pbr_maps) {
-                navigate(`/gallery_id/${materialId}`);
-            }
+            // if (pbrResponse.data.pbr_maps) {
+            //     navigate(`/gallery_id/${materialId}`);
+            // }
 
         } catch (error) {
             console.error("Error during form submission:", error);
