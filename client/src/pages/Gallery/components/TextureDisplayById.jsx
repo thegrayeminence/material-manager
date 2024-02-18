@@ -80,7 +80,7 @@ const TextureDisplayById = () => {
                 console.log('Loading maps for material:', materialId);
                 const mapTypes = ['normal', 'height', 'smoothness'];
 
-                const response = await axios.get(apiUrl + `/api/get_maps/${id}`);
+                const response = await axios.get(apiUrl + `/api/get_pbr_by_id/${id}`);
                 setPbrMapUrls(response.data.base_color_url);
                 setAlbedoIsLoading(false);
                 console.log(`Albedo Image URL: ${response.data.base_color_url}, albedoIsLoading: ${albedoIsLoading}`)
