@@ -61,7 +61,7 @@ db.init_app(app)
 
 
 ## test endpoint for flask endpoints 
-@app.get("/api/test",  methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
+@app.get("/api/test")
 def test():
     return make_response({"message": "Test endpoint is working"}), 200
     # try:
