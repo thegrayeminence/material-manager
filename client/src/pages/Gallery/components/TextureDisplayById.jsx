@@ -38,7 +38,8 @@ const TextureDisplayById = () => {
     const {id} = useParams(); // Get the 'id' parameter from the URL as a string
     // const {setPBRImage} = useGeneratedImagesStore();
     const [materialName, setMaterialName] = useState(null);
-    const [materialId, setMaterialId] = useState(id);
+    const [materialId, setMaterialId] = useState(null);
+    setMaterialId(id);
     const [albedoImage, setAlbedoImage] = useState(null);
     const [pbrMapUrls, setPbrMapUrls] = useState({normal: null, height: null, smoothness: null});
     const [albedoIsLoading, setAlbedoIsLoading] = useState(true);
@@ -46,13 +47,12 @@ const TextureDisplayById = () => {
 
 
     const MotionImageBox = motion(Box);
-    setMaterialId(id);
+
 
     useEffect(() => {
-        const apiUrl = import.meta.env.VITE_API_URL
         const fetchRecentAlbedo = async () => {
             try {
-
+                const apiUrl = import.meta.env.VITE_API_URL
                 setAlbedoIsLoading(true);
                 const filenameResponse = await axios.get(apiUrl + `/api/get_material_filename/${id}`);
                 const filename = filenameResponse.data.filename;
@@ -62,6 +62,7 @@ const TextureDisplayById = () => {
                 const response = await axios.get(apiUrl + `/api/get_albedo_by_id/${id}`);
                 setAlbedoImage(response.data.base_color_url);
                 setAlbedoIsLoading(false);
+                console.log(`Albedo Image URL: ${response.data.base_color_url}, albedoIsLoading: ${albedoIsLoading}`)
             } catch (error) {
                 console.error('Error fetching recent albedo:', error);
 
@@ -69,15 +70,16 @@ const TextureDisplayById = () => {
         };
 
         fetchRecentAlbedo();
-    }, [id]);
+    }, []);
 
 
     useEffect(() => {
-        if (!albedoImage) return;
-        const apiUrl = import.meta.env.VITE_API_URL
+        if (!albedoImage || albedoIsLoading) return;
         const fetchMap = async (mapType) => {
 
             try {
+                const apiUrl = import.meta.env.VITE_API_URL
+                console.log("Fetching", mapType, "map for material", materialId);
                 const response = await axios.get(apiUrl + `/api/get_${mapType}_by_id/${id}`);
                 return response.data.image_url;
 
@@ -88,7 +90,7 @@ const TextureDisplayById = () => {
         };
         const loadMaps = async () => {
             setPbrIsLoading(true);
-            console.log("Current materialId:", materialId);
+            console.log('Loading maps for material:', materialId);
             const mapTypes = ['normal', 'height', 'smoothness'];
             const mapPromises = mapTypes.map(mapType => fetchMap(mapType));
             const maps = await Promise.all(mapPromises);
@@ -107,7 +109,7 @@ const TextureDisplayById = () => {
 
         loadMaps();
 
-    }, [albedoImage, albedoIsLoading]);
+    }, [albedoIsLoading]);
 
 
     const imageBoxStyle = {
@@ -174,7 +176,7 @@ const TextureDisplayById = () => {
 
 
                 {albedoImage && albedoImage.length > 0 && (
-                    <Skeleton isLoaded={albedoIsLoading} position='relative' boxSize={albedoBoxSize} >
+                    <Skeleton isLoaded={albedoImage} position='relative' boxSize={albedoBoxSize} >
                         <MotionImageBox {...imageBoxStyle}>
 
                             <Image src={albedoImage} alt="Base Color Map" boxSize={albedoBoxSize} objectFit="cover" onClick={() => handleDownload(materialId)} />
@@ -194,7 +196,7 @@ const TextureDisplayById = () => {
                     {pbrMapUrls && pbrMapUrls['smoothness'] && pbrMapUrls['normal'] && pbrMapUrls['height'] && (
 
                         ['normal', 'height', 'smoothness'].map((type, index) => (
-                            <Skeleton isLoaded={pbrIsLoading} key={type}  >
+                            <Skeleton isLoaded={pbrMapUrls[index]} key={type}  >
                                 <MotionImageBox key={type} {...imageBoxStyle}>
                                     <Image src={pbrMapUrls[type]} alt={`${type} Map`} boxSize={pbrBoxSize} objectFit="cover" />
                                     <Text mt="1" color='whiteAlpha.700' fontWeight={'500'} fontSize={{base: 'lg', sm: 'md', md: 'lg', lg: 'lg', xl: 'xl'}} fontFamily='avenir, sans-serif' textAlign="center" >
