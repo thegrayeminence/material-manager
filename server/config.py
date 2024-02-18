@@ -51,19 +51,30 @@ db.init_app(app)
 # api = Api(app)
 # CORS(app)
 # CORS settings
-# CORS(app, resources={r"/api/*": {"origins": "*" }}
-#      )
+CORS(app, resources={r"/api/*": {"origins": ["https://textureforgestatic.onrender.com", "https://cdn.pbr.one", "http://localhost:3000"]}}
+     )
 cors_config = {
-    "origins": "*",
+    #"origins": "*",
+    "origins": ["https://textureforgestatic.onrender.com", "https://cdn.pbr.one", "http://localhost:3000"],
     "supports_credentials": True,
     "allow_headers": ["Content-Type", "Authorization", "X-Requested-With", "X-CSRFToken", "Cache-Control"],
     "expose_headers": ["Content-Disposition", "X-Suggested-Filename"],
     "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
 }
-CORS(app, resources={
-                     r"/api/*": cors_config,
-                     r"/assets/*": cors_config,
-                     })
+
+# cors_config = {
+#     "origins": ["https://textureforgestatic.onrender.com", "https://cdn.pbr.one", "http://localhost:3000"],
+#     "supports_credentials": True,
+    # "allow_headers": ["Content-Type", "Authorization", "X-Requested-With", "X-CSRFToken", "Cache-Control"],
+    # "expose_headers": ["Content-Disposition", "X-Suggested-Filename"],
+    # "methods": ["GET", "POST", "PUT", "DELETE"],
+# }
+
+# CORS(app, resources={
+#                      r"/api/*": cors_config,
+#                      r"/assets/*": cors_config,
+#                      })
+
 
 
 
@@ -302,9 +313,11 @@ def generate_albedo():
         db.session.add(new_material)
         db.session.commit()
         # app.logger.info("Albedo map generated successfully.")
-        # response = jsonify({'base_color_url': base_color_url, 'material_id': new_material.id})
-        # response.headers.add('Access-Control-Allow-Origin', '*')
-        return jsonify({'base_color_url': base_color_url, 'material_id': new_material.id}), 200
+        response = jsonify({'base_color_url': base_color_url, 'material_id': new_material.id})
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers.add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+        response.headers.add("Access-Control-Allow-Headers", "Content-Type");
+        return response, 200
     
     except Exception as e:
         db.session.rollback()
