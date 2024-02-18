@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
-import {Box, Spacer, Divider, Text, SimpleGrid, Skeleton, Image, HStack, Heading, Flex, Button, Select, AspectRatio, useColorModeValue} from '@chakra-ui/react';
+import {Box, Spacer, Divider, Text, SimpleGrid, Skeleton, SkeletonText, Image, HStack, Heading, Flex, Button, Select, AspectRatio, useColorModeValue} from '@chakra-ui/react';
 import {motion} from 'framer-motion';
 import {useParams} from 'react-router-dom'; // Import useParams from react-router-dom
 
@@ -188,15 +188,19 @@ const TextureDisplayById = () => {
             {/* Albedo Image */}
 
             <Flex direction="column" align="center" mb={10} >
+                {/* <SkeletonText isLoaded={materialName} noOfLines={1} w="50%" py={4} mt={4} /> */}
+                {materialId && materialName && (
 
-                {materialName && (<Heading fontSize={{base: '2xl', sm: 'xl', md: '2xl', lg: '3xl', xl: '4xl'}} color={useColorModeValue('twitter.600', 'purple.600')} py={4} mt={4}>
-                    {`${materialName}`}
-                </Heading>)}
+                    <Heading fontSize={{base: '2xl', sm: 'xl', md: '2xl', lg: '3xl', xl: '4xl'}} color={useColorModeValue('twitter.600', 'purple.600')} py={4} mt={4}>
+                        {`${materialName}`}
+                    </Heading>
+
+                )}
 
 
 
                 {materialId && (
-                    <Skeleton isLoaded={albedoImage} position='relative' boxSize={albedoBoxSize} >
+                    <Skeleton isLoaded={!albedoIsLoading} position='relative' boxSize={albedoBoxSize} >
                         <MotionImageBox {...imageBoxStyle}>
 
                             <Image src={albedoImage} alt="Base Color Map" boxSize={albedoBoxSize} objectFit="cover" onClick={() => handleDownload(materialId)} />
@@ -216,7 +220,7 @@ const TextureDisplayById = () => {
                     {materialId && (
 
                         ['normal', 'height', 'smoothness'].map((type, index) => (
-                            <Skeleton isLoaded={pbrMapUrls} key={type}  >
+                            <Skeleton isLoaded={!pbrIsLoading} key={type}  >
                                 <MotionImageBox key={type} {...imageBoxStyle}>
                                     <Image src={pbrMapUrls[type]} alt={`${type} Map`} boxSize={pbrBoxSize} objectFit="cover" />
                                     <Text mt="1" color='whiteAlpha.700' fontWeight={'500'} fontSize={{base: 'lg', sm: 'md', md: 'lg', lg: 'lg', xl: 'xl'}} fontFamily='avenir, sans-serif' textAlign="center" >
@@ -224,7 +228,8 @@ const TextureDisplayById = () => {
                                     </Text>
                                 </MotionImageBox>
                             </Skeleton>
-                        )))}
+                        ))
+                    )}
 
                 </SimpleGrid>
 

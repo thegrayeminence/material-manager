@@ -51,7 +51,7 @@ db.init_app(app)
 # api = Api(app)
 # CORS(app)
 # CORS settings
-CORS(app, resources={r"/api/*": {"origins": ["https://textureforgestatic.onrender.com", "https://cdn.pbr.one", "http://localhost:3000"]}}
+CORS(app, resources={r"/api/*": {"origins": ["https://textureforgestatic.onrender.com", "https://cdn.pbr.one", "http://localhost:3000"]}, r"/assets/*": {"origins": ["https://textureforgestatic.onrender.com", "https://cdn.pbr.one", "http://localhost:3000"]}}
      )
 # CORS(app, resources={r"/api/*": {"origins": "*"}})
 # cors_config = {
