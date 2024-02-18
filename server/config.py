@@ -284,8 +284,8 @@ def generate_albedo():
 
         
         ##generating image_uri from matdata/prompt/params/etc values
-        image_url = generate_image_from_prompt(model_identifier, prompt, params)
-        # app.logger.info(image_url)
+        base_color_url = generate_image_from_prompt(model_identifier, prompt, params)
+        # app.logger.info(base_color_url)
         
         ##instantiating new material to store in db
         new_material = Material(
@@ -297,14 +297,14 @@ def generate_albedo():
             condition=material_data.get('condition', ''),
             manifestation=material_data.get('manifestation', ''),
             prompt=prompt,
-            base_color_url=image_url
+            base_color_url=base_color_url
         )
         db.session.add(new_material)
         db.session.commit()
         # app.logger.info("Albedo map generated successfully.")
-        # response = jsonify({'image_url': image_url, 'material_id': new_material.id})
+        # response = jsonify({'base_color_url': base_color_url, 'material_id': new_material.id})
         # response.headers.add('Access-Control-Allow-Origin', '*')
-        return make_response({'image_url': image_url, 'material_id': new_material.id}), 200
+        return make_response({'base_color_url': base_color_url, 'material_id': new_material.id}), 200
     
     except Exception as e:
         db.session.rollback()
@@ -376,7 +376,7 @@ def get_maps_by_id(material_id):
 def get_albedo_by_id(material_id):
     material_urls = get_material_urls(material_id)
     if material_urls:
-        return make_response({'image_url': material_urls['base_color_url'], 'material_id': material_id}), 200
+        return make_response({'base_color_url': material_urls['base_color_url'], 'material_id': material_id}), 200
     else:
         return make_response({"error": "Material not found"}), 404
     
@@ -401,7 +401,7 @@ def get_recent_albedo():
         material = Material.query.order_by(Material.id.desc()).first()
         if material:
             material_urls = get_material_urls(material.id)
-            return make_response({'image_url': material_urls['base_color_url'], 'material_id': material.id}), 200
+            return make_response({'base_color_url': material_urls['base_color_url'], 'material_id': material.id}), 200
         else:
             return make_response({"error": "No recent albedo found"}), 404
     except Exception as e:
