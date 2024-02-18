@@ -58,7 +58,7 @@ const TextureDisplayById = () => {
                 const formattedFileName = filename.replace('.zip', '').replace(/[_]/g, " ").toUpperCase();
                 setMaterialName(formattedFileName);
                 const response = await axios.get(`/api/get_albedo_by_id/${id}`);
-                setAlbedoImage(response.data.image_url);
+                setAlbedoImage(response.data.base_color_url);
                 setMaterialId(response.data.material_id);
                 setAlbedoIsLoading(false);
             } catch (error) {

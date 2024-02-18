@@ -41,7 +41,8 @@ export default function MaterialUploadForm() {
     //zustand global states
     const {formData, setFileData, setMaterialData} = useMaterialStore();
     const {progress, increaseProgress, decreaseProgress, resetProgress} = useProgressStore();
-    const {isLoading, setIsLoading} = useIsLoadingStore();
+    // const {isLoading, setIsLoading} = useIsLoadingStore();
+    const [isLoading, setIsLoading] = useState(false);
     const {setAlbedoImage, setPBRImage, clearImages, albedoImage, pbrImages} = useGeneratedImagesStore();
 
     //autosuggestion zustand states
@@ -92,7 +93,7 @@ export default function MaterialUploadForm() {
 
     //HTTP POST REQUESTS & ASYNCHRONOUS STUFF//
     // ---------------- //
-    axios.defaults.withCredentials = true;
+    // axios.defaults.withCredentials = true;
 
     const handleFormSubmission = async (data) => {
 
@@ -128,11 +129,11 @@ export default function MaterialUploadForm() {
 
             const materialData = {...formData.materialData, ...data};
             const apiUrl = import.meta.env.VITE_API_URL
-            console.log('logging form data!:', {'formdata': formData, 'materialData': materialData});
+            console.log('logging form data!:', {'formdata': formData, 'materialData': materialData, 'apiUrl': apiUrl});
 
 
-            const textureResponse = await axios.post(apiUrl + "/api/generate_albedo",
-                {materialData: data},
+            const textureResponse = await axios.post("https://textureforge.onrender.com/api/generate_albedo",
+                {materialData: data}
                 //headers for backend issues. dont work
                 // {
                 //     // withCredentials: true,
@@ -161,7 +162,7 @@ export default function MaterialUploadForm() {
 
 
             const materialId = textureResponse.data.material_id;
-            const baseColorUrl = textureResponse.data.image_url;
+            const baseColorUrl = textureResponse.data.base_color_url;
 
 
 
@@ -172,20 +173,20 @@ export default function MaterialUploadForm() {
 
             // Navigate to the loading page with materialId
             // navigate('/loading-textures', {state: {materialId}});
-            navigate(`/gallery_id/${materialId}`);
+            // navigate(`/gallery_id/${materialId}`);
 
-            // Second API call to generate PBR maps
-            const pbrResponse = await axios.post(apiUrl + `/api/generate_pbr_maps`,
-                {base_color_url: baseColorUrl, material_id: materialId}
-            );
-            console.log("PBR maps generation initiated!");
+            // // Second API call to generate PBR maps
+            // const pbrResponse = await axios.post(apiUrl + `/api/generate_pbr_maps`,
+            //     {base_color_url: baseColorUrl, material_id: materialId}
+            // );
+            // console.log("PBR maps generation initiated!");
 
-            // Set PBR maps in zustand store
-            const maps = pbrResponse.data.pbr_maps;
-            console.log("PBR maps generated sucessfully!", pbrResponse.data);
-            setPBRImage('normal', maps.normal_map_url);
-            setPBRImage('height', maps.height_map_url);
-            setPBRImage('smoothness', maps.smoothness_map_url);
+            // // Set PBR maps in zustand store
+            // const maps = pbrResponse.data.pbr_maps;
+            // console.log("PBR maps generated sucessfully!", pbrResponse.data);
+            // setPBRImage('normal', maps.normal_map_url);
+            // setPBRImage('height', maps.height_map_url);
+            // setPBRImage('smoothness', maps.smoothness_map_url);
 
         } catch (error) {
             console.error("Error during form submission:", error);

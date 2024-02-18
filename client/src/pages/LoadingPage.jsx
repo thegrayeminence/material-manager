@@ -44,7 +44,7 @@ const LoadingPage = () => {
         const fetchRecentAlbedo = async () => {
             try {
                 const response = await axios.get(`/api/get_recent_albedo`);
-                setAlbedoImage(response.data.image_url);
+                setAlbedoImage(response.data.base_color_url);
                 loadPBRMaps(response.data.material_id);
             } catch (error) {
                 console.error('Error fetching recent albedo:', error);
