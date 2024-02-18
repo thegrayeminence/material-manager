@@ -140,11 +140,11 @@ os.environ["REPLICATE_API_TOKEN"] = api_token
 def construct_prompt_from_material_data(material_data):
     try:
       # Extract physical properties of materials from materialData json
-      color = material_data.get('color', 'default color').lower()
-      elementType = material_data.get('elementType', 'default elementType').lower()
+      color = material_data.get('color', 'brown').lower()
+      elementType = material_data.get('elementType', 'mahogany').lower()
       #material_type = material_data.get('materialType', {}).get('label', 'PBR material').lower()
-      condition = material_data.get('condition', 'default condition').lower()
-      manifestation = material_data.get('manifestation', 'default manifestation').lower()
+      condition = material_data.get('condition', 'flooring').lower()
+      manifestation = material_data.get('manifestation', 'stained').lower()
       #software = [{'Program': item.get('label', 'default software').lower()} for item in material_data.get('materialMetadata', [])]
       #maps = [{'Map': item.get('label', 'default map').lower()} for item in material_data.get('materialTextures', [])]
     
@@ -157,6 +157,7 @@ def construct_prompt_from_material_data(material_data):
     except Exception as e:
         # app.logger.error('Error in construct_prompt_from_material_data: %s', str(e))
         print(e)
+        return make_response({"error in construct_prompt_from_material_data": str(e)}, 500)
         
 
 
@@ -197,7 +198,7 @@ def generate_image_from_prompt(model_identifier, prompt, params):
     except Exception as e:
         # app.logger.error('Error in generate_image_from_prompt: %s', str(e))
         print(e)
-        raise
+        return make_response({"error in generate_image_from_prompt": str(e)}, 500)
   
 # ##SECOND API CALL FOR ALBEDO TO PBR MAPS:  
 # def generate_pbr_from_albedo(base_color_url, map_type):
@@ -331,7 +332,7 @@ def generate_albedo():
         db.session.rollback()
         # app.logger.error('Error in generate_albedo: %s', str(e))
         print(e)
-        return jsonify({"error": str(e)}), 500
+        return make_response({"error in generate_albedo": str(e)}, 500)
 
 
 # #second endpoint for generating pbr maps from albedo
