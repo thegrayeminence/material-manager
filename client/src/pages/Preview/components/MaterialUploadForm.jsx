@@ -167,7 +167,7 @@ export default function MaterialUploadForm() {
 
 
             // Set the albedo image in the store
-            setAlbedoImage(baseColorUrl);
+            //setAlbedoImage(baseColorUrl);
 
             console.log(`Albedo ID ${materialId} url ${baseColorUrl} added to store.`);
 
