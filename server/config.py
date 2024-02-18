@@ -388,7 +388,7 @@ def get_maps_by_id(material_id):
         return make_response({"error": "Material not found"}), 404
 
 
-@app.route("/api/get_albedo_by_id/<int:material_id>",  methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
+@app.get("/api/get_albedo_by_id/<int:material_id>")
 def get_albedo_by_id(material_id):
     material_urls = get_material_urls(material_id)
     if material_urls:
@@ -396,12 +396,19 @@ def get_albedo_by_id(material_id):
     else:
         return make_response({"error": "Material not found"}), 404
 
+@app.get("/api/get_pbr_by_id/<int:material_id>")
+def get_pbr_by_id(material_id):
+    material_urls = get_material_urls(material_id)
+    if material_urls:
+        return make_response({'normal': material_urls['normal_map_url'], 'height': material_urls['height_map_url'], 'smoothness': material_urls['smoothness_map_url']}), 200
+    else:
+        return make_response({"error": "Material not found"}), 404
 
 @app.get("/api/get_normal_by_id/<int:material_id>")
 def get_normal_by_id(material_id):
     material_urls = get_material_urls(material_id)
     if material_urls:
-        return make_response({'image_url': material_urls['normal_map_url'], 'material_id': material_id}), 200
+        return make_response({'image_url': material_urls['normal_map_url']}), 200
     else:
         return make_response({"error": "Material not found"}), 404
 
@@ -409,7 +416,7 @@ def get_normal_by_id(material_id):
 def get_height_by_id(material_id):
     material_urls = get_material_urls(material_id)
     if material_urls:
-        return make_response({'image_url': material_urls['height_map_url'], 'material_id': material_id}), 200
+        return make_response({'image_url': material_urls['height_map_url']}), 200
     else:
         return make_response({"error": "Material not found"}), 404
 
@@ -417,7 +424,7 @@ def get_height_by_id(material_id):
 def get_smoothness_by_id(material_id):
     material_urls = get_material_urls(material_id)
     if material_urls:
-        return make_response({'image_url': material_urls['smoothness_map_url'], 'material_id': material_id}), 200
+        return make_response({'image_url': material_urls['smoothness_map_url']}), 200
     else:
         return make_response({"error": "Material not found"}), 404
     
