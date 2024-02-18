@@ -215,7 +215,7 @@ const TextureDisplayById = () => {
                     {materialId && (
 
                         ['normal', 'height', 'smoothness'].map((type, index) => (
-                            <Skeleton isLoaded={pbrMapUrls[index]} key={type}  >
+                            <Skeleton isLoaded={pbrMapUrls} key={type}  >
                                 <MotionImageBox key={type} {...imageBoxStyle}>
                                     <Image src={pbrMapUrls[type]} alt={`${type} Map`} boxSize={pbrBoxSize} objectFit="cover" />
                                     <Text mt="1" color='whiteAlpha.700' fontWeight={'500'} fontSize={{base: 'lg', sm: 'md', md: 'lg', lg: 'lg', xl: 'xl'}} fontFamily='avenir, sans-serif' textAlign="center" >
