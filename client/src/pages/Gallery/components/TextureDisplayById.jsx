@@ -78,20 +78,19 @@ const TextureDisplayById = () => {
                 const apiUrl = import.meta.env.VITE_API_URL
                 setPbrIsLoading(true);
                 console.log('Loading maps for material:', materialId);
-                const mapTypes = ['normal', 'height', 'smoothness'];
 
                 const response = await axios.get(apiUrl + `/api/get_pbr_by_id/${id}`);
-                setPbrMapUrls(response.data.base_color_url);
-                setAlbedoIsLoading(false);
-                console.log(`Albedo Image URL: ${response.data.base_color_url}, albedoIsLoading: ${albedoIsLoading}`)
+                setPbrMapUrls(response.data.image_urls);
+                setPbrIsLoading(false);
+                console.log('fetched pbr urls:', response.data.image_urls, 'pbrIsLoading?:', pbrIsLoading)
             } catch (error) {
-                console.error('Error fetching recent albedo:', error);
+                console.error('Error fetching recent pbrs:', error);
 
             }
         };
 
         fetchRecentPbrs();
-    }, []);
+    }, [albedoIsLoading]);
 
     // useEffect(() => {
     //     if (!albedoImage || albedoIsLoading) return;
@@ -152,9 +151,9 @@ const TextureDisplayById = () => {
 
     //vars for pbr.one material preview
     const color_map_url = albedoImage;
-    const normal_map_url = pbrMapUrls.normal;
-    const height_map_url = pbrMapUrls.height;
-    const smoothness_map_url = pbrMapUrls.smoothness;
+    const normal_map_url = pbrMapUrls[0];
+    const height_map_url = pbrMapUrls[1];
+    const smoothness_map_url = pbrMapUrls[2];
     const [geometry_type, set_geometry_type] = useState('cylinder');
     const [environment_type, set_environment_type] = useState(0);
     const baseUrl = 'https://cdn.pbr.one/main/material-shading.html#';
@@ -196,16 +195,16 @@ const TextureDisplayById = () => {
 
 
                 {albedoImage && albedoImage.length > 0 && (
-                    <Skeleton isLoaded={albedoImage} position='relative' boxSize={albedoBoxSize} >
-                        <MotionImageBox {...imageBoxStyle}>
+                    // <Skeleton isLoaded={albedoImage} position='relative' boxSize={albedoBoxSize} >
+                    <MotionImageBox {...imageBoxStyle}>
 
-                            <Image src={albedoImage} alt="Base Color Map" boxSize={albedoBoxSize} objectFit="cover" onClick={() => handleDownload(materialId)} />
-                            <Text mt="1" color='whiteAlpha.700' fontWeight={'500'} fontSize={{base: 'lg', sm: 'md', md: 'lg', lg: 'lg', xl: 'xl'}} fontFamily='avenir, sans-serif' textAlign="center" >
-                                Base Color Map
-                            </Text>
+                        <Image src={albedoImage} alt="Base Color Map" boxSize={albedoBoxSize} objectFit="cover" onClick={() => handleDownload(materialId)} />
+                        <Text mt="1" color='whiteAlpha.700' fontWeight={'500'} fontSize={{base: 'lg', sm: 'md', md: 'lg', lg: 'lg', xl: 'xl'}} fontFamily='avenir, sans-serif' textAlign="center" >
+                            Base Color Map
+                        </Text>
 
-                        </MotionImageBox>
-                    </Skeleton>
+                    </MotionImageBox>
+                    // </Skeleton>
 
                 )}
 
@@ -216,14 +215,14 @@ const TextureDisplayById = () => {
                     {pbrMapUrls && pbrMapUrls['smoothness'] && pbrMapUrls['normal'] && pbrMapUrls['height'] && (
 
                         ['normal', 'height', 'smoothness'].map((type, index) => (
-                            <Skeleton isLoaded={pbrMapUrls[index]} key={type}  >
-                                <MotionImageBox key={type} {...imageBoxStyle}>
-                                    <Image src={pbrMapUrls[type]} alt={`${type} Map`} boxSize={pbrBoxSize} objectFit="cover" />
-                                    <Text mt="1" color='whiteAlpha.700' fontWeight={'500'} fontSize={{base: 'lg', sm: 'md', md: 'lg', lg: 'lg', xl: 'xl'}} fontFamily='avenir, sans-serif' textAlign="center" >
-                                        {`${imageLabels[index]} Map`}
-                                    </Text>
-                                </MotionImageBox>
-                            </Skeleton>
+                            // <Skeleton isLoaded={pbrMapUrls[index]} key={type}  >
+                            <MotionImageBox key={type} {...imageBoxStyle}>
+                                <Image src={pbrMapUrls[type]} alt={`${type} Map`} boxSize={pbrBoxSize} objectFit="cover" />
+                                <Text mt="1" color='whiteAlpha.700' fontWeight={'500'} fontSize={{base: 'lg', sm: 'md', md: 'lg', lg: 'lg', xl: 'xl'}} fontFamily='avenir, sans-serif' textAlign="center" >
+                                    {`${imageLabels[index]} Map`}
+                                </Text>
+                            </MotionImageBox>
+                            // </Skeleton>
                         )))}
 
                 </SimpleGrid>
@@ -237,7 +236,7 @@ const TextureDisplayById = () => {
                 )}
             </Flex>
 
-            <Flex direction="column" align="center" mt={5}>
+            {/* <Flex direction="column" align="center" mt={5}>
                 {albedoImage && pbrMapUrls.normal && pbrMapUrls.height && pbrMapUrls.smoothness && (
                     <>
                         <Divider orientation='horizontal' borderWidth={'.1rem'} w={'full'} borderColor={useColorModeValue('purple.600', 'twitter.600')} borderStyle={'solid'} />
@@ -255,9 +254,7 @@ const TextureDisplayById = () => {
                             as='iframe' maxW='750px' w={'100%'} height={'500px'} src={`${baseUrl}${query_params}`}>
                         </Box>
                         <Spacer py={1} />
-                        {/* <Text fontSize={{base: 'lg', sm: 'md', md: 'lg', lg: 'xl', xl: '2xl'}} color="whiteAlpha.600">
-                            Preview Settings:
-                        </Text> */}
+                      
 
                         <HStack>
 
@@ -284,7 +281,7 @@ const TextureDisplayById = () => {
                 )}
 
 
-            </Flex>
+            </Flex> */}
         </Box >
     );
 };
