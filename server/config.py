@@ -551,10 +551,12 @@ def create_downloadable_zip(material_id):
     temp_images_dir = os.path.join(current_app.root_path, 'temp_images', folder_name)
     os.makedirs(temp_images_dir, exist_ok=True)
     
-    app.logger.info(f"folder_name: {folder_name}")
+    # app.logger.info(f"folder_name: {folder_name}")
+    print(f"folder_name: {folder_name}")
     
     zip_filename = os.path.join(temp_images_dir, f"{folder_name}.zip")
-    app.logger.info(f"Creating zip file at: {zip_filename}")
+    # app.logger.info(f"Creating zip file at: {zip_filename}")
+    print(f"Creating zip file at: {zip_filename}")
 
     with zipfile.ZipFile(zip_filename, 'w') as zipf:
         for map_type, attribute_name in [('base_color', 'base_color_url'), ('normal', 'normal_map_url'), 
@@ -591,14 +593,14 @@ def download_material(material_id):
         filename = os.path.basename(zip_file_path)
         
         response = send_from_directory(directory, filename, as_attachment=True)
-        app.logger.info(f"Serving zip from: {zip_file_path} to: {directory} with filename: {filename}")
-        
+        # app.logger.info(f"Serving zip from: {zip_file_path} to: {directory} with filename: {filename}")
+        print(f"Serving zip from: {zip_file_path} to: {directory} with filename: {filename}")
         # Clean up after sending the file
         cleanup_temporary_directory(directory) 
         return response
     except Exception as e:
-        app.logger.error(f"Error in download_material: {e}")
-        return jsonify({"error": str(e)}), 500
+        # app.logger.error(f"Error in download_material: {e}")
+        return jsonify({"Error in download_material": str(e)}), 500
 
 
 
