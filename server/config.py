@@ -157,7 +157,7 @@ def construct_prompt_from_material_data(material_data):
     except Exception as e:
         # app.logger.error('Error in construct_prompt_from_material_data: %s', str(e))
         print(e)
-        raise
+        
 
 
 
@@ -323,9 +323,9 @@ def generate_albedo():
         db.session.commit()
         # app.logger.info("Albedo map generated successfully.")
         print("Albedo map generated successfully.")
-        response = jsonify({'image_url': image_url, 'material_id': new_material.id})
+        # response = jsonify({'image_url': image_url, 'material_id': new_material.id})
         # response.headers.add('Access-Control-Allow-Origin', '*')
-        return make_response(response, 200)
+        return jsonify({'image_url': image_url, 'material_id': new_material.id}), 200
     
     except Exception as e:
         db.session.rollback()
