@@ -326,7 +326,7 @@ def generate_albedo():
         print("Albedo map generated successfully.")
         # response = jsonify({'image_url': image_url, 'material_id': new_material.id})
         # response.headers.add('Access-Control-Allow-Origin', '*')
-        return jsonify({'image_url': image_url, 'material_id': new_material.id}), 200
+        return make_response({'image_url': image_url, 'material_id': new_material.id}), 200
     
     except Exception as e:
         db.session.rollback()
