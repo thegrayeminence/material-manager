@@ -6,7 +6,7 @@ import {GalleryCard} from './components'
 import {loadImagesFromFolder} from '../../config/loadImagesFromFolder'
 import {StylishHeader} from '../../components'
 import {PreviewBackgroundAnimation} from '../Preview/components';
-import {set} from 'animejs'
+
 
 
 function Gallery() {
