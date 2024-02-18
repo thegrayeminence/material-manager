@@ -24,7 +24,7 @@ load_dotenv()
 app = Flask(
     __name__,
     static_url_path='',
-    static_folder='../client/dist',
+    static_folder='../client/dist/assets',
     template_folder='../client/dist'
 )
 
@@ -82,8 +82,8 @@ CORS(app, resources={r"/api/*": {"origins": ["https://textureforgestatic.onrende
 ## test endpoint for flask endpoints 
 @app.get("/api/test")
 def test():
-    images_dir_path = os.path.join(app.static_folder, 'assets', 'images')
-    return make_response({"message": f"test endpoint data{images_dir_path}"}), 200
+    images_dir_path = os.path.join(app.static_folder, 'static', 'images')
+    return make_response({"message": f"test endpoint data; dir:{images_dir_path};static:{app.static_folder}"}), 200
 
 
 
@@ -452,8 +452,8 @@ def get_recent_albedo():
 
 @app.route('/api/all_images',  methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
 def get_all_images():
-    relative_path = '../client/dist/'
-    images_dir_path = os.path.join(relative_path, 'assets', 'images')
+    images_dir_path = os.path.join(app.static_folder, 'static', 'images')
+
 
     folders = [name for name in os.listdir(images_dir_path) if os.path.isdir(os.path.join(images_dir_path, name))]
     print(folders)
@@ -461,7 +461,11 @@ def get_all_images():
     
     try:
         for folder_name in folders:
+            # image_files = [f for f in os.listdir(folder_path) if f.endswith('.png')]
+            # image_urls = [url_for('static', filename=f'assets/images/{folder_name}/{file}', _external=True) for file in image_files]
+       
             map_types = ['base_color.png', 'height.png', 'normal.png', 'smoothness.png']
+            
             images = [f"{images_dir_path}/{folder_name}/{folder_name}_{map_type}" for map_type in map_types]
             folder_images = {
                 "folder": folder_name,
@@ -474,11 +478,11 @@ def get_all_images():
     except Exception as e:
         return make_response({f"error in fetching folders from {images_dir_path}": str(e)}), 500
             
-@app.get('/api/all_folders')
+@app.get('/api/get_foldernames')
 def get_foldernames():
-    relative_path = '../client/dist/'
-    images_dir_path = os.path.join(relative_path, 'assets', 'images')
-
+    # relative_path = '../client/dist/'
+    images_dir_path = os.path.join(app.static_folder, 'static', 'images')
+    print(images_dir_path)
     folders = [name for name in os.listdir(images_dir_path) if os.path.isdir(os.path.join(images_dir_path, name))]
     print(folders)
     all_folders_names = []
@@ -494,10 +498,8 @@ def get_foldernames():
 
 @app.route('/api/images/<folder_name>', methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
 def get_images(folder_name):
-    # folder_path = os.path.join(app.static_folder, 'assets', 'images', folder_name)
+    folder_path = os.path.join(app.static_folder, 'static', 'images', folder_name)
     # dynamic_base_path = os.getenv('VITE_API_URL', app.static_folder) 
-    relative_path = '../client/dist/'
-    folder_path = os.path.join(relative_path, 'assets', 'images', folder_name)
     # if not os.path.exists(folder_path) or not os.path.isdir(folder_path):
     #     return jsonify({"error": f"Folder not found; folder info \n path_static:{folder_path} \n "}), 404
 
