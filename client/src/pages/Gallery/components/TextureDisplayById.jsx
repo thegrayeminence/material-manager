@@ -152,9 +152,9 @@ const TextureDisplayById = () => {
 
     //vars for pbr.one material preview
     const color_map_url = albedoImage;
-    const normal_map_url = pbrMapUrls[0];
-    const height_map_url = pbrMapUrls[1];
-    const smoothness_map_url = pbrMapUrls[2];
+    const normal_map_url = pbrMapUrls['normal'];
+    const height_map_url = pbrMapUrls['height'];
+    const smoothness_map_url = pbrMapUrls['smoothness'];
     const [geometry_type, set_geometry_type] = useState('cylinder');
     const [environment_type, set_environment_type] = useState(0);
     const baseUrl = 'https://cdn.pbr.one/main/material-shading.html#';
@@ -242,8 +242,8 @@ const TextureDisplayById = () => {
                 )}
             </Flex>
 
-            {/* <Flex direction="column" align="center" mt={5}>
-                {albedoImage && pbrMapUrls.normal && pbrMapUrls.height && pbrMapUrls.smoothness && (
+            <Flex direction="column" align="center" mt={5}>
+                {materialId && !albedoIsLoading && !pbrIsLoading && (
                     <>
                         <Divider orientation='horizontal' borderWidth={'.1rem'} w={'full'} borderColor={useColorModeValue('purple.600', 'twitter.600')} borderStyle={'solid'} />
                         <Spacer py={2} />
@@ -260,7 +260,7 @@ const TextureDisplayById = () => {
                             as='iframe' maxW='750px' w={'100%'} height={'500px'} src={`${baseUrl}${query_params}`}>
                         </Box>
                         <Spacer py={1} />
-                      
+
 
                         <HStack>
 
@@ -287,7 +287,7 @@ const TextureDisplayById = () => {
                 )}
 
 
-            </Flex> */}
+            </Flex>
         </Box >
     );
 };
