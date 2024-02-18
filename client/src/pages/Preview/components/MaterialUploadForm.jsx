@@ -131,7 +131,7 @@ export default function MaterialUploadForm() {
             console.log('logging form data!:', {'formdata': formData, 'materialData': materialData, 'apiUrl': apiUrl});
 
 
-            const textureResponse = await axios.post("https://textureforge.onrender.com/api/generate_albedo",
+            const textureResponse = await axios.post(apiUrl + "/api/generate_albedo",
                 {materialData: data}
                 //headers for backend issues. dont work
                 // {
@@ -146,18 +146,18 @@ export default function MaterialUploadForm() {
             );
             console.log("Albedo texture generation initiated!");
 
-            // if (textureResponse) {
-            //     toast({
-            //         title: 'First Prompt Submitted Successfully! Initiating Second Prompt...',
-            //         description: "Please wait while we generate the PBR maps for your material. This may take a few moments.",
-            //         status: 'loading',
-            //         duration: 6000,
-            //         position: 'top',
-            //         variant: 'subtle',
-            //         isClosable: true,
+            if (textureResponse) {
+                toast({
+                    title: 'First Prompt Submitted Successfully! Initiating Second Prompt...',
+                    description: "Please wait while we generate the PBR maps for your material. This may take a few moments.",
+                    status: 'loading',
+                    duration: 6000,
+                    position: 'top',
+                    variant: 'subtle',
+                    isClosable: true,
 
-            //     })
-            // }
+                })
+            }
 
 
             const materialId = textureResponse.data.material_id;
@@ -174,18 +174,21 @@ export default function MaterialUploadForm() {
             // navigate('/loading-textures', {state: {materialId}});
             // navigate(`/gallery_id/${materialId}`);
 
-            // // Second API call to generate PBR maps
-            // const pbrResponse = await axios.post(apiUrl + `/api/generate_pbr_maps`,
-            //     {base_color_url: baseColorUrl, material_id: materialId}
-            // );
-            // console.log("PBR maps generation initiated!");
+            // Second API call to generate PBR maps
+            const pbrResponse = await axios.post(apiUrl + `/api/generate_pbr_maps`,
+                {base_color_url: baseColorUrl, material_id: materialId}
+            );
+            console.log("PBR maps generation initiated!");
 
-            // // Set PBR maps in zustand store
-            // const maps = pbrResponse.data.pbr_maps;
-            // console.log("PBR maps generated sucessfully!", pbrResponse.data);
+            // Set PBR maps in zustand store
+            const maps = pbrResponse.data.pbr_maps;
+            console.log("PBR maps generated sucessfully!", maps);
             // setPBRImage('normal', maps.normal_map_url);
             // setPBRImage('height', maps.height_map_url);
             // setPBRImage('smoothness', maps.smoothness_map_url);
+            if (pbrResponse.data.pbr_maps) {
+                navigate(`/gallery_id/${materialId}`);
+            }
 
         } catch (error) {
             console.error("Error during form submission:", error);
