@@ -15,7 +15,7 @@ const handleDownload = async (materialId) => {
     try {
         const apiUrl = import.meta.env.VITE_API_URL
         // First, fetch the filename
-        const filenameResponse = await axios.get(apiUrl + `/api/get_material_filename/${id}`);
+        const filenameResponse = await axios.get(apiUrl + `/api/get_material_filename/${materialId}`);
         const filename = filenameResponse.data.filename;
         console.log("handle download for: material_id:", materialId, "filename:", filename, "apiUrl:", apiUrl)
 
