@@ -13,7 +13,7 @@ import {Select} from "chakra-react-select";
 
 //local imports
 import {textureMapOptionsPBRMetalRough, textureMapOptionsPBRGlossSpec, textureMapOptionsCommon, materialTypeOptions, metaDataOptions} from '../../../config/formInputData';
-import {useMaterialStore, useProgressStore, useAutosuggestionStore} from '../../../store/store';
+import {useMaterialStore, useProgressStore, useAutosuggestionStore, useSessionStore} from '../../../store/store';
 import SuggestionDisplay from './SuggestionDisplay';
 
 
@@ -43,6 +43,7 @@ export default function MaterialUploadForm() {
     const {progress, increaseProgress, decreaseProgress, resetProgress} = useProgressStore();
     // const {isLoading, setIsLoading} = useIsLoadingStore();
     const [isLoading, setIsLoading] = useState(false);
+    // const {sessionData, setSessionId, setSessionPrompt, setSessionStatus, resetSession, setSessionStatusLoading, setSessionStatusSuccess, setSessionStatusError, setSessionAlbedo} = useSessionStore();
 
     //autosuggestion zustand states
     const {
@@ -111,8 +112,9 @@ export default function MaterialUploadForm() {
             return;
         };
 
-        // clearImages();       // Clear any existing images before loading new ones
-        setIsLoading(true);  // Start loading indicator
+        // clearImages();
+        setIsLoading(true);
+        // setSessionStatusLoading();
 
         try {
 
@@ -149,7 +151,7 @@ export default function MaterialUploadForm() {
                     status: 'loading',
                     position: 'top',
                     isClosable: true,
-                    duration: 10000,
+                    duration: 8000,
                 })
 
             }
@@ -157,13 +159,16 @@ export default function MaterialUploadForm() {
 
             const materialId = textureResponse.data.material_id;
             const baseColorUrl = textureResponse.data.base_color_url;
+            // setSessionId(materialId);
+            // setSessionAlbedo(baseColorUrl);
 
+            console.log(`Albedo ID ${materialId} url ${baseColorUrl} added to store `);
             navigate(`/gallery_id/${materialId}`);
 
             // Set the albedo image in the store
             //setAlbedoImage(baseColorUrl);
 
-            console.log(`Albedo ID ${materialId} url ${baseColorUrl} added to store.`);
+
 
             // Navigate to the loading page with materialId
             // navigate('/loading-textures', {state: {materialId}});

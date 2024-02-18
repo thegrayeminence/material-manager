@@ -50,7 +50,6 @@ function Gallery() {
     "Green_Ceramic_Surface_Glazed",
     "Brown_Mud_Surface_Stony",
     "Colorful_Painted_Wall_Pealing",
-    "Gray_Stone_Tiles_Mossy",
     "Blue_Wallpaper_Wall_Damaged",
     "Red_Plaster_Wall_Filthy"
   ]

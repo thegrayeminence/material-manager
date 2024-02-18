@@ -141,7 +141,7 @@ function GalleryDetailsView() {
                                         status: 'error',
                                         duration: 8000,
                                         position: 'top',
-                                        variant: 'subtle',
+                                        // variant: 'subtle',
                                         isClosable: true,
                                         colorScheme: 'purple',
                                     })

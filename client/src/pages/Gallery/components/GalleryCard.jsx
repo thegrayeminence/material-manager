@@ -67,7 +67,7 @@ function GalleryCard({name, images, isNew, showAllImages = false}) {
                                                 status: 'error',
                                                 duration: 8000,
                                                 position: 'top',
-                                                variant: 'subtle',
+                                                // variant: 'subtle',
                                                 isClosable: true,
                                                 colorScheme: 'purple',
                                             })

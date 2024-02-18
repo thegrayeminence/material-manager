@@ -14,10 +14,33 @@ export const useProgressStore = create((set) => ({
 export const useIsLoadingStore = create((set) => ({
   isLoading: false,
   setIsLoading: (isLoading) => set({isLoading}),
+  toggleIsLoading: () => set((state) => ({isLoading: !state.isLoading})),
   resetIsLoading: () => set({isLoading: false}),
 }));
 
+export const useSessionStore = create((set) => ({
+  sessionData: {
+    id: null,
+    prompt: '',
+    base_color_url: '',
+    // pbrUrls: {
+    //   normal: '',
+    //   height: '',
+    //   smoothness: '',
+    // },
+  },
+  status: '',
 
+  setSessionId: (id) => set({sessionData: {...state.sessionData, id}}),
+  setSessionPrompt: (prompt) => set({sessionData: {...state.sessionData, prompt}}),
+  setSessionAlbedo: (base_color_url) => set({sessionData: {...state.sessionData, base_color_url}}),
+  // setSessionPbrUrls: (pbrUrls) => set({sessionData: {...state.sessionData, pbrUrls}}),
+  setSessionStatus: (status) => set({status}),
+  resetSession: () => set({sessionData: {id: [], prompt: []}, status: []}),
+  setSessionStatusLoading: () => set({status: 'loading'}),
+  setSessionStatusSuccess: () => set({status: 'success'}),
+  setSessionStatusError: () => set({status: 'error'}),
+}))
 
 // store for global state management of materialData/fileData/imagePreviews from form inputs
 export const useMaterialStore = create(set => ({
