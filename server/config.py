@@ -452,7 +452,8 @@ def get_recent_albedo():
 
 @app.route('/api/all_images',  methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
 def get_all_images():
-    images_dir_path = os.path.join(app.static_folder, 'assets', 'images')
+    relative_path = '../client/dist/'
+    images_dir_path = os.path.join(relative_path, 'assets', 'images')
 
     folders = [name for name in os.listdir(images_dir_path) if os.path.isdir(os.path.join(images_dir_path, name))]
     print(folders)
@@ -473,13 +474,30 @@ def get_all_images():
     except Exception as e:
         return make_response({f"error in fetching folders from {images_dir_path}": str(e)}), 500
             
+@app.get('/api/all_folders')
+def get_foldernames():
+    relative_path = '../client/dist/'
+    images_dir_path = os.path.join(relative_path, 'assets', 'images')
+
+    folders = [name for name in os.listdir(images_dir_path) if os.path.isdir(os.path.join(images_dir_path, name))]
+    print(folders)
+    all_folders_names = []
+    
+    try:
+        for folder_name in folders:
+            all_folders_names.append(folder_name)
         
+        return make_response({"folders": all_folders_names}), 200
+    
+    except Exception as e:
+        return make_response({f"error in fetching folders from {images_dir_path}": str(e)}), 500        
 
 @app.route('/api/images/<folder_name>', methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
 def get_images(folder_name):
     # folder_path = os.path.join(app.static_folder, 'assets', 'images', folder_name)
     # dynamic_base_path = os.getenv('VITE_API_URL', app.static_folder) 
-    folder_path = os.path.join(app.static_folder, 'assets', 'images', folder_name)
+    relative_path = '../client/dist/'
+    folder_path = os.path.join(relative_path, 'assets', 'images', folder_name)
     # if not os.path.exists(folder_path) or not os.path.isdir(folder_path):
     #     return jsonify({"error": f"Folder not found; folder info \n path_static:{folder_path} \n "}), 404
 
