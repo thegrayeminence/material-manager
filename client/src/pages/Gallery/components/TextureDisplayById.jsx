@@ -194,17 +194,17 @@ const TextureDisplayById = () => {
 
 
 
-                {albedoImage && albedoImage.length > 0 && (
-                    // <Skeleton isLoaded={albedoImage} position='relative' boxSize={albedoBoxSize} >
-                    <MotionImageBox {...imageBoxStyle}>
+                {materialId && (
+                    <Skeleton isLoaded={albedoImage} position='relative' boxSize={albedoBoxSize} >
+                        <MotionImageBox {...imageBoxStyle}>
 
-                        <Image src={albedoImage} alt="Base Color Map" boxSize={albedoBoxSize} objectFit="cover" onClick={() => handleDownload(materialId)} />
-                        <Text mt="1" color='whiteAlpha.700' fontWeight={'500'} fontSize={{base: 'lg', sm: 'md', md: 'lg', lg: 'lg', xl: 'xl'}} fontFamily='avenir, sans-serif' textAlign="center" >
-                            Base Color Map
-                        </Text>
+                            <Image src={albedoImage} alt="Base Color Map" boxSize={albedoBoxSize} objectFit="cover" onClick={() => handleDownload(materialId)} />
+                            <Text mt="1" color='whiteAlpha.700' fontWeight={'500'} fontSize={{base: 'lg', sm: 'md', md: 'lg', lg: 'lg', xl: 'xl'}} fontFamily='avenir, sans-serif' textAlign="center" >
+                                Base Color Map
+                            </Text>
 
-                    </MotionImageBox>
-                    // </Skeleton>
+                        </MotionImageBox>
+                    </Skeleton>
 
                 )}
 
@@ -212,17 +212,17 @@ const TextureDisplayById = () => {
             {/* PBR Images: Normal, Height, Smoothness */}
             <Flex direction="column" align="center">
                 <SimpleGrid columns={[2, null, 3]} spacing="30px" justifyContent="center">
-                    {pbrMapUrls && pbrMapUrls['smoothness'] && pbrMapUrls['normal'] && pbrMapUrls['height'] && (
+                    {materialId && (
 
                         ['normal', 'height', 'smoothness'].map((type, index) => (
-                            // <Skeleton isLoaded={pbrMapUrls[index]} key={type}  >
-                            <MotionImageBox key={type} {...imageBoxStyle}>
-                                <Image src={pbrMapUrls[type]} alt={`${type} Map`} boxSize={pbrBoxSize} objectFit="cover" />
-                                <Text mt="1" color='whiteAlpha.700' fontWeight={'500'} fontSize={{base: 'lg', sm: 'md', md: 'lg', lg: 'lg', xl: 'xl'}} fontFamily='avenir, sans-serif' textAlign="center" >
-                                    {`${imageLabels[index]} Map`}
-                                </Text>
-                            </MotionImageBox>
-                            // </Skeleton>
+                            <Skeleton isLoaded={pbrMapUrls[index]} key={type}  >
+                                <MotionImageBox key={type} {...imageBoxStyle}>
+                                    <Image src={pbrMapUrls[type]} alt={`${type} Map`} boxSize={pbrBoxSize} objectFit="cover" />
+                                    <Text mt="1" color='whiteAlpha.700' fontWeight={'500'} fontSize={{base: 'lg', sm: 'md', md: 'lg', lg: 'lg', xl: 'xl'}} fontFamily='avenir, sans-serif' textAlign="center" >
+                                        {`${imageLabels[index]} Map`}
+                                    </Text>
+                                </MotionImageBox>
+                            </Skeleton>
                         )))}
 
                 </SimpleGrid>
