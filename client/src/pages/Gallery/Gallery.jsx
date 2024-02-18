@@ -11,53 +11,93 @@ import {PreviewBackgroundAnimation} from '../Preview/components';
 function Gallery() {
 
   const [materials, setMaterials] = useState([])
-  const folderNamesOld = ['Stone_Slate_Tiles_Ornate', 'Rich_Maple_Flooring_Varnished', 'Rich_Mahagony_Flooring_Varnished', 'Dark_Cedar_Flooring_Worn', 'Blue_Ceramic_Flooring_Glossy', 'Brown_Oak_Flooring_Stained', 'Weathered_Cherry_Flooring_Varnished']
+  const folderNames = [
+    "Red_Silk_Fabric_Fancy",
+    "Meadow_Ground_Surface_Grassy",
+    "Brown_Leather_Fabric_Old",
+    "Rich_Maple_Flooring_Varnished",
+    "Blue_Sapphire_Gem_Chiseled",
+    "White_Porcelain_Tiles_Bathroom",
+    "Red_Bark_Tree_Ancient",
+    "Tanned_Skin_White_Human",
+    "White_Bark_Birch_Tree",
+    "Pink_Diamond_Gem_Gleaming",
+    "White_Marble_Countertop_Glossy",
+    "Red_Silk_Carpet_Persian",
+    "Blue_Ceramic_Flooring_Glossy",
+    "Blue_Wallpaper_Wall_Worn",
+    "Yellow_Papyrus_Paper_Ancient",
+    "Red_Marble_Tiles_Raised",
+    "Red_Brick_Wall_Damaged",
+    "Weathered_Cherry_Flooring_Varnished",
+    "Golden_Painted_Wall_Baroque",
+    "Stone_Slate_Tiles_Ornate",
+    "White_Alabaster_Tile_Carved",
+    "Blue_Ceramic_Tile_Chipped",
+    "Brown_Oak_Flooring_Stained",
+    "Dark_Cedar_Flooring_Worn",
+    "Brown_Bark_Tree_Mossy",
+    "White_Marble_Surface_Glossy",
+    "Red_Marble_Countertop_Glossy",
+    "Rich_Mahagony_Flooring_Varnished",
+    "Brown_Wooden_Panels_Baroque",
+    "Orange_Sand_Surface_Dunes",
+    "Bark_Tree_Birch_Ancient",
+    "Brown_Ground_Surface_Stony",
+    "Purple_Satin_Fabric_Woven",
+    "Green_Ceramic_Surface_Glazed",
+    "Brown_Mud_Surface_Stony",
+    "Colorful_Painted_Wall_Pealing",
+    "Gray_Stone_Tiles_Mossy",
+    "Blue_Wallpaper_Wall_Damaged",
+    "Red_Plaster_Wall_Filthy"
+  ]
   const [isLoading, setisLoading] = useState(true)
 
 
-  // useEffect(() => {
-  //   const loadMaterials = async () => {
-  //     const loadedMaterials = [];
-  //     for (let folder of folderNamesOld) {
-  //       const images = await loadImagesFromFolder(folder);
-  //       loadedMaterials.push({folder, images})
-  //     }
-  //     setMaterials(loadedMaterials);
-  //   };
-  //   loadMaterials();
-  // }, []);
-
-
   useEffect(() => {
-    const loadMaterialsOnServer = async () => {
-      // setisLoadingBackend(true);
-      setisLoading(true);
-      const apiUrl = import.meta.env.VITE_API_URL
-
-      const requestUrl = `${apiUrl}/api/all_images`;
-      console.log("backend request", requestUrl)
-
-      try {
-        const response = await axios.get(requestUrl);
-        setMaterials(response.data);
-        console.log("materials", response.data)
-        setisLoading(false);
-
-      } catch (error) {
-        console.error("Failed to load texture images:", error);
-        // toast({
-        //     title: 'Error loading texture files',
-        //     description: error.message,
-        //     status: 'error',
-        //     duration: 5000,
-        //     isClosable: true,
-        // });
+    const loadMaterials = async () => {
+      const loadedMaterials = [];
+      for (let folder of folderNames) {
+        const images = await loadImagesFromFolder(folder);
+        loadedMaterials.push({folder, images})
       }
-
+      setMaterials(loadedMaterials);
     };
-
-    loadMaterialsOnServer();
+    loadMaterials();
   }, []);
+
+
+  // useEffect(() => {
+  //   const loadMaterialsOnServer = async () => {
+  //     // setisLoadingBackend(true);
+  //     setisLoading(true);
+  //     const apiUrl = import.meta.env.VITE_API_URL
+
+  //     const requestUrl = `${apiUrl}/api/all_images`;
+  //     console.log("backend request", requestUrl)
+
+  //     try {
+  //       const response = await axios.get(requestUrl);
+  //       setMaterials(response.data);
+  //       console.log("materials", response.data)
+  //       setisLoading(false);
+
+  //     } catch (error) {
+  //       console.error("Failed to load texture images:", error);
+  //       // toast({
+  //       //     title: 'Error loading texture files',
+  //       //     description: error.message,
+  //       //     status: 'error',
+  //       //     duration: 5000,
+  //       //     isClosable: true,
+  //       // });
+  //     }
+
+  //   };
+
+  //   loadMaterialsOnServer();
+  // }, []);
 
   return (
     <Box width='100vw' h='100vh'
@@ -88,7 +128,7 @@ function Gallery() {
 
         >
           {materials.map(({folder, images}) => (
-            <GalleryCard key={folder} name={folder} images={images} isNew={true} />
+            <GalleryCard key={folder} name={ } images={images} isNew={true} />
           ))}
         </SimpleGrid>
       </Box >
