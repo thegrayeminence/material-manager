@@ -39,15 +39,14 @@ const TextureDisplayById = () => {
     const {id} = useParams(); // Get the 'id' parameter from the URL as a string
     // const {setPBRImage} = useGeneratedImagesStore();
     const [materialName, setMaterialName] = useState(null);
-    const [materialId, setMaterialId] = useState(id);
+    const [materialId, setMaterialId] = useState(null);
     const [albedoImage, setAlbedoImage] = useState(null);
     const [pbrMapUrls, setPbrMapUrls] = useState({normal: null, height: null, smoothness: null});
     const [albedoIsLoading, setAlbedoIsLoading] = useState(true);
     const [pbrIsLoading, setPbrIsLoading] = useState(true);
 
-    setMaterialId(id);
     const MotionImageBox = motion(Box);
-
+    setMaterialId(id);
 
     useEffect(() => {
         const fetchRecentAlbedo = async () => {
@@ -70,7 +69,7 @@ const TextureDisplayById = () => {
         };
 
         fetchRecentAlbedo();
-    }, [id]);
+    }, [materialId]);
 
     useEffect(() => {
         const fetchRecentPbrs = async () => {
