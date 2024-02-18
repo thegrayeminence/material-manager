@@ -38,7 +38,7 @@ const TextureDisplayById = () => {
     const {id} = useParams(); // Get the 'id' parameter from the URL as a string
     // const {setPBRImage} = useGeneratedImagesStore();
     const [materialName, setMaterialName] = useState(null);
-    const [materialId, setMaterialId] = useState(null);
+    const [materialId, setMaterialId] = useState(id);
     const [albedoImage, setAlbedoImage] = useState(null);
     const [pbrMapUrls, setPbrMapUrls] = useState({normal: null, height: null, smoothness: null});
     const [albedoIsLoading, setAlbedoIsLoading] = useState(true);
@@ -69,7 +69,7 @@ const TextureDisplayById = () => {
         };
 
         fetchRecentAlbedo();
-    }, [id, materialId]);
+    }, [id]);
 
 
     useEffect(() => {
@@ -107,7 +107,7 @@ const TextureDisplayById = () => {
 
         loadMaps();
 
-    }, [materialId, id]);
+    }, [albedoImage, albedoIsLoading]);
 
 
     const imageBoxStyle = {
@@ -174,7 +174,7 @@ const TextureDisplayById = () => {
 
 
                 {albedoImage && albedoImage.length > 0 && (
-                    <Skeleton isLoaded={albedoImage} position='relative' boxSize={albedoBoxSize} >
+                    <Skeleton isLoaded={albedoIsLoading} position='relative' boxSize={albedoBoxSize} >
                         <MotionImageBox {...imageBoxStyle}>
 
                             <Image src={albedoImage} alt="Base Color Map" boxSize={albedoBoxSize} objectFit="cover" onClick={() => handleDownload(materialId)} />
@@ -194,7 +194,7 @@ const TextureDisplayById = () => {
                     {pbrMapUrls && pbrMapUrls['smoothness'] && pbrMapUrls['normal'] && pbrMapUrls['height'] && (
 
                         ['normal', 'height', 'smoothness'].map((type, index) => (
-                            <Skeleton isLoaded={pbrMapUrls[type]} key={type}  >
+                            <Skeleton isLoaded={pbrIsLoading} key={type}  >
                                 <MotionImageBox key={type} {...imageBoxStyle}>
                                     <Image src={pbrMapUrls[type]} alt={`${type} Map`} boxSize={pbrBoxSize} objectFit="cover" />
                                     <Text mt="1" color='whiteAlpha.700' fontWeight={'500'} fontSize={{base: 'lg', sm: 'md', md: 'lg', lg: 'lg', xl: 'xl'}} fontFamily='avenir, sans-serif' textAlign="center" >
