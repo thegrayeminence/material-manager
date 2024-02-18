@@ -82,8 +82,9 @@ CORS(app, resources={r"/api/*": {"origins": ["https://textureforgestatic.onrende
 ## test endpoint for flask endpoints 
 @app.get("/api/test")
 def test():
+    BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', ''))
     images_dir_path = os.path.join(app.static_folder, 'static', 'images')
-    return make_response({"message": f"test endpoint data; dir:{images_dir_path};static:{app.static_folder}"}), 200
+    return make_response({"message": f"test endpoint data;\n base_dir:{BASE_DIR};static folder:{app.static_folder}"}), 200
 
 
 
@@ -482,6 +483,7 @@ def get_all_images():
 def get_foldernames():
     # relative_path = '../client/dist/'
     images_dir_path = os.path.join(app.static_folder, 'static', 'images')
+
     print(images_dir_path)
     folders = [name for name in os.listdir(images_dir_path) if os.path.isdir(os.path.join(images_dir_path, name))]
     print(folders)
