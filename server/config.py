@@ -51,16 +51,17 @@ db.init_app(app)
 # api = Api(app)
 # CORS(app)
 # CORS settings
-CORS(app, resources={r"/api/*": {"origins": ["https://textureforgestatic.onrender.com", "https://cdn.pbr.one", "http://localhost:3000"]}}
-     )
-cors_config = {
-    #"origins": "*",
-    "origins": ["https://textureforgestatic.onrender.com", "https://cdn.pbr.one", "http://localhost:3000"],
-    "supports_credentials": True,
-    "allow_headers": ["Content-Type", "Authorization", "X-Requested-With", "X-CSRFToken", "Cache-Control"],
-    "expose_headers": ["Content-Disposition", "X-Suggested-Filename"],
-    "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-}
+# CORS(app, resources={r"/api/*": {"origins": ["https://textureforgestatic.onrender.com", "https://cdn.pbr.one", "http://localhost:3000"]}}
+#      )
+CORS(app, resources={r"/api/*": {"origins": "*"}})
+# cors_config = {
+#     #"origins": "*",
+#     "origins": ["https://textureforgestatic.onrender.com", "https://cdn.pbr.one", "http://localhost:3000"],
+#     "supports_credentials": True,
+#     "allow_headers": ["Content-Type", "Authorization", "X-Requested-With", "X-CSRFToken", "Cache-Control"],
+#     "expose_headers": ["Content-Disposition", "X-Suggested-Filename"],
+#     "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+# }
 
 # cors_config = {
 #     "origins": ["https://textureforgestatic.onrender.com", "https://cdn.pbr.one", "http://localhost:3000"],
@@ -268,6 +269,7 @@ def generate_pbr_from_albedo(base_color_url, map_type):
 
 # ## first endpoint for generating albedo
 @app.route("/api/generate_albedo", methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
+@cross_origin()
 def generate_albedo():
     
     ##model_identifier options (custom vs public mat diffusion models)
@@ -327,6 +329,7 @@ def generate_albedo():
 
 # #second endpoint for generating pbr maps from albedo
 @app.route("/api/generate_pbr_maps", methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
+@cross_origin()
 def generate_pbr_maps():
     try:
         data = request.get_json()
