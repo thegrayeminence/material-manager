@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
-import {useGeneratedImagesStore} from '../../../store/store';
+// import {useGeneratedImagesStore} from '../../../store/store';
 import {Box, SimpleGrid, Skeleton, Image, Heading, Flex} from '@chakra-ui/react';
 import {motion} from 'framer-motion';
 
@@ -28,11 +28,12 @@ const handleDownload = async (materialId) => {
 
 const TextureDisplay = () => {
     //zustand store values
-    const {setPBRImage} = useGeneratedImagesStore();
+    // const {setPBRImage} = useGeneratedImagesStore();
+    // const store_materialId = useGeneratedImagesStore(state => state.materialId);
     const [materialId, setMaterialId] = useState(null);
     const [albedoImage, setAlbedoImage] = useState(null);
     const [pbrMapUrls, setPbrMapUrls] = useState({normal: null, height: null, smoothness: null});
-    const store_materialId = useGeneratedImagesStore(state => state.materialId);
+
 
     const MotionImageBox = motion(Box);
 
@@ -93,15 +94,15 @@ const TextureDisplay = () => {
             const newPbrMapUrls = {};
             mapTypes.forEach((mapType, index) => {
                 newPbrMapUrls[mapType] = maps[index];
-                if (maps[index]) {
-                    setPBRImage(mapType, maps[index]);
-                }
+                // if (maps[index]) {
+                //     setPBRImage(mapType, maps[index]);
+                // }
             });
             setPbrMapUrls(newPbrMapUrls);
         };
 
         loadMaps();
-    }, [materialId, setPBRImage]);
+    }, [materialId]);
 
 
     return (

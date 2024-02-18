@@ -41,31 +41,33 @@ export const useMaterialStore = create(set => ({
 
 
 
-export const useGeneratedImagesStore = create(set => ({
-  // Initialize albedoImage and pbrImages from localStorage
-  albedoImage: JSON.parse(localStorage.getItem('albedoImage')),
-  pbrImages: JSON.parse(localStorage.getItem('pbrImages')),
+// export const useGeneratedImagesStore = create(set => ({
+//   // Initialize albedoImage and pbrImages from localStorage
+//   albedoImage: localStorage.getItem("albedoImage") !== undefined ? JSON.parse(localStorage.getItem("albedoImage")) : null,
 
-  // Method to set the albedo image
-  setAlbedoImage: (imageURL) => set(() => {
-    localStorage.setItem('albedoImage', JSON.stringify(imageURL));
-    return {albedoImage: imageURL};
-  }),
+//   albedoImage: JSON.parse(localStorage.getItem('albedoImage')),
+//   pbrImages: JSON.parse(localStorage.getItem('pbrImages')),
 
-  // Method to set a specific PBR image
-  setPBRImage: (type, imageURL) => set(state => {
-    const newPbrImages = {...state.pbrImages, [type]: imageURL};
-    localStorage.setItem('pbrImages', JSON.stringify(newPbrImages));
-    return {pbrImages: newPbrImages};
-  }),
+//   // Method to set the albedo image
+//   setAlbedoImage: (imageURL) => set(() => {
+//     localStorage.setItem('albedoImage', JSON.stringify(imageURL));
+//     return {albedoImage: imageURL};
+//   }),
 
-  // Method to clear all images
-  clearImages: () => set(() => {
-    localStorage.removeItem('albedoImage');
-    localStorage.removeItem('pbrImages');
-    return {albedoImage: null, pbrImages: {normal: null, height: null, smoothness: null}};
-  })
-}));
+//   // Method to set a specific PBR image
+//   setPBRImage: (type, imageURL) => set(state => {
+//     const newPbrImages = {...state.pbrImages, [type]: imageURL};
+//     localStorage.setItem('pbrImages', JSON.stringify(newPbrImages));
+//     return {pbrImages: newPbrImages};
+//   }),
+
+//   // Method to clear all images
+//   clearImages: () => set(() => {
+//     localStorage.removeItem('albedoImage');
+//     localStorage.removeItem('pbrImages');
+//     return {albedoImage: null, pbrImages: {normal: null, height: null, smoothness: null}};
+//   })
+// }));
 
 
 

@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
-import {useGeneratedImagesStore} from '../../../store/store';
 import {Box, Spacer, Divider, Text, SimpleGrid, Skeleton, Image, HStack, Heading, Flex, Button, Select, AspectRatio, useColorModeValue} from '@chakra-ui/react';
 import {motion} from 'framer-motion';
 import {useParams} from 'react-router-dom'; // Import useParams from react-router-dom
@@ -37,7 +36,7 @@ const handleDownload = async (materialId) => {
 
 const TextureDisplayById = () => {
     const {id} = useParams(); // Get the 'id' parameter from the URL as a string
-    const {setPBRImage} = useGeneratedImagesStore();
+    // const {setPBRImage} = useGeneratedImagesStore();
     const [materialName, setMaterialName] = useState(null);
     const [materialId, setMaterialId] = useState(null);
     const [albedoImage, setAlbedoImage] = useState(null);
@@ -95,9 +94,9 @@ const TextureDisplayById = () => {
             const newPbrMapUrls = {};
             mapTypes.forEach((mapType, index) => {
                 newPbrMapUrls[mapType] = maps[index];
-                if (maps[index]) {
-                    setPBRImage(mapType, maps[index]);
-                }
+                // if (maps[index]) {
+                //     setPBRImage(mapType, maps[index]);
+                // }
             });
             setPbrMapUrls(newPbrMapUrls);
             setPbrIsLoading(false);
@@ -106,7 +105,7 @@ const TextureDisplayById = () => {
 
         loadMaps();
 
-    }, [materialId, setPBRImage, id]); // Include 'id' as a dependency
+    }, [materialId, id]);
 
 
     const imageBoxStyle = {
