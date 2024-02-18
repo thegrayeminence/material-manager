@@ -256,7 +256,7 @@ def generate_pbr_from_albedo(base_color_url, map_type):
     
 
 # ## first endpoint for generating albedo
-@app.post("/api/generate_albedo")
+@app.route("/api/generate_albedo", methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
 def generate_albedo():
     
     ##model_identifier options (custom vs public mat diffusion models)
@@ -304,7 +304,7 @@ def generate_albedo():
         # app.logger.info("Albedo map generated successfully.")
         # response = jsonify({'base_color_url': base_color_url, 'material_id': new_material.id})
         # response.headers.add('Access-Control-Allow-Origin', '*')
-        return make_response({'base_color_url': base_color_url, 'material_id': new_material.id}), 200
+        return jsonify({'base_color_url': base_color_url, 'material_id': new_material.id}), 200
     
     except Exception as e:
         db.session.rollback()
@@ -313,7 +313,7 @@ def generate_albedo():
 
 
 # #second endpoint for generating pbr maps from albedo
-@app.post("/api/generate_pbr_maps")
+@app.route("/api/generate_pbr_maps", methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
 def generate_pbr_maps():
     try:
         data = request.get_json()
@@ -335,7 +335,7 @@ def generate_pbr_maps():
             material.smoothness_map_url = pbr_maps.get("albedo2smoothness")
             db.session.commit()
             # app.logger.info("PBR maps generated successfully.")
-            return make_response({'pbr_maps': pbr_maps}), 200
+            return jsonify({'pbr_maps': pbr_maps}), 200
         else:
             return make_response({"error": "Material not found"}, 404)
     
