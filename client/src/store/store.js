@@ -43,7 +43,7 @@ export const useMaterialStore = create(set => ({
 
 export const useGeneratedImagesStore = create(set => ({
   // Initialize albedoImage and pbrImages from localStorage
-  albedoImage: JSON.parse(localStorage.getItem('albedoImage')) || null,
+  albedoImage: JSON.parse(localStorage.getItem('albedoImage')) || {albedoImage: null},
   pbrImages: JSON.parse(localStorage.getItem('pbrImages')) || {normal: null, height: null, smoothness: null},
 
   // Method to set the albedo image
