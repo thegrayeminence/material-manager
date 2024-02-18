@@ -119,8 +119,8 @@ export default function MaterialUploadForm() {
             toast({
                 title: 'Form Submitted Successfully!',
                 description: "Please wait while we generate the first texture for your material. This may take a few moments.",
-                status: 'loading',
-                duration: 8000,
+                status: 'success',
+                duration: 4000,
                 position: 'top',
                 variant: 'subtle',
                 isClosable: true,
@@ -137,20 +137,25 @@ export default function MaterialUploadForm() {
             );
             console.log("Albedo texture generation initiated!");
 
-            if (textureResponse) {
-                toast({
-                    title: 'First Prompt Submitted Successfully! Initiating Second Prompt...',
-                    description: "Please wait while we generate the PBR maps for your material. This may take a few moments.",
-                    status: 'loading',
-                    duration: 6000,
-                    position: 'top',
-                    variant: 'subtle',
-                    isClosable: true,
+            toast.promise(textureResponse, {
+                success: {title: 'First Image Generated Successfully! Initiating Second Prompt...', description: 'Please wait while we generate the PBR maps for your material. This may take a few moments.'},
+                error: {title: 'Prompt Not Sent!', description: 'Something went wrong with the submission process! Please reset and try again!'},
+                loading: {title: 'Form Submitted Successfully!', description: 'Please wait while we generate the first texture for your material. This may take a few moments...'},
+            })
 
-                })
+            // if (textureResponse) {
+            //     toast({
+            //         title: 'First Prompt Submitted Successfully! Initiating Second Prompt...',
+            //         description: "Please wait while we generate the PBR maps for your material. This may take a few moments.",
+            //         status: 'loading',
+            //         duration: 6000,
+            //         position: 'top',
+            //         variant: 'subtle',
+            //         isClosable: true,
 
+            //     })
 
-            }
+            // }
 
 
             const materialId = textureResponse.data.material_id;

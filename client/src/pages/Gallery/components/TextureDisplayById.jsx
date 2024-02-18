@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import {Box, Spacer, Divider, Text, SimpleGrid, Skeleton, SkeletonText, Image, HStack, Heading, Flex, Button, Select, AspectRatio, useColorModeValue} from '@chakra-ui/react';
-import {m, motion} from 'framer-motion';
+import {motion} from 'framer-motion';
 import {useParams} from 'react-router-dom'; // Import useParams from react-router-dom
 
 

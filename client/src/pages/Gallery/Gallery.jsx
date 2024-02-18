@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from 'react'
-import {Box, Grid, SimpleGrid, VStack, Text, useColorModeValue} from '@chakra-ui/react'
+import {Box, Grid, SimpleGrid, VStack, Text, useColorModeValue, Skeleton} from '@chakra-ui/react'
 //local imports
 import {TextureDisplay} from './components'
 import {GalleryCard} from './components'
 import {loadImagesFromFolder} from '../../config/loadImagesFromFolder'
 import {StylishHeader} from '../../components'
 import {PreviewBackgroundAnimation} from '../Preview/components';
+import {set} from 'animejs'
 
 
 function Gallery() {
@@ -26,6 +27,7 @@ function Gallery() {
     "Red_Silk_Carpet_Persian",
     "Blue_Ceramic_Flooring_Glossy",
     "Blue_Wallpaper_Wall_Worn",
+    "Alien_Metal_Wall_Spaceship",
     "Yellow_Papyrus_Paper_Ancient",
     "Red_Marble_Tiles_Raised",
     "Red_Brick_Wall_Damaged",
@@ -57,12 +59,14 @@ function Gallery() {
 
   useEffect(() => {
     const loadMaterials = async () => {
+      setisLoading(true);
       const loadedMaterials = [];
       for (let folder of folderNames) {
         const images = await loadImagesFromFolder(folder);
         loadedMaterials.push({folder, images})
       }
       setMaterials(loadedMaterials);
+      setisLoading(false);
     };
     loadMaterials();
   }, []);
