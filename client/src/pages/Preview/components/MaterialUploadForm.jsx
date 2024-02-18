@@ -43,7 +43,7 @@ export default function MaterialUploadForm() {
     const {progress, increaseProgress, decreaseProgress, resetProgress} = useProgressStore();
     // const {isLoading, setIsLoading} = useIsLoadingStore();
     const [isLoading, setIsLoading] = useState(false);
-    const {setAlbedoImage, setPBRImage, clearImages, albedoImage, pbrImages} = useGeneratedImagesStore();
+    // const {setAlbedoImage, setPBRImage, clearImages, albedoImage, pbrImages} = useGeneratedImagesStore();
 
     //autosuggestion zustand states
     const {
@@ -112,7 +112,7 @@ export default function MaterialUploadForm() {
             return;
         };
 
-        clearImages();       // Clear any existing images before loading new ones
+        // clearImages();       // Clear any existing images before loading new ones
         setIsLoading(true);  // Start loading indicator
 
         try {
