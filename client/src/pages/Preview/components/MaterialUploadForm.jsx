@@ -118,10 +118,10 @@ export default function MaterialUploadForm() {
 
             toast({
                 title: 'Form Submitted Successfully!',
-                description: "Please wait while we generate the first texture for your material. This may take a few moments.",
+                description: "Please wait while we initiate the image generation process! This may take a few moments.",
                 status: 'success',
-                duration: 4000,
-                position: 'top',
+                duration: 3000,
+                position: 'bottom',
                 variant: 'subtle',
                 isClosable: true,
 
@@ -137,25 +137,24 @@ export default function MaterialUploadForm() {
             );
             console.log("Albedo texture generation initiated!");
 
-            toast.promise(textureResponse, {
-                success: {title: 'First Image Generated Successfully! Initiating Second Prompt...', description: 'Please wait while we generate the PBR maps for your material. This may take a few moments.'},
-                error: {title: 'Prompt Not Sent!', description: 'Something went wrong with the submission process! Please reset and try again!'},
-                loading: {title: 'Form Submitted Successfully!', description: 'Please wait while we generate the first texture for your material. This may take a few moments...'},
-            })
+            // toast.promise(textureResponse, {
+            //     success: {title: 'First Image Generated Successfully! Initiating Second Prompt...', description: 'Please wait while we generate the PBR maps for your material. This may take a few moments.'},
+            //     error: {title: 'Prompt Not Sent!', description: 'Something went wrong with the submission process! Please reset and try again!'},
+            //     loading: {title: 'Form Submitted Successfully!', description: 'Please wait while we generate the first texture for your material. This may take a few moments...'},
+            // })
 
-            // if (textureResponse) {
-            //     toast({
-            //         title: 'First Prompt Submitted Successfully! Initiating Second Prompt...',
-            //         description: "Please wait while we generate the PBR maps for your material. This may take a few moments.",
-            //         status: 'loading',
-            //         duration: 6000,
-            //         position: 'top',
-            //         variant: 'subtle',
-            //         isClosable: true,
+            if (textureResponse) {
+                toast({
+                    title: 'First Prompt Submitted Successfully! Initiating Second Prompt...',
+                    description: "Please wait while we generate the secondary PBR maps for your material. This may take a few moments.",
+                    status: 'loading',
+                    position: 'bottom',
+                    variant: 'subtle',
+                    isClosable: true,
+                    duration: 10000,
+                })
 
-            //     })
-
-            // }
+            }
 
 
             const materialId = textureResponse.data.material_id;
@@ -177,6 +176,7 @@ export default function MaterialUploadForm() {
                 {base_color_url: baseColorUrl, material_id: materialId}
             );
             console.log("PBR maps generation initiated!");
+
 
 
             // Set PBR maps in zustand store
