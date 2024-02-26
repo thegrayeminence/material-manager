@@ -485,9 +485,11 @@ def get_all_images():
             
 @app.get('/api/get_foldernames')
 def get_foldernames():
-    BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', ''))
-    images_dir_path = os.path.join(BASE_DIR, 'client', 'dist', 'assets', 'images')
-    print(images_dir_path)
+    # BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', ''))
+    # images_dir_path = os.path.join(BASE_DIR, 'client', 'dist', 'assets', 'images')
+    APP_ROOT = os.path.dirname(os.path.join(os.path.abspath(__file__), '..', ''))
+    images_dir_path = os.path.join('../', 'static', 'assets', 'images')
+    print(APP_ROOT, images_dir_path)
     
     folders = [name for name in os.listdir(images_dir_path) if os.path.isdir(os.path.join(images_dir_path, name))]
     print(folders)
@@ -506,7 +508,7 @@ def get_foldernames():
 def get_images(folder_name):
     # BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', ''))
     #images_dir_path = os.path.join(BASE_DIR, 'server', 'static', 'assets', 'images', folder_name)
-    images_dir_path = os.path.join(app.static_folder, 'images', folder_name)
+    images_dir_path = os.path.join(app.static_folder, 'assets', 'images', folder_name)
     # dynamic_base_path = os.getenv('VITE_API_URL', app.static_folder) 
     # if not os.path.exists(folder_path) or not os.path.isdir(folder_path):
     #     return jsonify({"error": f"Folder not found; folder info \n path_static:{folder_path} \n "}), 404
