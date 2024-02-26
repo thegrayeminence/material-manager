@@ -73,14 +73,7 @@ function GalleryDetailsView() {
             });
     };
 
-    // // Example usage with Axios
-    // const imageUrlExample = [
-    //     "https://textureforge.onrender.com/assets/images/Bark_Tree_Birch_Ancient/Bark_Tree_Birch_Ancient_height.png",
-    //     "https://textureforge.onrender.com/assets/images/Bark_Tree_Birch_Ancient/Bark_Tree_Birch_Ancient_normal.png",
-    //     "https://textureforge.onrender.com/assets/images/Bark_Tree_Birch_Ancient/Bark_Tree_Birch_Ancient_base_color.png",
-    //     "https://textureforge.onrender.com/assets/images/Bark_Tree_Birch_Ancient/Bark_Tree_Birch_Ancient_smoothness.png"
-    // ];
-    // downloadImagesAsZip(imageUrls, "Bark_Tree_Birch_Ancient.zip");
+
 
     //old way of loading images from public folder on frontend
     useEffect(() => {
