@@ -24,7 +24,7 @@ load_dotenv()
 app = Flask(
     __name__,
     static_url_path='',
-    static_folder='../client/dist/assets',
+    static_folder='../client/public',
     template_folder='../client/dist'
 )
 
@@ -86,8 +86,8 @@ CORS(app, resources={r"/api/*": {"origins": ["https://textureforgestatic.onrende
 @app.get("/api/test")
 def test():
     BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', ''))
-    images_dir_path = os.path.join(app.static_folder, 'static', 'images')
-    return make_response({"message": f"test endpoint data;\n base_dir:{BASE_DIR};static folder:{app.static_folder}"}), 200
+    images_dir_path = os.path.join(app.static_folder, 'assets', 'images')
+    return make_response({"message": f"test endpoint data;\n base_dir:{BASE_DIR};static folder:{app.static_folder}; image_public_path:{images_dir_path}"}), 200
 
 
 
@@ -487,9 +487,9 @@ def get_all_images():
 def get_foldernames():
     # BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', ''))
     # images_dir_path = os.path.join(BASE_DIR, 'client', 'dist', 'assets', 'images')
-    APP_ROOT = os.path.dirname(os.path.join(os.path.abspath(__file__), '..', ''))
-    images_dir_path = os.path.join('../', 'static', 'assets', 'images')
-    print(APP_ROOT, images_dir_path)
+    # APP_ROOT = os.path.dirname(os.path.join(os.path.abspath(__file__), '..', ''))
+    images_dir_path = os.path.join(app.static_folder, 'assets', 'images')
+   
     
     folders = [name for name in os.listdir(images_dir_path) if os.path.isdir(os.path.join(images_dir_path, name))]
     print(folders)
