@@ -31,6 +31,7 @@ function GalleryDetailsView() {
             const response = await axios.get(apiUrl + `/api/download_static_material/${materialName}`, {
                 responseType: 'blob',
             });
+            console.log("response:", response)
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement('a');
             link.href = url;
@@ -74,7 +75,6 @@ function GalleryDetailsView() {
     useEffect(() => {
         const loadMaterial = async () => {
             setIsLoading(true);
-            setMaterialName(name);
             const loadedImages = await loadImagesFromFolder(name);
             console.log("loadedImages frontend src:", loadedImages, "folder name:", name)
             setImages(loadedImages);

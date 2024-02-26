@@ -460,10 +460,13 @@ def get_all_images():
 @app.route('/api/static_materials', methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
 def get_static_materials():
     try:
-        static_materials = StaticMaterial.query.all()
+        images_dir_path = app.static_folder + '/assets/images'
+        folders = [name for name in os.listdir(images_dir_path) if os.path.isdir(os.path.join(images_dir_path, name))]
+        
+        # static_materials = StaticMaterial.query.all()
         # image_files = [f for f in os.listdir(folder_path) if f.endswith('.png')]
         # image_urls = [url_for('static', filename=f'assets/images/{folder_name}/{file}', _external=True) for file in image_files]
-        material_data = [{"material_name": material.prompt, "base_color_url": material.base_color_url, "normal_map_url": material.normal_map_url, "height_map_url": material.height_map_url, "smoothness_map_url": material.smoothness_map_url} for material in static_materials]
+        # material_data = [{"material_name": material.prompt, "base_color_url": material.base_color_url, "normal_map_url": material.normal_map_url, "height_map_url": material.height_map_url, "smoothness_map_url": material.smoothness_map_url} for material in static_materials]
         return jsonify({"static_materials": material_data}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
