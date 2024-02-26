@@ -8,42 +8,12 @@ import {PBROnePreviewBox} from './components';
 import '@fontsource/poppins';
 import '@fontsource/inter';
 import axios from 'axios';
-import {set} from 'react-hook-form';
 
 function GalleryDetailsView() {
     let {name} = useParams();
     const [images, setImages] = useState([]);
     const toast = useToast();
     const [isLoading, setIsLoading] = useState(true);
-    const [materialName, setMaterialName] = useState(name);
-
-
-    const handleDownload = async (materialName) => {
-
-
-
-        try {
-            const apiUrl = import.meta.env.VITE_API_URL
-            const materialZip = materialName + '.zip'
-            console.log("handle download for:", materialZip, "apiUrl:", apiUrl)
-
-
-            const response = await axios.get(apiUrl + `/api/download_static_material/${materialName}`, {
-                responseType: 'blob',
-            });
-            console.log("response:", response)
-            const url = window.URL.createObjectURL(new Blob([response.data]));
-            const link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', materialZip);
-            document.body.appendChild(link);
-            link.click();
-            link.parentNode.removeChild(link);
-        } catch (error) {
-            console.error("Error downloading material:", error);
-
-        }
-    };
 
     // testing new endpoint for backend static image assets
 
@@ -164,19 +134,18 @@ function GalleryDetailsView() {
                         <Center>
                             <Button colorScheme={'blue'}
                                 variant="outline" mt={5} size={{base: 'md', sm: 'md', md: 'md', lg: 'lg', xl: 'lg'}}
-                                // onClick={() =>
-                                //     toast({
-                                //         title: 'Downloads of community/static files not currently available!',
-                                //         description: "Server undergoing maintanenance — try generating new images for downloading via the form...or check back here later!",
-                                //         status: 'error',
-                                //         duration: 8000,
-                                //         position: 'top',
-                                //         // variant: 'subtle',
-                                //         isClosable: true,
-                                //         colorScheme: 'purple',
-                                //     })
-                                // }
-                                onClick={() => handleDownload(materialName)}
+                                onClick={() =>
+                                    toast({
+                                        title: 'Downloads of community/static files not currently available!',
+                                        description: "Server undergoing maintanenance — try generating new images for downloading via the form...or check back here later!",
+                                        status: 'error',
+                                        duration: 8000,
+                                        position: 'top',
+                                        // variant: 'subtle',
+                                        isClosable: true,
+                                        colorScheme: 'purple',
+                                    })
+                                }
 
                             >
                                 DOWNLOAD

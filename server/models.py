@@ -26,9 +26,9 @@ class Material(db.Model, SerializerMixin):
     __tablename__= "material"
     
     id = db.Column(db.Integer, primary_key=True)
-    workflow = db.Column(db.String)
-    maps = db.Column(JSON)  
-    software = db.Column(JSON) 
+    workflow = db.Column(db.String, nullable=False)
+    maps = db.Column(JSON)  # Storing as JSON
+    software = db.Column(JSON)  # Storing as JSON
     color = db.Column(db.String, nullable=False)
     element = db.Column(db.String, nullable=False)
     condition = db.Column(db.String, nullable=False)

@@ -1,6 +1,5 @@
 # Standard library imports
 import re, os, pathlib, zipfile, json, shutil, requests, logging, webbrowser
-import stat
 from datetime import datetime, timedelta
 from logging.handlers import RotatingFileHandler
 # other imports
@@ -17,7 +16,7 @@ from dotenv import load_dotenv
 import replicate
 
 # local imports
-from models import db, Material, StaticMaterial
+from models import db, Material
 
 load_dotenv()
 
@@ -25,7 +24,7 @@ load_dotenv()
 app = Flask(
     __name__,
     static_url_path='',
-    static_folder='./static',
+    static_folder='../client/dist/assets',
     template_folder='../client/dist'
 )
 
@@ -40,8 +39,10 @@ app = Flask(
 
 
 # app.secret_key = os.environ.get("SECRET_KEY")
+app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {"pool_pre_ping": True, "pool_recycle": 300} 
+
+
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
-app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {"pool_pre_ping": True} 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.json.compact = False
 
@@ -53,9 +54,9 @@ db.init_app(app)
 # api = Api(app)
 
 # CORS settings
-CORS(app, resources={r"/api/*": {"origins": ["https://textureforgestatic.onrender.com", "https://cdn.pbr.one", "http://localhost:3000", "https://www.textureforge.io"]}, r"/assets/*": {"origins": ["https://textureforgestatic.onrender.com", "https://cdn.pbr.one", "http://localhost:3000", "https://www.textureforge.io"]}}
+CORS(app, resources={r"/api/*": {"origins": ["https://textureforgestatic.onrender.com", "https://cdn.pbr.one", "http://localhost:3000"]}, r"/assets/*": {"origins": ["https://textureforgestatic.onrender.com", "https://cdn.pbr.one", "http://localhost:3000"]}}
      )
-
+# CORS(app, resources={r"/api/*": {"origins": "*"}})
 # cors_config = {
 #     #"origins": "*",
 #     "origins": ["https://textureforgestatic.onrender.com", "https://cdn.pbr.one", "http://localhost:3000"],
@@ -65,6 +66,13 @@ CORS(app, resources={r"/api/*": {"origins": ["https://textureforgestatic.onrende
 #     "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
 # }
 
+# cors_config = {
+#     "origins": ["https://textureforgestatic.onrender.com", "https://cdn.pbr.one", "http://localhost:3000"],
+#     "supports_credentials": True,
+    # "allow_headers": ["Content-Type", "Authorization", "X-Requested-With", "X-CSRFToken", "Cache-Control"],
+    # "expose_headers": ["Content-Disposition", "X-Suggested-Filename"],
+    # "methods": ["GET", "POST", "PUT", "DELETE"],
+# }
 
 # CORS(app, resources={
 #                      r"/api/*": cors_config,
@@ -78,8 +86,8 @@ CORS(app, resources={r"/api/*": {"origins": ["https://textureforgestatic.onrende
 @app.get("/api/test")
 def test():
     BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', ''))
-    images_dir_path = os.path.join(BASE_DIR, 'server', 'static', 'assets', 'images')
-    return make_response({"message": f"test endpoint data;\n base_dir:{BASE_DIR};static folder:{images_dir_path}"}), 200
+    images_dir_path = os.path.join(app.static_folder, 'static', 'images')
+    return make_response({"message": f"test endpoint data;\n base_dir:{BASE_DIR};static folder:{app.static_folder}"}), 200
 
 
 
@@ -89,6 +97,26 @@ def test():
 
 api_token = os.getenv("REPLICATE_API_TOKEN")
 os.environ["REPLICATE_API_TOKEN"] = api_token
+
+# Setup Logging
+# def setup_logging():
+#     if app.config['LOG_WITH_GUNICORN']:
+#         gunicorn_error_logger = logging.getLogger('gunicorn.error')
+#         app.logger.handlers.extend(gunicorn_error_logger.handlers)
+#         app.logger.setLevel(logging.DEBUG)
+#     else:
+#         if not os.path.exists('logs'):
+#             os.makedirs('logs')
+#         file_handler = RotatingFileHandler('logs/app.log', maxBytes=10240, backupCount=10)
+#         file_handler.setFormatter(logging.Formatter(
+#             '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
+#         file_handler.setLevel(logging.INFO)
+#         app.logger.addHandler(file_handler)
+#         app.logger.setLevel(logging.INFO)
+#         app.logger.info('Application startup')
+    
+# setup_logging()
+
 
 
 
@@ -229,6 +257,9 @@ def generate_pbr_from_albedo(base_color_url, map_type):
 
 # ## CLIENT --> SERVER ENDPOINTS ####:
 # ##----------------------------------------##
+
+
+    
 
 # ## first endpoint for generating albedo
 @app.route("/api/generate_albedo", methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
@@ -420,15 +451,13 @@ def get_recent_albedo():
         return make_response({"error": str(e)}), 500
     
 
-
-
 # ##-------------------------------------##
 # ## Image Serving/Download Functionality ##
 
 @app.route('/api/all_images',  methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
 def get_all_images():
     BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', ''))
-    images_dir_path = os.path.join(BASE_DIR, 'server', 'static', 'assets', 'images')
+    images_dir_path = os.path.join(BASE_DIR, 'client', 'dist', 'assets', 'images')
 
 
     folders = [name for name in os.listdir(images_dir_path) if os.path.isdir(os.path.join(images_dir_path, name))]
@@ -454,34 +483,46 @@ def get_all_images():
     except Exception as e:
         return make_response({f"error in fetching folders from {images_dir_path}": str(e)}), 500
             
-
-# @app.route('/api/static_materials', methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
-# def get_static_materials():
-#     try:
-#         images_dir_path = app.static_folder + '/assets/images'
-#         folders = [name for name in os.listdir(images_dir_path) if os.path.isdir(os.path.join(images_dir_path, name))]
-        
-#         # static_materials = StaticMaterial.query.all()
-#         # image_files = [f for f in os.listdir(folder_path) if f.endswith('.png')]
-#         image_urls = [url_for('static', filename=f'assets/images/{folder_name}/{file}', _external=True) for file in image_files]
-        
-#         # material_data = [{"material_name": material.prompt, "base_color_url": material.base_color_url, "normal_map_url": material.normal_map_url, "height_map_url": material.height_map_url, "smoothness_map_url": material.smoothness_map_url} for material in static_materials]
-#         return jsonify({"static_materials": material_data}), 200
-#     except Exception as e:
-#         return jsonify({"error": str(e)}), 500
-
-@app.route('/api/static_material/<material_name>', methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
-def get_static_material(material_name):
+@app.get('/api/get_foldernames')
+def get_foldernames():
+    BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', ''))
+    images_dir_path = os.path.join(BASE_DIR, 'client', 'dist', 'assets', 'images')
+    print(images_dir_path)
+    
+    folders = [name for name in os.listdir(images_dir_path) if os.path.isdir(os.path.join(images_dir_path, name))]
+    print(folders)
+    all_folders_names = []
+    
     try:
-        images_dir_path = app.static_folder + '/assets/images'
-        folder_path = os.path.join(images_dir_path, material_name)
-        #static_material = StaticMaterial.query.filter_by(prompt=material_name).first()
+        for folder_name in folders:
+            all_folders_names.append(folder_name)
         
-        image_files = [f for f in os.listdir(folder_path) if f.endswith('.png')]
-        image_urls = [url_for('static', filename=f'assets/images/{material_name}/{file}', _external=True) for file in image_files]
-        return jsonify({"base_color_url": image_urls}), 200
+        return make_response({"folders": all_folders_names}), 200
+    
+    except Exception as e:
+        return make_response({f"error in fetching folders from {images_dir_path}": str(e)}), 500        
+
+@app.route('/api/images/<folder_name>', methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
+def get_images(folder_name):
+    BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', ''))
+    images_dir_path = os.path.join(BASE_DIR, 'client', 'dist', 'assets', 'images', folder_name)
+    # dynamic_base_path = os.getenv('VITE_API_URL', app.static_folder) 
+    # if not os.path.exists(folder_path) or not os.path.isdir(folder_path):
+    #     return jsonify({"error": f"Folder not found; folder info \n path_static:{folder_path} \n "}), 404
+
+    try:
+        image_files = [f for f in os.listdir(path=images_dir_path) if f.endswith('.png')]
+        image_urls = [url_for('static', filename=f'assets/images/{folder_name}/{file}', _external=True) for file in image_files]
+       
+        # map_types = ['base_color.png', 'height.png', 'normal.png', 'smoothness.png']
+        # images = [f"{dynamic_base_path}/{folder_name}/{folder_name}_{map_type}" for map_type in map_types]
+        
+        return make_response({"folder": folder_name, "images": image_urls}, 200)
+    
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+
 
 def download_image(url, filename):
     try:
@@ -494,7 +535,6 @@ def download_image(url, filename):
             raise Exception(f"Failed to download image from {url}")
     except Exception as e:
         raise Exception(f"Error downloading image: {e}")
-    
 
 # def create_summary_text(material):
 #     # summary text file with material details
@@ -580,46 +620,6 @@ def download_material(material_id):
         return jsonify({"Error in download_material": str(e)}), 500
 
 
-def create_downloadable_zip_static(material_name):
-    #gets urls for images in folder based on material name in browser url
-    images_dir_path = app.static_folder + '/assets/images'
-    folder_path = os.path.join(images_dir_path, material_name)
-    image_files = [f for f in os.listdir(folder_path) if f.endswith('.png')]
-    image_urls = [url_for('static', filename=f'assets/images/{material_name}/{file}', _external=True) for file in image_files]
-    
-    folder_name = material_name
-    temp_images_dir = os.path.join(current_app.root_path, 'temp_images', folder_name)
-    os.makedirs(temp_images_dir, exist_ok=True)
-    
-    zip_filename = os.path.join(temp_images_dir, f"{folder_name}.zip")
-    
-    with zipfile.ZipFile(zip_filename, 'w') as zipf:
-        for image_url in image_urls:
-            filename = os.path.basename(image_url)
-            filepath = os.path.join(temp_images_dir, filename)
-            download_image(image_url, filepath)
-            zipf.write(filepath, filename)
-    
-    return zip_filename
-
-
-@app.route("/api/download_static_material/<material_name>",  methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
-def download_static_material(material_name):
-    try:
-        zip_file_path = create_downloadable_zip_static(material_name)
-        directory = os.path.dirname(zip_file_path)
-        filename = os.path.basename(zip_file_path)
-        
-        response = send_from_directory(directory, filename, as_attachment=True)
-        # app.logger.info(f"Serving zip from: {zip_file_path} to: {directory} with filename: {filename}")
-        print(f"Serving zip from: {zip_file_path} to: {directory} with filename: {filename}")
-        # Clean up after sending the file
-        cleanup_temporary_directory(directory) 
-        return response
-    except Exception as e:
-        # app.logger.error(f"Error in download_material: {e}")
-        return jsonify({"Error in download_material": str(e)}), 500
-
 
 # ##-------------------------------------##
 # ##CLEANUP FUNCTIONALITY:
@@ -631,6 +631,25 @@ def cleanup_temporary_directory(directory):
     except Exception as e:
         print(f"Error during cleanup: {e}")
 
+
+
+# #### flush db data /60min functionality ####
+
+
+# ##-------------------------------------##
+# ## flush db entries older than 60 minutes ####
+# # def flush_old_materials():
+# #     # Define the time threshold (e.g., 60 minutes old)
+# #     time_threshold = datetime.utcnow() - timedelta(minutes=60)
+
+# #     # Query for old materials
+# #     old_materials = Material.query.filter(Material.created_at < time_threshold).all()
+
+# #     # Delete old materials
+# #     for material in old_materials:
+# #         db.session.delete(material)
+
+# #     db.session.commit()
 
     
 

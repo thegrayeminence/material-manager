@@ -60,10 +60,10 @@ const TextureDisplay = () => {
                 const response = await axios.get(`/api/get_recent_albedo`);
                 setAlbedoImage(response.data.image_url);
                 setMaterialId(response.data.material_id);
-                console.log(materialId)
+                console.log(materialId, store_materialId)
             } catch (error) {
                 console.error('Error fetching recent albedo:', error);
-                console.log(materialId)
+                console.log(materialId, store_materialId)
 
             }
         };
