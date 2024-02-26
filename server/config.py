@@ -522,7 +522,7 @@ def download_static_image(url):
     else:
         raise Exception(f"Failed to download image from {url}")
     
-@app.route('/api/download_images_zip/<folder_name>', methods=["GET"])
+@app.route('/api/download_images_zip/<folder_name>', methods=["GET", "POST", "OPTIONS"])
 def download_images_zip(folder_name):
     try:
         response = get_images(folder_name)
