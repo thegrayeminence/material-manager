@@ -8,7 +8,7 @@ import StylishHeader from "./StylishHeader";
 import MotionContainer from "./MotionContainer";
 import StylishButton from "./StylishButton";
 import GeometricBackgroundAnimation from "./GeometricBackgroundAnimation";
-import ParticleBackground from "./ParticleBackground";
+// import ParticleBackground from "./ParticleBackground";
 
 export {
     Header,
@@ -21,6 +21,6 @@ export {
     MotionContainer,
     StylishButton,
     GeometricBackgroundAnimation,
-    ParticleBackground,
+
 
 };
