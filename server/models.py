@@ -26,9 +26,9 @@ class Material(db.Model, SerializerMixin):
     __tablename__= "material"
     
     id = db.Column(db.Integer, primary_key=True)
-    workflow = db.Column(db.String, nullable=False)
-    maps = db.Column(JSON)  # Storing as JSON
-    software = db.Column(JSON)  # Storing as JSON
+    workflow = db.Column(db.String)
+    maps = db.Column(JSON)  
+    software = db.Column(JSON) 
     color = db.Column(db.String, nullable=False)
     element = db.Column(db.String, nullable=False)
     condition = db.Column(db.String, nullable=False)
@@ -43,3 +43,22 @@ class Material(db.Model, SerializerMixin):
 
     def __repr__(self):
         return f'<Material {self.id}>'
+
+class StaticMaterial(db.Model):
+    __tablename__= "static_material"
+    
+    id = db.Column(db.Integer, primary_key=True)
+    # color = db.Column(db.String, nullable=True)
+    # element = db.Column(db.String, nullable=True)
+    # condition = db.Column(db.String, nullable=True)
+    # manifestation = db.Column(db.String, nullable=True)
+    prompt = db.Column(db.String, nullable=False)
+    ##imgs
+    base_color_url = db.Column(db.String, nullable=False)  
+    normal_map_url = db.Column(db.String, nullable=False) 
+    height_map_url = db.Column(db.String, nullable=False) 
+    smoothness_map_url = db.Column(db.String, nullable=False)  
+    
+
+    def __repr__(self):
+        return f'<Static Material {self.id}>'
