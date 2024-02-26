@@ -485,63 +485,52 @@ def get_all_images():
             
 @app.get('/api/get_foldernames')
 def get_foldernames():
-    # BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', ''))
-    # images_dir_path = os.path.join(BASE_DIR, 'client', 'dist', 'assets', 'images')
-    # APP_ROOT = os.path.dirname(os.path.join(os.path.abspath(__file__), '..', ''))
     images_dir_path = os.path.join(app.static_folder, 'assets', 'images')
-   
-    
+    # if not os.path.exists(images_dir_path) or not os.path.isdir(images_dir_path):
+    #     return jsonify({"error": f"Folder not found; folder info \n path_static:{images_dir_path} \n "}), 404
     folders = [name for name in os.listdir(images_dir_path) if os.path.isdir(os.path.join(images_dir_path, name))]
-    print(folders)
     all_folders_names = []
-    
     try:
         for folder_name in folders:
             all_folders_names.append(folder_name)
-        
         return make_response({"folders": all_folders_names}), 200
     
     except Exception as e:
         return make_response({f"error in fetching folders from {images_dir_path}": str(e)}), 500        
 
-@app.route('/api/images/<folder_name>', methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
+@app.get('/api/images/<folder_name>')
 def get_images(folder_name):
-    # BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', ''))
-    #images_dir_path = os.path.join(BASE_DIR, 'server', 'static', 'assets', 'images', folder_name)
-    images_dir_path = os.path.join(app.static_folder, 'assets', 'images', folder_name)
-    # dynamic_base_path = os.getenv('VITE_API_URL', app.static_folder) 
-    # if not os.path.exists(folder_path) or not os.path.isdir(folder_path):
-    #     return jsonify({"error": f"Folder not found; folder info \n path_static:{folder_path} \n "}), 404
+    folder_path = os.path.join(app.static_folder, 'assets', 'images', folder_name)
 
     try:
-        image_files = [f for f in os.listdir(path=images_dir_path) if f.endswith('.png')]
+        image_files = [f for f in os.listdir(folder_path) if f.endswith('.png')]
         image_urls = [url_for('static', filename=f'assets/images/{folder_name}/{file}', _external=True) for file in image_files]
        
         # map_types = ['base_color.png', 'height.png', 'normal.png', 'smoothness.png']
         # images = [f"{dynamic_base_path}/{folder_name}/{folder_name}_{map_type}" for map_type in map_types]
         
-        return make_response({"folder": folder_name, "images": image_urls}, 200)
+        return make_response({"folder": folder_name, "image files":image_files, "image urls": image_urls}, 200)
     
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@app.route('/api/images', methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
-def get_image_folders():
-    # BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', ''))
-    #images_dir_path = os.path.join(BASE_DIR, 'server', 'static', 'assets', 'images', folder_name)
-    images_dir_path = os.path.join(app.static_folder, 'images')
+# @app.route('/api/images', methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
+# def get_image_folders():
+#     # BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', ''))
+#     #images_dir_path = os.path.join(BASE_DIR, 'server', 'static', 'assets', 'images', folder_name)
+#     images_dir_path = os.path.join(app.static_folder, 'images')
    
-    # dynamic_base_path = os.getenv('VITE_API_URL', app.static_folder) 
-    if not os.path.exists(images_dir_path) or not os.path.isdir(images_dir_path):
-        return jsonify({"error": f"Folder not found; folder info \n path_static:{images_dir_path} \n "}), 404
+#     # dynamic_base_path = os.getenv('VITE_API_URL', app.static_folder) 
+#     if not os.path.exists(images_dir_path) or not os.path.isdir(images_dir_path):
+#         return jsonify({"error": f"Folder not found; folder info \n path_static:{images_dir_path} \n "}), 404
 
-    try:
-        folders = [name for name in os.listdir(images_dir_path) if os.path.isdir(os.path.join(images_dir_path, name))]
+#     try:
+#         folders = [name for name in os.listdir(images_dir_path) if os.path.isdir(os.path.join(images_dir_path, name))]
             
-        return make_response({"folders": folders}, 200)
+#         return make_response({"folders": folders}, 200)
     
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+#     except Exception as e:
+#         return jsonify({"error": str(e)}), 500
 
 def download_image(url, filename):
     try:
