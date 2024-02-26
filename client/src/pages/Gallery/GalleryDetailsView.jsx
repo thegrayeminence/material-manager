@@ -14,31 +14,28 @@ function GalleryDetailsView() {
     const [images, setImages] = useState([]);
     const toast = useToast();
     const [isLoading, setIsLoading] = useState(true);
+    const [materialName, setMaterialName] = useState(name);
 
-    // testing new endpoint for backend static image assets
 
-    // useEffect(() => {
-    //     const loadMaterialTextures = async () => {
+    useEffect(() => {
+        const loadStaticImage = async () => {
 
-    //         // const requestUrl = `${import.meta.env.VITE_STATIC_URL}assets/images/${name}`; // Construct the URL to fetch images from the specific folder
-    //         // console.log("backend response: \n folderUrl:", requestUrl, "\n folderName:", `${name}`)
+            try {
+                const apiUrl = import.meta.env.VITE_API_URL;
+                const response = await axios.get(apiUrl + `/api/images/${materialName}`, {
+                    responseType: 'blob',
+                });
+                const image_urls = response.data.image_urls;
 
-    //         try {
-    //             setisLoadingBackend(true);
-    //             const response = await axios.get(`${import.meta.env.VITE_STATIC_URL}assets/images/${name}`);
-    //             const image_urls = response.data;
+                console.log("response:", response.data, "urls:", image_urls)
 
-    //             setbackendImages(image_urls);
-    //             console.log("response:", response, "response.data:", response.data)
-    //             setisLoadingBackend(false);
+            } catch (error) {
+                console.error("Failed to load static images:", error);
+            }
+        };
 
-    //         } catch (error) {
-    //             console.error("Failed to load texture images:", error);
-    //         }
-    //     };
-
-    //     loadMaterialTextures();
-    // }, [name]);
+        loadStaticImage();
+    }, [name]);
 
 
     //old way of loading images from public folder on frontend
