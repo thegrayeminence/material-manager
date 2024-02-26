@@ -39,6 +39,9 @@ app = Flask(
 
 
 # app.secret_key = os.environ.get("SECRET_KEY")
+app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {"pool_pre_ping": True, "pool_recycle": 300} 
+
+
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URI")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.json.compact = False
@@ -49,7 +52,7 @@ db.init_app(app)
 
 # Instantiate REST API
 # api = Api(app)
-# CORS(app)
+
 # CORS settings
 CORS(app, resources={r"/api/*": {"origins": ["https://textureforgestatic.onrender.com", "https://cdn.pbr.one", "http://localhost:3000"]}, r"/assets/*": {"origins": ["https://textureforgestatic.onrender.com", "https://cdn.pbr.one", "http://localhost:3000"]}}
      )

@@ -389,12 +389,12 @@ export default function MaterialUploadForm() {
                         <FormControl mb={4}>
                             <FormLabel
                                 textColor={'whiteAlpha.800'}
-                                htmlFor="color">Color/Luminance</FormLabel>
+                                htmlFor="color">Type/Category: Prefix</FormLabel>
                             <Input
                                 id="color"
                                 name="color"
                                 {...register('color')}
-                                placeholder={"e.g. red, bright, rich, dark, etc..."}
+                                placeholder={"e.g. oak, steel, silk, white, alien, etc..."}
                                 onChange={(e) => onInputChange(e, 'color')}
                             // sx={manifestationSuggestion ? {color: 'white'} : {}}
 
@@ -406,12 +406,12 @@ export default function MaterialUploadForm() {
                         <FormControl mb={4}>
                             <FormLabel
                                 textColor={'whiteAlpha.800'}
-                                htmlFor="elementType">Element/Type</FormLabel>
+                                htmlFor="elementType">Type/Category: Suffix</FormLabel>
                             <Input
                                 id="elementType"
                                 name="elementType"
                                 {...register('elementType')}
-                                placeholder={"e.g. wood, metal, fabric, ceramic, etc..."}
+                                placeholder={"e.g. wood, metal, fabric, ceramic, rock, etc..."}
                                 onChange={(e) => onInputChange(e, 'elementType')}
                             // sx={manifestationSuggestion ? {color: 'white'} : {}}
 
@@ -430,12 +430,12 @@ export default function MaterialUploadForm() {
                             <FormLabel
                                 textColor={'whiteAlpha.800'}
 
-                                htmlFor="manifestation">Manifestation/Form</FormLabel>
+                                htmlFor="manifestation">Manifestation/Form: Prefix</FormLabel>
                             <Input
                                 id="manifestation"
                                 name="manifestation"
                                 {...register('manifestation')}
-                                placeholder={"e.g. flooring, wall, tiles, counter, etc..."}
+                                placeholder={"e.g. mossy, rusted, ancient, worn, etc..."}
                                 onChange={(e) => onInputChange(e, 'manifestation')}
                             // sx={manifestationSuggestion ? {color: 'white'} : {}}
                             />
@@ -446,12 +446,12 @@ export default function MaterialUploadForm() {
                             <FormLabel
 
                                 textColor={'whiteAlpha.800'}
-                                htmlFor="condition">Condition/State</FormLabel>
+                                htmlFor="condition">Manifestation/Form: Suffix</FormLabel>
                             <Input
                                 id="condition"
                                 name="condition"
                                 {...register('condition')}
-                                placeholder={"e.g. new, dusty, worn, etc..."}
+                                placeholder={"e.g. flooring, wall, tiles, ground, etc..."}
                                 onChange={(e) => onInputChange(e, 'condition')}
                             // sx={manifestationSuggestion ? {color: 'white'} : {}}
                             />

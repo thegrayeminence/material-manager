@@ -1,5 +1,5 @@
 import React from 'react';
-import {Box, Spacer, Stack, Flex, Grid, Text, Tabs, TabList, TabPanels, Tab, TabPanel, TabIndicator, useColorModeValue} from '@chakra-ui/react';
+import {Box, Spacer, Stack, Flex, Grid, Text, Tabs, TabList, TabPanels, Tab, TabPanel, TabIndicator, useColorModeValue, Container} from '@chakra-ui/react';
 import {motion} from 'framer-motion';
 import {useMaterialStore} from '../../../store/store';
 import JsonTreeVisualization from './JsonTreeVisualization'
@@ -54,7 +54,9 @@ const FormPreviewBoxTabs = () => {
             <MotionBox
                 w="100%"
                 maxW="75rem"
-                overflow={'scroll'}
+                // overflow={'scroll'}
+
+                whiteSpace={'pre-wrap'}
                 margin="0 auto"
                 borderWidth=".1rem"
                 px="2.5rem"
@@ -79,8 +81,8 @@ const FormPreviewBoxTabs = () => {
                     <TabList
                         color={useColorModeValue('twitter.400', 'purple.300')}
                     >
-                        <Tab>Text</Tab>
-                        <Tab isDisabled>JSON Output</Tab>
+                        <Tab>Tips</Tab>
+                        <Tab>Prompt</Tab>
                         <Tab isDisabled>Graphics</Tab>
                     </TabList>
                     <TabIndicator
@@ -90,6 +92,63 @@ const FormPreviewBoxTabs = () => {
                         borderRadius="1px"
                     />
                     <TabPanels>
+
+                        {/* TIPS */}
+                        <TabPanel>
+                            <Container
+                                // zIndex={-1}
+                                maxW={'99%'}
+                                h='auto'
+                                borderRadius={'xl'}
+                                boxShadow={'xl'}
+                                borderStyle={'solid'}
+                                borderWidth={'.15rem'}
+                                borderColor={useColorModeValue('blackAlpha.200', 'whiteAlpha.300')}
+
+                                p={{base: '2', sm: '4', md: '6', lg: '8', xl: '10'}}
+                            // bg={useColorModeValue('gray.100', 'gray.700')}
+                            >
+                                {/* TEXT FOR COMPONENT TIPS:
+                                User Tips:
+For optimal prompt semantics, use the two suffixes to broadly define your material (‘type’ for the category of the surface and ‘manifestation’ for the object it will be applied to)  and each prefixes as modifiers to narrow down those selections (e.g. type ‘stone’ can be narrowed down to ‘slate stone’ and manifestation ‘tiles’ to ‘tiles mossy’)
+
+Prompt P1=material type
+prefix=type modifier; suffix=type
+“oak wood”
+
+Instructions=“categorize your material and describe the properties of its surface, as in  ‘oak wood’ or ‘steel metal’ or ‘grass ground’”
+
+Prompt P2=material manifestation
+prefix=manifestation modifier; manifestation 
+“varnished flooring”
+
+Instructions=“describe the properties of the object upon whose surface the material will be applied (as in ‘varnished flooring’ as a valid manifestation of ‘oak wood’“)
+                                
+                                
+                                */}
+
+
+                                <Text fontSize={'1.25rem'} fontWeight={'medium'} color={useColorModeValue('teal.300', 'facebook.300')} letterSpacing={'.1rem'} fontFamily={'Avenir Black'} lineHeight={'2rem'}>User Tips:
+                                </Text>
+                                <Text fontSize={'1rem'} fontWeight={'medium'} color={useColorModeValue('teal.300', 'facebook.300')} letterSpacing={'.1rem'} fontFamily={'Avenir Next'} lineHeight={'2rem'}>The semantics/structure of your text prompt is the biggest factor in deciding the results output by Stable Diffusion. For optimal results, try using the two suffixes to broadly define your material
+                                    (‘type’ for the category of the surface and ‘manifestation’ for the object it will be applied to)
+                                    and each prefixes as modifiers to narrow down those selections (e.g. type ‘stone’ can be narrowed down to ‘slate stone’ and manifestation ‘tiles’ to ‘tiles mossy’)
+                                </Text>
+                                <Spacer py={'1rem'} />
+                                {/* <Text fontSize={'1.25rem'} fontWeight={'medium'} color={useColorModeValue('teal.300', 'facebook.300')} letterSpacing={'.1rem'} fontFamily={'Avenir Next'} lineHeight={'2rem'}>Part1: Material Type. Prefix1 (type-modifier, adj.) + Suffix1 (type, noun)
+                                </Text> */}
+                                {/* <Text fontSize={'1rem'} fontWeight={'medium'} color={useColorModeValue('teal.300', 'facebook.300')} letterSpacing={'.1rem'} fontFamily={'Avenir Next'} lineHeight={'2rem'}>Instructions: “categorize your material and describe the properties of its surface, as in  ‘oak wood’ or ‘steel metal’ or ‘grass ground’”
+                                </Text>
+                                <Spacer py={'1rem'} />
+                                <Text fontSize={'1.25rem'} fontWeight={'medium'} color={useColorModeValue('teal.300', 'facebook.300')} letterSpacing={'.1rem'} fontFamily={'Avenir Next'} lineHeight={'2rem'}>Part2: Material Manifestation. Prefix2 (manifestation-modifier, adj.) + Suffix2 (manifestation, noun)
+                                </Text>
+                                <Text fontSize={'1rem'} fontWeight={'medium'} color={useColorModeValue('teal.300', 'facebook.300')} letterSpacing={'.1rem'} fontFamily={'Avenir Next'} lineHeight={'2rem'}>Instructions: “describe the properties of the object upon whose surface the material will be applied (as in ‘varnished flooring’ as a valid manifestation of ‘oak wood’“)
+                                </Text> */}
+
+                            </Container>
+                        </TabPanel>
+
+                        {/* PROMPT */}
                         <TabPanel>
                             <Flex direction="column" align="center" w="100%" maxH="35vh" >
                                 <Box>
@@ -127,14 +186,10 @@ const FormPreviewBoxTabs = () => {
 
                             </Flex>
                         </TabPanel>
-                        <TabPanel>
-                            <Text whiteSpace="pre-wrap">
-                                {formattedData}
-                            </Text>
-                        </TabPanel>
+
                         <TabPanel >
                             <Flex direction="column" align="center" w="100%" maxH="35vh" >
-                                <JsonTreeVisualization materialData={materialData} />
+                                {/* <JsonTreeVisualization materialData={materialData} /> */}
                             </Flex>
                         </TabPanel>
                     </TabPanels>

@@ -10,7 +10,7 @@ import {
   FormPreviewBoxTabs,
   PreviewBackgroundAnimation
 } from './components';
-import {GradientBG_Purple, Header, StylishHeader} from '../../components';
+import {GradientBG_Purple, Header, StylishHeader, ParticleBackground} from '../../components';
 import {useProgressStore} from '../../store/store';
 
 
@@ -69,6 +69,7 @@ function Preview() {
       <Box width={'100vw'} height={'100%'} margin={0} padding={0} position={'fixed'} top={0} left={0}
         zIndex={-1}>
         <PreviewBackgroundAnimation />
+        {/* <ParticleBackground /> */}
       </Box>
     </Box>
 
