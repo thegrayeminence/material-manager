@@ -8,41 +8,11 @@ import {PBROnePreviewBox} from './components';
 import '@fontsource/poppins';
 import '@fontsource/inter';
 import axios from 'axios';
+import JSZip, {folder} from 'jszip';
+import {saveAs} from 'file-saver';
+import {set} from 'react-hook-form';
 
-const loadStaticImage = async (folderName) => {
 
-    try {
-        const apiUrl = import.meta.env.VITE_API_URL;
-        // const response = await axios.get(apiUrl + `/api/images/${folderName}`, {
-        //     responseType: 'blob',
-        // });
-        const response = await axios.get(apiUrl + `/api/images/${folderName}`);
-        const image_urls = response.data.image_urls;
-
-        console.log("response:", response.data, "urls:", image_urls)
-
-    } catch (error) {
-        console.error("Failed to load static images:", error);
-    }
-};
-
-const handleDownloadZip = async (folderName) => {
-    try {
-        const apiUrl = import.meta.env.VITE_API_URL;
-        const response = await axios.get(apiUrl + `/api/download_images_zip/${folderName}`, {
-            responseType: 'blob', // Important for handling the binary content of the zip file
-        });
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', `${folderName}.zip`); // Sets the filename for the downloaded zip
-        document.body.appendChild(link);
-        link.click();
-        link.parentNode.removeChild(link);
-    } catch (error) {
-        console.error("Error downloading zip:", error);
-    }
-};
 
 
 
@@ -52,9 +22,65 @@ function GalleryDetailsView() {
     const toast = useToast();
     const [isLoading, setIsLoading] = useState(true);
     const [folderName, setFolderName] = useState(name);
+    const [imageUrls, setImageUrls] = useState([]);
+
+    useEffect(() => {
+        const loadStaticImage = async (folderName) => {
+
+            try {
+                const apiUrl = import.meta.env.VITE_API_URL;
+                const response = await axios.get(apiUrl + `/api/images/${folderName}`);
+                setImageUrls(response.data.image_urls);
+                const folder = response.data.material_name;
+                console.log("response:", response.data, "urls:", response.data.image_urls, "folder:", folder);
+
+            } catch (error) {
+                console.error("Failed to load static images:", error);
+            }
+        };
+        loadStaticImage(name);
+    }, [name]);
 
 
+    const fetchImageAsBlob = async (url) => {
+        const response = await axios.get(url, {responseType: 'blob'});
+        return response.data;
+    };
 
+    const handleDownloadZip = async () => {
+        if (imageUrls.length === 0) {
+            console.error("No images to download");
+            return;
+        }
+
+        const zip = new JSZip();
+        for (const imageUrl of imageUrls) {
+            const imageName = imageUrl.split('/').pop();
+            try {
+                const imageBlob = await fetchImageAsBlob(imageUrl);
+                zip.file(imageName, imageBlob, {binary: true});
+            } catch (error) {
+                console.error(`Failed to fetch image ${imageName}:`, error);
+            }
+        }
+
+        zip.generateAsync({type: "blob"})
+            .then((content) => {
+                saveAs(content, `${name}.zip`);
+            })
+            .catch((error) => {
+                console.error('Failed to generate zip:', error);
+            });
+    };
+
+    // // Example usage with Axios
+    // const imageUrlExample = [
+    //     "https://textureforge.onrender.com/assets/images/Bark_Tree_Birch_Ancient/Bark_Tree_Birch_Ancient_height.png",
+    //     "https://textureforge.onrender.com/assets/images/Bark_Tree_Birch_Ancient/Bark_Tree_Birch_Ancient_normal.png",
+    //     "https://textureforge.onrender.com/assets/images/Bark_Tree_Birch_Ancient/Bark_Tree_Birch_Ancient_base_color.png",
+    //     "https://textureforge.onrender.com/assets/images/Bark_Tree_Birch_Ancient/Bark_Tree_Birch_Ancient_smoothness.png"
+    // ];
+    // downloadImagesAsZip(imageUrls, "Bark_Tree_Birch_Ancient.zip");
 
     //old way of loading images from public folder on frontend
     useEffect(() => {
@@ -161,8 +187,7 @@ function GalleryDetailsView() {
                                 //         colorScheme: 'purple',
                                 //     })
                                 // }
-                                onClick={() => handleDownloadZip(folderName)}
-
+                                onClick={handleDownloadZip}
                             >
                                 DOWNLOAD
                             </Button>

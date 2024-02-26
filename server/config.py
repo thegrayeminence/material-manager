@@ -515,32 +515,32 @@ def get_images(folder_name):
 ##-------------------------------------##
 ## Image Download Functionality: downloads relating to static images (i.e. not temp SD ones) ##
 
-def download_static_image(url):
-    response = requests.get(url)
-    if response.status_code == 200:
-        return response.content
-    else:
-        raise Exception(f"Failed to download image from {url}")
+# def download_static_image(url):
+#     response = requests.get(url)
+#     if response.status_code == 200:
+#         return response.content
+#     else:
+#         raise Exception(f"Failed to download image from {url}")
     
-@app.route('/api/download_images_zip/<folder_name>', methods=["GET", "POST", "OPTIONS"])
-def download_images_zip(folder_name):
-    try:
-        response = get_images(folder_name)
-        data = response.json if callable(response.json) else response.get_json()
-        image_urls = data['image_urls']
+# @app.route('/api/download_images_zip/<folder_name>', methods=["GET", "POST", "OPTIONS"])
+# def download_images_zip(folder_name):
+#     try:
+#         response = get_images(folder_name)
+#         data = response.json if callable(response.json) else response.get_json()
+#         image_urls = data['image_urls']
         
-        memory_file = BytesIO()
-        with zipfile.ZipFile(memory_file, 'w', zipfile.ZIP_DEFLATED) as zipf:
-            for url in image_urls:
-                image_name = url.split('/')[-1]  # Extracts file name from URL
-                image_content = download_static_image(url)
-                zipf.writestr(image_name, image_content)
+#         memory_file = BytesIO()
+#         with zipfile.ZipFile(memory_file, 'w', zipfile.ZIP_DEFLATED) as zipf:
+#             for url in image_urls:
+#                 image_name = url.split('/')[-1]  # Extracts file name from URL
+#                 image_content = download_static_image(url)
+#                 zipf.writestr(image_name, image_content)
         
-        memory_file.seek(0)
+#         memory_file.seek(0)
         
-        return send_file(memory_file, mimetype='application/zip', as_attachment=True, download_name=f"{folder_name}.zip")
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+#         return send_file(memory_file, mimetype='application/zip', as_attachment=True, download_name=f"{folder_name}.zip")
+#     except Exception as e:
+#         return jsonify({"error": str(e)}), 500
 
 # @app.route('/api/download_static_folder/<folder_name>', methods=["GET", "POST", "OPTIONS"])
 # def download_static_folder(folder_name):
