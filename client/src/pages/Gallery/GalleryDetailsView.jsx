@@ -21,7 +21,6 @@ function GalleryDetailsView() {
     const [images, setImages] = useState([]);
     const toast = useToast();
     const [isLoading, setIsLoading] = useState(true);
-    const [folderName, setFolderName] = useState(name);
     const [imageUrls, setImageUrls] = useState([]);
 
     useEffect(() => {
@@ -32,7 +31,7 @@ function GalleryDetailsView() {
                 const response = await axios.get(apiUrl + `/api/images/${folderName}`);
                 setImageUrls(response.data.image_urls);
                 const folder = response.data.material_name;
-                console.log("response:", response.data, "urls:", response.data.image_urls, "folder:", folder);
+                console.log("static image load response:", response.data, "urls:", response.data.image_urls, "folder:", folder);
 
             } catch (error) {
                 console.error("Failed to load static images:", error);
@@ -168,18 +167,6 @@ function GalleryDetailsView() {
                         <Center>
                             <Button colorScheme={'blue'}
                                 variant="outline" mt={5} size={{base: 'md', sm: 'md', md: 'md', lg: 'lg', xl: 'lg'}}
-                                // onClick={() =>
-                                //     toast({
-                                //         title: 'Downloads of community/static files not currently available!',
-                                //         description: "Server undergoing maintanenance — try generating new images for downloading via the form...or check back here later!",
-                                //         status: 'error',
-                                //         duration: 8000,
-                                //         position: 'top',
-                                //         // variant: 'subtle',
-                                //         isClosable: true,
-                                //         colorScheme: 'purple',
-                                //     })
-                                // }
                                 onClick={handleDownloadZip}
                             >
                                 DOWNLOAD

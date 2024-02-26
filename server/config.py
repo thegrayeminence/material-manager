@@ -503,7 +503,8 @@ def get_image_folders():
 def get_images(folder_name):
     folder_path = os.path.join(app.static_folder, 'assets', 'images', folder_name)
     try:
-        image_files = [f for f in os.listdir(folder_path) if f.endswith('.png')]
+        image_files_unsorted = [f for f in os.listdir(folder_path) if f.endswith('.png')]
+        image_files = sorted(image_files_unsorted)
         image_urls = [url_for('static', filename=f'assets/images/{folder_name}/{file}', _external=True) for file in image_files]
      
         return make_response({"material_name": folder_name, "image_files":image_files, "image_urls": image_urls}, 200)
