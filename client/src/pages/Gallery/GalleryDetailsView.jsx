@@ -9,33 +9,51 @@ import '@fontsource/poppins';
 import '@fontsource/inter';
 import axios from 'axios';
 
+const loadStaticImage = async (folderName) => {
+
+    try {
+        const apiUrl = import.meta.env.VITE_API_URL;
+        // const response = await axios.get(apiUrl + `/api/images/${folderName}`, {
+        //     responseType: 'blob',
+        // });
+        const response = await axios.get(apiUrl + `/api/images/${folderName}`);
+        const image_urls = response.data.image_urls;
+
+        console.log("response:", response.data, "urls:", image_urls)
+
+    } catch (error) {
+        console.error("Failed to load static images:", error);
+    }
+};
+
+const handleDownloadZip = async (folderName) => {
+    try {
+        const apiUrl = import.meta.env.VITE_API_URL;
+        const response = await axios.get(apiUrl + `/api/download_images_zip/${folderName}`, {
+            responseType: 'blob', // Important for handling the binary content of the zip file
+        });
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `${folderName}.zip`); // Sets the filename for the downloaded zip
+        document.body.appendChild(link);
+        link.click();
+        link.parentNode.removeChild(link);
+    } catch (error) {
+        console.error("Error downloading zip:", error);
+    }
+};
+
+
+
 function GalleryDetailsView() {
     let {name} = useParams();
     const [images, setImages] = useState([]);
     const toast = useToast();
     const [isLoading, setIsLoading] = useState(true);
-    const [materialName, setMaterialName] = useState(name);
+    const [folderName, setFolderName] = useState(name);
 
 
-    useEffect(() => {
-        const loadStaticImage = async () => {
-
-            try {
-                const apiUrl = import.meta.env.VITE_API_URL;
-                const response = await axios.get(apiUrl + `/api/images/${materialName}`, {
-                    responseType: 'blob',
-                });
-                const image_urls = response.data.image_urls;
-
-                console.log("response:", response.data, "urls:", image_urls)
-
-            } catch (error) {
-                console.error("Failed to load static images:", error);
-            }
-        };
-
-        loadStaticImage();
-    }, [name]);
 
 
     //old way of loading images from public folder on frontend
@@ -131,18 +149,19 @@ function GalleryDetailsView() {
                         <Center>
                             <Button colorScheme={'blue'}
                                 variant="outline" mt={5} size={{base: 'md', sm: 'md', md: 'md', lg: 'lg', xl: 'lg'}}
-                                onClick={() =>
-                                    toast({
-                                        title: 'Downloads of community/static files not currently available!',
-                                        description: "Server undergoing maintanenance — try generating new images for downloading via the form...or check back here later!",
-                                        status: 'error',
-                                        duration: 8000,
-                                        position: 'top',
-                                        // variant: 'subtle',
-                                        isClosable: true,
-                                        colorScheme: 'purple',
-                                    })
-                                }
+                                // onClick={() =>
+                                //     toast({
+                                //         title: 'Downloads of community/static files not currently available!',
+                                //         description: "Server undergoing maintanenance — try generating new images for downloading via the form...or check back here later!",
+                                //         status: 'error',
+                                //         duration: 8000,
+                                //         position: 'top',
+                                //         // variant: 'subtle',
+                                //         isClosable: true,
+                                //         colorScheme: 'purple',
+                                //     })
+                                // }
+                                onClick={() => handleDownloadZip(folderName)}
 
                             >
                                 DOWNLOAD
