@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useForm, Controller, set} from 'react-hook-form';
 import {DevTool} from '@hookform/devtools';
 import axios from 'axios';
@@ -138,7 +138,7 @@ export default function MaterialUploadForm() {
             );
             console.log("Albedo texture generation initiated!");
 
-            // if (textureResponse) {
+            // if (textureResponse.data.material_id) {
             //     toast({
             //         title: 'First Prompt Submitted Successfully! Initiating Second Prompt...',
             //         description: "Please wait while we generate the secondary PBR maps for your material. This may take a few moments.",
@@ -157,10 +157,10 @@ export default function MaterialUploadForm() {
             console.log(`Albedo ID ${materialId} url ${baseColorUrl} added to store `);
 
             // Navigate to the loading page with materialId
-            navigate('/loading', {state: {materialId, baseColorUrl}});
+            navigate(`/loading/${materialId}`);
 
 
-
+            //old method of navigating straight to gallery after form submission
 
             // navigate to gallery (old functionality before loading page intermediary added)
             // navigate(`/gallery_id/${materialId}`);
@@ -197,7 +197,8 @@ export default function MaterialUploadForm() {
                 colorScheme: 'red',
             });
         } finally {
-            setIsLoading(false); //set loading to false after submission
+            setIsLoading(false);
+            setAlbedoIsLoading(false);
         }
     };
 

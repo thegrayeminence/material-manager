@@ -1,10 +1,10 @@
 import React from 'react';
-import {useParams} from 'react-router-dom'; // Import useParams from react-router-dom
+import {useParams} from 'react-router-dom';
 import {Box, Heading, useColorModeValue} from '@chakra-ui/react';
 import TextureDisplayById from '../components/TextureDisplayById'
 
 function GalleryById() {
-    const {id} = useParams(); // Get the 'id' parameter from the URL
+    const {id} = useParams();
 
     return (
         <Box width='100vw' h='100vh'

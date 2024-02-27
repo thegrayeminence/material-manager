@@ -22,7 +22,7 @@ const routes = [
                 element: <Preview />
             },
             {
-                path: '/loading',
+                path: '/loading/:id',
                 element: <LoadingPage />,
             },
             {
