@@ -22,7 +22,7 @@ const routes = [
                 element: <Preview />
             },
             {
-                path: '/loading-textures',
+                path: '/loading',
                 element: <LoadingPage />,
             },
             {

@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {useNavigate} from "react-router-dom";
-import {useForm, Controller} from 'react-hook-form';
+import {useForm, Controller, set} from 'react-hook-form';
 import {DevTool} from '@hookform/devtools';
 import axios from 'axios';
 import {
@@ -43,7 +43,7 @@ export default function MaterialUploadForm() {
     const {progress, increaseProgress, decreaseProgress, resetProgress} = useProgressStore();
     // const {isLoading, setIsLoading} = useIsLoadingStore();
     const [isLoading, setIsLoading] = useState(false);
-    const {setAlbedo, setMaterialId, setBaseColorUrl} = useGeneratedImagesStore();
+    const {clearImages, setAlbedoIsLoading, setPromiseId, setAlbedoImage, setPBRImage} = useGeneratedImagesStore();
 
     //autosuggestion zustand states
     const {
@@ -114,7 +114,7 @@ export default function MaterialUploadForm() {
 
         // clearImages();
         setIsLoading(true);
-        // setSessionStatusLoading();
+        setAlbedoIsLoading(true);
 
         try {
 
@@ -138,53 +138,45 @@ export default function MaterialUploadForm() {
             );
             console.log("Albedo texture generation initiated!");
 
-            // toast.promise(textureResponse, {
-            //     success: {title: 'First Image Generated Successfully! Initiating Second Prompt...', description: 'Please wait while we generate the PBR maps for your material. This may take a few moments.'},
-            //     error: {title: 'Prompt Not Sent!', description: 'Something went wrong with the submission process! Please reset and try again!'},
-            //     loading: {title: 'Form Submitted Successfully!', description: 'Please wait while we generate the first texture for your material. This may take a few moments...'},
-            // })
+            // if (textureResponse) {
+            //     toast({
+            //         title: 'First Prompt Submitted Successfully! Initiating Second Prompt...',
+            //         description: "Please wait while we generate the secondary PBR maps for your material. This may take a few moments.",
+            //         status: 'loading',
+            //         position: 'top',
+            //         isClosable: true,
+            //         duration: 8000,
+            //     })
 
-            if (textureResponse) {
-                toast({
-                    title: 'First Prompt Submitted Successfully! Initiating Second Prompt...',
-                    description: "Please wait while we generate the secondary PBR maps for your material. This may take a few moments.",
-                    status: 'loading',
-                    position: 'top',
-                    isClosable: true,
-                    duration: 8000,
-                })
-
-            }
-
+            // }
 
             const materialId = textureResponse.data.material_id;
             const baseColorUrl = textureResponse.data.base_color_url;
-            // setSessionId(materialId);
-            // setSessionAlbedo(baseColorUrl);
-
+            setPromiseId(materialId);
+            setAlbedoImage(baseColorUrl);
             console.log(`Albedo ID ${materialId} url ${baseColorUrl} added to store `);
-            navigate(`/gallery_id/${materialId}`);
-
-            // Set the albedo image in the store
-            //setAlbedoImage(baseColorUrl);
-
-
 
             // Navigate to the loading page with materialId
-            // navigate('/loading-textures', {state: {materialId}});
-
-
-            // Second API call to generate PBR maps
-            const pbrResponse = await axios.post(apiUrl + `/api/generate_pbr_maps`,
-                {base_color_url: baseColorUrl, material_id: materialId}
-            );
-            console.log("PBR maps generation initiated!");
+            navigate('/loading', {state: {materialId, baseColorUrl}});
 
 
 
-            // Set PBR maps in zustand store
-            const maps = pbrResponse.data.pbr_maps;
-            console.log("PBR maps generated sucessfully!", maps);
+
+            // navigate to gallery (old functionality before loading page intermediary added)
+            // navigate(`/gallery_id/${materialId}`);
+
+
+            // // Second API call to generate PBR maps
+            // const pbrResponse = await axios.post(apiUrl + `/api/generate_pbr_maps`,
+            //     {base_color_url: baseColorUrl, material_id: materialId}
+            // );
+            // console.log("PBR maps generation initiated!");
+
+
+
+
+            // const maps = pbrResponse.data.pbr_maps;
+            // console.log("PBR maps generated sucessfully!", maps);
             // setPBRImage('normal', maps.normal_map_url);
             // setPBRImage('height', maps.height_map_url);
             // setPBRImage('smoothness', maps.smoothness_map_url);
@@ -194,9 +186,18 @@ export default function MaterialUploadForm() {
 
         } catch (error) {
             console.error("Error during form submission:", error);
-
+            toast({
+                title: 'Error',
+                description: "There was a problem with the submission. Please try again.",
+                status: 'error',
+                duration: 5000,
+                isClosable: true,
+                position: 'top',
+                variant: 'subtle',
+                colorScheme: 'red',
+            });
         } finally {
-            setIsLoading(false); // Reset loading state
+            setIsLoading(false); //set loading to false after submission
         }
     };
 

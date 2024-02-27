@@ -1,15 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {Box, Heading, Text, Flex, CircularProgress, Spacer, Image, SimpleGrid, Skeleton} from '@chakra-ui/react';
-import {useNavigate} from 'react-router-dom';
+import {useLocation, useNavigate, useParams} from 'react-router-dom';
 import axios from 'axios';
 import {motion} from 'framer-motion';
-
-// import {API_URL} from './client/src/config/URLConfig.js';
-
+import {useGeneratedImagesStore} from '../store/store';
 
 
 const MotionImageBox = motion(Box);
-
 
 const LoadingMessages = [
     "Connecting to database...",
@@ -28,9 +25,85 @@ const LoadingMessages = [
 const LoadingPage = () => {
 
     const [currentMessage, setCurrentMessage] = useState(0);
-    const [albedoImage, setAlbedoImage] = useState(null);
-    const [pbrMapUrls, setPbrMapUrls] = useState({normal: null, height: null, smoothness: null});
+    // const [albedoImage, setAlbedoImage] = useState(null);
+    // const [pbrMapUrls, setPbrMapUrls] = useState({normal: null, height: null, smoothness: null});
+    const {promiseId, setPbrIsLoading, pbrIsLoading, setAlbedoIsLoading, albedoIsLoading, setPbrMapUrls, pbrMapUrls, albedoImage} = useGeneratedImagesStore();
+    // const {state} = useLocation();
     const navigate = useNavigate();
+    const apiUrl = import.meta.env.VITE_API_URL;
+
+    useEffect(() => {
+        const generatePBRMaps = async () => {
+            if (!materialId || !baseColorUrl) {
+                console.error("Missing data for PBR maps generation.");
+                navigate('/'); // Navigate back to form or a relevant page on error
+                return;
+            }
+
+            try {
+                const pbrResponse = await axios.post(`${apiUrl}/api/generate_pbr_maps`, {
+                    base_color_url: baseColorUrl,
+                    material_id: materialId
+                });
+                console.log("PBR maps generation initiated!");
+
+                const maps = pbrResponse.data.pbr_maps;
+                console.log("PBR maps generated successfully!", maps);
+
+                // Update store with PBR maps
+                setPbrMapUrls(maps);
+
+                // Navigate to a success or display page
+                navigate(`/success`, {state: {maps}});
+            } catch (error) {
+                console.error("Error generating PBR maps:", error);
+                navigate('/'); // Navigate back to form or a relevant page on error
+            }
+        };
+
+        generatePBRMaps();
+    }, [materialId, baseColorUrl, navigate, apiUrl, setPbrMapUrls]);
+
+    // useEffect(() => {
+    //     const generatePBRMaps = async () => {
+    //         if (!state || !state.materialId || !state.baseColorUrl) {
+    //             console.error("Missing data for PBR maps generation.");
+    //             navigate('/'); // Navigate back to form or a relevant page on error
+    //             return;
+    //         }
+
+    //         try {
+    //             const pbrResponse = await axios.post(`${apiUrl}/api/generate_pbr_maps`, {
+    //                 base_color_url: state.baseColorUrl,
+    //                 material_id: state.materialId
+    //             });
+    //             console.log("PBR maps generation initiated!");
+
+    //             // Assuming you have a method to update your store with the PBR maps
+    //             const maps = pbrResponse.data.pbr_maps;
+    //             console.log("PBR maps generated successfully!", maps);
+
+    //             // Update store with PBR maps here
+    //             // e.g., setPBRMaps(maps);
+
+    //             // Navigate to a success or display page
+    //             navigate(`/success`, {state: {maps}});
+    //         } catch (error) {
+    //             console.error("Error generating PBR maps:", error);
+    //             navigate('/'); // Navigate back to form or a relevant page on error
+    //         }
+    //     };
+
+    //     generatePBRMaps();
+    // }, [state, navigate, apiUrl]);
+
+
+
+
+
+
+
+
 
     useEffect(() => {
         const intervalId = setInterval(() => {
@@ -40,40 +113,40 @@ const LoadingPage = () => {
         return () => clearInterval(intervalId);
     }, []);
 
-    useEffect(() => {
-        const fetchRecentAlbedo = async () => {
-            try {
-                const response = await axios.get(`/api/get_recent_albedo`);
-                setAlbedoImage(response.data.base_color_url);
-                loadPBRMaps(response.data.material_id);
-            } catch (error) {
-                console.error('Error fetching recent albedo:', error);
-            }
-        };
+    // useEffect(() => {
+    //     const fetchRecentAlbedo = async () => {
+    //         try {
+    //             const response = await axios.get(`/api/get_recent_albedo`);
+    //             setAlbedoImage(response.data.base_color_url);
+    //             loadPBRMaps(response.data.material_id);
+    //         } catch (error) {
+    //             console.error('Error fetching recent albedo:', error);
+    //         }
+    //     };
 
-        fetchRecentAlbedo();
-    }, []);
+    //     fetchRecentAlbedo();
+    // }, []);
 
-    const loadPBRMaps = async (materialId) => {
-        const mapTypes = ['normal', 'height', 'smoothness'];
-        const mapPromises = mapTypes.map(mapType => axios.get(`/api/get_${mapType}_by_id/${materialId}`));
+    // const loadPBRMaps = async (materialId) => {
+    //     const mapTypes = ['normal', 'height', 'smoothness'];
+    //     const mapPromises = mapTypes.map(mapType => axios.get(`/api/get_${mapType}_by_id/${materialId}`));
 
-        try {
-            const maps = await Promise.all(mapPromises);
-            const newPbrMapUrls = {};
-            mapTypes.forEach((mapType, index) => {
-                newPbrMapUrls[mapType] = maps[index].data.image_url;
-            });
-            setPbrMapUrls(newPbrMapUrls);
+    //     try {
+    //         const maps = await Promise.all(mapPromises);
+    //         const newPbrMapUrls = {};
+    //         mapTypes.forEach((mapType, index) => {
+    //             newPbrMapUrls[mapType] = maps[index].data.image_url;
+    //         });
+    //         setPbrMapUrls(newPbrMapUrls);
 
-            // Navigate to gallery only after all maps are loaded
-            if (Object.values(newPbrMapUrls).every(url => url)) {
-                navigate('/gallery');
-            }
-        } catch (error) {
-            console.error('Error fetching PBR maps:', error);
-        }
-    };
+    //         // Navigate to gallery only after all maps are loaded
+    //         if (Object.values(newPbrMapUrls).every(url => url)) {
+    //             navigate('/gallery');
+    //         }
+    //     } catch (error) {
+    //         console.error('Error fetching PBR maps:', error);
+    //     }
+    // };
 
     return (
         <Box mt={'10%'} p={'2.5rem'} fontSize={'2xl'} textAlign={'center'}>
