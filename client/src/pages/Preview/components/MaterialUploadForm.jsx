@@ -13,7 +13,7 @@ import {Select} from "chakra-react-select";
 
 //local imports
 import {textureMapOptionsPBRMetalRough, textureMapOptionsPBRGlossSpec, textureMapOptionsCommon, materialTypeOptions, metaDataOptions} from '../../../config/formInputData';
-import {useMaterialStore, useProgressStore, useAutosuggestionStore, useSessionStore} from '../../../store/store';
+import {useMaterialStore, useProgressStore, useAutosuggestionStore, useGeneratedImagesStore} from '../../../store/store';
 import SuggestionDisplay from './SuggestionDisplay';
 
 
@@ -43,7 +43,7 @@ export default function MaterialUploadForm() {
     const {progress, increaseProgress, decreaseProgress, resetProgress} = useProgressStore();
     // const {isLoading, setIsLoading} = useIsLoadingStore();
     const [isLoading, setIsLoading] = useState(false);
-    // const {sessionData, setSessionId, setSessionPrompt, setSessionStatus, resetSession, setSessionStatusLoading, setSessionStatusSuccess, setSessionStatusError, setSessionAlbedo} = useSessionStore();
+    const {setAlbedo, setMaterialId, setBaseColorUrl} = useGeneratedImagesStore();
 
     //autosuggestion zustand states
     const {

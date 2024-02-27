@@ -1,4 +1,6 @@
 import {create} from 'zustand';
+import {persist} from 'zustand/middleware';
+
 // import { getClosestMatch } from '../config/helperfunctions';
 import {colorOptions, conditionOptions, manifestationOptions, elementTypeOptions} from '../config/formInputData';
 
@@ -64,33 +66,31 @@ export const useMaterialStore = create(set => ({
 
 
 
-// export const useGeneratedImagesStore = create(set => ({
-//   // Initialize albedoImage and pbrImages from localStorage
-//   albedoImage: localStorage.getItem("albedoImage") !== undefined ? JSON.parse(localStorage.getItem("albedoImage")) : null,
+export const useGeneratedImagesStore = create(persist(
+  (set) => ({
+    // State
+    albedoImage: null,
+    pbrMapUrls: {normal: null, height: null, smoothness: null},
+    albedoIsLoading: false,
+    pbrIsLoading: false,
+    promiseId: null,
 
-//   albedoImage: JSON.parse(localStorage.getItem('albedoImage')),
-//   pbrImages: JSON.parse(localStorage.getItem('pbrImages')),
-
-//   // Method to set the albedo image
-//   setAlbedoImage: (imageURL) => set(() => {
-//     localStorage.setItem('albedoImage', JSON.stringify(imageURL));
-//     return {albedoImage: imageURL};
-//   }),
-
-//   // Method to set a specific PBR image
-//   setPBRImage: (type, imageURL) => set(state => {
-//     const newPbrImages = {...state.pbrImages, [type]: imageURL};
-//     localStorage.setItem('pbrImages', JSON.stringify(newPbrImages));
-//     return {pbrImages: newPbrImages};
-//   }),
-
-//   // Method to clear all images
-//   clearImages: () => set(() => {
-//     localStorage.removeItem('albedoImage');
-//     localStorage.removeItem('pbrImages');
-//     return {albedoImage: null, pbrImages: {normal: null, height: null, smoothness: null}};
-//   })
-// }));
+    // Actions
+    setAlbedoImage: (imageURL) => set(() => ({albedoImage: imageURL})),
+    setPromiseId: (id) => set(() => ({promiseId: id})),
+    setPbrMapUrls: (urls) => set(() => ({pbrMapUrls: urls})),
+    setAlbedoIsLoading: (isLoading) => set(() => ({albedoIsLoading: isLoading})),
+    setPbrIsLoading: (isLoading) => set(() => ({pbrIsLoading: isLoading})),
+    clearImages: () => set(() => ({
+      albedoImage: null,
+      pbrMapUrls: {normal: null, height: null, smoothness: null},
+    }))
+  }),
+  {
+    name: 'images-store', // unique name for localStorage
+    getStorage: () => localStorage, // Define the storage type
+  }
+));
 
 
 

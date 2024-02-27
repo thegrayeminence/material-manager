@@ -39,9 +39,9 @@ const handleDownload = async (materialId) => {
 const TextureDisplayById = () => {
     const {id} = useParams(); // Get the 'id' parameter from the URL as a string
     // const {setPBRImage} = useGeneratedImagesStore();
-    const [materialName, setMaterialName] = useState(null);
+    const [materialName, setMaterialName] = useState('');
     const [materialId, setMaterialId] = useState(id);
-    const [albedoImage, setAlbedoImage] = useState(null);
+    const [albedoImage, setAlbedoImage] = useState('');
     const [pbrMapUrls, setPbrMapUrls] = useState({normal: null, height: null, smoothness: null});
     const [albedoIsLoading, setAlbedoIsLoading] = useState(true);
     const [pbrIsLoading, setPbrIsLoading] = useState(true);
@@ -93,43 +93,7 @@ const TextureDisplayById = () => {
         fetchRecentPbrs();
     }, [albedoIsLoading]);
 
-    // useEffect(() => {
-    //     if (!albedoImage || albedoIsLoading) return;
-    //     const fetchMap = async (mapType) => {
 
-    //         try {
-    //             const apiUrl = import.meta.env.VITE_API_URL
-    //             console.log("Fetching", mapType, "map for material", materialId);
-    //             const response = await axios.get(apiUrl + `/api/get_${mapType}_by_id/${id}`);
-    //             return response.data.image_url;
-
-    //         } catch (error) {
-    //             console.error(`Error fetching ${mapType} map:`, error);
-    //             return null;
-    //         }
-    //     };
-    //     const loadMaps = async () => {
-    //         setPbrIsLoading(true);
-    //         console.log('Loading maps for material:', materialId);
-    //         const mapTypes = ['normal', 'height', 'smoothness'];
-    //         const mapPromises = mapTypes.map(mapType => fetchMap(mapType));
-    //         const maps = await Promise.all(mapPromises);
-
-    //         const newPbrMapUrls = {};
-    //         mapTypes.forEach((mapType, index) => {
-    //             newPbrMapUrls[mapType] = maps[index];
-    //             // if (maps[index]) {
-    //             //     setPBRImage(mapType, maps[index]);
-    //             // }
-    //         });
-    //         setPbrMapUrls(newPbrMapUrls);
-    //         setPbrIsLoading(false);
-    //         console.log('color url:', albedoImage, 'pbr urls:', newPbrMapUrls)
-    //     };
-
-    //     loadMaps();
-
-    // }, [albedoIsLoading]);
 
 
     const imageBoxStyle = {
