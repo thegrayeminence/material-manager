@@ -2,10 +2,11 @@
 import React, {useEffect} from 'react';
 import {Box, VStack, Divider, Center, useColorModeValue, Spacer, Container} from '@chakra-ui/react';
 import {AnimatePresence, motion, useScroll} from 'framer-motion';
-import {Timeline} from './components';
+// import {FaGithub} from "react-icons/fa6";
+
 
 //components
-import {LandingPageText, Features} from './components';
+import {LandingPageText, Features, Timeline} from './components';
 import {GeometricBackgroundAnimation} from '../../components';
 import './landingPage.scss'
 
@@ -102,6 +103,23 @@ function LandingPage() {
                 >
 
                     <Features zIndex={-1}
+                    />
+                </Container>
+                <Spacer py={'3.5rem'} />
+                <Container
+                    zIndex={-1}
+                    maxW={'80%'}
+                    borderRadius={'xl'}
+                    boxShadow={'xl'}
+                    borderStyle={'solid'}
+                    borderWidth={'.15rem'}
+                    borderColor={useColorModeValue('blackAlpha.200', 'whiteAlpha.300')}
+                    // _hover={{transform: 'scale(1.05)'}} transition={'transform 0.3s'}
+                    p={{base: '2', sm: '4', md: '6', lg: '8', xl: '10'}}
+                    bg={useColorModeValue('gray.100', 'gray.700')}
+                >
+
+                    <Timeline zIndex={-1}
                     />
                 </Container>
                 <Spacer py={'3.5rem'} />

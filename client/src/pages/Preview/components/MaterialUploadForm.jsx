@@ -43,7 +43,7 @@ export default function MaterialUploadForm() {
     const {progress, increaseProgress, decreaseProgress, resetProgress} = useProgressStore();
     // const {isLoading, setIsLoading} = useIsLoadingStore();
     const [isLoading, setIsLoading] = useState(false);
-    const {clearImages, setAlbedoIsLoading, setPromiseId, setAlbedoImage, setPBRImage} = useGeneratedImagesStore();
+    const {clearImages, setAlbedoIsLoading, albedoIsLoading, setPromiseId, setAlbedoImage, setPBRImage} = useGeneratedImagesStore();
 
     //autosuggestion zustand states
     const {
@@ -116,39 +116,42 @@ export default function MaterialUploadForm() {
         setIsLoading(true);
         setAlbedoIsLoading(true);
 
+        toast({
+            title: 'Form Submitted Successfully!',
+            description: "Please wait while we initiate the image generation process! This may take a few moments.",
+            status: 'success',
+            duration: 5000,
+            position: 'top',
+            isClosable: true,
+
+        });
+
         try {
 
-            toast({
-                title: 'Form Submitted Successfully!',
-                description: "Please wait while we initiate the image generation process! This may take a few moments.",
-                status: 'success',
-                duration: 5000,
-                position: 'top',
-                isClosable: true,
 
-            });
 
             const materialData = {...formData.materialData, ...data};
             const apiUrl = import.meta.env.VITE_API_URL
             console.log('logging form data!:', {'formdata': formData, 'materialData': materialData, 'apiUrl': apiUrl});
 
 
+            if (albedoIsLoading) {
+                toast({
+                    title: 'First Prompt Submitted Successfully! Initiating Second Stage...',
+                    description: "Please wait while we generate the secondary PBR maps for your material. This may take a few moments.",
+                    status: 'loading',
+                    position: 'top',
+                    isClosable: true,
+                    duration: 8000,
+                })
+
+            }
+
             const textureResponse = await axios.post(apiUrl + "/api/generate_albedo",
                 {materialData: data}
             );
             console.log("Albedo texture generation initiated!");
 
-            // if (textureResponse.data.material_id) {
-            //     toast({
-            //         title: 'First Prompt Submitted Successfully! Initiating Second Prompt...',
-            //         description: "Please wait while we generate the secondary PBR maps for your material. This may take a few moments.",
-            //         status: 'loading',
-            //         position: 'top',
-            //         isClosable: true,
-            //         duration: 8000,
-            //     })
-
-            // }
 
             const materialId = textureResponse.data.material_id;
             const baseColorUrl = textureResponse.data.base_color_url;

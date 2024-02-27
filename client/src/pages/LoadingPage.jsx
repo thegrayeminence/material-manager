@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Box, Heading, useToast, Text, Flex, CircularProgress, Center, Spacer, VStack} from '@chakra-ui/react';
+import {Box, Heading, useToast, Text, Flex, CircularProgress, Center, Spacer, VStack, useColorModeValue} from '@chakra-ui/react';
 import {useLocation, useNavigate, useParams} from 'react-router-dom';
 import axios from 'axios';
 import {motion} from 'framer-motion';
@@ -83,7 +83,7 @@ const LoadingPage = () => {
                 toast({
                     title: 'Image-To-Image Error',
                     description: "There was a problem with the image-to-image PBR maps generation. This may take a few minutes to resolve.",
-                    status: 'error',
+                    status: 'loading',
                     duration: 5000,
                     isClosable: true,
                     position: 'top',
@@ -105,11 +105,11 @@ const LoadingPage = () => {
     useEffect(() => {
         const messageInterval = setInterval(() => {
             setLoadingMessageIndex((prevIndex) => (prevIndex + 1) % loadingMessages.length);
-        }, 1500); // Update message every second
+        }, 1700); // Update message every 'n' milliseconds
 
         const minimumDisplayTimer = setTimeout(() => {
             setIsMinimumDisplayTimeMet(true);
-        }, 12000); // Set minimum display time to 10 seconds
+        }, 10000); // Set minimum display time to 'n' milliseconds
 
         return () => {
             clearInterval(messageInterval);
@@ -130,12 +130,14 @@ const LoadingPage = () => {
         <Box maxW="7xl" mx="auto" height="100vh">
 
             <Box position='relative' mt={'20%'}>
-                <VStack spacing={6}>
-                    <Heading fontSize={'3xl'} textAlign={'center'} >Loading PBR Maps...</Heading>
-                    <Spacer py={1.5} />
-                    <CircularProgress isIndeterminate color="teal.300" size='3.5rem' />
-                    <Spacer py={1.5} />
-                    <Text fontSize={'2xl'} textAlign={'center'}>
+                <VStack spacing={8}>
+                    <Heading fontSize={{base: '2xl', sm: '2xl', md: '3xl', lg: '4xl', xl: '5xl'}} textAlign={'center'}>
+                        Loading PBR Maps...</Heading>
+                    <Spacer py={2} />
+                    <CircularProgress isIndeterminate color={useColorModeValue('teal.300', 'purple.300')} size={{base: '3rem', sm: '3.5rem', md: '5rem', lg: '6.5rem', xl: '8rem'}} />
+                    <Spacer py={2} />
+                    <Text fontSize={{base: 'xl', sm: 'xl', md: '2xl', lg: '3xl', xl: '4xl'}}
+                        textAlign={'center'}>
                         {loadingMessages[loadingMessageIndex]}
                     </Text>
                 </VStack>

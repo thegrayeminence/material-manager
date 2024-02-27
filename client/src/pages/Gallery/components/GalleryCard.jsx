@@ -60,17 +60,20 @@ function GalleryCard({name, images, isNew, showAllImages = false}) {
                                         h={7} w={7}
                                         alignSelf={'center'}
                                         as={MdDownload}
-                                        onClick={() =>
-                                            toast({
-                                                title: 'Downloads of community/static files not currently available!',
-                                                description: "Server undergoing maintanenance — try generating new images for downloading via the form...or check back here later!",
-                                                status: 'error',
-                                                duration: 8000,
-                                                position: 'top',
-                                                // variant: 'subtle',
-                                                isClosable: true,
-                                                colorScheme: 'purple',
-                                            })
+                                        onClick={() => {
+                                            // toast({
+                                            //     title: 'Not Supported Currently',
+                                            //     description: "Downloads currently only supported on preview page; redirecting there now...",
+                                            //     status: 'error',
+                                            //     duration: 3000,
+                                            //     position: 'top',
+                                            //     variant: 'subtle',
+                                            //     isClosable: true,
+                                            //     colorScheme: 'purple',
+                                            // });
+                                            navigate(`/gallery/${name}`);
+                                        }
+
                                         }
                                     />
                                 </chakra.span>
