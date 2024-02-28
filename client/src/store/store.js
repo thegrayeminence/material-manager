@@ -49,6 +49,7 @@ export const useGeneratedImagesStore = create(persist(
     // State
     albedoImage: null,
     materialName: null,
+    fileName: null,
     pbrMapUrls: {normal: null, height: null, smoothness: null},
     albedoIsLoading: false,
     pbrIsLoading: false,
@@ -57,6 +58,7 @@ export const useGeneratedImagesStore = create(persist(
     // Actions
     setAlbedoImage: (imageURL) => set(() => ({albedoImage: imageURL})),
     setMaterialName: (name) => set(() => ({materialName: name})),
+    setFileName: (name) => set(() => ({fileName: name})),
     setPromiseId: (id) => set(() => ({promiseId: id})),
     setPbrMapUrls: (urls) => set(() => ({pbrMapUrls: urls})),
     setAlbedoIsLoading: (isLoading) => set(() => ({albedoIsLoading: isLoading})),

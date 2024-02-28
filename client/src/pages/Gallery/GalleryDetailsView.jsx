@@ -1,8 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {useParams} from 'react-router-dom';
-import {loadImagesFromFolder} from '../../config/loadImagesFromFolder';
 import {Box, Image, Spacer, SimpleGrid, Select, Button, Text, VStack, useToast, Skeleton, SkeletonText, useColorModeValue, HStack, Heading, Center, } from '@chakra-ui/react';
-import {StylishHeader} from '../../components';
 import {PreviewBackgroundAnimation} from '../Preview/components';
 import {PBROnePreviewBox} from './components';
 import '@fontsource/poppins';
@@ -10,11 +8,23 @@ import '@fontsource/inter';
 import axios from 'axios';
 import JSZip, {folder} from 'jszip';
 import {saveAs} from 'file-saver';
-import {set} from 'react-hook-form';
+import '../LandingPage/landingPage.scss'
+import {SimpleFooter} from '../../components';
 
-
-
-
+function GradientBackground() {
+    return (
+        <Box className="background-animation"
+            height={'100vh'}
+            width={'100vw'}
+            position={'absolute'}
+            top={0} left={0}
+            zIndex={0}
+            opacity={useColorModeValue('.2', '.2')}
+            backgroundBlendMode={useColorModeValue('luminosity', 'overlay')}
+        >
+        </Box>
+    )
+}
 
 function GalleryDetailsView() {
     let {name} = useParams();
@@ -23,24 +33,29 @@ function GalleryDetailsView() {
     const [isLoading, setIsLoading] = useState(true);
     const [imageUrls, setImageUrls] = useState([]);
 
+    //functionality for getting image urls/data from backend
     useEffect(() => {
         const loadStaticImage = async (folderName) => {
-
+            setIsLoading(true);
             try {
                 const apiUrl = import.meta.env.VITE_API_URL;
                 const response = await axios.get(apiUrl + `/api/images/${folderName}`);
                 setImageUrls(response.data.image_urls);
+                setImages(response.data.image_urls);
                 const folder = response.data.material_name;
                 console.log("static image load response:", response.data, "urls:", response.data.image_urls, "folder:", folder);
-
             } catch (error) {
                 console.error("Failed to load static images:", error);
+            }
+            finally {
+                setIsLoading(false);
             }
         };
         loadStaticImage(name);
     }, [name]);
 
 
+    //functionality for downloading/zipping images via urls from loadsStaticImage
     const fetchImageAsBlob = async (url) => {
         const response = await axios.get(url, {responseType: 'blob'});
         return response.data;
@@ -51,7 +66,6 @@ function GalleryDetailsView() {
             console.error("No images to download");
             return;
         }
-
         const zip = new JSZip();
         for (const imageUrl of imageUrls) {
             const imageName = imageUrl.split('/').pop();
@@ -62,7 +76,6 @@ function GalleryDetailsView() {
                 console.error(`Failed to fetch image ${imageName}:`, error);
             }
         }
-
         zip.generateAsync({type: "blob"})
             .then((content) => {
                 saveAs(content, `${name}.zip`);
@@ -73,39 +86,22 @@ function GalleryDetailsView() {
     };
 
 
-
-    //old way of loading images from public folder on frontend
-    useEffect(() => {
-        const loadMaterial = async () => {
-            setIsLoading(true);
-            const loadedImages = await loadImagesFromFolder(name);
-            console.log("loadedImages frontend src:", loadedImages, "folder name:", name)
-            setImages(loadedImages);
-            setIsLoading(false);
-        };
-
-        loadMaterial();
-    }, [name]);
-
     const imageLabels = ['Base Color', 'Normals', 'Height', 'Smoothness'];
-    // const textureTypes = ['base_color', '_normal', '_height', 'smoothness'];
     const displayName = name.replace(/[_]/g, " ").toUpperCase();
-    // console.table("backend images length", backendImages.length, "backend images:", backendImages, "frontend images length", images.length, "frontend images:", images, "isLoading:", isLoading, "isLoadingBackend:", isLoadingBackend)
 
     return (
-        <Box width='100vw' h='100vh' opacity='.99'>
+        <Box width='100vw' h='100vh' opacity='.99' position='relative'>
             <VStack spacing={0} width={'100%'} overflow={'hidden'} >
-                <Box position='relative' maxW='85vw' h='100%' >
+                <Box position='relative' maxW='85vw' h='100%' mt='5%'>
                     <Text
                         fontFamily={'poppins, sans-serif'}
                         fontWeight={'800'}
-                        mt='10%'
+
                         textAlign='center'
-                        fontSize={{base: '4xl', sm: '4xl', md: '5xl', lg: '6xl', xl: '7xl'}}
+                        fontSize={{base: '3xl', sm: '2xl', md: '4xl', lg: '5xl', xl: '7xl'}}
                         color={useColorModeValue('teal.600', 'purple.600')}
                         opacity={0.75}
                     >
-
                         {`${displayName}`}
                     </Text>
                     <Text
@@ -113,11 +109,10 @@ function GalleryDetailsView() {
                         fontWeight={'600'}
                         pt={'10'}
                         textAlign='center'
-                        fontSize={{base: '2xl', sm: '2xl', md: '3xl', lg: '4xl', xl: '6xl'}}
+                        fontSize={{base: 'xl', sm: 'xl', md: '2xl', lg: '4xl', xl: '5xl'}}
                         color={'whiteAlpha.600'}>
                         {`TEXTURE FILES:`}
                     </Text>
-
                     <SimpleGrid
                         columns={[2, 2, 2, 4]}
                         spacing={8}
@@ -130,11 +125,10 @@ function GalleryDetailsView() {
                                 borderWidth="2px"
                                 borderColor={'whiteAlpha.400'}
                                 boxShadow={'xl'}
-                                bg={'blackAlpha.400'}
+                                bg={useColorModeValue('whiteAlpha.200', 'blackAlpha.400')}
                                 borderRadius="lg"
                                 overflow="hidden"
                                 backdropFilter="blur(10px)"
-
                             >
                                 <Image src={src} alt={`${name} ${imageLabels[index]}`}
                                     fit="cover" mx='auto' w='full'
@@ -142,7 +136,6 @@ function GalleryDetailsView() {
                                 <Text mt="3" color='whiteAlpha.600' fontSize="lg" fontFamily='avenir black, sans-serif' textAlign="center">
                                     {imageLabels[index]}
                                 </Text>
-
                             </Box>
                         ))}
                         {isLoading && [1, 2, 3, 4].map((_, index) => (
@@ -151,17 +144,16 @@ function GalleryDetailsView() {
                                 borderWidth="2px"
                                 borderColor={'whiteAlpha.400'}
                                 boxShadow={'xl'}
-                                bg={'blackAlpha.400'}
+                                bg={useColorModeValue('whiteAlpha.200', 'blackAlpha.400')}
+
                                 borderRadius="lg"
                                 overflow="hidden"
                                 backdropFilter="blur(10px)"
-
                             >
                                 <Skeleton width='100%' h={['200px', '250px', '300px', '350px']} />
                                 <SkeletonText mt="3" noOfLines={1} spacing="4" />
                             </Box>
                         ))}
-
                     </SimpleGrid>
                     {!isLoading && (
                         <Center>
@@ -173,7 +165,6 @@ function GalleryDetailsView() {
                             </Button>
                         </Center>
                     )}
-
                     <Spacer py={1} />
                     <Box position='relative' w='80%' h='100%' mx='auto'>
                         <Text
@@ -186,19 +177,20 @@ function GalleryDetailsView() {
                         >
                             {`LIVE PREVIEW:`}
                         </Text>
-
                         {
                             !isLoading && <PBROnePreviewBox images={images} />
                         }
                     </Box>
-
                 </Box >
-
             </VStack>
             <Box width={'100vw'} height={'100%'} margin={0} padding={0} position={'fixed'} top={0} left={0}
                 zIndex={-1}>
                 <PreviewBackgroundAnimation />
+                <GradientBackground />
             </Box>
+            <Spacer height={'250px'} />
+            <SimpleFooter />
+            <Spacer height={'10px'} />
         </Box>
     );
 }

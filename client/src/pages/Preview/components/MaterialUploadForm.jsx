@@ -136,18 +136,6 @@ export default function MaterialUploadForm() {
             console.log('logging form data!:', {'formdata': formData, 'materialData': materialData, 'apiUrl': apiUrl});
 
 
-            if (albedoIsLoading) {
-                toast({
-                    title: 'First Prompt Submitted Successfully! Initiating Second Stage...',
-                    description: "Please wait while we generate the secondary PBR maps for your material. This may take a few moments.",
-                    status: 'loading',
-                    position: 'top',
-                    isClosable: true,
-                    duration: 8000,
-                })
-
-            }
-
             const textureResponse = await axios.post(apiUrl + "/api/generate_albedo",
                 {materialData: data}
             );
@@ -496,18 +484,6 @@ export default function MaterialUploadForm() {
                             bg='green.500'
                             // bg={useColorModeValue('teal.400', 'green.500')} 
                             w="full"
-                            // onClick={() =>
-                            //     toast({
-                            //         title: 'Prompt submission is currently available!',
-                            //         description: "The server is currently undergoing maintenance. Please check back in a few days!",
-                            //         status: 'error',
-                            //         duration: 6000,
-                            //         position: 'top',
-                            //         variant: 'solid',
-                            //         isClosable: true,
-                            //         colorScheme: 'red',
-                            //     })
-                            // }
                             type="submit"
 
                         >

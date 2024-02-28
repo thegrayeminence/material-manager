@@ -1,4 +1,6 @@
 import React from 'react'
+import '@fontsource/poppins';
+import '@fontsource/inter';
 
 import {
     Flex,
@@ -7,32 +9,37 @@ import {
     IconButton,
     Spacer,
     Text,
+    Link,
     useColorModeValue,
     Box,
 } from '@chakra-ui/react'
 
-import {SiFacebook, SiTwitter, SiGithub, SiLinkedin} from 'react-icons/si'
+import {FaGithub} from "react-icons/fa";
+
 
 export const SimpleFooter = () => {
-    const bg = useColorModeValue('gray.100', 'gray.800')
-
     return (
-        <Box w='full' bottom='0' position='absolute'>
+        <Box w='full'>
+
             <footer>
-                <Flex direction={['column', 'column', 'row']} w="full" px={6} align="center" bg={bg}>
-                    <Heading size="md">Brand</Heading>
-                    <Spacer />
-                    <Text fontSize="sm">Copyright &copy; {new Date().getFullYear()} Brand, Inc.</Text>
-                    <Spacer />
+                <Flex direction={'row'} w="full" mx={'auto'} justify="center" bg='transparent' align={'center'} >
+                    <Heading fontSize={{base: 'lg', sm: 'md', md: 'xl', lg: '2xl', xl: '3xl'}}
+                        fontFamily={'poppins, sans-serif'} fontWeight={'600'} color='whiteAlpha.600'
+                        px='25px'
+                    >
+                        TextureForge
+                    </Heading>
+
                     <HStack spacing={1}>
-                        <IconButton aria-label="Facebook" icon={<SiFacebook />}></IconButton>
-                        <IconButton aria-label="Twitter" icon={<SiTwitter />}></IconButton>
-                        <IconButton aria-label="LinkedIn" icon={<SiLinkedin />}></IconButton>
-                        <IconButton aria-label="Github" icon={<SiGithub />}></IconButton>
+                        <Link href='https://github.com/thegrayeminence/material-manager' isExternal>
+                            <IconButton isRound={true} aria-label="Github" color='white' bg={useColorModeValue('facebook.600', 'purple.600')} opacity={'.75'} icon={<FaGithub />}>
+
+                            </IconButton>
+                        </Link>
                     </HStack>
                 </Flex>
             </footer>
-        </Box>
+        </Box  >
     )
 }
 export default SimpleFooter

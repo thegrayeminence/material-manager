@@ -4,13 +4,13 @@ import {Box, Grid, SimpleGrid, VStack, Text, useColorModeValue, Skeleton} from '
 import {TextureDisplay} from './components'
 import {GalleryCard} from './components'
 import {loadImagesFromFolder} from '../../config/loadImagesFromFolder'
-import {StylishHeader} from '../../components'
+import {SimpleFooter} from '../../components'
 import {PreviewBackgroundAnimation} from '../Preview/components';
 import '../LandingPage/landingPage.scss'
 import '@fontsource/poppins';
 import '@fontsource/inter';
 
-function LandingPageBottomBackground() {
+function GradientBackground() {
 
   return (
     <Box className="background-animation"
@@ -130,45 +130,48 @@ function Gallery() {
   return (
     <Box width='100vw' h='100vh'
       opacity={'99.9%'}
-    // backgroundBlendMode={'difference'}
+      // backgroundBlendMode={'difference'}
+      position={'relative'}
     >
-      <Text
-        backgroundClip={'text'}
+      <Box spacing={0} width={'100%'} overflow={'hidden'} >
+        <Text
+          backgroundClip={'text'}
 
-        fontFamily={'poppins black, sans-serif'}
-        fontWeight={'800'}
-        mt='10%'
-        textAlign='center'
-        fontSize={{base: '4xl', sm: '4xl', md: '5xl', lg: '6xl', xl: '7xl'}}
-        color={useColorModeValue('twitter.500', 'purple.400')}
-        opacity={0.99}
-
-      >
-        {`COMMUNITY GALLERY:`}
-      </Text>
-      <Box maxW='90%' h='100%' >
-
-        <SimpleGrid
-          columns={[1, 1, 2, 3]}
-          spacing={8}
-          w='100%'
-          ml='5%'
+          fontFamily={'poppins black, sans-serif'}
+          fontWeight={'800'}
+          mt='10%'
+          textAlign='center'
+          fontSize={{base: '4xl', sm: '4xl', md: '5xl', lg: '6xl', xl: '7xl'}}
+          color={useColorModeValue('twitter.500', 'purple.400')}
+          opacity={0.99}
 
         >
-          {materials.map(({folder, images}) => (
-            <Skeleton isLoaded={!isLoading} key={folder} >
-              <GalleryCard key={folder} name={folder} images={images} isNew={true} />
-            </Skeleton>
-          ))}
-        </SimpleGrid>
-      </Box >
-      <Box width={'100vw'} height={'100%'} margin={0} padding={0} position={'fixed'} top={0} left={0}
-        zIndex={-2}>
-        <LandingPageBottomBackground />
-        <PreviewBackgroundAnimation />
+          {`COMMUNITY GALLERY:`}
+        </Text>
+        <Box maxW='90%' h='100%' >
 
+          <SimpleGrid
+            columns={[1, 1, 2, 3]}
+            spacing={8}
+            w='100%'
+            ml='5%'
+
+          >
+            {materials.map(({folder, images}) => (
+              <Skeleton isLoaded={!isLoading} key={folder} >
+                <GalleryCard key={folder} name={folder} images={images} isNew={true} />
+              </Skeleton>
+            ))}
+          </SimpleGrid>
+        </Box >
+        <Box width={'100vw'} height={'100%'} margin={0} padding={0} position={'fixed'} top={0} left={0}
+          zIndex={-2}>
+          <GradientBackground />
+          <PreviewBackgroundAnimation />
+
+        </Box>
       </Box>
-
+      <SimpleFooter />
     </Box>
   )
 }

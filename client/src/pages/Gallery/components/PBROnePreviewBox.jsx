@@ -1,43 +1,34 @@
 import React, {useState} from 'react'
-import {Box, VStack, Select, HStack, Text, Spacer, Skeleton} from '@chakra-ui/react';
+import {Box, VStack, Select, HStack, Text, Spacer, Skeleton, useColorModeValue} from '@chakra-ui/react';
 
 export default function PBROnePreviewBox({images}) {
 
     //vars for pbr.one material preview URL
-
-    const parsedUrl = new URL(window.location.href);
-    const origin = parsedUrl.origin;
-    const URI_BASE = origin;
-    const color_map_url = `${URI_BASE}${images[0]}`;
-
-    console.log('pbr_component_urls', images, images[0], images[1], images[2], images[3])
-
-    const normal_map_url = `${URI_BASE}${images[1]}`;
-    const height_map_url = `${URI_BASE}${images[2]}`;
-    const smoothness_map_url = `${URI_BASE}${images[3]}`;
+    const color_map_url = `${images[0]}`;
+    const height_map_url = `${images[1]}`;
+    const normal_map_url = `${images[2]}`;
+    const smoothness_map_url = `${images[3]}`;
     const [geometry_type, set_geometry_type] = useState('sphere');
-    const [environment_type, set_environment_type] = useState(0);
+    const [environment_type, set_environment_type] = useState(3);
 
     const baseUrl = 'https://cdn.pbr.one/main/material-shading.html#';
     const query_params = `color_url=${color_map_url}&normal_url=${normal_map_url}&roughness_url=${smoothness_map_url}&displacement_url=${height_map_url}&geometry_type=${geometry_type}&environment_index=${environment_type}&displacement_scale=0.01&tiling_scale=1.33&gui_enable=-1&watermark_enable=0`
-
-    // console.log('pbr_component_urls', images)
 
     return (
         <>
             {!images || images.length < 4 && (
                 <VStack
-
                     ml='5%'
                     p={{base: 8, sm: 5, md: 8, lg: 8, xl: 10}}
                     borderWidth="2px"
                     borderColor={'whiteAlpha.400'}
                     boxShadow={'xl'}
-                    bg={'blackAlpha.400'}
+                    bg={useColorModeValue('whiteAlpha.200', 'blackAlpha.400')}
+
                     borderRadius="lg"
                     overflow="hidden"
                     backdropFilter="blur(10px)">
-                    <Skeleton height={500} />
+                    <Skeleton boxSize={500} />
                 </VStack>
             )}
             {images && images.length === 4 && (
@@ -48,7 +39,8 @@ export default function PBROnePreviewBox({images}) {
                     borderWidth="2px"
                     borderColor={'whiteAlpha.400'}
                     boxShadow={'xl'}
-                    bg={'blackAlpha.400'}
+                    bg={useColorModeValue('whiteAlpha.200', 'blackAlpha.400')}
+
                     borderRadius="lg"
                     overflow="hidden"
 

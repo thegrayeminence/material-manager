@@ -588,9 +588,9 @@ def get_material_filename(material_id):
         material = Material.query.get(material_id)
         if not material:
             return jsonify({"error": "Material not found"}), 404
-
         filename = f"{material.color}_{material.element}_{material.manifestation}_{material.condition}.zip"
-        return jsonify({"filename": filename})
+        name = f"{material.color} {material.element} {material.manifestation} {material.condition}".title()
+        return jsonify({"filename": filename, "name": name}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     

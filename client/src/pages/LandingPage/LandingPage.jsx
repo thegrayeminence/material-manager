@@ -5,7 +5,7 @@ import {AnimatePresence, motion, useScroll} from 'framer-motion';
 
 //components
 import {LandingPageText, Features, Timeline} from './components';
-import {GeometricBackgroundAnimation} from '../../components';
+import {GeometricBackgroundAnimation, SimpleFooter} from '../../components';
 import './landingPage.scss'
 
 function LandingPageBackground() {
@@ -74,7 +74,7 @@ function LandingPage() {
                 height={'auto'}
                 width={'100vw'}
                 position={'relative'}
-                bg={useColorModeValue('gray.200', 'gray.800')}
+                bg={useColorModeValue('gray.400', 'gray.800')}
 
 
             >
@@ -119,7 +119,10 @@ function LandingPage() {
                     <Timeline zIndex={-1}
                     />
                 </Container>
+
                 <Spacer py={'3.5rem'} />
+                <SimpleFooter />
+                <Spacer py={'.5rem'} />
                 <Divider textAlign={'center'} borderWidth={'.25rem'} w={'full'}
                     borderStyle={'solid'}
                     borderColor={useColorModeValue('blue.400', 'purple.400')}

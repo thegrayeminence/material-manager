@@ -2,14 +2,12 @@ import React, {useEffect, useState} from 'react';
 import {Box, Heading, useToast, Text, Flex, CircularProgress, Skeleton, Image, Center, Spacer, VStack, SkeletonText, useColorModeValue, HStack} from '@chakra-ui/react';
 import {useLocation, useNavigate, useParams} from 'react-router-dom';
 import axios from 'axios';
-import {motion} from 'framer-motion';
 import {useGeneratedImagesStore} from '../store/store';
-import {ParticlesBGAnimation} from '../components';
+import {SimpleFooter} from '../components';
 import './LandingPage/landingPage.scss';
 
 
 function BackgroundGradient() {
-
     return (
         <Box className="background-animation"
             height={'100vh'}
@@ -17,15 +15,10 @@ function BackgroundGradient() {
             position={'absolute'}
             top={0} left={0}
             zIndex={-1}
-
             opacity={useColorModeValue('.6', '.5')}
             backgroundBlendMode={useColorModeValue('inverse', 'overlay')}
-
-
         >
-
         </Box>
-
     )
 }
 
@@ -45,30 +38,19 @@ const loadingMessages = [
 ];
 
 const LoadingPage = () => {
-
     const [loadingMessageIndex, setLoadingMessageIndex] = useState(0);
     const [isMinimumDisplayTimeMet, setIsMinimumDisplayTimeMet] = useState(false);
-
-    const {promiseId, setPbrIsLoading, pbrIsLoading, setAlbedoIsLoading, albedoIsLoading, setPbrMapUrls, pbrMapUrls, albedoImage, materialName, setMaterialName} = useGeneratedImagesStore();
+    const {promiseId, setPbrIsLoading, pbrIsLoading, setAlbedoIsLoading, albedoIsLoading, setPbrMapUrls, pbrMapUrls, setAlbedoImage, albedoImage, materialName, setMaterialName, setFileName} = useGeneratedImagesStore();
     const {id} = useParams();
     const toast = useToast();
     const navigate = useNavigate();
     const apiUrl = import.meta.env.VITE_API_URL;
 
-    // const fetchAlbedoById = async () => {
-    //     try {
-    //         const response = await axios.get(`/api/get_albedo_by_id/${id}`);
-    //         setAkb(response.data.base_color_url);
-    //         loadPBRMaps(response.data.material_id);
-    //     } catch (error) {
-    //         console.error('Error fetching recent albedo:', error);
-    //     }
-    // };
-
 
     useEffect(() => {
         const generatePBRMaps = async () => {
             if (!promiseId || !albedoImage) {
+
                 console.error("Missing data for PBR maps generation.");
                 toast({
                     title: "Async Error",
@@ -79,32 +61,29 @@ const LoadingPage = () => {
                     position: "top",
                     variant: 'subtle',
                     colorScheme: 'purple',
-
                 });
-                // navigate('/gallery');
+                navigate('/gallery');
                 return;
+
             }
             setPbrIsLoading(true);
             try {
                 //set necessary info about the material
                 const filenameResponse = await axios.get(apiUrl + `/api/get_material_filename/${promiseId}`);
-                const filename = filenameResponse.data.filename;
-                const formattedFileName = filename.replace('.zip', '').replace(/[_]/g, " ").toUpperCase();
-                setMaterialName(formattedFileName);
+                setFileName(filenameResponse.data.filename);
+                setMaterialName(filenameResponse.data.name);
+                console.log(filenameResponse.data);
 
                 // Second API call to generate PBR maps
                 const pbrResponse = await axios.post(apiUrl + `/api/generate_pbr_maps`, {
                     base_color_url: albedoImage,
                     material_id: promiseId
                 });
-                console.log(`PBR maps generation initiated! for materialId: ${promiseId} and baseColorUrl: ${albedoImage}`);
+                console.log(`PBR maps generation initiated! for materialId: ${promiseId}/ name:${materialName} /baseColorUrl: ${albedoImage}`);
 
                 setPbrMapUrls(pbrResponse.data.pbr_maps);
                 console.log("PBR maps generated successfully!", pbrResponse.data.pbr_maps);
-
-
                 navigate(`/gallery_id/${promiseId}`);
-
             } catch (error) {
                 console.error("Error generating PBR maps:", error);
                 toast({
@@ -125,46 +104,30 @@ const LoadingPage = () => {
         };
         generatePBRMaps();
     }, [promiseId, albedoImage, navigate, apiUrl, setPbrMapUrls]);
-
-
-
-
     useEffect(() => {
         const messageInterval = setInterval(() => {
             setLoadingMessageIndex((prevIndex) => (prevIndex + 1) % loadingMessages.length);
         }, 2000); // Update message every 'n' milliseconds
-
-
         const minimumDisplayTimer = setTimeout(() => {
             setIsMinimumDisplayTimeMet(true);
         }, 10000); // Set minimum display time to 'n' milliseconds
-
         return () => {
             clearInterval(messageInterval);
             clearTimeout(minimumDisplayTimer);
         };
-
     }, [loadingMessages.length]);
-
-
     useEffect(() => {
         if (isMinimumDisplayTimeMet && !pbrIsLoading) {
-            // Navigate to the next page once both conditions are met
             navigate(`/gallery_id/${promiseId}`);
         }
     }, [isMinimumDisplayTimeMet, pbrIsLoading, navigate, promiseId]);
-
-
-
     return (
         <Box width='100vw' h='100vh'
             opacity={'99.9%'} position='relative' overflow={'hidden'}
         >
-            <Box maxW="7xl" mx="auto" pt='15%' >
-
+            <Box maxW="7xl" mx="auto" pt='10%' >
                 <Box >
                     <VStack spacing={8}>
-
                         <Heading fontSize={{base: '2xl', sm: 'xl', md: '2xl', lg: '3xl', xl: '4xl'}} textAlign={'center'} color='white'>
                             {`Loading '${materialName}'...`}
                         </Heading>
@@ -176,27 +139,26 @@ const LoadingPage = () => {
                             {loadingMessages[loadingMessageIndex]}
                         </Text>
                         <Spacer py={2} />
-                        <Box position='relative'>
-
+                        <Box position='relative' pb='10'>
                             <Center flexDirection={'column'}>
                                 {/* <SkeletonText noOfLines={1} isLoaded={albedoIsLoading} w='full' > */}
-                                {albedoImage && <Text textAlign={'center'} fontFamily={'avenir'} fontWeight={'500'} fontSize={{base: 'lg', sm: 'md', md: 'lg', lg: 'xl', xl: '2xl'}} color='white'>{
+                                {/* {albedoImage && <Text textAlign={'center'} fontFamily={'avenir'} fontWeight={'500'} fontSize={{base: 'lg', sm: 'md', md: 'lg', lg: 'xl', xl: '2xl'}} color='white'>{
                                     `Color Map:`
-                                }</Text>}
+                                }</Text>} */}
                                 <Spacer py={2} />
-                                {/* </SkeletonText> */}
+
+
                                 <Skeleton boxSize={'250px'} isLoaded={albedoImage}>
-                                    {albedoImage && (<Image w='250px' h='250px' objectFit="cover" src={albedoImage} alt="Albedo Image" />)}
+                                    {albedoImage && (
+
+                                        <Box boxShadow="xl" borderRadius="md" overflow="hidden" border="1px solid" borderColor="gray.400" bg="whiteAlpha.200" >
+                                            <Text mt="1" color='whiteAlpha.700' fontWeight={'500'} fontSize={{base: 'lg', sm: 'md', md: 'lg', lg: 'lg', xl: 'xl'}} fontFamily='avenir, sans-serif' textAlign="center" >
+                                                Base Color Map:
+                                            </Text>
+                                            <Image boxSize={'250px'} objectFit="cover" src={albedoImage} alt="Albedo Image" />
+                                        </Box>
+                                    )}
                                 </Skeleton>
-                                <Spacer py={2} />
-                                {/* <HStack>
-                                    <Skeleton isLoaded={pbrIsLoading} boxSize={'100px'}>
-                                    </Skeleton>
-                                    <Skeleton isLoaded={pbrIsLoading} boxSize={'100px'}>
-                                    </Skeleton>
-                                    <Skeleton isLoaded={pbrIsLoading} boxSize={'100px'}>
-                                    </Skeleton>
-                                </HStack> */}
                             </Center>
                         </Box>
                     </VStack>
@@ -208,10 +170,9 @@ const LoadingPage = () => {
             >
                 <BackgroundGradient />
             </Box>
+            <SimpleFooter />
         </Box>
-
     );
 };
 
 export default LoadingPage;
-

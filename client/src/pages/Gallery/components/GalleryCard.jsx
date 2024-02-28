@@ -10,8 +10,8 @@ import {useNavigate} from 'react-router-dom';
 function GalleryCard({name, images, isNew, showAllImages = false}) {
     const navigate = useNavigate();
     const toast = useToast();
-    // const formatting = /[_-]/g
-    // const formattedName = name.replace(formatting, ' ')
+    // const formatting = /[_]/g
+    const formattedName = name.replace(/[_-]/g, ' ')
 
     return (
         <Flex p={5} w="full" alignItems={'center'} justifyContent={'center'}>
@@ -88,12 +88,12 @@ function GalleryCard({name, images, isNew, showAllImages = false}) {
                             fontSize="xl" fontWeight="semibold" color="gray.800"
                             lineHeight="tight" isTruncated
                         >
-                            {(name) || ('Untitled Material')}
+                            {(formattedName) || ('Untitled Material')}
                         </Box>
 
                         {/* Material Info Icon/Tooltip: */}
                         <Tooltip
-                            label={(name) || ('Untitled Material')}
+                            label={(formattedName) || ('Untitled Material')}
                             fontSize={'md'}
                         >
                             <chakra.span>
