@@ -53,7 +53,7 @@ function Gallery() {
         const materialsResponse = await axios.get(apiUrl + `/api/all_images`);
         setFolders(foldersResponse.data.folders);
         setMaterials(materialsResponse.data);
-        console.log("materials response", materialsResponse.data, "folders response", foldersResponse.data.folders);
+        // console.log("materials response", materialsResponse.data, "folders response", foldersResponse.data.folders);
 
 
       } catch (error) {

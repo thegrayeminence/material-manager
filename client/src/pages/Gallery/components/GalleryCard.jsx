@@ -71,23 +71,25 @@ function GalleryCard({name, images, isNew}) {
                         </Box>
 
                     </HStack>
-                    <Flex mt='1' justifyContent={'space-between'} alignContent={'center'}>
+                    <Flex mt='1' justifyContent={'space-evenly'} alignContent={'center'}>
 
                         {/* Material Name: */}
                         <Box
-                            fontSize="1.5rem" fontWeight="600" fontFamily={'poppins, sans-serif'}
+                            fontWeight="600" fontFamily={'poppins, sans-serif'}
                             color={useColorModeValue('gray.300', 'gray.200')}
                             lineHeight="tight" isTruncated
+                            textAlign={'center'}
+                            fontSize={{base: 'lg', sm: 'lg', md: 'lg', lg: 'xl', xl: '2xl'}}
                         >
                             {(formattedName) || ('Untitled Material')}
                         </Box>
 
                     </Flex>
 
-                </Box>
-            </Box>
+                </Box >
+            </Box >
 
-        </Flex>
+        </Flex >
     )
 }
 

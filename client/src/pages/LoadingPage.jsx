@@ -3,7 +3,6 @@ import {Box, Heading, useToast, Text, Flex, CircularProgress, Skeleton, Image, C
 import {useLocation, useNavigate, useParams} from 'react-router-dom';
 import axios from 'axios';
 import {useGeneratedImagesStore} from '../store/store';
-import {SimpleFooter} from '../components';
 import './LandingPage/landingPage.scss';
 
 
@@ -170,7 +169,6 @@ const LoadingPage = () => {
             >
                 <BackgroundGradient />
             </Box>
-            {/* <SimpleFooter /> */}
         </Box>
     );
 };
