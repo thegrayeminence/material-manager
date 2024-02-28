@@ -138,7 +138,7 @@ const headerStyle = {
 
 const Timeline = () => {
     return (
-        <Container maxWidth="7xl" mx="auto"
+        <Container maxWidth="full" mx="auto"
             p={{base: 6, sm: 8, md: 10, lg: 12}}
 
 
@@ -154,16 +154,17 @@ const Timeline = () => {
             <Divider
                 textAlign={'center'} borderWidth={'.2rem'} w={'full'}
                 borderStyle={'solid'}
-                borderColor={useColorModeValue('teal.400', 'facebook.600')}
+                borderColor={useColorModeValue(colorThemeValues.light.textDetail, colorThemeValues.dark.textDetail)}
 
 
             />
 
-            <Spacer h={8} />
+            <Spacer h={4} />
             {timeLineData.map((step, index) => (
                 <Flex key={index}  >
-                    <LineWithDot  {...step} />
+
                     <Box >
+                        {/* <LineWithDot  {...step} /> */}
                         <Card  {...step} />
                         <Spacer h={6} />
                     </Box>
@@ -188,9 +189,14 @@ const Card = ({title, categories, description, icon, bigIcon, date}) => {
 
 
         >
-            <Icon as={bigIcon} w={12} h={12}
-                color={useColorModeValue(colorThemeValues.light.icon, colorThemeValues.dark.icon)} />
-
+            <VStack align={'center'} spacing={8} >
+                <Icon as={icon} w={6} h={6}
+                    color={useColorModeValue(colorThemeValues.light.highlight, colorThemeValues.dark.highlight)}
+                />
+                <Icon as={bigIcon} w={12} h={12}
+                    color={useColorModeValue(colorThemeValues.light.icon, colorThemeValues.dark.icon)}
+                />
+            </VStack>
             <Box
 
             >
