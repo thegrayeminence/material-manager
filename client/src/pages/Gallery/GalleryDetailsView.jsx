@@ -92,7 +92,7 @@ function GalleryDetailsView() {
     };
 
 
-    const imageLabels = ['Base Color', 'Normals', 'Height', 'Smoothness'];
+    const imageLabels = ['Base Color', 'Height', 'Normals', 'Smoothness'];
     const displayName = name.replace(/[_]/g, " ").toUpperCase();
 
     return (

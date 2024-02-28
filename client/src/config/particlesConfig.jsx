@@ -403,9 +403,9 @@ export const particlesConfig7 = (bgColor, linksColor, particlesColor) => ({
         "enable": true,
         "zIndex": -1
     },
-    "detectRetina": true,
+    "detectRetina": false,
     "duration": 0,
-    "fpsLimit": 120,
+    "fpsLimit": 60,
     "interactivity": {
         "detectsOn": "window",
         "events": {
@@ -897,8 +897,8 @@ export const particlesConfig7 = (bgColor, linksColor, particlesColor) => ({
             "speed": 1
         }
     },
-    "pauseOnBlur": true,
-    "pauseOnOutsideViewport": true,
+    "pauseOnBlur": false,
+    "pauseOnOutsideViewport": false,
     "responsive": [],
     "smooth": false,
     "style": {},
