@@ -5,6 +5,8 @@ import {
 } from "@chakra-ui/react"
 import {MdDownload, MdInfoOutline, MdOutlinePreview, MdViewInAr, MdGridView, MdPhotoLibrary} from "react-icons/md";
 import {useNavigate} from 'react-router-dom';
+import '@fontsource/poppins';
+import '@fontsource/inter';
 
 
 function GalleryCard({name, images, isNew}) {
@@ -13,7 +15,14 @@ function GalleryCard({name, images, isNew}) {
 
     return (
         <Flex p={5} w="full" alignItems={'center'} justifyContent={'center'}>
-            <Box bg={'white'} borderWidth={'1px'} rounded={'lg'} shadow="lg" position="relative" minW='256px' h='100%'>
+            <Box
+                bg={useColorModeValue('whiteAlpha.400', 'blackAlpha.400')}
+                borderWidth={'2px'} borderColor={useColorModeValue('whiteAlpha.600', 'whiteAlpha.600')}
+                rounded={'lg'} boxShadow={'xl'} borderRadius="lg"
+                position="relative" minW='256px' h='100%'
+                overflow="hidden" backdropFilter="blur(5px)"
+
+            >
                 {true && (
                     <Image src={images[0]} alt={`${name}`} roundedTop={'lg'} fit="cover" />
                 )}
@@ -23,7 +32,7 @@ function GalleryCard({name, images, isNew}) {
                         <Box display="flex"
                         >
                             {isNew && (
-                                <Badge rounded="full" px="2" fontSize={'0.8em'} colorScheme='red'>
+                                <Badge rounded="full" px="2" fontSize={'0.8em'} colorScheme={useColorModeValue('green', 'purple')}>
                                     New
                                 </Badge>
                             )}
@@ -34,7 +43,7 @@ function GalleryCard({name, images, isNew}) {
                                 <chakra.span>
                                     <Icon
                                         aria-label="Download"
-                                        color="gray.600"
+                                        color={useColorModeValue('gray.300', 'gray.200')}
                                         h={7} w={7}
                                         alignSelf={'center'}
                                         as={MdPhotoLibrary}
@@ -44,34 +53,21 @@ function GalleryCard({name, images, isNew}) {
                             </Tooltip>
 
                             <Spacer px='1.5' />
-
-                            <Tooltip label="Download Material" fontSize={'md'} >
-                                <chakra.span
-                                >
+                            <Tooltip
+                                label={(formattedName) || ('Untitled Material')}
+                                fontSize={'md'}
+                            >
+                                <chakra.span>
                                     <Icon
-                                        aria-label="Download"
-                                        color="gray.600"
-                                        h={7} w={7}
-                                        alignSelf={'center'}
-                                        as={MdDownload}
-                                        onClick={() => {
-                                            // toast({
-                                            //     title: 'Not Supported Currently',
-                                            //     description: "Downloads currently only supported on preview page; redirecting there now...",
-                                            //     status: 'error',
-                                            //     duration: 3000,
-                                            //     position: 'top',
-                                            //     variant: 'subtle',
-                                            //     isClosable: true,
-                                            //     colorScheme: 'purple',
-                                            // });
-                                            navigate(`/gallery/${name}`);
-                                        }
+                                        aria-label="Info"
+                                        color={useColorModeValue('gray.300', 'gray.200')}
 
-                                        }
+                                        h={7} w={7} alignSelf={'center'}
+                                        as={MdInfoOutline}
                                     />
                                 </chakra.span>
                             </Tooltip>
+
                         </Box>
 
                     </HStack>
@@ -79,26 +75,12 @@ function GalleryCard({name, images, isNew}) {
 
                         {/* Material Name: */}
                         <Box
-                            fontSize="xl" fontWeight="semibold" color="gray.800"
+                            fontSize="1.5rem" fontWeight="600" fontFamily={'poppins, sans-serif'}
+                            color={useColorModeValue('gray.300', 'gray.200')}
                             lineHeight="tight" isTruncated
                         >
                             {(formattedName) || ('Untitled Material')}
                         </Box>
-
-                        {/* Material Info Icon/Tooltip: */}
-                        <Tooltip
-                            label={(formattedName) || ('Untitled Material')}
-                            fontSize={'md'}
-                        >
-                            <chakra.span>
-                                <Icon
-                                    aria-label="Info"
-                                    color="gray.600"
-                                    h={7} w={7} alignSelf={'center'}
-                                    as={MdInfoOutline}
-                                />
-                            </chakra.span>
-                        </Tooltip>
 
                     </Flex>
 

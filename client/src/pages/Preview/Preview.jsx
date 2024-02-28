@@ -10,7 +10,7 @@ import {
   FormPreviewBoxTabs,
   PreviewBackgroundAnimation
 } from './components';
-import {GradientBG_Purple, Header, StylishHeader, ParticlesBGAnimation} from '../../components';
+import {GradientBG_Purple, Header, StylishHeader, ParticlesBGAnimation, SimpleFooter} from '../../components';
 import {useProgressStore} from '../../store/store';
 import '@fontsource/poppins';
 import '@fontsource/inter';
@@ -21,10 +21,10 @@ function Preview() {
   const {progress} = useProgressStore()
 
   return (
-    <Box width='100vw' h='100vh' opacity='.99'>
+    <Box width='100vw' h='100vh' opacity='.99' position='relative'>
 
-      <Box py='2rem'>
-        <Spacer py={'2.5rem'} />
+      <Box spacing={0} width={'100%'} overflow={'hidden'} py='2rem'>
+        <Spacer h={'2.5rem'} />
         <Heading textAlign='center' fontSize={{base: '4xl', sm: '4xl', md: '5xl', lg: '6xl', xl: '7xl'}}
           color={useColorModeValue('cyan.600', 'purple.500')}
           opacity={0.85}
@@ -65,15 +65,18 @@ function Preview() {
       </Box>
 
       <Box py='2rem'>
-        {progress < 2 && <FormPreviewBoxTabs />}
+        {progress < 3 && <FormPreviewBoxTabs />}
       </Box>
-
       <Box width={'100vw'} height={'100%'} margin={0} padding={0} position={'fixed'} top={0} left={0}
         zIndex={-1}>
         {/* <PreviewBackgroundAnimation /> */}
         <ParticlesBGAnimation />
+
       </Box>
+
+
     </Box>
+
 
   )
 }

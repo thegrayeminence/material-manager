@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import {Box, Grid, SimpleGrid, VStack, Text, useColorModeValue, Skeleton} from '@chakra-ui/react'
+import {Box, Grid, SimpleGrid, VStack, Text, useColorModeValue, Skeleton, Spacer} from '@chakra-ui/react'
 //local imports
 import axios from 'axios';
 import {GalleryCard} from './components'
@@ -43,20 +43,6 @@ function Gallery() {
   console.log("materials", materials, "folders", folders);
 
 
-  // useEffect(() => {
-  //   const loadMaterials = async () => {
-  //     setisLoading(true);
-  //     const loadedMaterials = [];
-  //     for (let folder of folderNames) {
-  //       const images = await loadImagesFromFolder(folder);
-  //       loadedMaterials.push({folder, images})
-  //     }
-  //     setMaterials(loadedMaterials);
-  //     setisLoading(false);
-  //   };
-  //   loadMaterials();
-  // }, []);
-
   //functionality for getting image urls/data from backend
   useEffect(() => {
     const loadStaticImage = async () => {
@@ -72,6 +58,13 @@ function Gallery() {
 
       } catch (error) {
         console.error("Failed to load static images:", error);
+        toast({
+          title: 'Error loading texture files',
+          description: error.message,
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        });
       }
       finally {
         setIsLoading(false);
@@ -80,42 +73,6 @@ function Gallery() {
     loadStaticImage();
   }, []);
 
-  // useEffect(() => {
-  //   const loadMaterialsOnServer = async () => {
-  //     setisLoading(true);
-  //     const apiUrl = import.meta.env.VITE_API_URL
-
-
-
-  //     try {
-  //       const foldersResponse = await axios.get(`${apiUrl}/api/image_folders`);
-  //       const materialsResponse = await axios.get(`${apiUrl}/api/all_images`);
-
-  //       setFolders(foldersResponse.data.folders);
-  //       setMaterials(materialsResponse.data);
-  //       console.log("materials", materialsResponse.data, "folders", foldersResponse.data.folders);
-  //       console.log("materials", materials, "folders", folders);
-
-
-  //     } catch (error) {
-  //       console.error("Failed to load texture images:", error);
-  //       // toast({
-  //       //     title: 'Error loading texture files',
-  //       //     description: error.message,
-  //       //     status: 'error',
-  //       //     duration: 5000,
-  //       //     isClosable: true,
-  //       // });
-  //     }
-  //     finally {
-  //       setisLoading(false);
-  //     }
-
-
-  //   };
-
-  //   loadMaterialsOnServer();
-  // }, []);
 
   return (
     <Box width='100vw' h='100vh'
@@ -161,7 +118,9 @@ function Gallery() {
 
         </Box>
       </Box>
+      <Spacer h='25px' />
       <SimpleFooter />
+      <Spacer h='25px' />
     </Box>
   )
 }

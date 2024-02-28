@@ -28,7 +28,7 @@ const stepsMode1 = [
 
 function ProgressBar({func}) {
 
-  const progress = useProgressStore((state) => state.progress)
+  const {progress} = useProgressStore()
   const activeStepText = steps[progress].description
 
 
@@ -39,7 +39,7 @@ function ProgressBar({func}) {
 
       <Stepper
         colorScheme={useColorModeValue('twitter', 'purple')}
-        size='md' index={progress} gap='0'>
+        size='md' index={progress + 1} gap='0'>
         {steps.map((step, index) => (
           <Step key={index} gap='0'>
             <StepIndicator

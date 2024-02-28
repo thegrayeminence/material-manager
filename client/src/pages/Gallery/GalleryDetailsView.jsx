@@ -11,6 +11,7 @@ import {saveAs} from 'file-saver';
 import '../LandingPage/landingPage.scss'
 import {SimpleFooter} from '../../components';
 
+
 function GradientBackground() {
     return (
         <Box className="background-animation"
@@ -94,13 +95,12 @@ function GalleryDetailsView() {
             <VStack spacing={0} width={'100%'} overflow={'hidden'} >
                 <Box position='relative' maxW='85vw' h='100%' mt='5%'>
                     <Text
-                        fontFamily={'poppins, sans-serif'}
+                        fontFamily={'poppins black, sans-serif'}
                         fontWeight={'800'}
-
                         textAlign='center'
-                        fontSize={{base: '3xl', sm: '2xl', md: '4xl', lg: '5xl', xl: '7xl'}}
+                        fontSize={{base: '3xl', sm: '2xl', md: '4xl', lg: '5xl', xl: '6xl'}}
                         color={useColorModeValue('teal.600', 'purple.600')}
-                        opacity={0.75}
+                        opacity={0.9}
                     >
                         {`${displayName}`}
                     </Text>
@@ -121,11 +121,11 @@ function GalleryDetailsView() {
                     >
                         {!isLoading && images.map((src, index) => (
                             <Box key={index}
-                                p={{base: 5, sm: 4, md: 5, lg: 6, xl: 8}}
+                                p={{base: 4, sm: 3, md: 4, lg: 5, xl: 6}}
                                 borderWidth="2px"
                                 borderColor={'whiteAlpha.400'}
                                 boxShadow={'xl'}
-                                bg={useColorModeValue('whiteAlpha.200', 'blackAlpha.400')}
+                                bg={useColorModeValue('whiteAlpha.300', 'blackAlpha.400')}
                                 borderRadius="lg"
                                 overflow="hidden"
                                 backdropFilter="blur(10px)"

@@ -6,7 +6,7 @@ import axios from 'axios';
 import {
     Box, Button, VStack, FormControl, FormLabel, Image, Input, Textarea,
     HStack, useBoolean, useTheme, useColorModeValue, FormErrorMessage,
-    useToast, AlertIcon, AlertTitle, AlertDescription, CloseButton, useDisclosure,
+    useToast, AlertIcon, AlertTitle, AlertDescription, CloseButton, useDisclosure, CircularProgress, CircularProgressLabel, Spacer, Heading,
 } from '@chakra-ui/react';
 
 import {Select} from "chakra-react-select";
@@ -113,6 +113,7 @@ export default function MaterialUploadForm() {
         };
 
         // clearImages();
+        // increaseProgress();
         setIsLoading(true);
         setAlbedoIsLoading(true);
 
@@ -193,6 +194,7 @@ export default function MaterialUploadForm() {
         } finally {
             setIsLoading(false);
             setAlbedoIsLoading(false);
+            flushFormData();
         }
     };
 
@@ -247,21 +249,7 @@ export default function MaterialUploadForm() {
             }
             increaseProgress();
         }
-        // else if (progress === 1) {
-        //     if (!color || !elementType || !manifestation || !condition) {
-        //         toast({
-        //             title: "Validation Error",
-        //             description: "Please fill in all required fields.",
-        //             status: "error",
-        //             duration: 5000,
-        //             isClosable: true,
-        //             position: "top",
 
-        //         });
-        //         return;
-        //     }
-        //     increaseProgress();
-        // }
     };
 
 
@@ -459,6 +447,20 @@ export default function MaterialUploadForm() {
                     </HStack>
 
                 )}
+
+                {/* Additional Form Controls for Material Physical Attributes: Row2 */}
+                {/* {progress === 2 && (
+                    <HStack spacing={4} py={'.5rem'}>
+                        <Text fontSize={{base: '2xl', sm: 'xl', md: '2xl', lg: '3xl', xl: '4xl'}} textAlign={'center'} color='white'>
+                            {`Your Material is being processed...please allow the system a few moments to generate the first texture!`}
+                        </Text>
+                        <Spacer py={2} />
+                        <CircularProgress isIndeterminate color={useColorModeValue('teal.300', 'purple.300')} size={{base: '3rem', sm: '3.5rem', md: '5rem', lg: '6.5rem', xl: '8rem'}} />
+                        <Spacer py={2} />
+
+                    </HStack>
+
+                )} */}
 
 
                 {/* Navigation Buttons; Next and Submit have diff functions based on progress state */}

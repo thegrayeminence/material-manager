@@ -70,7 +70,11 @@ export const useGeneratedImagesStore = create(persist(
   }),
   {
     name: 'images-store', // unique name for localStorage
-    getStorage: () => localStorage, // Define the storage type
+    storage: { // Updated to use the new 'storage' option
+      getItem: (name) => localStorage.getItem(name),
+      setItem: (name, value) => localStorage.setItem(name, value),
+      removeItem: (name) => localStorage.removeItem(name),
+    },
   }
 ));
 

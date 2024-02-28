@@ -170,7 +170,7 @@ const LoadingPage = () => {
             >
                 <BackgroundGradient />
             </Box>
-            <SimpleFooter />
+            {/* <SimpleFooter /> */}
         </Box>
     );
 };
