@@ -9,6 +9,7 @@ import MotionContainer from "./MotionContainer";
 import StylishButton from "./StylishButton";
 import GeometricBackgroundAnimation from "./GeometricBackgroundAnimation";
 import ParticlesBGAnimation from "./ParticlesBGAnimation";
+import SimpleFooter from "./SimpleFooter";
 
 
 export {
@@ -23,5 +24,6 @@ export {
     StylishButton,
     GeometricBackgroundAnimation,
     ParticlesBGAnimation,
+    SimpleFooter,
 
 };

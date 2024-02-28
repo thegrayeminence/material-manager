@@ -20,7 +20,7 @@ function LandingPageBottomBackground() {
       top={0} left={0}
       zIndex={0}
 
-      opacity={useColorModeValue('.5', '.5')}
+      opacity={useColorModeValue('.2', '.2')}
       backgroundBlendMode={useColorModeValue('luminosity', 'overlay')}
     // backdropFilter={'blur(20px)'}
 

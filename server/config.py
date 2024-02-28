@@ -310,7 +310,7 @@ def generate_albedo():
         db.session.add(new_material)
         db.session.commit()
         # app.logger.info("Albedo map generated successfully.")
-        response = jsonify({'base_color_url': base_color_url, 'material_id': new_material.id})
+        response = jsonify({'base_color_url': base_color_url, 'material_id': new_material.id, 'material_name': new_material.prompt})
         # response.headers.add('Access-Control-Allow-Origin', '*')
         # response.headers.add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
         # response.headers.add("Access-Control-Allow-Headers", "Content-Type");

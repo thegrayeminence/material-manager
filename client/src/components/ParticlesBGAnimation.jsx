@@ -40,7 +40,7 @@ const ParticlesBGAnimation = ({bg, links, particles}) => {
     };
 
     return (
-        <Box >
+        <Box>
             {init && <Particles
                 id="tsparticles"
                 particlesLoaded={particlesLoaded}

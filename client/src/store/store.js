@@ -20,29 +20,7 @@ export const useIsLoadingStore = create((set) => ({
   resetIsLoading: () => set({isLoading: false}),
 }));
 
-export const useSessionStore = create((set) => ({
-  sessionData: {
-    id: null,
-    prompt: '',
-    base_color_url: '',
-    // pbrUrls: {
-    //   normal: '',
-    //   height: '',
-    //   smoothness: '',
-    // },
-  },
-  status: '',
 
-  setSessionId: (id) => set({sessionData: {...state.sessionData, id}}),
-  setSessionPrompt: (prompt) => set({sessionData: {...state.sessionData, prompt}}),
-  setSessionAlbedo: (base_color_url) => set({sessionData: {...state.sessionData, base_color_url}}),
-  // setSessionPbrUrls: (pbrUrls) => set({sessionData: {...state.sessionData, pbrUrls}}),
-  setSessionStatus: (status) => set({status}),
-  resetSession: () => set({sessionData: {id: [], prompt: []}, status: []}),
-  setSessionStatusLoading: () => set({status: 'loading'}),
-  setSessionStatusSuccess: () => set({status: 'success'}),
-  setSessionStatusError: () => set({status: 'error'}),
-}))
 
 // store for global state management of materialData/fileData/imagePreviews from form inputs
 export const useMaterialStore = create(set => ({
@@ -70,6 +48,7 @@ export const useGeneratedImagesStore = create(persist(
   (set) => ({
     // State
     albedoImage: null,
+    materialName: null,
     pbrMapUrls: {normal: null, height: null, smoothness: null},
     albedoIsLoading: false,
     pbrIsLoading: false,
@@ -77,6 +56,7 @@ export const useGeneratedImagesStore = create(persist(
 
     // Actions
     setAlbedoImage: (imageURL) => set(() => ({albedoImage: imageURL})),
+    setMaterialName: (name) => set(() => ({materialName: name})),
     setPromiseId: (id) => set(() => ({promiseId: id})),
     setPbrMapUrls: (urls) => set(() => ({pbrMapUrls: urls})),
     setAlbedoIsLoading: (isLoading) => set(() => ({albedoIsLoading: isLoading})),

@@ -43,7 +43,7 @@ export default function MaterialUploadForm() {
     const {progress, increaseProgress, decreaseProgress, resetProgress} = useProgressStore();
     // const {isLoading, setIsLoading} = useIsLoadingStore();
     const [isLoading, setIsLoading] = useState(false);
-    const {clearImages, setAlbedoIsLoading, albedoIsLoading, setPromiseId, setAlbedoImage, setPBRImage} = useGeneratedImagesStore();
+    const {clearImages, setAlbedoIsLoading, albedoIsLoading, setPromiseId, setAlbedoImage, setPBRImage, setMaterialName} = useGeneratedImagesStore();
 
     //autosuggestion zustand states
     const {
@@ -126,6 +126,7 @@ export default function MaterialUploadForm() {
 
         });
 
+
         try {
 
 
@@ -155,9 +156,11 @@ export default function MaterialUploadForm() {
 
             const materialId = textureResponse.data.material_id;
             const baseColorUrl = textureResponse.data.base_color_url;
+            // const name = textureResponse.data.material_name;
             setPromiseId(materialId);
             setAlbedoImage(baseColorUrl);
-            console.log(`Albedo ID ${materialId} url ${baseColorUrl} added to store `);
+            // setMaterialName(name);
+            console.log(`Albedo ID ${materialId} name ${name} url ${baseColorUrl} added to store `);
 
             // Navigate to the loading page with materialId
             navigate(`/loading/${materialId}`);
@@ -287,7 +290,6 @@ export default function MaterialUploadForm() {
         reset({...defaultValues});
         resetProgress();
         clearAllSuggestions()
-        console.log("Form Data Flushed! Default Values Set To:", FormData);
         setFileData([]);
         setMaterialData({});
         clearImages();
