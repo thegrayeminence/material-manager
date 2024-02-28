@@ -304,17 +304,20 @@ export default function MaterialUploadForm() {
 
                 {/* Material Type Selection */}
                 {progress === 0 && (
-                    <FormControl mb={4} isInvalid={errors.materialType}>
+                    <FormControl mb={4} textColor='gray.500' isInvalid={errors.materialType}>
                         <FormLabel
                             textColor={'whiteAlpha.800'}
+
                             htmlFor="materialType">Material Type</FormLabel>
                         <Controller
                             name="materialType"
+
                             control={control}
                             rules={progress === 0 ? {required: "Material Type is required"} : {}}
                             render={({field}) => (
                                 <>
                                     <Select
+
                                         {...field}
                                         options={materialTypeOptions}
                                         placeholder="Select Material Type"
@@ -332,7 +335,7 @@ export default function MaterialUploadForm() {
 
                 {/* Texture Maps Selection */}
                 {progress === 0 && (
-                    <FormControl mb={4} isInvalid={errors.materialTextures}>
+                    <FormControl textColor='gray.500' mb={4} isInvalid={errors.materialTextures}>
                         <FormLabel
                             textColor={'whiteAlpha.800'}
 
@@ -343,6 +346,7 @@ export default function MaterialUploadForm() {
                             rules={progress === 0 ? {required: "Material Textures are required"} : {}}
                             render={({field}) => (
                                 <Select
+
                                     {...field}
                                     options={textureMapOptions}
                                     placeholder="Choose texture maps for material..."
@@ -352,7 +356,6 @@ export default function MaterialUploadForm() {
                                     hideSelectedOptions={true}
                                     variant="flushed"
                                     colorScheme={useColorModeValue('blue', 'teal')}
-
                                 />
                             )}
                         />
@@ -363,7 +366,7 @@ export default function MaterialUploadForm() {
 
                 {/* Additional Metadata/Software Info */}
                 {progress === 0 && (
-                    <FormControl mb={4}>
+                    <FormControl textColor='gray.500' mb={4}>
                         <FormLabel
                             textColor={'whiteAlpha.800'}
                             htmlFor="materialMetadata">Additional Meta-Data</FormLabel>

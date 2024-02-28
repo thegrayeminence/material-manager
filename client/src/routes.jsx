@@ -6,6 +6,7 @@ import GalleryById from "./pages/Gallery/components/GalleryById";
 import GalleryDetailsView from "./pages/Gallery/GalleryDetailsView";
 import LandingPage from "./pages/LandingPage/LandingPage";
 import LoadingPage from "./pages/LoadingPage";
+import Test from "./pages/Test";
 
 const routes = [
     {
@@ -36,6 +37,10 @@ const routes = [
             {
                 path: '/gallery_id/:id',
                 element: <GalleryById />
+            },
+            {
+                path: '/test',
+                element: <Test />
             },
 
         ]

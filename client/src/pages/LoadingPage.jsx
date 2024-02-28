@@ -4,6 +4,7 @@ import {useLocation, useNavigate, useParams} from 'react-router-dom';
 import axios from 'axios';
 import {motion} from 'framer-motion';
 import {useGeneratedImagesStore} from '../store/store';
+import {ParticlesBGAnimation} from '../components';
 
 
 const MotionImageBox = motion(Box);
@@ -44,6 +45,7 @@ const LoadingPage = () => {
     //     }
     // };
 
+    /*
     useEffect(() => {
         const generatePBRMaps = async () => {
             if (!promiseId || !albedoImage) {
@@ -99,14 +101,15 @@ const LoadingPage = () => {
         generatePBRMaps();
     }, [promiseId, albedoImage, navigate, apiUrl, setPbrMapUrls]);
 
-
+*/
 
 
     useEffect(() => {
         const messageInterval = setInterval(() => {
             setLoadingMessageIndex((prevIndex) => (prevIndex + 1) % loadingMessages.length);
-        }, 1700); // Update message every 'n' milliseconds
+        }, 2000); // Update message every 'n' milliseconds
 
+        /*
         const minimumDisplayTimer = setTimeout(() => {
             setIsMinimumDisplayTimeMet(true);
         }, 10000); // Set minimum display time to 'n' milliseconds
@@ -115,34 +118,48 @@ const LoadingPage = () => {
             clearInterval(messageInterval);
             clearTimeout(minimumDisplayTimer);
         };
+        */
     }, [loadingMessages.length]);
 
+    /*
     useEffect(() => {
         if (isMinimumDisplayTimeMet && !pbrIsLoading) {
             // Navigate to the next page once both conditions are met
             navigate(`/gallery_id/${promiseId}`);
         }
     }, [isMinimumDisplayTimeMet, pbrIsLoading, navigate, promiseId]);
-
+*/
 
 
     return (
-        <Box maxW="7xl" mx="auto" height="100vh">
+        <Box width='100vw' h='100vh'
+            opacity={'99.9%'}
+        >
+            <Box maxW="7xl" mx="auto" height="100vh">
 
-            <Box position='relative' mt={'20%'}>
-                <VStack spacing={8}>
-                    <Heading fontSize={{base: '2xl', sm: '2xl', md: '3xl', lg: '4xl', xl: '5xl'}} textAlign={'center'}>
-                        Loading PBR Maps...</Heading>
-                    <Spacer py={2} />
-                    <CircularProgress isIndeterminate color={useColorModeValue('teal.300', 'purple.300')} size={{base: '3rem', sm: '3.5rem', md: '5rem', lg: '6.5rem', xl: '8rem'}} />
-                    <Spacer py={2} />
-                    <Text fontSize={{base: 'xl', sm: 'xl', md: '2xl', lg: '3xl', xl: '4xl'}}
-                        textAlign={'center'}>
-                        {loadingMessages[loadingMessageIndex]}
-                    </Text>
-                </VStack>
+                <Box position='relative' mt={'25%'}>
+                    <VStack spacing={8}>
+                        <Heading fontSize={{base: '2xl', sm: '2xl', md: '3xl', lg: '4xl', xl: '5xl'}} textAlign={'center'}>
+                            Loading PBR Maps...
+                        </Heading>
+                        <Spacer py={2} />
+                        <CircularProgress isIndeterminate color={useColorModeValue('teal.300', 'purple.300')} size={{base: '3rem', sm: '3.5rem', md: '5rem', lg: '6.5rem', xl: '8rem'}} />
+                        <Spacer py={2} />
+                        <Text fontSize={{base: 'xl', sm: 'xl', md: '2xl', lg: '3xl', xl: '4xl'}}
+                            textAlign={'center'}>
+                            {loadingMessages[loadingMessageIndex]}
+                        </Text>
+                    </VStack>
+                </Box>
+            </Box>
+            <Box
+                height={'100vh'} width={'100vw'} position={'absolute'}
+                top={0} left={0} zIndex={-1}
+            >
+                <ParticlesBGAnimation />
             </Box>
         </Box>
+
     );
 };
 

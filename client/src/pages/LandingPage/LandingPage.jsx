@@ -2,8 +2,6 @@
 import React, {useEffect} from 'react';
 import {Box, VStack, Divider, Center, useColorModeValue, Spacer, Container} from '@chakra-ui/react';
 import {AnimatePresence, motion, useScroll} from 'framer-motion';
-// import {FaGithub} from "react-icons/fa6";
-
 
 //components
 import {LandingPageText, Features, Timeline} from './components';
@@ -18,7 +16,6 @@ function LandingPageBackground() {
         <Box
             // className="background-animation-2"
             bg={useColorModeValue('gray.900', 'black')}
-
             height={'100vh'} width={'100vw'} position={'absolute'}
             top={0} left={0} zIndex={-1}
         >

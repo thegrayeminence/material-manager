@@ -6,6 +6,31 @@ import {GalleryCard} from './components'
 import {loadImagesFromFolder} from '../../config/loadImagesFromFolder'
 import {StylishHeader} from '../../components'
 import {PreviewBackgroundAnimation} from '../Preview/components';
+import '../LandingPage/landingPage.scss'
+import '@fontsource/poppins';
+import '@fontsource/inter';
+
+function LandingPageBottomBackground() {
+
+  return (
+    <Box className="background-animation"
+      height={'100vh'}
+      width={'100vw'}
+      position={'absolute'}
+      top={0} left={0}
+      zIndex={0}
+
+      opacity={useColorModeValue('.5', '.5')}
+      backgroundBlendMode={useColorModeValue('luminosity', 'overlay')}
+    // backdropFilter={'blur(20px)'}
+
+    >
+
+    </Box>
+
+  )
+}
+
 
 
 
@@ -110,13 +135,13 @@ function Gallery() {
       <Text
         backgroundClip={'text'}
 
-        fontFamily={'poppins, sans-serif'}
+        fontFamily={'poppins black, sans-serif'}
         fontWeight={'800'}
         mt='10%'
         textAlign='center'
         fontSize={{base: '4xl', sm: '4xl', md: '5xl', lg: '6xl', xl: '7xl'}}
-        color={useColorModeValue('teal.600', 'purple.600')}
-        opacity={0.8}
+        color={useColorModeValue('twitter.500', 'purple.400')}
+        opacity={0.99}
 
       >
         {`COMMUNITY GALLERY:`}
@@ -138,9 +163,12 @@ function Gallery() {
         </SimpleGrid>
       </Box >
       <Box width={'100vw'} height={'100%'} margin={0} padding={0} position={'fixed'} top={0} left={0}
-        zIndex={-1}>
+        zIndex={-2}>
+        <LandingPageBottomBackground />
         <PreviewBackgroundAnimation />
+
       </Box>
+
     </Box>
   )
 }
