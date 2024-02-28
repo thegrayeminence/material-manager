@@ -15,6 +15,7 @@ from flask_restful import Api, Resource
 from dotenv import load_dotenv
 import replicate
 from werkzeug.utils import secure_filename
+from PIL import Image, ImageOps
 
 # local imports
 from models import db, Material
@@ -474,7 +475,7 @@ def get_all_images():
             images = [url_for('static', filename=f'assets/images/{folder_name}/{file}', _external=True) for file in image_files]
      
             folder_images = {
-                "folder": folder_name,
+                "folder": folder_name.title(),
                 "images": images
             }
             all_folders_images.append(folder_images)
@@ -493,11 +494,12 @@ def get_image_folders():
     all_folders_names = []
     try:
         for folder_name in folders:
-            all_folders_names.append(folder_name)
+            all_folders_names.append(folder_name.title())
         return make_response({"folders": all_folders_names}), 200
     
     except Exception as e:
         return make_response({f"error in fetching folders from {images_dir_path}": str(e)}), 500        
+
 
 @app.route('/api/images/<folder_name>', methods=["GET", "POST", "OPTIONS"])
 def get_images(folder_name):
@@ -505,9 +507,17 @@ def get_images(folder_name):
     try:
         image_files_unsorted = [f for f in os.listdir(folder_path) if f.endswith('.png')]
         image_files = sorted(image_files_unsorted)
+       
         image_urls = [url_for('static', filename=f'assets/images/{folder_name}/{file}', _external=True) for file in image_files]
-     
-        return make_response({"material_name": folder_name, "image_files":image_files, "image_urls": image_urls}, 200)
+
+        
+        smoothness_map = Image.open(f"{folder_path}/{folder_name}_smoothness.png")
+        smoothness_map_inverted = ImageOps.invert(smoothness_map)
+        smoothness_map_inverted.save(f"{folder_path}/{folder_name}_roughness.png")
+        smothness_map_inverted_url = url_for('static', filename=f'assets/images/{folder_name}/{folder_name}_roughness.png', _external=True)
+        
+        # image_urls.append(smothness_map_inverted_url)
+        return make_response({"material_name": folder_name, "image_files":image_files, "image_urls": image_urls, "roughness":smothness_map_inverted_url}, 200)
     
     except Exception as e:
         return jsonify({"error in fetching static images": str(e)}), 500

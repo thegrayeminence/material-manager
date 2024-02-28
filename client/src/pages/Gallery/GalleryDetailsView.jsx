@@ -10,6 +10,7 @@ import JSZip, {folder} from 'jszip';
 import {saveAs} from 'file-saver';
 import '../LandingPage/landingPage.scss'
 import {SimpleFooter} from '../../components';
+import {set} from 'react-hook-form';
 
 
 function GradientBackground() {
@@ -33,6 +34,7 @@ function GalleryDetailsView() {
     const toast = useToast();
     const [isLoading, setIsLoading] = useState(true);
     const [imageUrls, setImageUrls] = useState([]);
+    const [roughnessUrl, setRoughnessUrl] = useState([]);
 
     //functionality for getting image urls/data from backend
     useEffect(() => {
@@ -41,8 +43,11 @@ function GalleryDetailsView() {
             try {
                 const apiUrl = import.meta.env.VITE_API_URL;
                 const response = await axios.get(apiUrl + `/api/images/${folderName}`);
-                setImageUrls(response.data.image_urls);
-                setImages(response.data.image_urls);
+                const urls = response.data.image_urls
+                const urlsFilteredNoRoughness = urls.filter(url => !url.includes('roughness'));
+                setImageUrls(urlsFilteredNoRoughness);
+                setImages(urlsFilteredNoRoughness);
+                setRoughnessUrl(response.data.roughness);
                 const folder = response.data.material_name;
                 console.log("static image load response:", response.data, "urls:", response.data.image_urls, "folder:", folder);
             } catch (error) {
@@ -178,7 +183,7 @@ function GalleryDetailsView() {
                             {`LIVE PREVIEW:`}
                         </Text>
                         {
-                            !isLoading && <PBROnePreviewBox images={images} />
+                            !isLoading && <PBROnePreviewBox images={images} roughness={roughnessUrl} />
                         }
                     </Box>
                 </Box >

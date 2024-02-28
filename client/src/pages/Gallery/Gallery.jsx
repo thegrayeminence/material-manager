@@ -106,7 +106,7 @@ function Gallery() {
           >
             {materials.map(({folder, images}) => (
               // <Skeleton isLoaded={!isLoading} key={folder} >
-              <GalleryCard key={folder} name={folder} images={images} isNew={true} />
+              <GalleryCard key={folder} name={folder} images={images.filter(url => !url.includes('roughness'))} isNew={true} />
               // </Skeleton>
             ))}
           </SimpleGrid>
