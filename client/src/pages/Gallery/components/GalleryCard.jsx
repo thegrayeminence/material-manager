@@ -7,20 +7,14 @@ import {MdDownload, MdInfoOutline, MdOutlinePreview, MdViewInAr, MdGridView, MdP
 import {useNavigate} from 'react-router-dom';
 
 
-function GalleryCard({name, images, isNew, showAllImages = false}) {
+function GalleryCard({name, images, isNew}) {
     const navigate = useNavigate();
-    const toast = useToast();
-    // const formatting = /[_]/g
     const formattedName = name.replace(/[_-]/g, ' ')
 
     return (
         <Flex p={5} w="full" alignItems={'center'} justifyContent={'center'}>
             <Box bg={'white'} borderWidth={'1px'} rounded={'lg'} shadow="lg" position="relative" minW='256px' h='100%'>
-                {showAllImages ? (
-                    images.map((src, index) => (
-                        <Image key={index} src={src} alt={`${name}-${index}`} roundedTop={index === 0 ? 'lg' : 'none'} fit="cover" />
-                    ))
-                ) : (
+                {true && (
                     <Image src={images[0]} alt={`${name}`} roundedTop={'lg'} fit="cover" />
                 )}
                 <Box p={6}>

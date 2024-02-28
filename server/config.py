@@ -457,22 +457,22 @@ def get_recent_albedo():
 
 @app.route('/api/all_images',  methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"])
 def get_all_images():
-    BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', ''))
-    images_dir_path = os.path.join(BASE_DIR, 'client', 'dist', 'assets', 'images')
-
-
+    images_dir_path = os.path.join(app.static_folder, 'assets', 'images')
     folders = [name for name in os.listdir(images_dir_path) if os.path.isdir(os.path.join(images_dir_path, name))]
     print(folders)
     all_folders_images = []
     
     try:
         for folder_name in folders:
-            # image_files = [f for f in os.listdir(folder_path) if f.endswith('.png')]
+            folder_path = os.path.join(app.static_folder, 'assets', 'images', folder_name)
+            image_files_unsorted  = [f for f in os.listdir(folder_path) if f.endswith('.png')]
             # image_urls = [url_for('static', filename=f'assets/images/{folder_name}/{file}', _external=True) for file in image_files]
        
-            map_types = ['base_color.png', 'height.png', 'normal.png', 'smoothness.png']
-            
-            images = [f"{images_dir_path}/{folder_name}/{folder_name}_{map_type}" for map_type in map_types]
+            # map_types = ['base_color.png', 'height.png', 'normal.png', 'smoothness.png']
+            # images = [f"{images_dir_path}/{folder_name}/{folder_name}_{map_type}" for map_type in map_types]
+            image_files = sorted(image_files_unsorted)
+            images = [url_for('static', filename=f'assets/images/{folder_name}/{file}', _external=True) for file in image_files]
+     
             folder_images = {
                 "folder": folder_name,
                 "images": images
