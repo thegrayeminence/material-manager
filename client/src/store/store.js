@@ -7,7 +7,7 @@ import {colorOptions, conditionOptions, manifestationOptions, elementTypeOptions
 
 // store for global 'progress' value that determines which form step to render
 export const useProgressStore = create((set) => ({
-  progress: 2,
+  progress: 0,
   increaseProgress: () => set((state) => ({progress: state.progress + 1})),
   decreaseProgress: () => set((state) => ({progress: state.progress - 1})),
   resetProgress: () => set({progress: 0}),

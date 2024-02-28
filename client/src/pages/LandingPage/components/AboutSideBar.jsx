@@ -79,13 +79,13 @@ const AboutSideBar = ({isOpen, onClose}) => {
     return (
         <Drawer closeOnEsc={true} closeOnOverlayClick={true}
             placement='right' isOpen={isOpen} onClose={onClose}
-            isFullHeight={true} size={['sm', 'md', 'lg', 'xl']}
-            // overflowY={'scroll'}
+            isFullHeight={true} size={['sm', 'md', 'xl', 'xl']}
+
             z-index={1000}
         >
             <DrawerOverlay />
             <DrawerContent
-                bg={useColorModeValue('gray.100', 'gray.800')}
+                bg={useColorModeValue('gray.200', 'gray.800')}
             >
                 <DrawerCloseButton />
                 <DrawerHeader

@@ -1,12 +1,12 @@
 import React from 'react';
 import {
-    Box, Flex, Tooltip, useDisclosure, Breadcrumb, BreadcrumbItem, BreadcrumbLink, useColorMode
+    Box, Flex, Tooltip, useDisclosure, Breadcrumb, BreadcrumbItem, BreadcrumbLink, useColorMode, useColorModeValue, Text
 } from '@chakra-ui/react';
 
 //icons:
 import {FaCloudSun, FaCloudMoon, FaRegQuestionCircle, FaPhotoVideo} from "react-icons/fa";
 import {AiOutlineHome} from "react-icons/ai";
-import {MdLightMode, MdOutlineLightMode, MdModeNight, MdOutlineModeNight, MdInfoOutline, MdInfo, MdPhotoLibrary, MdOutlinePhotoLibrary, MdOutlineAddToPhotos, MdAddToPhotos, MdAddPhotoAlternate, MdOutlineAddPhotoAlternate} from "react-icons/md";
+import {MdLightMode, MdOutlineLightMode, MdHome, MdModeNight, MdOutlineModeNight, MdInfoOutline, MdInfo, MdPhotoLibrary, MdOutlinePhotoLibrary, MdOutlineAddToPhotos, MdAddToPhotos, MdAddPhotoAlternate, MdOutlineAddPhotoAlternate} from "react-icons/md";
 
 
 //hooks and components
@@ -33,7 +33,11 @@ const NavBarContainer = ({children}) => {
                 position="fixed"
                 top={0}
                 zIndex={1}
-                color='whiteAlpha.800'
+                color={useColorModeValue('gray.300', 'white')}
+
+
+
+
             >
                 {children}
             </Flex>
@@ -46,7 +50,9 @@ const NavBarContainer = ({children}) => {
 const BreadcrumbIconLink = ({size, icon, ...props}) => {
     return (
         <BreadcrumbLink {...props}>
-            <Box as={icon} size={size} />
+            <Box as={icon} size={size}
+
+            />
 
         </BreadcrumbLink>
     );
@@ -55,7 +61,7 @@ const BreadcrumbIconLink = ({size, icon, ...props}) => {
 const BreadcrumbTextLink = ({size, text, ...props}) => {
     return (
         <BreadcrumbLink {...props}>
-            <Box as={text} size={size} />
+            <Box as={Text} size={size}> {text} </Box>
 
         </BreadcrumbLink>
     );
@@ -91,7 +97,7 @@ function NavBar({isOpen, onOpen, onClose, ...props}) {
 
                 <Breadcrumb>
                     <BreadcrumbItem>
-                        <BreadcrumbIconLink size={icon_size} href="/" onClick={(e) => {e.preventDefault(); navigate('/')}} icon={AiOutlineHome} />
+                        <BreadcrumbIconLink size={icon_size} href="/" onClick={(e) => {e.preventDefault(); navigate('/')}} icon={MdHome} />
                     </BreadcrumbItem>
                     <BreadcrumbItem isCurrentPage>
                         <BreadcrumbLink size={icon_size} href="#" onClick={(e) => e.preventDefault()}>
@@ -104,20 +110,28 @@ function NavBar({isOpen, onOpen, onClose, ...props}) {
                 <Breadcrumb>
 
                     <BreadcrumbItem>
-                        <BreadcrumbIconLink size={icon_size} icon={MdOutlinePhotoLibrary} href="#" onClick={(e) => {e.preventDefault(); navigate('/gallery')}} />
+                        <BreadcrumbIconLink size={icon_size} icon={MdPhotoLibrary} href="#" onClick={(e) => {e.preventDefault(); navigate('/gallery')}} />
                     </BreadcrumbItem>
+                    {/* <BreadcrumbItem>
+                        <BreadcrumbTextLink size={icon_size} text={'GALLERY'} href="#" onClick={(e) => {e.preventDefault(); navigate('/gallery')}} />
+                    </BreadcrumbItem> */}
+
                     <BreadcrumbItem>
-                        <BreadcrumbIconLink size={icon_size} icon={MdOutlineAddToPhotos} href="#" onClick={(e) => {e.preventDefault(); navigate('/preview')}} />
+                        <BreadcrumbIconLink size={icon_size} icon={MdAddToPhotos} href="#" onClick={(e) => {e.preventDefault(); navigate('/preview')}} />
                     </BreadcrumbItem>
+                    {/* <BreadcrumbItem>
+                        <BreadcrumbTextLink size={icon_size} text={'GENERATOR'} href="#" onClick={(e) => {e.preventDefault(); navigate('/preview')}} />
+                    </BreadcrumbItem> */}
+
                     <BreadcrumbItem>
-                        <BreadcrumbIconLink size={icon_size} icon={colorMode === 'light' ? MdOutlineLightMode : MdOutlineModeNight} href="#"
+                        <BreadcrumbIconLink size={icon_size} icon={colorMode === 'light' ? MdLightMode : MdModeNight} href="#"
                             onClick={toggleColorMode}
                         />
 
 
                     </BreadcrumbItem>
                     <BreadcrumbItem>
-                        <BreadcrumbIconLink size={icon_size} icon={MdInfoOutline} href="#" onClick={onOpen} />
+                        <BreadcrumbIconLink size={icon_size} icon={MdInfo} href="#" onClick={onOpen} />
                     </BreadcrumbItem>
 
                 </Breadcrumb>

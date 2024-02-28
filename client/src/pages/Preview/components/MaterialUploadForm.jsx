@@ -115,7 +115,7 @@ export default function MaterialUploadForm() {
         // clearImages();
         setIsLoading(true);
         setAlbedoIsLoading(true);
-
+        increaseProgress();
         toast({
             title: 'Form Submitted Successfully!',
             description: "Please wait while we initiate the image generation process! This may take a few moments.",
@@ -193,6 +193,7 @@ export default function MaterialUploadForm() {
         } finally {
             setIsLoading(false);
             setAlbedoIsLoading(false);
+            resetProgress();
         }
     };
 

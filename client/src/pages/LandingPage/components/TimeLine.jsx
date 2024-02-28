@@ -138,7 +138,11 @@ const headerStyle = {
 
 const Timeline = () => {
     return (
-        <Container maxWidth="4xl" p={{base: 2, sm: 10}}>
+        <Container maxWidth="7xl" mx="auto"
+            p={{base: 6, sm: 8, md: 10, lg: 12}}
+
+
+        >
 
             <chakra.h3
                 sx={headerStyle}
@@ -155,13 +159,13 @@ const Timeline = () => {
 
             />
 
-            <Spacer h={4} />
+            <Spacer h={8} />
             {timeLineData.map((step, index) => (
                 <Flex key={index}  >
                     <LineWithDot  {...step} />
                     <Box >
                         <Card  {...step} />
-                        <Spacer h={4} />
+                        <Spacer h={6} />
                     </Box>
                 </Flex>
             ))}
@@ -178,7 +182,7 @@ const Card = ({title, categories, description, icon, bigIcon, date}) => {
             rounded="xl"
             alignItems="center"
             pos="relative"
-            bg={useColorModeValue('blackAlpha.200', colorThemeValues.dark.componentMain)}
+            bg={useColorModeValue(colorThemeValues.light.componentMain, colorThemeValues.dark.componentMain)}
             boxShadow={'xl'}
 
 
@@ -187,45 +191,51 @@ const Card = ({title, categories, description, icon, bigIcon, date}) => {
             <Icon as={bigIcon} w={12} h={12}
                 color={useColorModeValue(colorThemeValues.light.icon, colorThemeValues.dark.icon)} />
 
-            <Box  >
+            <Box
 
-                <HStack spacing={1} mb={1} >
+            >
+
+                {/* <HStack spacing={1} mb={1} overflow={'clip'}
+                    whiteSpace={'nowrap'} textOverflow={'ellipsis'}
+
+                >
                     {categories.map(cat => (
-                        <Badge size='sm' key={cat} noOfLines={1} isTruncated
+                        <Badge size='sm' key={cat}
                             colorScheme={useColorModeValue('facebook', 'purple')}
                             variant='subtle'
+                        // noOfLines={1}
                         >
                             {`${cat}`}
                         </Badge>
                     ))}
-                </HStack>
-                <VStack spacing={2} mb={3} textAlign="left">
-                    <chakra.h1
+                </HStack> */}
+                <VStack spacing={2} mb={3} >
+                    <Text
                         color={useColorModeValue(colorThemeValues.light.textHeader, colorThemeValues.dark.textHeader)}
-                        fontSize={{base: "xl", sm: "lg", md: "xl", xl: "2xl"}}
-                        lineHeight={1.2}
+                        fontSize={{base: "xl", sm: "lg", md: "xl", lg: 'xl', xl: "2xl"}}
                         fontWeight="800"
-                        w="100%"
-                        // isTruncated
-                        // noOfLines={2}
-                        whiteSpace={'wrap'}
+                        whiteSpace={'pretty'}
                         overflow={'hidden'}
-                        textOverflow={'ellipsis'}
+                        alignSelf={'start'}
+
                     >
                         {title}
-                    </chakra.h1>
-                    <Text fontWeight="600" fontSize={{base: "lg", sm: "md", md: "lg", xl: "xl"}}
+                    </Text>
+                    <Text
+                        fontWeight="600" fontSize={{base: "lg", sm: "md", md: "lg", lg: 'lg', xl: "xl"}}
                         color={useColorModeValue(colorThemeValues.light.textMain, colorThemeValues.dark.textMain)}
-                        whiteSpace={'wrap'}
+                        whiteSpace={'pretty'}
                         overflow={'hidden'}
-                        textOverflow={'ellipsis'}
-                    // isTruncated
-                    // noOfLines={2}
+                        alignSelf={'start'}
+
                     >
                         {description}
                     </Text>
                 </VStack>
-                <Text fontSize="sm" color={'gray.400'}>{date}</Text>
+                <Text fontSize="sm" color={'gray.400'}
+                    alignSelf={'start'}
+
+                >{date}</Text>
             </Box>
         </HStack>
     )
