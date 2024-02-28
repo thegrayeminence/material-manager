@@ -1,0 +1,44 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.main {
+    width: 100%;
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+    background-image: radial-gradient(75% 75% at 50% 50%, #00166d 0%, #010411 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: relative;
+}
+
+.main #anim {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    mix-blend-mode: overlay;
+}
+
+.lightBar {
+    width: 100%;
+    height: 500px;
+    left: 0;
+    --top: #010411;
+    --bottom: #00166d;
+    --first: conic-gradient(from 90deg at 80% 50%, var(--top), var(--bottom));
+    --second: conic-gradient(from 270deg at 20% 50%, var(--bottom), var(--top));
+    mask-image: radial-gradient(100% 50% at center center, black, transparent);
+    background-image: var(--first), var(--second);
+    background-position-x: 1%, 99%;
+    background-position-y: 0%, 0%;
+    background-size: 50% 100%, 50% 100%;
+    opacity: 1;
+    transform: rotate(180deg) translateZ(0px) translateY(100px);
+    transform-origin: center center;
+    background-repeat: no-repeat;
+}

@@ -104,7 +104,7 @@ const colorThemeValues = {
         componentDetail: "gray.200",
         borderMain: "blue.300",
         borderDetail: "twitter.300",
-        icon: "teal.300",
+        icon: "cyan.300",
         textMain: "gray.600",
         textHeader: "blue.700",
         textDetail: "gray.400",
@@ -151,13 +151,13 @@ const Timeline = () => {
                 How It Works:
             </chakra.h3>
             <Spacer h={4} />
-            <Divider
-                textAlign={'center'} borderWidth={'.2rem'} w={'full'}
+            {/* <Divider
+                textAlign={'center'} borderWidth={'.1rem'} w={'full'}
                 borderStyle={'solid'}
                 borderColor={useColorModeValue(colorThemeValues.light.textDetail, colorThemeValues.dark.textDetail)}
 
 
-            />
+            /> */}
 
             <Spacer h={4} />
             {timeLineData.map((step, index) => (
@@ -180,17 +180,20 @@ const Card = ({title, categories, description, icon, bigIcon, date}) => {
         <HStack
             p={{base: 3, sm: 6, md: 8, lg: 10}}
             spacing={5}
-            rounded="xl"
+            borderRadius="xl"
+            borderStyle={'solid'}
+            borderWidth={'.15rem'}
+            borderColor={useColorModeValue('twitter.200', 'purple.300')}
             alignItems="center"
             pos="relative"
             bg={useColorModeValue(colorThemeValues.light.componentMain, colorThemeValues.dark.componentMain)}
-            boxShadow={'xl'}
+            boxShadow={'2xl'}
 
 
 
         >
             <VStack align={'center'} spacing={8} >
-                <Icon as={icon} w={6} h={6}
+                <Icon as={icon} w={12} h={12}
                     color={useColorModeValue(colorThemeValues.light.highlight, colorThemeValues.dark.highlight)}
                 />
                 <Icon as={bigIcon} w={12} h={12}

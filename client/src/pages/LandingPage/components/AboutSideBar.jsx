@@ -142,21 +142,30 @@ const AboutSideBar = ({isOpen, onClose}) => {
 
                             >
                                 <br />
-                                PBR stands for Physically Based Rendering. It's a technique used in computer graphics to render images that mimick the laws of optics and closely resemble the material properties of real-life surfaces.
+                                In the context of computer graphics, Physically Based Rendering is a technical approach that aims to generate predictable/stable/photorealistic results by approximating the real-world behavior/interactions between light rays (as defined by equations fed to the engine) and surface matter (as described by texture maps fed to the material) in a virtual space. <br /><br />
 
-                                The core idea behind PBR is to ensure that objects interact with light in a realistic manner, making digital scenes look more believable.<br /><br />
+                                The core idea behind PBR is to ensure that virtual rays in a scene interact with 3D objects/surfaces as they would outside of the computer.
 
-                                PBR uses algorithms (based on real-world equations) to process a set of textures/bitmaps (each analogous to different optical phenomena) to reflect how materials absorb, reflect, refract, scatter, or diffuse light. This can involve:<br /><br />
+                                To achieve this, PBR engines use mathematical models (based on real-world equations) to process a set of pre-configured textures/bitmaps (each analogous to different optical phenomena) to define how materials should absorb, reflect, refract, scatter, or diffuse light. This can involve:<br /><br />
 
-                                <strong>Base Color</strong>: Captures the true color of a material without shadows or reflections.<br />
-                                <strong>Roughness</strong>: Determines the surface's microtexture, influencing how it scatters light.<br />
-                                <strong>Metallic</strong>: Define the material's metallic attributes, differentiating between metallic and non-metallic surfaces. <br />
-                                <strong>Ambient Occlusion</strong>: Simulates how light is occluded in crevices and corners.<br />
-                                <strong>Normal/Height</strong>: Add surface detail by simulating additional geometry. <br />
+                                <strong>Base Color</strong>:<br /> Captures the true color of a material without shadows or reflections.<br />
+                                <strong>Roughness</strong>:<br /> Determines the surface's microtexture, influencing how it scatters light.<br />
+                                <strong>Metallic</strong>:<br /> Defines the material's metallic attributes, differentiating between metallic and non-metallic (i.e. insulators/dielectric) surfaces. <br />
+                                <strong>Ambient Occlusion</strong>:<br /> Simulates how light is occluded in crevices and corners.<br />
+                                <strong>Normals/Height</strong>:<br /> Add surface detail by simulating additional geometry. <br />
                                 <br />
-                                By applying this combination of real-world equations and bitmaps,
-                                PBR materials can achieve consistent results under different lighting conditions,
-                                making them the current standard in creating photo-realistic 3D renders.<br /> <br />
+                                <br />
+                                For more in-depth documentation on PBR systems, see: <br />
+                                <center>
+                                    <a href="https://reference.wolfram.com/language/tutorial/PhysicallyBasedRendering.html">Wolfram Guide</a>
+                                </center>
+
+                                <center>
+                                    <a href="https://creativecloud.adobe.com/learn/substance-3d-designer/web/the-pbr-guide-part-1">Adobe Guide</a>
+                                </center>
+                                <br />
+
+
 
 
                             </MotionText>

@@ -4,8 +4,6 @@ import {
 } from '@chakra-ui/react';
 
 //icons:
-import {FaCloudSun, FaCloudMoon, FaRegQuestionCircle, FaPhotoVideo} from "react-icons/fa";
-import {AiOutlineHome} from "react-icons/ai";
 import {MdLightMode, MdOutlineLightMode, MdHome, MdModeNight, MdOutlineModeNight, MdInfoOutline, MdInfo, MdPhotoLibrary, MdOutlinePhotoLibrary, MdOutlineAddToPhotos, MdAddToPhotos, MdAddPhotoAlternate, MdOutlineAddPhotoAlternate} from "react-icons/md";
 
 

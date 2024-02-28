@@ -93,7 +93,7 @@ function LandingPage() {
                     boxShadow={'xl'}
                     borderStyle={'solid'}
                     borderWidth={'.15rem'}
-                    borderColor={useColorModeValue('blackAlpha.200', 'whiteAlpha.300')}
+                    borderColor={useColorModeValue('twitter.200', 'purple.300')}
                     // _hover={{transform: 'scale(1.05)'}} transition={'transform 0.3s'}
                     p={{base: '2', sm: '4', md: '6', lg: '8', xl: '10'}}
                     bg={useColorModeValue('gray.100', 'gray.700')}
@@ -107,13 +107,13 @@ function LandingPage() {
                     zIndex={-1}
                     maxW={'80%'}
                     borderRadius={'xl'}
-                    boxShadow={'xl'}
+                    boxShadow={'2xl'}
                     borderStyle={'solid'}
-                    borderWidth={'.15rem'}
-                    borderColor={useColorModeValue('blackAlpha.200', 'whiteAlpha.300')}
+                    borderWidth={'.075rem'}
+                    borderColor={useColorModeValue('twitter.200', 'purple.300')}
                     // _hover={{transform: 'scale(1.05)'}} transition={'transform 0.3s'}
                     p={{base: '2', sm: '4', md: '6', lg: '8', xl: '10'}}
-                    bg={useColorModeValue('gray.100', 'gray.700')}
+                    bg={useColorModeValue('gray.200', 'gray.700')}
                 >
 
                     <Timeline zIndex={-1}

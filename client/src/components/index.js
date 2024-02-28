@@ -8,8 +8,10 @@ import StylishHeader from "./StylishHeader";
 import MotionContainer from "./MotionContainer";
 import StylishButton from "./StylishButton";
 import GeometricBackgroundAnimation from "./GeometricBackgroundAnimation";
-import ParticlesBGAnimation from "./ParticlesBGAnimation";
+// import ParticlesBGAnimation from "./ParticlesBGAnimation";
 import SimpleFooter from "./SimpleFooter";
+import LightBarBackground from "./LightBarBackground";
+// import WavesBackgroundAnimation from "./WavesBackgroundAnimation";
 
 
 export {
@@ -23,7 +25,9 @@ export {
     MotionContainer,
     StylishButton,
     GeometricBackgroundAnimation,
-    ParticlesBGAnimation,
+    // ParticlesBGAnimation,
     SimpleFooter,
+    LightBarBackground,
+    // WavesBackgroundAnimation,
 
 };
