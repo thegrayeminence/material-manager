@@ -39,7 +39,7 @@
 ## About
 ### Overview
 
-Texture Forge utilizes user input (via a series of elements on the site's form) to generate text prompts that are sent to Stable Diffusion (an open-source generative AI system) to create texture maps, via text-to-image and image-to-image models, that can be easily downloaded and imported into the user's 3D program/software of choice. 
+[Texture Forge](https://textureforgestatic.onrender.com/)  utilizes user input (via a series of elements on the site's form) to generate text prompts that are sent to Stable Diffusion (an open-source generative AI system) to create texture maps, via text-to-image and image-to-image models, that can be easily downloaded and imported into the user's 3D program/software of choice. 
 
 Users can quickly generate their desired PBR textures via a series of prompts, preview them in the browser once they load, download them (with optimal naming conventions/file-structure for ease-of-use), then import their newly generated texture maps into their rendering engine of choice (and connect each map in the shader's console/node tree as they normally would). The platform thus provides a handy, time-saving tool for Game Developers, 3D/VFX artists/etc.--specifically those whose projects are still in the early stages of development (e.g. previz, playblasts, or rough renders where the prioritization of speed and low-impact assets over photorealistic lighting is desirable.)
 
