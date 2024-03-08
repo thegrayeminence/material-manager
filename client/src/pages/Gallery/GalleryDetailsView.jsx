@@ -97,32 +97,31 @@ function GalleryDetailsView() {
 
     return (
         <Box width='100vw' h='100%' opacity='.99' position='relative'>
-            <VStack spacing={0} width={'full'} overflow={'hidden'} >
-                <Box position='relative' maxW='90vw' h='100%' mt='5%'>
+            <VStack spacing={0} width={'full'} overflow={'hidden'} w='full'>
+                <Box position='relative' maxW='95vw' h='100%' mt='80px' mx='auto'>
                     <Text
                         fontFamily={'poppins black, sans-serif'}
                         fontWeight={'800'}
                         textAlign='center'
                         fontSize={{base: '3xl', sm: '2xl', md: '4xl', lg: '5xl', xl: '6xl'}}
                         color={useColorModeValue('teal.600', 'purple.600')}
-                        opacity={0.9}
+                        opacity={0.99}
                     >
                         {`${displayName}`}
                     </Text>
                     <Text
                         fontFamily={'poppins, sans-serif'}
                         fontWeight={'600'}
-                        pt={'10'}
+                        py={'6'}
                         textAlign='center'
                         fontSize={{base: 'xl', sm: 'xl', md: '2xl', lg: '4xl', xl: '5xl'}}
                         color={'whiteAlpha.600'}>
                         {`TEXTURE FILES:`}
                     </Text>
                     <SimpleGrid
-                        columns={[2, 2, 2, 4]}
+                        columns={[1, 2, 2, 4]}
                         spacing={8}
-                        pt={'2'}
-                        ml='5%'
+
                     >
                         {!isLoading && images.map((src, index) => (
                             <Box key={index}
@@ -170,7 +169,7 @@ function GalleryDetailsView() {
                             </Button>
                         </Center>
                     )}
-                    <Spacer py={1} />
+                    <Spacer py={2} />
                     <Box position='relative' w='80%' h='100%' mx='auto'>
                         <Text
                             fontFamily={'poppins, sans-serif'}

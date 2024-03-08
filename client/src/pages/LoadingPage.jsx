@@ -53,7 +53,7 @@ const LoadingPage = () => {
                 console.error("Missing data for PBR maps generation.");
                 toast({
                     title: "Async Error",
-                    description: "Missing data for PBR maps generation, redirecting to gallery...",
+                    description: "Missing data for PBR maps generation!",
                     status: "error",
                     duration: 5000,
                     isClosable: true,
@@ -61,7 +61,8 @@ const LoadingPage = () => {
                     variant: 'subtle',
                     colorScheme: 'purple',
                 });
-                navigate('/gallery');
+                navigate(`gallery_id/${id}`);
+
                 return;
 
             }

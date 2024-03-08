@@ -6,7 +6,6 @@ import {useParams} from 'react-router-dom'; // Import useParams from react-route
 
 
 
-
 // helper function to download a material
 const handleDownload = async (materialId) => {
 
@@ -154,7 +153,7 @@ const TextureDisplayById = () => {
                 {/* <SkeletonText isLoaded={materialName} noOfLines={1} w="50%" py={4} mt={4} /> */}
                 {materialId && (
 
-                    <Heading fontSize={{base: '2xl', sm: 'xl', md: '2xl', lg: '3xl', xl: '4xl'}} color={useColorModeValue('twitter.600', 'purple.600')} py={4} mt={4}>
+                    <Heading fontSize={{base: '3xl', sm: '2xl', md: '3xl', lg: '4xl', xl: '5xl'}} color={useColorModeValue('twitter.600', 'purple.600')} py={4} mt={4}>
                         {`${materialName}`}
                     </Heading>
 
@@ -180,7 +179,7 @@ const TextureDisplayById = () => {
             {/* PBR Images: Normal, Height, Smoothness */}
             <Spacer py={5} />
             <Flex direction="column" align="center">
-                <SimpleGrid columns={[2, null, 3]} spacing="30px" justifyContent="center">
+                <SimpleGrid columns={[2, null, 3]} spacing="30px" justifyContent="center" >
                     {materialId && (
 
                         ['normal', 'height', 'smoothness'].map((type, index) => (
@@ -252,6 +251,7 @@ const TextureDisplayById = () => {
 
 
             </Flex>
+            <Spacer h='60px' />
         </Box >
     );
 };
