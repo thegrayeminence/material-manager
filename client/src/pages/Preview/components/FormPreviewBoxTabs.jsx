@@ -51,19 +51,17 @@ const FormPreviewBoxTabs = () => {
 
 
     return (
-        <Stack px="2rem" width={'80vw'} ml="10%" maxHeight={'35vh'}>
+        <Stack maxW={'90vw'} mx='auto'>
             <MotionBox
                 w="100%"
-                maxW="75rem"
-                // overflow={'scroll'}
-
+                position="relative"
                 whiteSpace={'pre-wrap'}
                 margin="0 auto"
                 borderWidth=".1rem"
                 px="2.5rem"
                 py={"1.5rem"}
                 bg={useColorModeValue('whiteAlpha.200', 'blackAlpha.400')}
-                borderColor={useColorModeValue('twitter.300', 'purple.400')}
+                borderColor={useColorModeValue('twitter.400', 'purple.400')}
                 borderRadius="2rem"
                 backdropFilter="blur(10px)"
                 shadow="lg"

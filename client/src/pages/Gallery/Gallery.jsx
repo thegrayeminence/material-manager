@@ -75,7 +75,8 @@ function Gallery() {
 
 
   return (
-    <Box width='100vw' h='100vh'
+    <Box
+      width='100vw' h='100%'
       opacity={'99.9%'}
       // backgroundBlendMode={'difference'}
       position={'relative'}
@@ -95,7 +96,7 @@ function Gallery() {
         >
           {`COMMUNITY GALLERY:`}
         </Text>
-        <Box maxW='90%' h='100%' >
+        <Box maxW='90vw' h='100%' >
 
           <SimpleGrid
             columns={[1, 1, 2, 3]}
@@ -118,9 +119,7 @@ function Gallery() {
 
         </Box>
       </Box>
-      <Spacer h='25px' />
-      <SimpleFooter />
-      <Spacer h='25px' />
+      <Spacer h='60px' />
     </Box>
   )
 }

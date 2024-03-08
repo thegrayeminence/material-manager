@@ -1,3 +1,4 @@
+import {Box} from '@chakra-ui/react';
 import styled, {keyframes} from 'styled-components';
 
 // Define the animation
@@ -24,7 +25,9 @@ const GradientBackground = styled.div`
 
 function GradientBG_Purple() {
   return (
-    <GradientBackground />
+    <Box >
+      <GradientBackground />
+    </Box>
   );
 }
 

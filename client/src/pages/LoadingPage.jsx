@@ -169,6 +169,7 @@ const LoadingPage = () => {
             >
                 <BackgroundGradient />
             </Box>
+            <Spacer h='80px' />
         </Box>
     );
 };

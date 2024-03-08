@@ -96,9 +96,9 @@ function GalleryDetailsView() {
     const displayName = name.replace(/[_]/g, " ").toUpperCase();
 
     return (
-        <Box width='100vw' h='100vh' opacity='.99' position='relative'>
-            <VStack spacing={0} width={'100%'} overflow={'hidden'} >
-                <Box position='relative' maxW='85vw' h='100%' mt='5%'>
+        <Box width='100vw' h='100%' opacity='.99' position='relative'>
+            <VStack spacing={0} width={'full'} overflow={'hidden'} >
+                <Box position='relative' maxW='90vw' h='100%' mt='5%'>
                     <Text
                         fontFamily={'poppins black, sans-serif'}
                         fontWeight={'800'}
@@ -193,9 +193,7 @@ function GalleryDetailsView() {
                 <PreviewBackgroundAnimation />
                 <GradientBackground />
             </Box>
-            <Spacer height={'250px'} />
-            <SimpleFooter />
-            <Spacer height={'10px'} />
+            <Spacer h='60px' />
         </Box>
     );
 }

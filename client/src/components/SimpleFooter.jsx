@@ -19,12 +19,15 @@ import {FaGithub} from "react-icons/fa";
 
 export const SimpleFooter = () => {
     return (
-        <Box w='full'>
+
+        <Box w='full' position={'absolute'} bottom={0} left={0} zIndex={0}>
 
             <footer>
-                <Flex direction={'row'} w="full" mx={'auto'} justify="center" bg='transparent' align={'center'} >
-                    <Heading fontSize={{base: 'lg', sm: 'md', md: 'xl', lg: '2xl', xl: '3xl'}}
-                        fontFamily={'poppins, sans-serif'} fontWeight={'600'} color='whiteAlpha.600'
+
+                <Flex h='50px' direction={'row'} w="full" mx={'auto'} justify="center" align={'center'} >
+
+                    <Heading fontSize={{base: 'lg', sm: 'md', md: 'xl', lg: '2xl', xl: '2xl'}}
+                        fontFamily={'poppins, sans-serif'} fontWeight={'600'} color={useColorModeValue('gray.500', 'whiteAlpha.800')}
                         px='25px'
                     >
                         TextureForge
@@ -39,6 +42,7 @@ export const SimpleFooter = () => {
                     </HStack>
                 </Flex>
             </footer>
+
         </Box  >
     )
 }

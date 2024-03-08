@@ -1,5 +1,5 @@
 // AnimationBackground.js
-
+import {Box, useColorModeValue, Flex, Stack} from '@chakra-ui/react';
 import React, {useEffect} from 'react';
 import './LightBarBackground.css'; // Import the CSS styles
 
@@ -41,10 +41,10 @@ const LightBarBackground = () => {
     // }, []);
 
     return (
-        <div className="main">
-            <div className="lightBar"></div>
+        <Box className="main">
+            <Box className="lightBar"></Box>
             <canvas id="anim"></canvas>
-        </div>
+        </Box>
     );
 };
 

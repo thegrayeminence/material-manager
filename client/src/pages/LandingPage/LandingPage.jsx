@@ -39,6 +39,7 @@ function LandingPageBottomBackground() {
             backgroundBlendMode={'soft-light'}
         // backdropFilter={'blur(20px)'}
 
+
         >
 
         </Box>
@@ -56,12 +57,16 @@ function LandingPage() {
         <VStack
             spacing={0}
             width={'100vw'}
+            position={'relative'}
         // top={0} left={0}
+
+
         >
             <Box
                 height={'100vh'}
                 width={'100%'}
                 position={'relative'}
+
             >
                 <LandingPageText />
                 <LandingPageBackground />
@@ -74,8 +79,8 @@ function LandingPage() {
                 height={'auto'}
                 width={'100vw'}
                 position={'relative'}
-                bg={useColorModeValue('gray.400', 'gray.800')}
 
+                bg={useColorModeValue('gray.400', 'gray.800')}
 
             >
 
@@ -88,7 +93,7 @@ function LandingPage() {
                 {/* Features Section Container  */}
                 <Container
                     zIndex={-1}
-                    maxW={'80%'}
+                    maxW={'90%'}
                     borderRadius={'xl'}
                     boxShadow={'xl'}
                     borderStyle={'solid'}
@@ -105,13 +110,12 @@ function LandingPage() {
                 <Spacer py={'3.5rem'} />
                 <Container
                     zIndex={-1}
-                    maxW={'80%'}
+                    maxW={'90%'}
                     borderRadius={'xl'}
                     boxShadow={'2xl'}
                     borderStyle={'solid'}
                     borderWidth={'.075rem'}
                     borderColor={useColorModeValue('twitter.200', 'purple.300')}
-                    // _hover={{transform: 'scale(1.05)'}} transition={'transform 0.3s'}
                     p={{base: '2', sm: '4', md: '6', lg: '8', xl: '10'}}
                     bg={useColorModeValue('gray.200', 'gray.700')}
                 >
@@ -120,15 +124,12 @@ function LandingPage() {
                     />
                 </Container>
 
-                <Spacer py={'3.5rem'} />
-                <SimpleFooter />
-                <Spacer py={'.5rem'} />
-                <Divider textAlign={'center'} borderWidth={'.25rem'} w={'full'}
-                    borderStyle={'solid'}
-                    borderColor={useColorModeValue('blue.400', 'purple.400')}
-                />
+
+
+
 
             </Box>
+            <Spacer h='80px' />
 
         </VStack >
 
