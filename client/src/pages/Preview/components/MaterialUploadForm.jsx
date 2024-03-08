@@ -304,7 +304,7 @@ export default function MaterialUploadForm() {
                             name="materialType"
 
                             control={control}
-                            rules={progress === 0 ? {required: "Material Type is required"} : {}}
+                            // rules={progress === 0 ? {required: "Material Type is required"} : {}}
                             render={({field}) => (
                                 <>
                                     <Select
@@ -334,7 +334,7 @@ export default function MaterialUploadForm() {
                         <Controller
                             name="materialTextures"
                             control={control}
-                            rules={progress === 0 ? {required: "Material Textures are required"} : {}}
+                            // rules={progress === 0 ? {required: "Material Textures are required"} : {}}
                             render={({field}) => (
                                 <Select
 

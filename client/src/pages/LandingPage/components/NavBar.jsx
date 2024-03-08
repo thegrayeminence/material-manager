@@ -32,10 +32,6 @@ const NavBarContainer = ({children}) => {
                 top={0}
                 zIndex={1}
                 color={useColorModeValue('gray.300', 'white')}
-
-
-
-
             >
                 {children}
             </Flex>
@@ -95,8 +91,16 @@ function NavBar({isOpen, onOpen, onClose, ...props}) {
 
                 <Breadcrumb>
                     <BreadcrumbItem>
-                        <BreadcrumbIconLink size={icon_size} href="/" onClick={(e) => {e.preventDefault(); navigate('/')}} icon={MdHome} />
+                        <BreadcrumbIconLink size={icon_size} icon={colorMode === 'light' ? MdLightMode : MdModeNight} href="#"
+                            onClick={toggleColorMode}
+                        />
                     </BreadcrumbItem>
+                    {/* <BreadcrumbItem>
+                        <BreadcrumbIconLink size={icon_size} href="/" onClick={(e) => {e.preventDefault(); navigate('/')}} icon={MdHome} />
+                    </BreadcrumbItem> */}
+                    {/* <BreadcrumbItem>
+                        <BreadcrumbTextLink size={icon_size} text={'Home'} href="/" onClick={(e) => {e.preventDefault(); navigate('/')}} />
+                    </BreadcrumbItem> */}
                     <BreadcrumbItem isCurrentPage>
                         <BreadcrumbLink size={icon_size} href="#" onClick={(e) => e.preventDefault()}>
                             {breadcrumbLabel(location.pathname)}
@@ -106,31 +110,32 @@ function NavBar({isOpen, onOpen, onClose, ...props}) {
 
                 </Breadcrumb>
                 <Breadcrumb>
-
                     <BreadcrumbItem>
+                        <BreadcrumbTextLink size={icon_size} text={'Home'} href="/" onClick={(e) => {e.preventDefault(); navigate('/')}} />
+                    </BreadcrumbItem>
+
+                    {/* <BreadcrumbItem>
                         <BreadcrumbIconLink size={icon_size} icon={MdPhotoLibrary} href="#" onClick={(e) => {e.preventDefault(); navigate('/gallery')}} />
-                    </BreadcrumbItem>
-                    {/* <BreadcrumbItem>
-                        <BreadcrumbTextLink size={icon_size} text={'GALLERY'} href="#" onClick={(e) => {e.preventDefault(); navigate('/gallery')}} />
                     </BreadcrumbItem> */}
-
                     <BreadcrumbItem>
+                        <BreadcrumbTextLink size={icon_size} text={'Gallery'} href="#" onClick={(e) => {e.preventDefault(); navigate('/gallery')}} />
+                    </BreadcrumbItem>
+
+                    {/* <BreadcrumbItem>
                         <BreadcrumbIconLink size={icon_size} icon={MdAddToPhotos} href="#" onClick={(e) => {e.preventDefault(); navigate('/preview')}} />
-                    </BreadcrumbItem>
-                    {/* <BreadcrumbItem>
-                        <BreadcrumbTextLink size={icon_size} text={'GENERATOR'} href="#" onClick={(e) => {e.preventDefault(); navigate('/preview')}} />
                     </BreadcrumbItem> */}
-
                     <BreadcrumbItem>
-                        <BreadcrumbIconLink size={icon_size} icon={colorMode === 'light' ? MdLightMode : MdModeNight} href="#"
-                            onClick={toggleColorMode}
-                        />
-
-
+                        <BreadcrumbTextLink size={icon_size} text={'Forge'} href="#" onClick={(e) => {e.preventDefault(); navigate('/preview')}} />
                     </BreadcrumbItem>
-                    <BreadcrumbItem>
+
+
+                    {/* <BreadcrumbItem>
                         <BreadcrumbIconLink size={icon_size} icon={MdInfo} href="#" onClick={onOpen} />
+                    </BreadcrumbItem> */}
+                    <BreadcrumbItem>
+                        <BreadcrumbTextLink size={icon_size} text={'About'} href="#" onClick={onOpen} />
                     </BreadcrumbItem>
+
 
                 </Breadcrumb>
 
