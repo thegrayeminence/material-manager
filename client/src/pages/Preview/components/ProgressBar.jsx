@@ -14,9 +14,9 @@ import React from 'react'
 import {useProgressStore} from '../../../store/store'
 
 const steps = [
-  {title: 'First', description: `Classify Material: Technical Specifications`},
-  {title: 'Second', description: 'Describe Material: Physical Properties/Appearance'},
-  {title: 'Third', description: 'Submit Material: Render Texture Maps From Data'},
+  {title: 'First', description: `Step 1: Describe the Material You Want Generated`},
+  {title: 'Second', description: 'Step 2: Select Optional Software Metadata'},
+  {title: 'Third', description: 'Step 3: Await Processing of First Image'},
 ]
 const stepsMode1 = [
   {title: 'First', description: 'Classify Material: Assign Technical Attributes'},
@@ -50,7 +50,11 @@ function ProgressBar({func}) {
           </Step>
         ))}
       </Stepper>
-
+      <Text fontSize={{base: 'md', sm: 'md', md: 'md', lg: 'xl', xl: 'xl'}} fontWeight={600} fontFamily={'avenir next'} textColor={'whiteAlpha.800'} textAlign={'center'}
+        textOverflow={'ellipsis'} whiteSpace={'nowrap'} overflow={'hidden'}
+      >
+        {activeStepText}
+      </Text>
     </Stack>
 
   )

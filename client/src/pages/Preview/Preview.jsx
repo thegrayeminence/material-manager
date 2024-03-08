@@ -34,7 +34,7 @@ function Preview() {
           py={'.5rem'}
 
         >
-          GENERATE TEXTURES
+          TEXTURE FORGE
         </Heading>
 
 

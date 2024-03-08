@@ -97,17 +97,32 @@ export default function MaterialUploadForm() {
 
     const handleFormSubmission = async (data) => {
 
-        if (!color || !elementType || !manifestation || !condition) {
+        // if (!color || !elementType || !manifestation || !condition) {
+        //     toast({
+        //         title: "Validation Error",
+        //         description: "Please fill in all required fields.",
+        //         status: "error",
+        //         duration: 5000,
+        //         isClosable: true,
+        //         position: "top",
+        //         variant: 'subtle',
+        //         colorScheme: 'purple',
+
+        //     });
+        //     return;
+        // };
+
+        if (!materialType || !materialTextures.length) {
+            // Do not increase progress if validation fails
             toast({
                 title: "Validation Error",
                 description: "Please fill in all required fields.",
                 status: "error",
                 duration: 5000,
                 isClosable: true,
-                position: "top",
                 variant: 'subtle',
                 colorScheme: 'purple',
-
+                position: "top",
             });
             return;
         };
@@ -152,31 +167,6 @@ export default function MaterialUploadForm() {
 
             // Navigate to the loading page with materialId
             navigate(`/loading/${materialId}`);
-
-
-            //old method of navigating straight to gallery after form submission
-
-            // navigate to gallery (old functionality before loading page intermediary added)
-            // navigate(`/gallery_id/${materialId}`);
-
-
-            // // Second API call to generate PBR maps
-            // const pbrResponse = await axios.post(apiUrl + `/api/generate_pbr_maps`,
-            //     {base_color_url: baseColorUrl, material_id: materialId}
-            // );
-            // console.log("PBR maps generation initiated!");
-
-
-
-
-            // const maps = pbrResponse.data.pbr_maps;
-            // console.log("PBR maps generated sucessfully!", maps);
-            // setPBRImage('normal', maps.normal_map_url);
-            // setPBRImage('height', maps.height_map_url);
-            // setPBRImage('smoothness', maps.smoothness_map_url);
-            // if (pbrResponse.data.pbr_maps) {
-            //     navigate(`/gallery_id/${materialId}`);
-            // }
 
         } catch (error) {
             console.error("Error during form submission:", error);
@@ -232,20 +222,21 @@ export default function MaterialUploadForm() {
     const handleNext = () => {
         if (progress === 0) {
             // validation checks before increasing form progress
-            if (!materialType || !materialTextures.length) {
-                // Do not increase progress if validation fails
+            if (!color || !elementType || !manifestation || !condition) {
                 toast({
                     title: "Validation Error",
                     description: "Please fill in all required fields.",
                     status: "error",
                     duration: 5000,
                     isClosable: true,
+                    position: "top",
                     variant: 'subtle',
                     colorScheme: 'purple',
-                    position: "top",
+
                 });
                 return;
-            }
+            };
+
             increaseProgress();
         }
         // else if (progress === 1) {
@@ -294,7 +285,7 @@ export default function MaterialUploadForm() {
 
 
                 {/* Material Type Selection */}
-                {progress === 0 && (
+                {progress === 1 && (
                     <FormControl mb={4} textColor='gray.500' isInvalid={errors.materialType}>
                         <FormLabel
                             textColor={'whiteAlpha.800'}
@@ -304,7 +295,7 @@ export default function MaterialUploadForm() {
                             name="materialType"
 
                             control={control}
-                            // rules={progress === 0 ? {required: "Material Type is required"} : {}}
+                            // rules={progress === 1 ? {required: "Material Type is required"} : {}}
                             render={({field}) => (
                                 <>
                                     <Select
@@ -325,7 +316,7 @@ export default function MaterialUploadForm() {
 
 
                 {/* Texture Maps Selection */}
-                {progress === 0 && (
+                {progress === 1 && (
                     <FormControl textColor='gray.500' mb={4} isInvalid={errors.materialTextures}>
                         <FormLabel
                             textColor={'whiteAlpha.800'}
@@ -334,7 +325,7 @@ export default function MaterialUploadForm() {
                         <Controller
                             name="materialTextures"
                             control={control}
-                            // rules={progress === 0 ? {required: "Material Textures are required"} : {}}
+                            // rules={progress === 1 ? {required: "Material Textures are required"} : {}}
                             render={({field}) => (
                                 <Select
 
@@ -356,7 +347,7 @@ export default function MaterialUploadForm() {
 
 
                 {/* Additional Metadata/Software Info */}
-                {progress === 0 && (
+                {progress === 1 && (
                     <FormControl textColor='gray.500' mb={4}>
                         <FormLabel
                             textColor={'whiteAlpha.800'}
@@ -383,7 +374,7 @@ export default function MaterialUploadForm() {
 
 
                 {/* Additional Form Controls for Material Physical Attributes:Row1 */}
-                {progress === 1 && (
+                {progress === 0 && (
                     <HStack spacing={4} py={'.5rem'}>
                         <FormControl mb={4}>
                             <FormLabel
@@ -423,7 +414,7 @@ export default function MaterialUploadForm() {
 
 
                 {/* Additional Form Controls for Material Physical Attributes: Row2 */}
-                {progress === 1 && (
+                {progress === 0 && (
                     <HStack spacing={4} py={'.5rem'}>
                         <FormControl mb={4}>
                             <FormLabel
