@@ -509,7 +509,7 @@ def get_gallery_images():
             image_files = sorted(image_files_unsorted)
             images = [url_for('static', filename=f'assets/images/{folder_name}/{file}', _external=True) for file in image_files]
      
-            #placeholder functionality, normal and small
+            #placeholder functionality, normal and small; disable compression function unless placeholder folders empty
             input_image_path = os.path.join(folder_path, base_color_file[0])
             placeholder_image_name = f'placeholder_{base_color_file[0].rsplit(".", 1)[0]}.jpg'
             small_placeholder_image_name = f'small_placeholder_{base_color_file[0].rsplit(".", 1)[0]}.jpg'
