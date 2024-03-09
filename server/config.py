@@ -515,8 +515,8 @@ def get_gallery_images():
             small_placeholder_image_name = f'small_placeholder_{base_color_file[0].rsplit(".", 1)[0]}.jpg'
             placeholder_image_path = os.path.join(placeholder_folder_path, placeholder_image_name)
             small_placeholder_image_path = os.path.join(placeholder_folder_path, small_placeholder_image_name)
-            compress_jpg(input_image_path, placeholder_image_path, quality=50)
-            compress_jpg(input_image_path, small_placeholder_image_path, quality=10)
+            # compress_jpg(input_image_path, placeholder_image_path, quality=50)
+            # compress_jpg(input_image_path, small_placeholder_image_path, quality=10)
 
 
             placeholder_url = url_for('static', filename=f'assets/images/{folder_name}/placeholders/{placeholder_image_name}', _external=True)
