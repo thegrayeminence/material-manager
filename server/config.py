@@ -482,6 +482,15 @@ def compress_png(input_path, output_path):
 
         resized_img = img.resize((new_width, new_height), Image.Resampling.LANCZOS)
         resized_img.save(output_path, format='PNG', optimize=True, compression_level=6)
+        
+def compress_jpg(input_path, output_path, quality=50):
+    with Image.open(input_path) as img:
+        # You can still reduce dimensions here if needed
+        new_width = img.width // 2
+        new_height = img.height // 2
+        
+        resized_img = img.resize((new_width, new_height), Image.Resampling.LANCZOS)
+        resized_img.save(output_path, format='JPEG', quality=quality, optimize=True, progressive=True)
 
 @app.route('/api/gallery_images',  methods=["GET", "POST", "OPTIONS"])
 def get_gallery_images():
@@ -503,7 +512,7 @@ def get_gallery_images():
             input_image_path = os.path.join(folder_path, image_files[0])
             placeholder_image_name = f'placeholder_{image_files[0]}'
             placeholder_image_path = os.path.join(placeholder_folder_path, placeholder_image_name)
-            compress_png(input_image_path, placeholder_image_path)
+            compress_jpg(input_image_path, placeholder_image_path)
 
             placeholder_url = url_for('static', filename=f'assets/images/{folder_name}/placeholders/{placeholder_image_name}', _external=True)
      
