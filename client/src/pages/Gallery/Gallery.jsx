@@ -50,6 +50,7 @@ function Gallery({scrollPosition}) {
     const loadStaticImage = async () => {
       setIsLoading(true);
       try {
+
         const apiUrl = import.meta.env.VITE_API_URL;
         const foldersResponse = await axios.get(`${apiUrl}/api/image_folders`);
         const materialsResponse = await axios.get(`${apiUrl}/api/gallery_images`);

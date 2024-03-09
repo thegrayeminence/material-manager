@@ -33,7 +33,7 @@ function GalleryCard({name, image, isNew, placeholder, small_placeholder, scroll
                         scrollPosition={scrollPosition}
                         fit="cover"
                         effect="blur"
-                    //delayTime={100}
+                    // delayTime={100}
                     />
                 )}
                 <Box p={6}>
