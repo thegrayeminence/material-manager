@@ -7,12 +7,12 @@ import {MdDownload, MdInfoOutline, MdOutlinePreview, MdViewInAr, MdGridView, MdP
 import {useNavigate} from 'react-router-dom';
 import '@fontsource/poppins';
 import '@fontsource/inter';
-import {LazyLoadImage} from 'react-lazy-load-image-component';
+import {LazyLoadImage, trackWindowScroll} from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 
 
 
-function GalleryCard({name, image, isNew, placeholder, scrollPosition}) {
+function GalleryCard({name, image, isNew, placeholder, small_placeholder, scrollPosition}) {
     const navigate = useNavigate();
     const formattedName = name.replace(/[_-]/g, ' ')
 
@@ -27,11 +27,14 @@ function GalleryCard({name, image, isNew, placeholder, scrollPosition}) {
 
             >
                 {true && (
-                    <LazyLoadImage src={image} alt={`${name}`}
-                        PlaceholderSrc={placeholder}
+                    <LazyLoadImage
+                        src={placeholder} alt={`${name}`}
+                        PlaceholderSrc={small_placeholder}
                         scrollPosition={scrollPosition}
                         fit="cover"
-                        effect="blur" />
+                        effect="blur"
+                    //delayTime={100}
+                    />
                 )}
                 <Box p={6}>
                     <HStack justifyContent={'space-between'} alignItems={'center'}>

@@ -107,9 +107,9 @@ function Gallery({scrollPosition}) {
             ml='5%'
 
           >
-            {materials.map(({folder, image, placeholder}) => (
+            {materials.map(({folder, image, placeholder, small_placeholder}) => (
               <Skeleton isLoaded={!isLoading} key={folder} >
-                <GalleryCard scrollPosition={scrollPosition} key={folder} name={folder} image={image} placeholder={placeholder} isNew={true} />
+                <GalleryCard scrollPosition={scrollPosition} key={folder} name={folder} image={image} placeholder={placeholder} small_placeholder={small_placeholder} isNew={true} />
               </Skeleton>
             ))}
           </SimpleGrid>

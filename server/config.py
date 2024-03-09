@@ -483,11 +483,11 @@ def compress_png(input_path, output_path):
         resized_img = img.resize((new_width, new_height), Image.Resampling.LANCZOS)
         resized_img.save(output_path, format='PNG', optimize=True, compression_level=6)
         
-def compress_jpg(input_path, output_path, quality=50):
+def compress_jpg(input_path, output_path, quality):
     with Image.open(input_path) as img:
-        # You can still reduce dimensions here if needed
-        new_width = img.width // 2
-        new_height = img.height // 2
+        
+        new_width = img.width
+        new_height = img.height
         
         resized_img = img.resize((new_width, new_height), Image.Resampling.LANCZOS)
         resized_img.save(output_path, format='JPEG', quality=quality, optimize=True, progressive=True)
@@ -505,21 +505,28 @@ def get_gallery_images():
             os.makedirs(placeholder_folder_path, exist_ok=True)  
 
             image_files_unsorted = [f for f in os.listdir(folder_path) if f.endswith('.png') and not f.startswith('placeholder_')]
+            base_color_file = [f for f in os.listdir(folder_path) if f.endswith('_base_color.png') and not f.startswith('placeholder_') and not f.startswith('small_')]
             image_files = sorted(image_files_unsorted)
             images = [url_for('static', filename=f'assets/images/{folder_name}/{file}', _external=True) for file in image_files]
      
-            # Generate and save placeholder for the first image
-            input_image_path = os.path.join(folder_path, image_files[0])
-            placeholder_image_name = f'placeholder_{image_files[0]}'
+            #placeholder functionality, normal and small
+            input_image_path = os.path.join(folder_path, base_color_file[0])
+            placeholder_image_name = f'placeholder_{base_color_file[0].rsplit(".", 1)[0]}.jpg'
+            small_placeholder_image_name = f'small_placeholder_{base_color_file[0].rsplit(".", 1)[0]}.jpg'
             placeholder_image_path = os.path.join(placeholder_folder_path, placeholder_image_name)
-            compress_jpg(input_image_path, placeholder_image_path)
+            small_placeholder_image_path = os.path.join(placeholder_folder_path, small_placeholder_image_name)
+            compress_jpg(input_image_path, placeholder_image_path, quality=50)
+            compress_jpg(input_image_path, small_placeholder_image_path, quality=10)
+
 
             placeholder_url = url_for('static', filename=f'assets/images/{folder_name}/placeholders/{placeholder_image_name}', _external=True)
-     
+            small_placeholder_url = url_for('static', filename=f'assets/images/{folder_name}/placeholders/{small_placeholder_image_name}', _external=True)
+
             folder_images = {
                 "folder": folder_name.title(),
                 "image": images[0],
-                "placeholder": placeholder_url
+                "placeholder": placeholder_url,
+                "small_placeholder": small_placeholder_url
             }
             all_folders_images.append(folder_images)
         

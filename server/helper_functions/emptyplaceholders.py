@@ -13,5 +13,5 @@ def empty_placeholder_directories(root_dir):
                 print(f'Removed {file_path}')
 
 # Usage
-root_dir = '../client/public/assets/images/'
+root_dir = '../../client/public/assets/images/'
 empty_placeholder_directories(root_dir)
