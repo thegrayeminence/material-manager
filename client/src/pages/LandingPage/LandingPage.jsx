@@ -8,6 +8,23 @@ import {LandingPageText, Features, Timeline} from './components';
 import {GeometricBackgroundAnimation, SimpleFooter} from '../../components';
 import './landingPage.scss'
 
+function BackgroundGradient() {
+    return (
+        <Box className="background-animation"
+            height={'100%'}
+            width={'100vw'}
+            position={'absolute'}
+            bottom={0} left={0}
+            zIndex={-1}
+            opacity={useColorModeValue('.1', '.6')}
+            backgroundBlendMode={useColorModeValue('screen', 'soft-light, hue, multiply')}
+            // backdropFilter="blur(10px)"
+            filter={'blur(15px)'}
+        >
+        </Box>
+    )
+}
+
 function LandingPageBackground() {
 
     return (
@@ -37,9 +54,7 @@ function LandingPageBottomBackground() {
 
             opacity={useColorModeValue('.4', '.6')}
             backgroundBlendMode={'soft-light'}
-        // backdropFilter={'blur(20px)'}
-
-
+        //backdropFilter={'blur(20px)'}
         >
 
         </Box>
@@ -79,8 +94,8 @@ function LandingPage() {
                 height={'auto'}
                 width={'100vw'}
                 position={'relative'}
-
-                bg={useColorModeValue('gray.400', 'gray.800')}
+                zIndex={-2}
+                bg={useColorModeValue('facebook.200', 'gray.800')}
 
             >
 
@@ -93,7 +108,7 @@ function LandingPage() {
                 {/* Features Section Container  */}
                 <Container
                     zIndex={-1}
-                    maxW={'90%'}
+                    maxW={'90vw'}
                     borderRadius={'xl'}
                     boxShadow={'xl'}
                     borderStyle={'solid'}
@@ -110,20 +125,22 @@ function LandingPage() {
                 <Spacer py={'3.5rem'} />
                 <Container
                     zIndex={-1}
-                    maxW={'90%'}
-                    borderRadius={'xl'}
-                    boxShadow={'2xl'}
-                    borderStyle={'solid'}
-                    borderWidth={'.075rem'}
-                    borderColor={useColorModeValue('twitter.200', 'purple.300')}
+                    maxW={'90vw'}
+                    // borderRadius={'xl'}
+                    // boxShadow={'2xl'}
+                    // borderStyle={'solid'}
+                    // borderWidth={'.075rem'}
+                    // borderColor={useColorModeValue('twitter.200', 'purple.300')}
                     p={{base: '2', sm: '4', md: '6', lg: '8', xl: '10'}}
-                    bg={useColorModeValue('gray.200', 'gray.700')}
+                // bg={useColorModeValue('gray.200', 'gray.700')}
+
                 >
 
                     <Timeline zIndex={-1}
                     />
                 </Container>
 
+                <BackgroundGradient />
 
 
 
