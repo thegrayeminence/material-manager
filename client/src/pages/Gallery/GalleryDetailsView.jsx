@@ -9,8 +9,6 @@ import axios from 'axios';
 import JSZip, {folder} from 'jszip';
 import {saveAs} from 'file-saver';
 import '../LandingPage/landingPage.scss'
-import {SimpleFooter} from '../../components';
-import {set} from 'react-hook-form';
 
 
 function GradientBackground() {
@@ -45,6 +43,7 @@ function GalleryDetailsView() {
                 const response = await axios.get(apiUrl + `/api/images/${folderName}`);
                 const urls = response.data.image_urls
                 const urlsFilteredNoRoughness = urls.filter(url => !url.includes('roughness'));
+
                 setImageUrls(urlsFilteredNoRoughness);
                 setImages(urlsFilteredNoRoughness);
                 setRoughnessUrl(response.data.roughness);

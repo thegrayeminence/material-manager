@@ -7,9 +7,10 @@ import {MdDownload, MdInfoOutline, MdOutlinePreview, MdViewInAr, MdGridView, MdP
 import {useNavigate} from 'react-router-dom';
 import '@fontsource/poppins';
 import '@fontsource/inter';
+import {LazyLoadImage} from 'react-lazy-load-image-component';
 
 
-function GalleryCard({name, images, isNew}) {
+function GalleryCard({name, image, isNew}) {
     const navigate = useNavigate();
     const formattedName = name.replace(/[_-]/g, ' ')
 
@@ -24,7 +25,7 @@ function GalleryCard({name, images, isNew}) {
 
             >
                 {true && (
-                    <Image src={images[0]} alt={`${name}`} roundedTop={'lg'} fit="cover" />
+                    <Image src={image} alt={`${name}`} roundedTop={'lg'} fit="cover" />
                 )}
                 <Box p={6}>
                     <HStack justifyContent={'space-between'} alignItems={'center'}>

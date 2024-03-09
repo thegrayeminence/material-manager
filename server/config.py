@@ -484,6 +484,32 @@ def get_all_images():
     
     except Exception as e:
         return make_response({f"error in fetching folders from {images_dir_path}": str(e)}), 500
+    
+
+@app.route('/api/gallery_images',  methods=["GET", "POST", "OPTIONS"])
+def get_gallery_images():
+    images_dir_path = os.path.join(app.static_folder, 'assets', 'images')
+    folders = [name for name in os.listdir(images_dir_path) if os.path.isdir(os.path.join(images_dir_path, name))]
+    all_folders_images = []
+    
+    try:
+        for folder_name in folders:
+            folder_path = os.path.join(app.static_folder, 'assets', 'images', folder_name)
+            image_files_unsorted  = [f for f in os.listdir(folder_path) if f.endswith('.png')]
+        
+            image_files = sorted(image_files_unsorted)
+            images = [url_for('static', filename=f'assets/images/{folder_name}/{file}', _external=True) for file in image_files]
+     
+            folder_images = {
+                "folder": folder_name.title(),
+                "image": images[0]
+            }
+            all_folders_images.append(folder_images)
+        
+        return jsonify(all_folders_images), 200
+    
+    except Exception as e:
+        return make_response({f"error in fetching folders from {images_dir_path}": str(e)}), 500
             
 @app.get('/api/image_folders')
 def get_image_folders():

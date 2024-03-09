@@ -1,14 +1,14 @@
 import React, {useState, useEffect} from 'react'
 import {Box, Grid, SimpleGrid, VStack, Text, useColorModeValue, Skeleton, Spacer} from '@chakra-ui/react'
-//local imports
 import axios from 'axios';
-import {GalleryCard} from './components'
-import {loadImagesFromFolder} from '../../config/loadImagesFromFolder'
-import {SimpleFooter} from '../../components'
-import {PreviewBackgroundAnimation} from '../Preview/components';
-import '../LandingPage/landingPage.scss'
 import '@fontsource/poppins';
 import '@fontsource/inter';
+
+//local imports
+import {GalleryCard} from './components'
+import {PreviewBackgroundAnimation} from '../Preview/components';
+import '../LandingPage/landingPage.scss'
+
 
 function GradientBackground() {
 
@@ -37,10 +37,10 @@ function GradientBackground() {
 function Gallery() {
 
   const [materials, setMaterials] = useState([])
-  const [folders, setFolders] = useState([])
+  // const [folders, setFolders] = useState([])
 
   const [isLoading, setIsLoading] = useState(true)
-  console.log("materials", materials, "folders", folders);
+  // console.log("materials", materials, "folders", folders);
 
 
   //functionality for getting image urls/data from backend
@@ -49,11 +49,11 @@ function Gallery() {
       setIsLoading(true);
       try {
         const apiUrl = import.meta.env.VITE_API_URL;
-        const foldersResponse = await axios.get(`${apiUrl}/api/image_folders`);
-        const materialsResponse = await axios.get(apiUrl + `/api/all_images`);
-        setFolders(foldersResponse.data.folders);
+        // const foldersResponse = await axios.get(`${apiUrl}/api/image_folders`);
+        const materialsResponse = await axios.get(`${apiUrl}/api/gallery_images`);
+        // setFolders(foldersResponse.data.folders);
         setMaterials(materialsResponse.data);
-        // console.log("materials response", materialsResponse.data, "folders response", foldersResponse.data.folders);
+        console.log("materials response", materialsResponse.data);
 
 
       } catch (error) {
@@ -105,9 +105,9 @@ function Gallery() {
             ml='5%'
 
           >
-            {materials.map(({folder, images}) => (
+            {materials.map(({folder, image}) => (
               // <Skeleton isLoaded={!isLoading} key={folder} >
-              <GalleryCard key={folder} name={folder} images={images.filter(url => !url.includes('roughness'))} isNew={true} />
+              <GalleryCard key={folder} name={folder} image={image} isNew={true} />
               // </Skeleton>
             ))}
           </SimpleGrid>
