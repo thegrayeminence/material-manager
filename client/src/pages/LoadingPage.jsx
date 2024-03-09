@@ -61,7 +61,7 @@ const LoadingPage = () => {
                     variant: 'subtle',
                     colorScheme: 'purple',
                 });
-                navigate(`gallery_id/${id}`);
+                navigate(`/gallery_id/${id}`);
 
                 return;
 
