@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from 'react'
-import {Box, Grid, SimpleGrid, VStack, Text, useColorModeValue, Skeleton, Spacer} from '@chakra-ui/react'
+import {Box, Grid, SimpleGrid, VStack, useToast, Text, useColorModeValue, Skeleton, Spacer} from '@chakra-ui/react'
 import axios from 'axios';
+import {LazyLoadImage, trackWindowScroll} from 'react-lazy-load-image-component';
+
 import '@fontsource/poppins';
 import '@fontsource/inter';
 
@@ -34,11 +36,11 @@ function GradientBackground() {
 
 
 
-function Gallery() {
+function Gallery({scrollPosition}) {
 
   const [materials, setMaterials] = useState([])
-  // const [folders, setFolders] = useState([])
-
+  const [folders, setFolders] = useState([])
+  const toast = useToast();
   const [isLoading, setIsLoading] = useState(true)
   // console.log("materials", materials, "folders", folders);
 
@@ -49,9 +51,9 @@ function Gallery() {
       setIsLoading(true);
       try {
         const apiUrl = import.meta.env.VITE_API_URL;
-        // const foldersResponse = await axios.get(`${apiUrl}/api/image_folders`);
+        const foldersResponse = await axios.get(`${apiUrl}/api/image_folders`);
         const materialsResponse = await axios.get(`${apiUrl}/api/gallery_images`);
-        // setFolders(foldersResponse.data.folders);
+        setFolders(foldersResponse.data.folders);
         setMaterials(materialsResponse.data);
         console.log("materials response", materialsResponse.data);
 
@@ -105,10 +107,10 @@ function Gallery() {
             ml='5%'
 
           >
-            {materials.map(({folder, image}) => (
-              // <Skeleton isLoaded={!isLoading} key={folder} >
-              <GalleryCard key={folder} name={folder} image={image} isNew={true} />
-              // </Skeleton>
+            {materials.map(({folder, image, placeholder}) => (
+              <Skeleton isLoaded={!isLoading} key={folder} >
+                <GalleryCard scrollPosition={scrollPosition} key={folder} name={folder} image={image} placeholder={placeholder} isNew={true} />
+              </Skeleton>
             ))}
           </SimpleGrid>
         </Box >
@@ -124,4 +126,4 @@ function Gallery() {
   )
 }
 
-export default Gallery
+export default trackWindowScroll(Gallery);

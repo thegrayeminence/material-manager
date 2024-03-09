@@ -8,9 +8,11 @@ import {useNavigate} from 'react-router-dom';
 import '@fontsource/poppins';
 import '@fontsource/inter';
 import {LazyLoadImage} from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
 
-function GalleryCard({name, image, isNew}) {
+
+function GalleryCard({name, image, isNew, placeholder, scrollPosition}) {
     const navigate = useNavigate();
     const formattedName = name.replace(/[_-]/g, ' ')
 
@@ -25,7 +27,11 @@ function GalleryCard({name, image, isNew}) {
 
             >
                 {true && (
-                    <Image src={image} alt={`${name}`} roundedTop={'lg'} fit="cover" />
+                    <LazyLoadImage src={image} alt={`${name}`}
+                        PlaceholderSrc={placeholder}
+                        scrollPosition={scrollPosition}
+                        fit="cover"
+                        effect="blur" />
                 )}
                 <Box p={6}>
                     <HStack justifyContent={'space-between'} alignItems={'center'}>

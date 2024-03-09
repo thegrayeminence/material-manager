@@ -84,19 +84,8 @@ CORS(app, resources={r"/api/*": {"origins": ["https://textureforgestatic.onrende
 
 
 
-## test endpoint for flask endpoints 
-# @app.get("/api/test")
-# def test():
-#     BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', ''))
-#     images_dir_path = os.path.join(app.static_folder, 'assets', 'images')
-#     return make_response({"message": f"test endpoint data;\n base_dir:{BASE_DIR};static folder:{app.static_folder}; image_public_path:{images_dir_path}"}), 200
 
-
-
-
-
-# # Load environment variables
-
+#load env variables
 api_token = os.getenv("REPLICATE_API_TOKEN")
 os.environ["REPLICATE_API_TOKEN"] = api_token
 
@@ -486,6 +475,14 @@ def get_all_images():
         return make_response({f"error in fetching folders from {images_dir_path}": str(e)}), 500
     
 
+def compress_png(input_path, output_path):
+    with Image.open(input_path) as img:
+        new_width = img.width // 2
+        new_height = img.height // 2
+
+        resized_img = img.resize((new_width, new_height), Image.Resampling.LANCZOS)
+        resized_img.save(output_path, format='PNG', optimize=True, compression_level=6)
+
 @app.route('/api/gallery_images',  methods=["GET", "POST", "OPTIONS"])
 def get_gallery_images():
     images_dir_path = os.path.join(app.static_folder, 'assets', 'images')
@@ -495,14 +492,25 @@ def get_gallery_images():
     try:
         for folder_name in folders:
             folder_path = os.path.join(app.static_folder, 'assets', 'images', folder_name)
-            image_files_unsorted  = [f for f in os.listdir(folder_path) if f.endswith('.png')]
-        
+            placeholder_folder_path = os.path.join(folder_path, 'placeholders')
+            os.makedirs(placeholder_folder_path, exist_ok=True)  
+
+            image_files_unsorted = [f for f in os.listdir(folder_path) if f.endswith('.png') and not f.startswith('placeholder_')]
             image_files = sorted(image_files_unsorted)
             images = [url_for('static', filename=f'assets/images/{folder_name}/{file}', _external=True) for file in image_files]
      
+            # Generate and save placeholder for the first image
+            input_image_path = os.path.join(folder_path, image_files[0])
+            placeholder_image_name = f'placeholder_{image_files[0]}'
+            placeholder_image_path = os.path.join(placeholder_folder_path, placeholder_image_name)
+            compress_png(input_image_path, placeholder_image_path)
+
+            placeholder_url = url_for('static', filename=f'assets/images/{folder_name}/placeholders/{placeholder_image_name}', _external=True)
+     
             folder_images = {
                 "folder": folder_name.title(),
-                "image": images[0]
+                "image": images[0],
+                "placeholder": placeholder_url
             }
             all_folders_images.append(folder_images)
         
@@ -585,7 +593,7 @@ def download_image(url, filename):
 
 #     return "\n".join(summary_lines)
 
-
+        
 def create_downloadable_zip(material_id):
     
     material = Material.query.get(material_id)
