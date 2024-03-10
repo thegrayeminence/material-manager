@@ -61,7 +61,7 @@ const LoadingPage = () => {
                     variant: 'subtle',
                     colorScheme: 'purple',
                 });
-                navigate(`/gallery_id/${id}`);
+                // navigate(`/gallery_id/${id}`);
 
                 return;
 
@@ -83,7 +83,7 @@ const LoadingPage = () => {
 
                 setPbrMapUrls(pbrResponse.data.pbr_maps);
                 console.log("PBR maps generated successfully!", pbrResponse.data.pbr_maps);
-                navigate(`/gallery_id/${promiseId}`);
+                // navigate(`/gallery_id/${promiseId}`);
             } catch (error) {
                 console.error("Error generating PBR maps:", error);
                 toast({
@@ -118,52 +118,64 @@ const LoadingPage = () => {
     }, [loadingMessages.length]);
     useEffect(() => {
         if (isMinimumDisplayTimeMet && !pbrIsLoading) {
-            navigate(`/gallery_id/${promiseId}`);
+            // navigate(`/gallery_id/${promiseId}`);
+            return;
         }
     }, [isMinimumDisplayTimeMet, pbrIsLoading, navigate, promiseId]);
+
+
     return (
         <Box width='100vw' h='100vh'
             opacity={'99.9%'} position='relative' overflow={'hidden'}
         >
-            <Box maxW="7xl" mx="auto" pt='10%' >
-                <Box >
-                    <VStack spacing={8}>
-                        <Heading fontSize={{base: '2xl', sm: 'xl', md: '2xl', lg: '3xl', xl: '4xl'}} textAlign={'center'} color='white'>
-                            {`Loading '${materialName}'...`}
-                        </Heading>
-                        <Spacer py={2} />
-                        <CircularProgress isIndeterminate color={useColorModeValue('teal.300', 'purple.300')} size={{base: '3rem', sm: '3.5rem', md: '5rem', lg: '6.5rem', xl: '8rem'}} />
-                        <Spacer py={2} />
-                        <Text fontSize={{base: 'xl', sm: 'xl', md: '2xl', lg: '3xl', xl: '4xl'}} color='white'
-                            textAlign={'center'}>
-                            {loadingMessages[loadingMessageIndex]}
-                        </Text>
-                        <Spacer py={2} />
-                        <Box position='relative' pb='10'>
+            <Center>
+                <Box maxW="80vw" mx="auto">
+
+                    <VStack spacing={8} >
+                        <Box mt='7.5rem' pt={'100px'} >
                             <Center flexDirection={'column'}>
-                                {/* <SkeletonText noOfLines={1} isLoaded={albedoIsLoading} w='full' > */}
-                                {/* {albedoImage && <Text textAlign={'center'} fontFamily={'avenir'} fontWeight={'500'} fontSize={{base: 'lg', sm: 'md', md: 'lg', lg: 'xl', xl: '2xl'}} color='white'>{
-                                    `Color Map:`
-                                }</Text>} */}
-                                <Spacer py={2} />
 
 
-                                <Skeleton boxSize={'250px'} isLoaded={albedoImage}>
+                                <Heading fontSize={{base: '2xl', sm: 'xl', md: '2xl', lg: '3xl', xl: '4xl'}} textAlign={'center'} color='white'>
+                                    {`Loading '${materialName}'...`}
+                                </Heading>
+                                <Spacer py={'75px'} />
+
+                                <CircularProgress zIndex={4} isIndeterminate color={useColorModeValue('teal.300', 'purple.300')} size={{base: '3rem', sm: '3.5rem', md: '5rem', lg: '6.5rem', xl: '8rem'}} />
+                                <Spacer py={'75px'} />
+                                <Text fontSize={{base: 'xl', sm: 'xl', md: '2xl', lg: '3xl', xl: '4xl'}} color='white'
+                                    textAlign={'center'}>
+                                    {loadingMessages[loadingMessageIndex]}
+                                </Text>
+                                {/* <Spacer py={'2.5rem'} /> */}
+                            </Center>
+                        </Box>
+
+                    </VStack>
+
+                    <VStack spacing={8} >
+
+                        <Box position='absolute' top={'200px'} mt='7.5rem'>
+
+                            <Center flexDirection={'column'}>
+
+                                <Skeleton boxShadow='xl' borderRadius={'md'} boxSize={{base: '250px', sm: '225px', md: '250px', lg: '280px', xl: '300px'}} isLoaded={albedoImage}>
                                     {albedoImage && (
 
                                         <Box boxShadow="xl" borderRadius="md" overflow="hidden" border="1px solid" borderColor="gray.400" bg="whiteAlpha.200" >
                                             <Text mt="1" color='whiteAlpha.700' fontWeight={'500'} fontSize={{base: 'lg', sm: 'md', md: 'lg', lg: 'lg', xl: 'xl'}} fontFamily='avenir, sans-serif' textAlign="center" >
                                                 Base Color Map:
                                             </Text>
-                                            <Image boxSize={'250px'} objectFit="cover" src={albedoImage} alt="Albedo Image" />
+                                            <Image boxSize={{base: '225px', sm: '215px', md: '225px', lg: '275px', xl: '300px'}} objectFit="cover" src={albedoImage} alt="Albedo Image" />
                                         </Box>
                                     )}
                                 </Skeleton>
                             </Center>
                         </Box>
                     </VStack>
+
                 </Box>
-            </Box>
+            </Center>
             <Box
                 height={'100vh'} width={'100vw'} position={'absolute'}
                 top={0} left={0} zIndex={-1} bg={useColorModeValue('facebook.600', 'indigo')}
@@ -171,7 +183,7 @@ const LoadingPage = () => {
                 <BackgroundGradient />
             </Box>
             <Spacer h='80px' />
-        </Box>
+        </Box >
     );
 };
 
