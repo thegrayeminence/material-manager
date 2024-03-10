@@ -379,7 +379,7 @@ export default function MaterialUploadForm() {
                         <FormControl mb={4}>
                             <FormLabel
                                 textColor={'whiteAlpha.800'}
-                                htmlFor="color">Type/Category: Prefix</FormLabel>
+                                htmlFor="color">{`Prefix 1`}</FormLabel>
                             <Input
                                 id="color"
                                 name="color"
@@ -396,7 +396,7 @@ export default function MaterialUploadForm() {
                         <FormControl mb={4}>
                             <FormLabel
                                 textColor={'whiteAlpha.800'}
-                                htmlFor="elementType">Type/Category: Suffix</FormLabel>
+                                htmlFor="elementType">{`Category`}</FormLabel>
                             <Input
                                 id="elementType"
                                 name="elementType"
@@ -420,7 +420,7 @@ export default function MaterialUploadForm() {
                             <FormLabel
                                 textColor={'whiteAlpha.800'}
 
-                                htmlFor="manifestation">Manifestation/Form: Prefix</FormLabel>
+                                htmlFor="manifestation">{`Prefix 2`}</FormLabel>
                             <Input
                                 id="manifestation"
                                 name="manifestation"
@@ -436,7 +436,7 @@ export default function MaterialUploadForm() {
                             <FormLabel
 
                                 textColor={'whiteAlpha.800'}
-                                htmlFor="condition">Manifestation/Form: Suffix</FormLabel>
+                                htmlFor="condition">{`Object`}</FormLabel>
                             <Input
                                 id="condition"
                                 name="condition"

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Box, Spacer, Stack, Flex, Grid, Text, Tabs, TabList, TabPanels, Tab, TabPanel, TabIndicator, useColorModeValue, Container} from '@chakra-ui/react';
+import {Box, Spacer, Stack, Flex, Grid, GridItem, Text, Tabs, TabList, TabPanels, Tab, TabPanel, TabIndicator, useColorModeValue, Container, VStack} from '@chakra-ui/react';
 import {motion} from 'framer-motion';
 import {useMaterialStore} from '../../../store/store';
 import '@fontsource/poppins';
@@ -14,30 +14,30 @@ const FormPreviewBoxTabs = () => {
 
     const style1 = {
         fontWeight: '500',
-        color: useColorModeValue('twitter.300', 'purple.300'),
+        color: useColorModeValue('royalblue', 'indigo'),
         letterSpacing: '.2rem',
-        fontFamily: 'Avenir Next',
+        fontFamily: 'Avenir Next, sans-serif',
         lineHeight: '1.35rem',
-        fontSize: '1.1rem'
+        fontSize: ['.9rem', '.95rem', '1rem', '1.05rem', '1.15rem']
     };
 
     const style2 = {
         fontWeight: '600',
-        color: useColorModeValue('cyan.400', 'pink.400'),
+        color: useColorModeValue('twitter.300', 'purple.400'),
         letterSpacing: '.1rem',
-        fontFamily: 'Avenir Next',
+        fontFamily: 'Avenir Next, sans-serif',
         lineHeight: '2rem',
-        fontSize: '1.25rem'
+        fontSize: ['1rem', '1.05rem', '1.1rem', '1.15rem', '1.3rem']
     };
 
 
     const style3 = {
         fontWeight: '600',
-        color: useColorModeValue('twitter.300', 'purple.300'),
+        color: useColorModeValue('cyan', 'magenta'),
         letterSpacing: '.15rem',
-        fontFamily: 'Avenir',
+        fontFamily: 'Poppins, sans-serif',
         lineHeight: '2rem',
-        fontSize: '1.3rem'
+        fontSize: ['1.25rem', '1.3rem', '1.35rem', '1.4rem', '1.5rem']
 
     };
 
@@ -51,7 +51,7 @@ const FormPreviewBoxTabs = () => {
 
 
     return (
-        <Stack maxW={'90vw'} mx='auto'>
+        <Stack w='full' mx='auto'>
             <MotionBox
                 w="100%"
                 position="relative"
@@ -152,36 +152,43 @@ Instructions=“describe the properties of the object upon whose surface the mat
 
                         {/* PROMPT */}
                         <TabPanel>
-                            <Flex direction="column" align="center" w="100%" maxH="35vh" >
+                            <Flex direction="column" align="center" w="100%" maxH="35vh" textAlign={'center'} >
                                 <Box>
-                                    <Grid templateColumns="repeat(3, 1fr)" gap={6}>
-                                        <Box w="100%" p={4}>
-                                            {materialType && <Text sx={style2}>Type:</Text>}
-                                            {materialType && <Text sx={style1}>{materialType['label']}</Text>}
-                                            <Spacer py={'1rem'} />
-                                            {materialMetadata && <Text sx={style2}>Metadata:</Text>}
-                                            {materialMetadata && materialMetadata.map((metadata, index) => (
-                                                <Text sx={style1} key={index}>{metadata['label']}</Text>
-                                            ))}
+                                    <Grid templateColumns="repeat(3, 1fr)" gap={8}>
+                                        <GridItem colSpan={3}>
+                                            <Box w="100%" p={4} >
+                                                <VStack>
+                                                    <Box w="100%">
+                                                        {(color || elementType || manifestation || condition) && <Text sx={style3}>Prompt:</Text>}
+                                                    </Box>
+                                                    <Box w="100%">
+                                                        {(color || elementType || manifestation || condition) && <Text sx={style3}>{strippedNames_withspaces().toLowerCase()}</Text>}
+                                                    </Box>
+                                                </VStack>
 
-                                        </Box>
-                                        <Box w="100%" p={4}>
-                                            {materialTextures && materialTextures.length > 0 && <Text sx={style2}>Texture Maps:</Text>}
-                                            {materialTextures && materialTextures.map((texture, index) => (
-                                                <Text sx={style1} key={index}>{texture['label']}</Text>
-                                            ))}
-                                        </Box>
-                                        <Box w="100%" p={4} >
-                                            <Grid templateColumns="repeat(1, 2fr)" gap={6}>
-                                                <Box w="100%">
-                                                    {(color || elementType || manifestation || condition) && <Text sx={style2}>Prompt:</Text>}
-                                                </Box>
-                                                <Box w="100%">
-                                                    {(color || elementType || manifestation || condition) && <Text sx={style3}>{strippedNames_withspaces().toLowerCase()}</Text>}
-                                                </Box>
-                                            </Grid>
+                                            </Box>
+                                        </GridItem>
+                                        <GridItem colSpan={1}>
+                                            <Box w="100%" p={4}>
+                                                {materialType && <Text sx={style2}>Type:</Text>}
+                                                {materialType && <Text sx={style1}>{materialType['label']}</Text>}
+                                                <Spacer py={'1rem'} />
+                                                {materialMetadata && <Text sx={style2}>Metadata:</Text>}
+                                                {materialMetadata && materialMetadata.map((metadata, index) => (
+                                                    <Text sx={style1} key={index}>{metadata['label']}</Text>
+                                                ))}
 
-                                        </Box>
+                                            </Box>
+                                        </GridItem>
+                                        <GridItem colSpan={2}>
+                                            <Box w="100%" p={4}>
+                                                {materialTextures && materialTextures.length > 0 && <Text sx={style2}>Texture Maps:</Text>}
+                                                {materialTextures && materialTextures.map((texture, index) => (
+                                                    <Text sx={style1} key={index}>{texture['label']}</Text>
+                                                ))}
+                                            </Box>
+                                        </GridItem>
+
 
                                     </Grid>
                                 </Box>
