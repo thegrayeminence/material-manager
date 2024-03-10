@@ -56,7 +56,7 @@ db.init_app(app)
 # api = Api(app)
 
 # CORS settings
-CORS(app, resources={r"/api/*": {"origins": ["https://textureforgestatic.onrender.com", "https://cdn.pbr.one", "http://localhost:3000"]}, r"/assets/*": {"origins": ["https://textureforgestatic.onrender.com", "https://cdn.pbr.one", "http://localhost:3000"]}}
+CORS(app, resources={r"/api/*": {"origins": ["https://textureforgestatic.onrender.com", "https://www.textureforgestatic.onrender.com", "https://cdn.pbr.one","https://www.cdn.pbr.one", "http://localhost:3000", "https://textureforge.io", "https://www.textureforge.io" ]}, r"/assets/*": {"origins": ["https://textureforgestatic.onrender.com", "https://www.textureforgestatic.onrender.com", "https://cdn.pbr.one","https://www.cdn.pbr.one", "http://localhost:3000", "https://textureforge.io", "https://www.textureforge.io" ]}}
      )
 # CORS(app, resources={r"/api/*": {"origins": "*"}})
 # cors_config = {
@@ -88,6 +88,8 @@ CORS(app, resources={r"/api/*": {"origins": ["https://textureforgestatic.onrende
 #load env variables
 api_token = os.getenv("REPLICATE_API_TOKEN")
 os.environ["REPLICATE_API_TOKEN"] = api_token
+
+## initialize logging functionality
 
 # Setup Logging
 # def setup_logging():
