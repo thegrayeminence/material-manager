@@ -123,7 +123,7 @@ function LandingPage() {
                     />
                 </Container>
                 <Spacer py={'3.5rem'} />
-                <Container
+                {/* <Container
                     zIndex={-1}
                     maxW={'90vw'}
                     // borderRadius={'xl'}
@@ -138,7 +138,7 @@ function LandingPage() {
 
                     <Timeline zIndex={-1}
                     />
-                </Container>
+                </Container> */}
 
                 <BackgroundGradient />
 

@@ -56,6 +56,7 @@ const FormPreviewBoxTabs = () => {
                 w="100%"
                 position="relative"
                 whiteSpace={'pre-wrap'}
+                overflow={'scroll'}
                 margin="0 auto"
                 borderWidth=".1rem"
                 px="2.5rem"

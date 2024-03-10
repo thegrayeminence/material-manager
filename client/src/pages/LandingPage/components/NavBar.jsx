@@ -75,11 +75,11 @@ function NavBar({isOpen, onOpen, onClose, ...props}) {
     const breadcrumbLabel = (path) => {
         switch (path) {
             case '/': return 'Home';
-            case '/preview': return 'Preview';
-            case '/loading-textures': return 'Loading Textures';
+            case '/preview': return 'Forge';
+            case `/loading/${id}`: return 'Loading...';
             case '/gallery': return 'Gallery';
-            case `/gallery/${name}`: return `Material: ${name}`;
-            case `/gallery_id/${id}`: return `Material ID: ${id}`;
+            case `/gallery/${name}`: return `Material`;
+            case `/gallery_id/${id}`: return `Material`;
             default: return 'Page';
         }
     };
