@@ -3,7 +3,8 @@ import axios from 'axios';
 import {Box, Spacer, Divider, Text, SimpleGrid, Skeleton, SkeletonText, Image, HStack, Heading, Flex, Button, Select, AspectRatio, useColorModeValue} from '@chakra-ui/react';
 import {motion} from 'framer-motion';
 import {useParams} from 'react-router-dom'; // Import useParams from react-router-dom
-
+import {useGeneratedImagesStore} from '../../../store/store'
+import {image} from 'd3';
 
 
 // helper function to download a material
@@ -37,14 +38,19 @@ const handleDownload = async (materialId) => {
 const TextureDisplayById = () => {
     const {id} = useParams(); // Get the 'id' parameter from the URL as a string
     // const {setPBRImage} = useGeneratedImagesStore();
-    const [materialName, setMaterialName] = useState('');
+    const {promiseId, setPbrIsLoading, pbrIsLoading, setAlbedoIsLoading, albedoIsLoading, setPbrMapUrls, pbrMapUrls, setAlbedoImage, albedoImage, materialName, setMaterialName, setFileName} = useGeneratedImagesStore();
+
+    // const [materialName, setMaterialName] = useState('');
     const [materialId, setMaterialId] = useState(id);
-    const [albedoImage, setAlbedoImage] = useState('');
-    const [pbrMapUrls, setPbrMapUrls] = useState({normal: null, height: null, smoothness: null});
-    const [albedoIsLoading, setAlbedoIsLoading] = useState(true);
-    const [pbrIsLoading, setPbrIsLoading] = useState(true);
+    // const [albedoImage, setAlbedoImage] = useState('');
+    // const [pbrMapUrls, setPbrMapUrls] = useState({normal: null, height: null, smoothness: null});
+    // const [albedoIsLoading, setAlbedoIsLoading] = useState(true);
+    // const [pbrIsLoading, setPbrIsLoading] = useState(true);
 
     const MotionImageBox = motion(Box);
+    const [imageUrls, setImageUrls] = useState([]);
+    const [roughnessUrl, setRoughnessUrl] = useState([]);
+
 
 
     useEffect(() => {
@@ -80,8 +86,10 @@ const TextureDisplayById = () => {
 
                 const response = await axios.get(apiUrl + `/api/get_pbr_by_id/${id}`);
                 setPbrMapUrls(response.data.image_urls);
+                // imageUrls.push({'base_color': albedoImage});
+                // imageUrls.push(response.data.image_urls);
                 setPbrIsLoading(false);
-                console.log('fetched pbr urls:', response.data.image_urls, 'pbrIsLoading?:', pbrIsLoading)
+                console.log('fetched pbr urls:', response.data.image_urls, 'all urls:', imageUrls, 'pbrIsLoading:', pbrIsLoading)
             } catch (error) {
                 console.error('Error fetching recent pbrs:', error);
 
@@ -152,10 +160,23 @@ const TextureDisplayById = () => {
             <Flex direction="column" align="center" mb={10} >
                 {/* <SkeletonText isLoaded={materialName} noOfLines={1} w="50%" py={4} mt={4} /> */}
                 {materialId && (
+                    <>
+                        <Heading fontSize={{base: '3xl', sm: '2xl', md: '3xl', lg: '4xl', xl: '5xl'}} color={useColorModeValue('twitter.600', 'purple.600')} py={4} mt={4}
+                            textAlign={'center'}
+                        >
+                            {`${materialName}`}
+                        </Heading>
 
-                    <Heading fontSize={{base: '3xl', sm: '2xl', md: '3xl', lg: '4xl', xl: '5xl'}} color={useColorModeValue('twitter.600', 'purple.600')} py={4} mt={4}>
-                        {`${materialName}`}
-                    </Heading>
+                        <Text
+                            fontFamily={'poppins, sans-serif'}
+                            fontWeight={'600'}
+                            py={'6'}
+                            textAlign='center'
+                            fontSize={{base: 'xl', sm: 'xl', md: '2xl', lg: '4xl', xl: '5xl'}}
+                            color={'whiteAlpha.600'}>
+                            {`TEXTURE FILES:`}
+                        </Text>
+                    </>
 
                 )}
 
@@ -178,14 +199,14 @@ const TextureDisplayById = () => {
             </Flex>
             {/* PBR Images: Normal, Height, Smoothness */}
             <Spacer py={5} />
-            <Flex direction="column" align="center">
-                <SimpleGrid columns={[2, null, 3]} spacing="30px" justifyContent="center" >
+            <Flex direction="column" align="center" >
+                <SimpleGrid columns={[2, null, 2, 3]} spacing={10} align='center' justify='center'>
                     {materialId && (
 
                         ['normal', 'height', 'smoothness'].map((type, index) => (
                             <Skeleton isLoaded={!pbrIsLoading} key={type}  >
                                 <MotionImageBox key={type} {...imageBoxStyle}>
-                                    <Image src={pbrMapUrls[type]} alt={`${type} Map`} boxSize={pbrBoxSize} objectFit="cover" />
+                                    <Image src={pbrMapUrls[type]} alt={`${type} Map`} boxSize={pbrBoxSize} objectFit="cover" onClick={() => handleDownload(materialId)} />
                                     <Text mt="1" color='whiteAlpha.700' fontWeight={'500'} fontSize={{base: 'lg', sm: 'md', md: 'lg', lg: 'lg', xl: 'xl'}} fontFamily='avenir, sans-serif' textAlign="center" >
                                         {`${imageLabels[index]} Map`}
                                     </Text>
@@ -198,7 +219,7 @@ const TextureDisplayById = () => {
 
                 {albedoImage && pbrMapUrls.normal && pbrMapUrls.height && pbrMapUrls.smoothness && (
                     <Box>
-                        <Button onClick={() => handleDownload(materialId)} colorScheme={useColorModeValue('facebook', 'gray')} variant="solid" mt={5} size={{base: 'md', sm: 'md', md: 'md', lg: 'lg', xl: 'lg'}}>
+                        <Button onClick={() => handleDownload(materialId)} colorScheme={useColorModeValue('facebook', 'gray')} variant="solid" mt={5} size={{base: 'md', sm: 'md', md: 'lg'}}>
                             Download
                         </Button>
                     </Box>
@@ -211,9 +232,15 @@ const TextureDisplayById = () => {
                         <Divider orientation='horizontal' borderWidth={'.1rem'} w={'full'} borderColor={useColorModeValue('purple.600', 'twitter.600')} borderStyle={'solid'} />
                         <Spacer py={2} />
 
-                        <Heading fontSize={{base: 'xl', sm: 'lg', md: 'xl', lg: '2xl', xl: '4xl'}} color={useColorModeValue('twitter.600', 'purple.600')} py={4}>
-                            Material Preview:
-                        </Heading>
+                        <Text
+                            fontFamily={'poppins, sans-serif'}
+                            fontWeight={'600'}
+                            py={'6'}
+                            textAlign='center'
+                            fontSize={{base: 'xl', sm: 'xl', md: '2xl', lg: '4xl', xl: '5xl'}}
+                            color={'whiteAlpha.600'}>
+                            {`LIVE PREVIEW:`}
+                        </Text>
                         <Box
                             boxShadow="xl"
                             borderRadius="md"
@@ -227,7 +254,9 @@ const TextureDisplayById = () => {
 
                         <HStack>
 
-                            <Select boxShadow="xl" value={geometry_type} onChange={(e) => set_geometry_type(e.target.value)} mb={4}>
+                            <Select
+                                color='white'
+                                value={geometry_type} onChange={(e) => set_geometry_type(e.target.value)} mb={4}>
                                 <option value="sphere">Sphere</option>
                                 <option value="plane">Plane</option>
                                 <option value="cube">Cube</option>
@@ -236,7 +265,8 @@ const TextureDisplayById = () => {
 
                             </Select>
                             <Select
-                                boxShadow="xl"
+                                color={'white'}
+                                // variant={'outline'}
                                 value={environment_type} onChange={(e) => set_environment_type(e.target.value)} mb={4}>
                                 <option value="0">Studio</option>
                                 <option value="1">Dune</option>

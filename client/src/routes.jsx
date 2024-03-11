@@ -15,7 +15,8 @@ const routes = [
         errorElement: <ErrorPage />,
         children: [
             {
-                path: '/',
+                // path: '/',
+                index: true,
                 element: <LandingPage />
             },
             {

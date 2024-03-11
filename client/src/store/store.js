@@ -85,7 +85,7 @@ export const useGeneratedImagesStore = create(persist(
 const getClosestMatch = (input, options) => {
   if (!input) return [];
   const matches = options.filter(option => option.toLowerCase().startsWith(input.toLowerCase()));
-  return matches.sort().slice(0, 5); // Return up to three matches
+  return matches.sort().slice(0, 5); // Return up to n matches
 };
 
 

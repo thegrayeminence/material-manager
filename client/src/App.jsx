@@ -16,6 +16,7 @@ export default function App() {
       <QueryClientProvider client={queryClient}>
         <RouterProvider
           router={router}
+          fallbackElement={<div>Loading...</div>}
         />
       </QueryClientProvider>
 

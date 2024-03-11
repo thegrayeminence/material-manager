@@ -96,8 +96,8 @@ function GalleryDetailsView() {
 
     return (
         <Box width='100vw' h='100%' opacity='.99' position='relative'>
-            <VStack spacing={0} width={'full'} overflow={'hidden'} w='full'>
-                <Box position='relative' maxW='95vw' h='100%' mt='80px' mx='auto'>
+            <VStack spacing={0} width={'full'} overflow={'hidden'}>
+                <Box position='relative' maxW='90vw' h='100%' mt='80px' mx='auto'>
                     <Text
                         fontFamily={'poppins black, sans-serif'}
                         fontWeight={'800'}

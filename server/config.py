@@ -442,6 +442,19 @@ def get_recent_albedo():
             return make_response({"error": "No recent albedo found"}), 404
     except Exception as e:
         return make_response({"error": str(e)}), 500
+
+@app.get("/api/recent_materials")
+def get_last_five_materials():
+    try:
+        materials = Material.query.order_by(Material.id.desc()).limit(5).all()
+        if materials:
+            material_urls = [get_material_urls(material.id) for material in materials]
+            material_ids = [material.id for material in materials]
+            return make_response({'urls': material_urls, 'ids': material_ids}), 200
+        else:
+            return make_response({"error": "No recent materials found"}), 404
+    except Exception as e:
+        return make_response({"error": str(e)}), 500
     
 
 # ##-------------------------------------##
