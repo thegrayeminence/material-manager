@@ -22,15 +22,15 @@ export default function ErrorPage() {
 
       >
         <VStack position='relative' pt='15rem' spacing={0} overflow={'hidden'} maxW='90vw' mx='auto'>
-          <Box fontSize={'2xl'} textAlign={'center'} id="error-page" spacing={10}>
-
+          <Box fontSize={'2xl'} textAlign={'center'} id="error-page" spacing={10} >
+            <Spacer p={'1.5rem'} />
             <Heading>Oops!</Heading>
-
+            <Spacer p={'.75rem'} />
             <Text>Something erroneous has transpired!</Text>
             <Spacer p={'1rem'} />
 
             <CircularProgress isIndeterminate size='5rem' color='green.300' />
-            <Spacer p={'.5rem'} />
+            <Spacer p={'.75rem'} />
             {/* <Text>
               {error && 'CODE:'}
             </Text> */}

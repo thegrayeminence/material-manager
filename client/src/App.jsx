@@ -1,7 +1,7 @@
 import React from 'react';
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import {QueryClient, QueryClientProvider} from 'react-query'
-import Fallback from './pages/Test'
+import Fallback from './pages/Fallback'
 import routes from './routes';
 
 export default function App() {
