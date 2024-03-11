@@ -12,9 +12,9 @@ import 'react-lazy-load-image-component/src/effects/blur.css';
 
 
 
-function GalleryCard({name, image, isNew, placeholder, small_placeholder, scrollPosition}) {
+function GalleryCard({name, image, title, isNew, placeholder, small_placeholder, scrollPosition}) {
     const navigate = useNavigate();
-    const formattedName = name.replace(/[_-]/g, ' ')
+    const formattedName = title.replace(/[_-]/g, ' ')
 
     return (
         <Flex p={5} w="full" alignItems={'center'} justifyContent={'center'}>
@@ -28,7 +28,7 @@ function GalleryCard({name, image, isNew, placeholder, small_placeholder, scroll
             >
                 {true && (
                     <LazyLoadImage
-                        src={placeholder} alt={`${name}`}
+                        src={placeholder} alt={`${title}`}
                         PlaceholderSrc={small_placeholder}
                         scrollPosition={scrollPosition}
                         fit="cover"
@@ -87,9 +87,13 @@ function GalleryCard({name, image, isNew, placeholder, small_placeholder, scroll
                         <Box
                             fontWeight="600" fontFamily={'poppins, sans-serif'}
                             color={useColorModeValue('gray.300', 'gray.200')}
-                            lineHeight="tight" isTruncated
+                            lineHeight="tight"
+                            noOfLines={[1, 2]}
+                            whiteSpace={'pretty'}
+                            overflow={'hidden'}
+                            // textOverflow={'ellipsis'}
                             textAlign={'center'}
-                            fontSize={{base: 'lg', sm: 'lg', md: 'lg', lg: 'xl', xl: '2xl'}}
+                            fontSize={{base: 'lg', sm: 'lg', md: 'md', lg: 'lg', xl: 'xl'}}
                         >
                             {(formattedName) || ('Untitled Material')}
                         </Box>

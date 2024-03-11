@@ -526,6 +526,7 @@ def get_gallery_images():
 
             folder_images = {
                 "folder": folder_name,
+                "title": folder_name.title(),
                 "image": images[0],
                 "placeholder": placeholder_url,
                 "small_placeholder": small_placeholder_url
