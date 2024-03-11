@@ -145,7 +145,7 @@ const TextureDisplayById = () => {
 
     return (
 
-        <Box
+        <Box w='full' h='100%'
         >
             {/* Albedo Image */}
 

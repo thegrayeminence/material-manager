@@ -1,7 +1,7 @@
 import {Container, Box, Center, chakra, Text, Icon, SimpleGrid, useColorModeValue, Spacer} from '@chakra-ui/react';
 
 import {motion, useScroll} from 'framer-motion';
-
+import {useNavigate} from 'react-router-dom';
 import '@fontsource/poppins';
 import '@fontsource/inter';
 
@@ -81,6 +81,7 @@ const Features = () => {
                             <Icon
                                 as={feature.icon}
                                 w={10} h={10}
+                                // onClick={(e) => {e.preventDefault(); navigate('/preview')}}
                                 color={useColorModeValue(colorThemeValues.light.icon, colorThemeValues.dark.icon)}
                             />
                             <chakra.h3 fontWeight="semibold" fontSize="2xl"

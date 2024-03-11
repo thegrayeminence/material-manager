@@ -34,7 +34,7 @@ function GalleryById() {
             <Box
                 // bg={useColorModeValue('gray.400', 'gray.800')}
                 spacing={0} overflow={'hidden'}
-                maxW='95vw' mx='auto'
+                maxW='90vw' mx='auto'
 
             >
                 <Spacer h={'60px'} />

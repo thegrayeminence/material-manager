@@ -85,6 +85,7 @@ function NavBar({isOpen, onOpen, onClose, ...props}) {
     };
 
     const icon_size = '1.35rem';
+    const font_Size_dynamic = ['sm', 'md', 'lg', 'xl', '2xl']
     return (
         <>
             <NavBarContainer>
@@ -102,7 +103,7 @@ function NavBar({isOpen, onOpen, onClose, ...props}) {
                         <BreadcrumbTextLink size={icon_size} text={'Home'} href="/" onClick={(e) => {e.preventDefault(); navigate('/')}} />
                     </BreadcrumbItem> */}
                     <BreadcrumbItem isCurrentPage>
-                        <BreadcrumbLink size={icon_size} href="#" onClick={(e) => e.preventDefault()}>
+                        <BreadcrumbLink fontSize={font_Size_dynamic} href="#" onClick={(e) => e.preventDefault()}>
                             {breadcrumbLabel(location.pathname)}
                         </BreadcrumbLink>
                     </BreadcrumbItem>
@@ -111,21 +112,21 @@ function NavBar({isOpen, onOpen, onClose, ...props}) {
                 </Breadcrumb>
                 <Breadcrumb>
                     <BreadcrumbItem>
-                        <BreadcrumbTextLink size={icon_size} text={'Home'} href="/" onClick={(e) => {e.preventDefault(); navigate('/')}} />
+                        <BreadcrumbTextLink fontSize={font_Size_dynamic} text={'Home'} href="/" onClick={(e) => {e.preventDefault(); navigate('/')}} />
                     </BreadcrumbItem>
 
                     {/* <BreadcrumbItem>
                         <BreadcrumbIconLink size={icon_size} icon={MdPhotoLibrary} href="#" onClick={(e) => {e.preventDefault(); navigate('/gallery')}} />
                     </BreadcrumbItem> */}
                     <BreadcrumbItem>
-                        <BreadcrumbTextLink size={icon_size} text={'Gallery'} href="#" onClick={(e) => {e.preventDefault(); navigate('/gallery')}} />
+                        <BreadcrumbTextLink fontSize={font_Size_dynamic} text={'Gallery'} href="#" onClick={(e) => {e.preventDefault(); navigate('/gallery')}} />
                     </BreadcrumbItem>
 
                     {/* <BreadcrumbItem>
                         <BreadcrumbIconLink size={icon_size} icon={MdAddToPhotos} href="#" onClick={(e) => {e.preventDefault(); navigate('/preview')}} />
                     </BreadcrumbItem> */}
                     <BreadcrumbItem>
-                        <BreadcrumbTextLink size={icon_size} text={'Forge'} href="#" onClick={(e) => {e.preventDefault(); navigate('/preview')}} />
+                        <BreadcrumbTextLink fontSize={font_Size_dynamic} text={'Forge'} href="#" onClick={(e) => {e.preventDefault(); navigate('/preview')}} />
                     </BreadcrumbItem>
 
 
@@ -133,7 +134,7 @@ function NavBar({isOpen, onOpen, onClose, ...props}) {
                         <BreadcrumbIconLink size={icon_size} icon={MdInfo} href="#" onClick={onOpen} />
                     </BreadcrumbItem> */}
                     <BreadcrumbItem>
-                        <BreadcrumbTextLink size={icon_size} text={'About'} href="#" onClick={onOpen} />
+                        <BreadcrumbTextLink fontSize={font_Size_dynamic} text={'About'} href="#" onClick={onOpen} />
                     </BreadcrumbItem>
 
 

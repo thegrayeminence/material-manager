@@ -61,7 +61,7 @@ const LoadingPage = () => {
                     variant: 'subtle',
                     colorScheme: 'purple',
                 });
-                // navigate(`/gallery_id/${id}`);
+                navigate(`/gallery_id/${id}`);
 
                 return;
 
@@ -83,7 +83,7 @@ const LoadingPage = () => {
 
                 setPbrMapUrls(pbrResponse.data.pbr_maps);
                 console.log("PBR maps generated successfully!", pbrResponse.data.pbr_maps);
-                // navigate(`/gallery_id/${promiseId}`);
+                navigate(`/gallery_id/${promiseId}`);
             } catch (error) {
                 console.error("Error generating PBR maps:", error);
                 toast({
@@ -118,7 +118,7 @@ const LoadingPage = () => {
     }, [loadingMessages.length]);
     useEffect(() => {
         if (isMinimumDisplayTimeMet && !pbrIsLoading) {
-            // navigate(`/gallery_id/${promiseId}`);
+            navigate(`/gallery_id/${promiseId}`);
             return;
         }
     }, [isMinimumDisplayTimeMet, pbrIsLoading, navigate, promiseId]);
@@ -159,10 +159,10 @@ const LoadingPage = () => {
 
                             <Center flexDirection={'column'}>
 
-                                <Skeleton boxShadow='xl' borderRadius={'md'} boxSize={{base: '250px', sm: '225px', md: '250px', lg: '280px', xl: '300px'}} isLoaded={albedoImage}>
+                                <Skeleton boxShadow='xl' boxSize={{base: '250px', sm: '225px', md: '250px', lg: '280px', xl: '300px'}} isLoaded={albedoImage}>
                                     {albedoImage && (
 
-                                        <Box boxShadow="xl" borderRadius="md" overflow="hidden" border="1px solid" borderColor="gray.400" bg="whiteAlpha.200" >
+                                        <Box align={'center'} justify='center' boxShadow="xl" borderRadius="md" overflow="hidden" border="1px solid" borderColor="gray.400" bg="whiteAlpha.200" >
                                             <Text mt="1" color='whiteAlpha.700' fontWeight={'500'} fontSize={{base: 'lg', sm: 'md', md: 'lg', lg: 'lg', xl: 'xl'}} fontFamily='avenir, sans-serif' textAlign="center" >
                                                 Base Color Map:
                                             </Text>
