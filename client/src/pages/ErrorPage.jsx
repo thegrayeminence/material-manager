@@ -1,28 +1,58 @@
-import {Heading, Spacer, Box, Text, CircularProgress} from "@chakra-ui/react";
+import React, {useEffect, useState} from 'react';
+import {Box, Heading, useToast, Text, Flex, CircularProgress, Center, Spacer, VStack, useColorModeValue} from '@chakra-ui/react';
+import {useLocation, useNavigate, useParams} from 'react-router-dom';
+import {SimpleFooter, LightBarBackground, GradientBG_Purple} from '../components'
 import {useRouteError} from "react-router-dom";
+// import ErrorPage from './ErrorPage';
+// import './LandingPage/landingPage.scss';
 
-
-const ErrorPage = () => {
+export default function ErrorPage() {
   const error = useRouteError();
   console.error(error);
-
   return (
-    <Box fontSize={'2xl'} textAlign={'center'} id="error-page">
 
-      <Heading>Oops!</Heading>
+    <Box height={'100vh'} width={'100vw'} position={'relative'}>
 
-      <Text>Sorry, an unexpected error has occurred.</Text>
-      <Spacer p={'1rem'} />
+      <Box
+        width='full' h='100%'
+        opacity={'99.9%'}
+        // backgroundBlendMode={'difference'}
+        position={'relative'}
 
-      <CircularProgress isIndeterminate size='5rem' color='green.300' />
-      <Spacer p={'.5rem'} />
 
-      <Text>
-        <i>{error.statusText || error.message}</i>
-      </Text>
+      >
+        <VStack position='relative' pt='15rem' spacing={0} overflow={'hidden'} maxW='90vw' mx='auto'>
+          <Box fontSize={'2xl'} textAlign={'center'} id="error-page" spacing={10}>
 
+            <Heading>Oops!</Heading>
+
+            <Text>Something erroneous has transpired!</Text>
+            <Spacer p={'1rem'} />
+
+            <CircularProgress isIndeterminate size='5rem' color='green.300' />
+            <Spacer p={'.5rem'} />
+            {/* <Text>
+              {error && 'CODE:'}
+            </Text> */}
+            <Text>
+              {error && (<i>{error.statusText || error.message}</i>)}
+            </Text>
+
+          </Box>
+        </VStack>
+      </Box>
+      <Box
+        height={'100%'} width={'100%'} position={'absolute'}
+        top={0} left={0} zIndex={-1}
+      >
+        {/* <ParticlesBGAnimation /> */}
+
+        <LightBarBackground />
+        {/* <GradientBG_Purple /> */}
+        {/* <Box className="background-animation"></Box> */}
+        {/* <WavesBackgroundAnimation /> */}
+      </Box>
     </Box>
-  );
+  )
 }
 
-export default ErrorPage

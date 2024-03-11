@@ -36,7 +36,8 @@ const loadingMessages = [
     "Insufficient data. Re-checking request status...",
 ];
 
-const LoadingPage = () => {
+// const LoadingPage = () => {
+export function Component() {
     const [loadingMessageIndex, setLoadingMessageIndex] = useState(0);
     const [isMinimumDisplayTimeMet, setIsMinimumDisplayTimeMet] = useState(false);
     const {promiseId, setPbrIsLoading, pbrIsLoading, setAlbedoIsLoading, albedoIsLoading, setPbrMapUrls, pbrMapUrls, setAlbedoImage, albedoImage, materialName, setMaterialName, setFileName} = useGeneratedImagesStore();
@@ -187,4 +188,4 @@ const LoadingPage = () => {
     );
 };
 
-export default LoadingPage;
+Component.displayName = "LoadingPage";

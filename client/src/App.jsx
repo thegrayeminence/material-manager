@@ -1,7 +1,7 @@
 import React from 'react';
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import {QueryClient, QueryClientProvider} from 'react-query'
-
+import Fallback from './pages/Test'
 import routes from './routes';
 
 export default function App() {
@@ -16,7 +16,7 @@ export default function App() {
       <QueryClientProvider client={queryClient}>
         <RouterProvider
           router={router}
-          fallbackElement={<div>Loading...</div>}
+          fallbackElement={<Fallback />}
         />
       </QueryClientProvider>
 

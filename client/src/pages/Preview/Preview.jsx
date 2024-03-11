@@ -1,5 +1,6 @@
 //libs
 import React from 'react'
+import {useLoaderData} from 'react-router-dom';
 import {Box, Spacer, useColorModeValue, Heading, VStack, HStack, Flex} from '@chakra-ui/react'
 import {motion} from 'framer-motion';
 
@@ -17,7 +18,7 @@ import '@fontsource/inter';
 
 const MotionBox = motion(Box);
 
-function Preview() {
+export function Component() {
   const {progress} = useProgressStore()
 
   return (
@@ -89,4 +90,4 @@ function Preview() {
   )
 }
 
-export default Preview
+Component.displayName = "Preview";

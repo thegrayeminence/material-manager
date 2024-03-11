@@ -20,7 +20,7 @@ function GradientBackground() {
     )
 }
 
-function GalleryById() {
+export function Component() {
     const {id} = useParams();
 
     return (
@@ -50,4 +50,5 @@ function GalleryById() {
     );
 }
 
-export default GalleryById;
+Component.displayName = "GalleryById";
+// export default GalleryById;

@@ -1,12 +1,11 @@
 import ErrorPage from "./pages/ErrorPage";
 import Home from "./pages/Home";
-import Preview from "./pages/Preview/Preview";
-import Gallery from "./pages/Gallery/Gallery";
-import GalleryById from "./pages/Gallery/components/GalleryById";
-import GalleryDetailsView from "./pages/Gallery/GalleryDetailsView";
+// import Preview from "./pages/Preview/Preview";
+// import Gallery from "./pages/Gallery/Gallery";
+// import GalleryById from "./pages/Gallery/components/GalleryById";
+// import GalleryDetailsView from "./pages/Gallery/GalleryDetailsView";
 import LandingPage from "./pages/LandingPage/LandingPage";
-import LoadingPage from "./pages/LoadingPage";
-import Test from "./pages/Test";
+// import LoadingPage from "./pages/LoadingPage";
 
 const routes = [
     {
@@ -21,28 +20,29 @@ const routes = [
             },
             {
                 path: '/preview',
-                element: <Preview />
+                // element: <Preview />
+                lazy: () => import("./pages/Preview/Preview"),
             },
             {
                 path: '/loading/:id',
-                element: <LoadingPage />,
+                // element: <LoadingPage />,
+                lazy: () => import("./pages/LoadingPage"),
             },
             {
                 path: '/gallery',
-                element: <Gallery />
+                // element: <Gallery />
+                lazy: () => import("./pages/Gallery/Gallery"),
             },
             {
                 path: '/gallery/:name',
-                element: <GalleryDetailsView />
+                // element: <GalleryDetailsView />
+                lazy: () => import("./pages/Gallery/GalleryDetailsView"),
             },
             {
                 path: '/gallery_id/:id',
-                element: <GalleryById />
-            },
-            {
-                path: '/test',
-                element: <Test />
-            },
+                // element: <GalleryById />
+                lazy: () => import("./pages/Gallery/components/GalleryById"),
+            }
 
         ]
     }

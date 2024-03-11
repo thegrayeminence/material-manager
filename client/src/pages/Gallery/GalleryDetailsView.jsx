@@ -26,7 +26,8 @@ function GradientBackground() {
     )
 }
 
-function GalleryDetailsView() {
+// function GalleryDetailsView() {
+export function Component() {
     let {name} = useParams();
     const [images, setImages] = useState([]);
     const toast = useToast();
@@ -196,4 +197,5 @@ function GalleryDetailsView() {
     );
 }
 
-export default GalleryDetailsView;
+// export default GalleryDetailsView;
+Component.displayName = "GalleryDetailsView";

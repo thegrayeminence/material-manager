@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import {Box, Grid, SimpleGrid, VStack, useToast, Text, useColorModeValue, Skeleton, Spacer} from '@chakra-ui/react'
 import axios from 'axios';
-import {LazyLoadImage, trackWindowScroll} from 'react-lazy-load-image-component';
+import {LazyLoadImage, trackWindowScroll, ScrollPosition, } from 'react-lazy-load-image-component';
 
 import '@fontsource/poppins';
 import '@fontsource/inter';
@@ -36,7 +36,8 @@ function GradientBackground() {
 
 
 
-function Gallery({scrollPosition}) {
+// function Gallery({scrollPosition}) {
+export function Component({scrollPosition}) {
 
   const [materials, setMaterials] = useState([])
   const [folders, setFolders] = useState([])
@@ -125,6 +126,11 @@ function Gallery({scrollPosition}) {
       <Spacer h='60px' />
     </Box>
   )
-}
+};
+trackWindowScroll(Component);
+Component.displayName = "Gallery";
 
-export default trackWindowScroll(Gallery);
+// const Component = trackWindowScroll(Gallery);
+// export default Component;
+
+// export default trackWindowScroll(Gallery);
