@@ -525,7 +525,7 @@ def get_gallery_images():
             small_placeholder_url = url_for('static', filename=f'assets/images/{folder_name}/placeholders/{small_placeholder_image_name}', _external=True)
 
             folder_images = {
-                "folder": folder_name.title(),
+                "folder": folder_name,
                 "image": images[0],
                 "placeholder": placeholder_url,
                 "small_placeholder": small_placeholder_url

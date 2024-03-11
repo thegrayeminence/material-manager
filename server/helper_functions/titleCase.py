@@ -20,6 +20,7 @@ def rename_folders(directory):
             os.rename(item_path, new_folder_path)
             print(f"Renamed '{item}' to '{new_folder_name}'")
 
-# Example usage
-directory = '../client/public/assets/images/'
+
+directory = '../../client/public/assets/images/'
+
 rename_folders(directory)

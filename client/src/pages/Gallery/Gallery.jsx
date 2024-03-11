@@ -56,7 +56,7 @@ function Gallery({scrollPosition}) {
         const materialsResponse = await axios.get(`${apiUrl}/api/gallery_images`);
         setFolders(foldersResponse.data.folders);
         setMaterials(materialsResponse.data);
-        console.log("materials response", materialsResponse.data);
+        console.log("materials data response:", materialsResponse.data);
 
 
       } catch (error) {
