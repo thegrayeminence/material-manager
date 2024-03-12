@@ -3,7 +3,10 @@ import {
     Flex, Circle, Box, Image, Badge,
     useColorModeValue, Icon, chakra, Tooltip, HStack, Spacer, useToast,
 } from "@chakra-ui/react"
-import {MdDownload, MdInfoOutline, MdOutlinePreview, MdViewInAr, MdGridView, MdPhotoLibrary} from "react-icons/md";
+import {IoInformationCircleOutline} from "@react-icons/all-files/io5/IoInformationCircleOutline"
+import {IoMdPhotos} from "@react-icons/all-files/io/IoMdPhotos"
+import {IoIosFolderOpen} from "@react-icons/all-files/io/IoIosFolderOpen"
+import {BiDownload} from "@react-icons/all-files/bi/BiDownload"
 import {useNavigate} from 'react-router-dom';
 import '@fontsource/poppins';
 import '@fontsource/inter';
@@ -56,7 +59,7 @@ function GalleryCard({name, image, title, isNew, placeholder, small_placeholder,
                                         color={useColorModeValue('gray.300', 'gray.200')}
                                         h={7} w={7}
                                         alignSelf={'center'}
-                                        as={MdPhotoLibrary}
+                                        as={IoMdPhotos}
                                         onClick={() => navigate(`/gallery/${name}`)}
                                     />
                                 </chakra.span>
@@ -73,7 +76,7 @@ function GalleryCard({name, image, title, isNew, placeholder, small_placeholder,
                                         color={useColorModeValue('gray.300', 'gray.200')}
 
                                         h={7} w={7} alignSelf={'center'}
-                                        as={MdInfoOutline}
+                                        as={IoInformationCircleOutline}
                                     />
                                 </chakra.span>
                             </Tooltip>

@@ -14,7 +14,8 @@ import {
     Box,
 } from '@chakra-ui/react'
 
-import {FaGithub} from "react-icons/fa";
+
+import {FaGithub} from "@react-icons/all-files/fa/FaGithub"
 
 
 export const SimpleFooter = () => {

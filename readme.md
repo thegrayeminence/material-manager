@@ -194,8 +194,6 @@ Necessary Environment vars for setup are :
     "@fontsource/open-sans": "^5.0.22",
     "@fontsource/poppins": "^5.0.8",
     "@fontsource/raleway": "^5.0.16",
-    "@react-three/drei": "^9.93.0",
-    "@react-three/fiber": "^8.15.13",
     "@tanstack/react-query": "^5.17.9",
     "axios": "^1.6.5",
     "chakra-react-select": "^4.7.6",
@@ -215,7 +213,6 @@ Necessary Environment vars for setup are :
     "react-router-dom": "^6.21.1",
     "sass": "^1.69.7",
     "styled-components": "^6.1.8",
-    "three": "^0.160.0",
     "zustand": "^4.4.7"
     }
 

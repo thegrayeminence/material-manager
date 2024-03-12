@@ -4,7 +4,8 @@ import {
 } from '@chakra-ui/react';
 
 //icons:
-import {MdLightMode, MdOutlineLightMode, MdHome, MdModeNight, MdOutlineModeNight, MdInfoOutline, MdInfo, MdPhotoLibrary, MdOutlinePhotoLibrary, MdOutlineAddToPhotos, MdAddToPhotos, MdAddPhotoAlternate, MdOutlineAddPhotoAlternate} from "react-icons/md";
+import {IoMoonOutline} from '@react-icons/all-files/io5/IoMoonOutline'
+import {IoSunnyOutline} from '@react-icons/all-files/io5/IoSunnyOutline'
 
 
 //hooks and components
@@ -92,7 +93,7 @@ function NavBar({isOpen, onOpen, onClose, ...props}) {
 
                 <Breadcrumb>
                     <BreadcrumbItem>
-                        <BreadcrumbIconLink size={icon_size} icon={colorMode === 'light' ? MdLightMode : MdModeNight} href="#"
+                        <BreadcrumbIconLink size={icon_size} icon={colorMode === 'light' ? IoSunnyOutline : IoMoonOutline} href="#"
                             onClick={toggleColorMode}
                         />
                     </BreadcrumbItem>

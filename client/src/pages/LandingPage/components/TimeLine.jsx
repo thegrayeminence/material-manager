@@ -16,13 +16,21 @@ import {
 
 } from "@chakra-ui/react"
 // Here we have used react-icons package for the icons
-import {FaRegNewspaper, FaWpforms, FaDatabase} from "react-icons/fa"
-import {BsGithub, BsDatabaseDown, BsDatabaseCheck, BsDatabaseUp} from "react-icons/bs"
-import {PiBrain, PiNumberCircleOneFill, PiNumberCircleTwoFill, PiNumberCircleThreeFill, PiNumberCircleFourFill, PiNumberCircleFiveFill, PiNumberCircleSixFill, PiNumberCircleSevenFill, PiNumberCircleEightThin} from "react-icons/pi"
-import {IoCloudDownloadOutline} from "react-icons/io5";
-import {AiOutlineSend} from "react-icons/ai";
-import {BiBrain} from "react-icons/bi";
-import {LuBrainCog} from "react-icons/lu";
+import {FaWpforms} from "@react-icons/all-files/fa/FaWpforms"
+import {BiBrain} from "@react-icons/all-files/bi/BiBrain"
+import {AiOutlineSend} from "@react-icons/all-files/ai/AiOutlineSend"
+import {BiLoaderCircle} from "@react-icons/all-files/bi/BiLoaderCircle"
+import {BiServer} from "@react-icons/all-files/bi/BiServer"
+import {MdLooksOne} from "@react-icons/all-files/md/MdLooksOne"
+import {MdLooksTwo} from "@react-icons/all-files/md/MdLooksTwo"
+import {MdLooks3} from "@react-icons/all-files/md/MdLooks3"
+import {MdLooks4} from "@react-icons/all-files/md/MdLooks4"
+import {MdLooks5} from "@react-icons/all-files/md/MdLooks5"
+import {MdLooks6} from "@react-icons/all-files/md/MdLooks6"
+import {MdCheckBox} from "@react-icons/all-files/md/MdCheckBox"
+import {MdFileDownload} from "@react-icons/all-files/md/MdFileDownload"
+import {AiOutlineCloudServer} from "@react-icons/all-files/ai/AiOutlineCloudServer"
+
 
 
 const utfNumbersCircledRaw = ['\u24EA', '\u2461', '\u2462', '\u2463', '\u2464', '\u2465', '\u2466', '\u2467', '\u2468', '\u2469']
@@ -34,7 +42,7 @@ const timeLineData = [
         id: 1,
         categories: ["Frontend", "User Input", "Request"],
         title: "User Defines Properties of Material to be Generated",
-        icon: PiNumberCircleOneFill,
+        icon: MdLooksOne,
         bigIcon: FaWpforms,
         description: `User describes/classifies the properties of the material they want generated via the inputs on the site's form`,
         date: "Time Required: 30-60 seconds"
@@ -43,8 +51,8 @@ const timeLineData = [
         id: 2,
         categories: ["Backend", "DB Storage"],
         title: "Descriptions Sent to Backend and Re-Formatted as Prompts for SD",
-        icon: PiNumberCircleTwoFill,
-        bigIcon: AiOutlineSend,
+        icon: MdLooksTwo,
+        bigIcon: AiOutlineCloudServer,
         description: `TextureForge sends user descriptions to backend, stores them in the database, and then turns them into prompts optimally formatted for Stable Diffusion AI`,
         date: "Time Required: 10 seconds"
     },
@@ -52,8 +60,8 @@ const timeLineData = [
         id: 3,
         categories: ["Backend", "Text-to-Image AI", "Stable Diffusion"],
         title: "Text Prompt Sent to SD to Generate First Texture Map",
-        icon: PiNumberCircleThreeFill,
-        bigIcon: LuBrainCog,
+        icon: MdLooks3,
+        bigIcon: BiBrain,
         description: `TextureForge sends prompts to Stable Diffusion to generate the first texture map (Albedo/BaseColor), using a text-to-image model`,
         date: "Time Required: 30-60 seconds"
     },
@@ -61,8 +69,8 @@ const timeLineData = [
         id: 4,
         categories: ["Backend", "DB Storage", "Response"],
         title: "First Texture Map (Color) Generated & Sent to Frontend",
-        icon: PiNumberCircleFourFill,
-        bigIcon: BsDatabaseCheck,
+        icon: MdLooks4,
+        bigIcon: AiOutlineSend,
         description: `SD outputs Albedo/BaseColor texture map as a url; TextureForge stores url in database and sends it to frontend for user preview/download`,
         date: "Time Required: 15 seconds"
     },
@@ -70,8 +78,8 @@ const timeLineData = [
         id: 5,
         categories: ["Backend", "Image-to-Image AI", "Stable Diffusion"],
         title: "Image Prompt Sent to SD to Generate Rest of PBR Maps",
-        icon: PiNumberCircleFiveFill,
-        bigIcon: LuBrainCog,
+        icon: MdLooks5,
+        bigIcon: BiLoaderCircle,
         description: `TextureForge sends Albedo/BaseColor texture map to SD to generate the rest of the PBR texture maps (normal, roughness, height, etc.), using an image-to-image model`,
         date: "Time Required: 30 seconds to 2 minutes"
     },
@@ -79,8 +87,8 @@ const timeLineData = [
         id: 6,
         categories: ["Backend", "DB Storage", "Response"],
         title: "Generated PBR Maps Cached & Sent to Frontend",
-        icon: PiNumberCircleSixFill,
-        bigIcon: BsDatabaseCheck,
+        icon: MdLooks6,
+        bigIcon: BiServer,
         description: `SD outputs PBR texture maps as urls; TextureForge stores urls in database and sends them to frontend for user preview/download`,
         date: "Time Required: 15 seconds"
     },
@@ -89,8 +97,8 @@ const timeLineData = [
         id: 7,
         categories: ["Frontend", "User Input"],
         title: "User Downloads New Assets and Uses Them to Their Heart's Content!",
-        icon: PiNumberCircleSevenFill,
-        bigIcon: IoCloudDownloadOutline,
+        icon: MdCheckBox,
+        bigIcon: MdFileDownload,
         description: `Generated texture maps are loaded in browser for user to preview; user downloads new assets, zipped into folder with optimal file structure/naming, and then imports them/uses them however they want!`,
         date: "Time Required: N/A"
     }

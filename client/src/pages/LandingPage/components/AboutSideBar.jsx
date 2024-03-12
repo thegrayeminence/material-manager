@@ -1,5 +1,5 @@
 import React from 'react';
-import {FaGithub} from "react-icons/fa6";
+import {FaGithub} from "@react-icons/all-files/fa/FaGithub";
 import {
     Drawer, Box, HStack, VStack, DrawerOverlay, DrawerContent, DrawerBody,
     DrawerHeader, Container, DrawerCloseButton, Center, useColorModeValue, Icon, Divider, Spacer, chakra, LinkBox, LinkOverlay, Text,
