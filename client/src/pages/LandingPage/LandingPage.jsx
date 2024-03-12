@@ -81,6 +81,7 @@ function LandingPage() {
                 height={'100vh'}
                 width={'100%'}
                 position={'relative'}
+                overflow='clip'
 
             >
                 <LandingPageText />

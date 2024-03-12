@@ -23,7 +23,7 @@ function LandingPageText() {
         textAlign: 'left',
         fontFamily: "inter black, sans-serif",
         fontWeight: '900',
-        whiteSpace: 'nowrap',
+        whiteSpace: 'normal',
 
     };
     const linearGradients = (index, dir) => {
@@ -74,6 +74,9 @@ function LandingPageText() {
         fontSize: ['1rem', '1.5rem', '2rem', '2.5rem'],
         fontFamily: "poppins, sans-serif",
         fontWeight: '600',
+        whiteSpace: 'preserve-spaces',
+        textAlign: 'left',
+
 
 
     };
@@ -89,10 +92,11 @@ function LandingPageText() {
     return (
 
         <Box pos="relative">
-            <Box maxW="7xl" mx="auto">
+            <Box maxW="7xl" mx="auto" >
                 <Box pos="relative" w="full"  >
                     <Box
-                        mt={{base: '20%', sm: '20%', md: '22.5%', lg: '25%', xl: '25%'}}
+                        mt={{base: '30%', sm: '30%', md: '25%', lg: '20%', xl: '20%'}}
+
                         // px='1rem'
                         px={{base: '1rem', sm: '1rem', md: '1rem', lg: '1rem', xl: '1rem'}}
 
