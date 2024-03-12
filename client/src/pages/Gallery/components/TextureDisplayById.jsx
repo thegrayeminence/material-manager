@@ -48,7 +48,7 @@ const TextureDisplayById = () => {
     // const [pbrIsLoading, setPbrIsLoading] = useState(true);
 
     const MotionImageBox = motion(Box);
-    const [imageUrls, setImageUrls] = useState([]);
+    const [imageUrls, setImageUrls] = useState({});
     const [roughnessUrl, setRoughnessUrl] = useState([]);
 
 
@@ -86,10 +86,10 @@ const TextureDisplayById = () => {
 
                 const response = await axios.get(apiUrl + `/api/get_pbr_by_id/${id}`);
                 setPbrMapUrls(response.data.image_urls);
-                // imageUrls.push({'base_color': albedoImage});
-                // imageUrls.push(response.data.image_urls);
+                const all_urls = Object.assign({}, {'base_color': albedoImage}, response.data.image_urls);
+                setImageUrls(all_urls);
                 setPbrIsLoading(false);
-                console.log('fetched pbr urls:', response.data.image_urls, 'all urls:', imageUrls, 'pbrIsLoading:', pbrIsLoading)
+                console.log('fetched pbr urls:', response.data.image_urls, 'all urls:', all_urls, 'pbrIsLoading:', pbrIsLoading)
             } catch (error) {
                 console.error('Error fetching recent pbrs:', error);
 
@@ -97,6 +97,7 @@ const TextureDisplayById = () => {
         };
 
         fetchRecentPbrs();
+
     }, [albedoIsLoading]);
 
 
