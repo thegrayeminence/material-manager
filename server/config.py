@@ -267,7 +267,7 @@ def generate_albedo():
     mat_diffusion_sdxl = "pwntus/material-diffusion-sdxl:ce888cbe17a7c04d4b9c4cbd2b576715d480c55b2ba8f9f3d33f2ad70a26cd99"
     
     ##!!! mat diffusion model to use; CHANGE THIS VAR to switch between models for text-->image generation !!!###
-    model_identifier = mat_diffusion_tom
+    model_identifier = mat_diffusion_sdxl
     
     try:
         ##values/parameters for generate_image_from_prompt() argument
@@ -311,7 +311,7 @@ def generate_albedo():
         }
         
         ##generating image_uri from matdata/prompt/params/etc values
-        base_color_url = generate_image_from_prompt(model_identifier, prompt, params)
+        base_color_url = generate_image_from_prompt(model_identifier, prompt, params_sdxl)
         # app.logger.info(base_color_url)
         
         ##instantiating new material to store in db
