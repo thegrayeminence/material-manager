@@ -4,7 +4,6 @@ import {Box, Spacer, Divider, Text, Grid, Container, VStack, Center, GridItem, S
 import {motion} from 'framer-motion';
 import {useParams} from 'react-router-dom'; // Import useParams from react-router-dom
 import {useGeneratedImagesStore} from '../../../store/store'
-import PBROnePreviewBox_NotGallery from "./PBROnePreviewBox_NotGallery";
 
 // helper function to download a material
 const handleDownload = async (materialId) => {
@@ -122,7 +121,7 @@ const TextureDisplayById = () => {
 
                 <>
                     <Container centerContent >
-                        <SkeletonText isLoaded={materialName.length > 0}>
+                        <SkeletonText isLoaded={!pbrIsLoading}>
                             <Text
                                 fontFamily={'poppins black, sans-serif'}
                                 fontWeight={'800'}

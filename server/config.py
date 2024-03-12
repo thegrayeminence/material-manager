@@ -259,18 +259,23 @@ def generate_pbr_from_albedo(base_color_url, map_type):
 @cross_origin()
 def generate_albedo():
     
-    ##model_identifier options (custom vs public mat diffusion models)
+    ##model_identifier options (plus custom vs public) ##
     custom_model = "thegrayeminence/albedo-generator"
     mat_diffusion = "tstramer/material-diffusion:a42692c54c0f407f803a0a8a9066160976baedb77c91171a01730f9b0d7beeff"
     mat_diffusion_tom = "tommoore515/material_stable_diffusion:3b5c0242f8925a4ab6c79b4c51e9b4ce6374e9b07b5e8461d89e692fd0faa449"
+    mat_diffusion_pwntus = "pwntus/material-diffusion-v2.1:3f4feccac74913263224bf3893024822c559d225110879fb7fc2d940011c5988"
+    mat_diffusion_sdxl = "pwntus/material-diffusion-sdxl:ce888cbe17a7c04d4b9c4cbd2b576715d480c55b2ba8f9f3d33f2ad70a26cd99"
     
-    ##mat diffusion model to use; CHANGE THIS VAR to switch between models for text-->image generation
-    model_identifier = mat_diffusion
+    ##!!! mat diffusion model to use; CHANGE THIS VAR to switch between models for text-->image generation !!!###
+    model_identifier = mat_diffusion_tom
     
     try:
         ##values/parameters for generate_image_from_prompt() argument
         material_data = request.get_json().get('materialData', {})
         prompt = construct_prompt_from_material_data(material_data)
+        
+        ##params options (different schema required for pwntus and sdxl models)##
+        ## default params for mat diffusion models
         params = {
             "width": 512, 
             "height": 512, 
@@ -281,7 +286,29 @@ def generate_albedo():
             "prompt_strength": 0.8, 
             "num_inference_steps": 50
         }
-
+        ##params for pwntus model
+        params_pwntus = {
+            "width": 768,
+            "height": 768,
+            "prompt": prompt,
+            "scheduler": "DPMSolverMultistep",
+            "num_outputs": 1,
+            "guidance_scale": 7.5,
+            "prompt_strength": 0.8,
+            "num_inference_steps": 50
+        }
+        params_sdxl = {
+            "width": 768,
+            "height": 768,
+            "prompt": prompt,
+            "refine": "expert_ensemble_refiner",
+            "scheduler": "DDIM",
+            "num_outputs": 1,
+            "guidance_scale": 7.5,
+            "apply_watermark": False,
+            "high_noise_frac": 0.8,
+            "num_inference_steps": 50
+        }
         
         ##generating image_uri from matdata/prompt/params/etc values
         base_color_url = generate_image_from_prompt(model_identifier, prompt, params)
