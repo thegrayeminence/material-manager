@@ -1,8 +1,9 @@
 import React from 'react';
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import {QueryClient, QueryClientProvider} from 'react-query'
-import Fallback from './pages/Fallback'
+import {Fallback} from './pages/Fallback';
 import routes from './routes';
+import {Spinner} from '@chakra-ui/react';
 
 export default function App() {
 

@@ -11,36 +11,6 @@ import '@fontsource/poppins';
 import '@fontsource/inter';
 
 
-const colorThemeValues = {
-    light: {
-        bgMain: "white.800",
-        bgDetail: "facebook.600",
-        componentMain: "gray.100",
-        componentDetail: "gray.200",
-        borderMain: "blue.300",
-        borderDetail: "twitter.300",
-        icon: "teal.300",
-        textMain: "gray.600",
-        textHeader: "blue.700",
-        textDetail: "gray.400",
-        highlight: "twitter.400",
-        hover: "purple.400",
-    },
-    dark: {
-        bgMain: "gray.800",
-        bgDetail: "purple.600",
-        componentMain: "gray.700",
-        componentDetail: "gray.600",
-        borderMain: "purple.800",
-        borderDetail: "purple.600",
-        icon: "purple.400",
-        textMain: "gray.300",
-        textHeader: "purple.600",
-        textDetail: "gray.600",
-        highlight: "purple.300",
-        hover: "twitter.400",
-    }
-};
 
 
 function LandingPageText() {
@@ -101,7 +71,7 @@ function LandingPageText() {
     const detailHeaderStyle = {
 
         // bgClip: "text",
-        fontSize: '1.8rem',
+        fontSize: ['1rem', '1.5rem', '2rem', '2.5rem'],
         fontFamily: "poppins, sans-serif",
         fontWeight: '600',
 
@@ -122,7 +92,10 @@ function LandingPageText() {
             <Box maxW="7xl" mx="auto">
                 <Box pos="relative" w="full"  >
                     <Box
-                        mt={'20%'}
+                        mt={{base: '20%', sm: '20%', md: '22.5%', lg: '25%', xl: '25%'}}
+                        // px='1rem'
+                        px={{base: '1rem', sm: '1rem', md: '1rem', lg: '1rem', xl: '1rem'}}
+
                     >
 
                         <Box mx="auto" maxW={'80%'} >
@@ -148,7 +121,9 @@ function LandingPageText() {
                                 <Box>
                                     <Text
                                         color={useColorModeValue('whiteAlpha.900', 'whiteAlpha.900')}
-                                        textAlign="left" sx={detailHeaderStyle} lineHeight={'150%'} >
+                                        textAlign="left" sx={detailHeaderStyle} lineHeight={'150%'}
+
+                                    >
                                         ‣ Generate PBR Textures With Text-to-Image AI  <br />
                                         ‣ Get Live Previews Of Your New 3D Materials<br />
                                         ‣ And Download Your Assets — Optimized, Fast, Free <br />
@@ -171,32 +146,41 @@ function LandingPageText() {
                                 <StylishButton
 
 
-                                    mr='.5rem' handleClick={() => navigate('/preview')} text="Generate Maps" />
-                                <StylishButton ml='.5rem' handleClick={() => navigate('/gallery')} text="Download Maps" />
+                                    mr='.5rem' handleClick={() => navigate('/preview')} text="MATERIAL MAKER" />
+                                <StylishButton overflow='clip' ml='.5rem' handleClick={() => navigate('/gallery')} text={`MATERIAL GALLERY`} />
                             </HStack>
 
                             <Box alignSelf={'center'} py={'2.5rem'} maxW='80%' >
                                 <Center>
                                     <Button
 
-                                        variant='outline' onClick={onOpen}
+                                        variant='outline'
+                                        width='full'
+                                        onClick={onOpen}
                                         borderRadius={'lg'}
-                                        size={{base: 'md', sm: 'sm', md: 'md', lg: 'lg', xl: 'xl'}}
-                                        padding={{base: '1.5rem', sm: '1.5rem', md: '1.6rem', lg: '1.75rem'}}
-                                        borderColor={useColorModeValue('twitter.600', 'purple.500')}
-                                        textColor={useColorModeValue('green.200', 'violet')}
-                                        bg={useColorModeValue('whiteAlpha.300', 'whiteAlpha.300')}
-                                        fontSize={{base: 'sm', sm: 'sm', md: 'md', lg: 'lg', xl: 'lg'}}
+                                        overflow={'clip'}
+                                        paddingY={['2rem', '2rem', '2.5rem', '3rem']}
+                                        paddingX={['1rem', '1rem', '1.5rem', '2rem']}
+                                        fontWeight={'600'}
+                                        letterSpacing={'wide'}
+                                        whiteSpace={'preserve-spaces'}
+                                        boxShadow={'base'}
 
+                                        fontFamily={'inter black, sans-serif'}
+                                        fontSize={{base: 'md', sm: 'md', md: 'lg', lg: 'lg', xl: 'xl'}}
+
+                                        // borderColor={useColorModeValue('twitter', 'purple')}
+                                        textColor={useColorModeValue('green.200', 'violet')}
+                                        bg={useColorModeValue('blackAlpha.500', 'blackAlpha.500')}
                                         _hover={{
-                                            bg: useColorModeValue('blackAlpha.500', 'blackAlpha.500'),
-                                            textColor: useColorModeValue('orange.300', 'pink.200')
+                                            bg: useColorModeValue('whiteAlpha.500', 'whiteAlpha.400'),
+                                            textColor: useColorModeValue('orange.300', 'pink.200'),
+                                            // bg: "<color>"
                                         }}
 
-                                        isTruncated
-                                        fontFamily={'inter black, sans-serif'}
-                                        textShadow=".2px .2px 0 rgba(0, 0, 0, 0.5), -.2px -.2px 0 rgba(0, 0, 0, 0.5), .2px -.2px 0 rgba(0, 0, 0, 0.5), -.2px .2px 0 rgba(0, 0, 0, 0.5)"
-                                    > How does this work? What is 'PBR'? </Button>
+
+                                    // textShadow=".2px .2px 0 rgba(0, 0, 0, 0.5), -.2px -.2px 0 rgba(0, 0, 0, 0.5), .2px -.2px 0 rgba(0, 0, 0, 0.5), -.2px .2px 0 rgba(0, 0, 0, 0.5)"
+                                    > How does this work? <br /> What is 'PBR'? </Button>
 
 
 

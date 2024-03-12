@@ -123,22 +123,7 @@ function LandingPage() {
                     />
                 </Container>
                 <Spacer py={'3.5rem'} />
-                {/* <Container
-                    zIndex={-1}
-                    maxW={'90vw'}
-                    // borderRadius={'xl'}
-                    // boxShadow={'2xl'}
-                    // borderStyle={'solid'}
-                    // borderWidth={'.075rem'}
-                    // borderColor={useColorModeValue('twitter.200', 'purple.300')}
-                    p={{base: '2', sm: '4', md: '6', lg: '8', xl: '10'}}
-                // bg={useColorModeValue('gray.200', 'gray.700')}
 
-                >
-
-                    <Timeline zIndex={-1}
-                    />
-                </Container> */}
 
                 <BackgroundGradient />
 

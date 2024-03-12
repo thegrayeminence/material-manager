@@ -2,28 +2,23 @@ import React, {useEffect, useState} from 'react';
 import {Box, Heading, useToast, Text, Flex, CircularProgress, Center, Spacer, VStack, useColorModeValue} from '@chakra-ui/react';
 import {useLocation, useNavigate, useParams} from 'react-router-dom';
 import {SimpleFooter, LightBarBackground, GradientBG_Purple} from '../components'
-import {useRouteError} from "react-router-dom";
-// import ErrorPage from './ErrorPage';
-// import './LandingPage/landingPage.scss';
 
-export default function Fallback() {
+export const Fallback = () => {
 
-    const error = useRouteError();
-    console.error(error);
+    // const error = useRouteError();
+    // console.error(error);
     return (
 
         <Box height={'100vh'} width={'100vw'} position={'relative'}>
 
             <Box
                 width='full' h='100%'
-                opacity={'99.9%'}
-                // backgroundBlendMode={'difference'}
                 position={'relative'}
 
 
             >
                 <VStack position='relative' pt='15rem' spacing={0} overflow={'hidden'} maxW='90vw' mx='auto'>
-                    <Box fontSize={'2xl'} textAlign={'center'} id="error-page">
+                    <Box fontSize={'2xl'} textAlign={'center'}>
 
                         <Heading>Loading...</Heading>
 
@@ -32,10 +27,10 @@ export default function Fallback() {
 
                         <CircularProgress isIndeterminate size='5rem' color='green.300' />
                         <Spacer p={'.5rem'} />
-
+                        {/* 
                         <Text>
                             {error && (<i>{error.statusText || error.message}</i>)}
-                        </Text>
+                        </Text> */}
 
                     </Box>
                 </VStack>
@@ -54,5 +49,7 @@ export default function Fallback() {
         </Box>
     )
 }
+
+// export default Fallback;
 
 // Component.displayName = "FallbackPage";
