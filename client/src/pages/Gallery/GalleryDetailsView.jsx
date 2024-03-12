@@ -131,8 +131,7 @@ export function Component() {
 
 
                     <Grid
-                        // columns={[1, 2, 2, 4]}
-                        // spacing={8}
+
                         templateColumns={{base: 'repeat(2, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(2, 1fr)', lg: 'repeat(4, 1fr)', xl: 'repeat(4, 1fr)'}}
                         gap={[4, 4, 6, 8]}
                     >
