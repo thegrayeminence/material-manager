@@ -301,7 +301,7 @@ def generate_albedo():
             "width": 768,
             "height": 768,
             "prompt": prompt,
-            "refine": "expert_ensemble_refiner",
+            # "refine": "expert_ensemble_refiner",
             "scheduler": "DDIM",
             "num_outputs": 1,
             "guidance_scale": 7.5,

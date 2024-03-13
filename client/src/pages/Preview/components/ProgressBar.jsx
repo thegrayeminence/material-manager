@@ -10,7 +10,8 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react'
 import React from 'react'
-
+import '@fontsource/poppins';
+import '@fontsource/inter';
 import {useProgressStore} from '../../../store/store'
 
 const steps = [
@@ -50,8 +51,8 @@ function ProgressBar({func}) {
           </Step>
         ))}
       </Stepper>
-      <Text fontSize={{base: 'md', sm: 'md', md: 'md', lg: 'xl', xl: 'xl'}} fontWeight={600} fontFamily={'avenir next'} textColor={'whiteAlpha.800'} textAlign={'center'}
-        textOverflow={'ellipsis'} whiteSpace={'nowrap'} overflow={'hidden'}
+      <Text fontSize={{base: 'md', sm: 'md', md: 'lg', lg: 'xl', xl: 'xl2'}} fontWeight={700} letterSpacing={'wide'} fontFamily={'poppins black'} textColor={'whiteAlpha.800'} textAlign={'center'}
+        textOverflow={'ellipsis'} whiteSpace={'pretty'} overflow={'hidden'}
       >
         {activeStepText}
       </Text>
