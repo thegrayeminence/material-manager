@@ -51,7 +51,7 @@ function ProgressBar({func}) {
           </Step>
         ))}
       </Stepper>
-      <Text fontSize={{base: 'md', sm: 'md', md: 'lg', lg: 'xl', xl: 'xl2'}} fontWeight={700} letterSpacing={'wide'} fontFamily={'poppins black'} textColor={'whiteAlpha.800'} textAlign={'center'}
+      <Text fontSize={{base: 'md', sm: 'md', md: 'lg', lg: 'xl', xl: 'xl2'}} fontWeight={800} letterSpacing={'wide'} fontFamily={'poppins'} textColor={'whiteAlpha.800'} textAlign={'center'}
         textOverflow={'ellipsis'} whiteSpace={'pretty'} overflow={'hidden'}
       >
         {activeStepText}

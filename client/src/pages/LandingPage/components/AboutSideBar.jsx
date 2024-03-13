@@ -2,26 +2,13 @@ import React from 'react';
 import {FaGithub} from "@react-icons/all-files/fa/FaGithub";
 import {
     Drawer, Box, HStack, VStack, DrawerOverlay, DrawerContent, DrawerBody,
-    DrawerHeader, Container, DrawerCloseButton, Center, useColorModeValue, Icon, Divider, Spacer, chakra, LinkBox, LinkOverlay, Text,
+    DrawerHeader, Container, DrawerCloseButton, Center, useColorModeValue, Icon, Divider, Spacer, chakra, LinkBox, LinkOverlay, Text, Heading
 } from "@chakra-ui/react";
-import {color, motion} from 'framer-motion';
 import '@fontsource/poppins';
 import '@fontsource/inter';
 import {Link} from "react-router-dom";
 import Timeline from './TimeLine';
 
-const MotionIcon = motion(Icon);
-const MotionText = motion(chakra.text);
-
-const textVariants = {
-    hidden: {opacity: 0, y: 20},
-    visible: {opacity: 1, y: 0, transition: {duration: 0.8}}
-};
-
-const iconVariants = {
-    hidden: {rotate: -180},
-    visible: {rotate: 0, transition: {duration: 0.8}}
-};
 
 const colorThemeValues = {
     light: {
@@ -70,10 +57,17 @@ const headerStyle = {
 
 const bodyStyle = {
     fontWeight: '200',
-    lineHeight: '2.25rem',
+    lineHeight: '2.5rem',
     fontSize: ['lg', 'lg', 'xl', '2xl'],
     fontFamily: 'inter, sans-serif',
 
+};
+
+const detailStyle = {
+    fontWeight: '200',
+    lineHeight: '1.5rem',
+    fontSize: ['sm', 'md', 'lg', 'xl'],
+    fontFamily: 'avenir next, sans-serif',
 };
 const AboutSideBar = ({isOpen, onClose}) => {
     return (
@@ -96,8 +90,70 @@ const AboutSideBar = ({isOpen, onClose}) => {
                 </DrawerHeader>
 
                 <DrawerBody >
+                    <Spacer py={'1.5rem'} />
+                    <Divider
+                        textAlign={'center'} borderWidth={'.2rem'} w={'90%'}
+                        mx='auto'
+                        borderStyle={'solid'}
+                        borderColor={useColorModeValue('teal.400', 'facebook.600')}
+                    />
+                    <Box
+                        padding={{base: '8', sm: '6', md: '12', lg: '16', xl: '20'}}
+                    >
+                        <Center>
 
-                    <Timeline />
+                            <Heading color={useColorModeValue(colorThemeValues.light.textHeader, colorThemeValues.dark.textHeader)} sx={headerStyle} textAlign={'center'} >
+                                Site Overview:
+                            </Heading>
+
+                        </Center>
+
+                        <Spacer py={'1.5rem'} />
+
+
+                        <Container sx={bodyStyle} color={useColorModeValue(colorThemeValues.light.textMain, colorThemeValues.dark.textMain)}>
+
+                            <Text>
+                                <strong>What is TextureForge:</strong>
+                                <br />
+
+                                TextureForge is a web-app designed to simplify the process of creating textures for game development, 3D renders,
+                                and VFX projects, streamlining typical workflows for managing PBR<sup>1</sup> {'\u00A0'}
+                                materials by offering a straightforward, free way to generate them directly within the browser.
+                                <br />
+                                <br />
+                                The site employs a practical, intuitive interface that leverages Stable Diffusion (an open-source generative AI model) to create the images,
+                                ensuring that users can quickly get the materials they need with a minimum level of input and without having to compromise on quality or spend time
+                                (and money) using proprietary software.
+                                <br />
+                                <br />
+                                <strong>How Do I Use It:</strong>
+                                <br />
+                                To use the service, a user can simply input a description matching the material they want (via the site's 'Forge' page), click submit, and wait
+                                for their prompt to be processed.Meanwhile, under the hood TextureForge will take the user's description, translate it into a prompt optimally
+                                formatted for Stable Diffusion, and send it to SD for evaluation<sup>2</sup>.
+                                After the textures load, they can then be previewed directly in the browser, downloaded using filenames structured for easy management, and imported into the user's 3D program of choice.
+                                <br />
+                                <br />
+                                <strong>Why Make This:</strong>
+                                <br />
+                                As a platform, TextureForge was designed in the name of efficiency, accessibility, and elasticity; the overall goal was to provide digital artists and game developers
+                                with a user-friendly, time-saving tool for generating and managing their materials (—especially handy in projects where it makes sense to prioritize speed,
+                                resource management, and lower-fidelity renders over photorealistic lighting, like previzualizations and alpha-testing.)
+                                <br />
+                                <br />
+                            </Text>
+
+                            <Text sx={detailStyle} color={useColorModeValue(colorThemeValues.light.textMain, colorThemeValues.dark.textMain)} px={'1rem'}>
+                                <span>1: <i>Physically Based Realism refers to a computer graphics technique/set of rules that has become the industry-standard for
+                                    creating photorealistic 3D renders and game engines. See below section for more info.</i></span> <br /> <br />
+                                <span>2: <i>To be specific, SD's processing of the initial prompt takes place in two stages: first via a text-to-image model (for the base color of the material);
+                                    and next via an image-to-image model (for everything else).</i></span>
+
+                            </Text>
+                        </Container>
+                    </Box>
+
 
                     <Spacer py={'1rem'} />
 
@@ -107,91 +163,21 @@ const AboutSideBar = ({isOpen, onClose}) => {
                         borderStyle={'solid'}
                         borderColor={useColorModeValue('teal.400', 'facebook.600')}
                     />
+                    <Spacer py={'1rem'} />
 
+                    <Timeline />
+
+                    <Spacer py={'1rem'} />
                     <Box padding={{base: '8', sm: '6', md: '12', lg: '16', xl: '20'}}>
-
-                        {/* Overview */}
-
                         <Center>
-                            <MotionText color={useColorModeValue(colorThemeValues.light.textHeader, colorThemeValues.dark.textHeader)} sx={headerStyle} textAlign={'center'} >
-                                Overview:
-                                <br />
-                            </MotionText>
-                        </Center >
-
-                        <Spacer py={'1.5rem'} />
-                        <Container
-                        >
-                            <MotionText sx={bodyStyle} color={useColorModeValue(colorThemeValues.light.textMain, colorThemeValues.dark.textMain)} >
-                                TextureForge is a web-app designed to simplify the process of creating texture maps for game development, 3D renders,
-                                and VFX projects, streamlining typical workflows for managing PBR<sup style="font-size: smaller;">1</sup> materials by offering a straightforward, free way to
-                                generate them directly within the browser.
-                                <br />
-                                <span style="font-size: smaller;">1: <i>Physically Based Realism refers to a computer graphics technique/philosophy that has become the industry-standard for
-                                    creating photorealistic 3D renders and game engines.</i></span>
-                                <br />
-                                <br />
-                                The site employs a practical, intuitive interface that leverages Stable Diffusion (an open-source generative AI model) to create the images,
-                                ensuring that users can quickly get the materials they need with a minimum level of input and without having to compromise on quality or spend time
-                                (and money) using proprietary software.
-                                <br />
-                                <br />
-                                To use the service, a user can simply input a description matching the material they want (via the site's 'Forge' page), click submit, and wait
-                                for their prompt to be processed.
-                                <br />
-                                Under the hood, TextureForge will take the user's description, translate it into a prompt optimally
-                                formatted for Stable Diffusion, and send it to SD for evaluation<sup style="font-size: smaller;">2</sup>. After the textures load, they can
-                                then be previewed directly in the browser, downloaded using filenames structured for easy management,
-                                and imported into the user's 3D program of choice.
-                                <br />
-                                <span style="font-size: smaller;">2: <i>To be specific, this process takes place in two stages—first via a text-to-image model for the base color of the material,
-                                    and next via an image-to-image model for the rest.</i></span>
-                                <br />
-                                <br />
-                                As a platform, TextureForge was designed in the name of efficiency, accessibility, and elasticity, aiming to provide digital artists and game developers
-                                with a user-friendly, handy time-saver to generate and manage their materials. <br />
-                                It was built for projects at various stages of development, but especially those where it makes sense to prioritize speed,
-                                resource management, and lower-fidelity renders over photorealistic lighting and maximum resolution.
-                                <br />
-                                <br />
-                            </MotionText>
-                            <Divider
-                                textAlign={'center'} borderWidth={'.2rem'} w={'100%'}
-                                mx='auto'
-                                borderStyle={'solid'}
-                                borderColor={useColorModeValue('teal.400', 'facebook.600')}
-
-
-                            />
-                        </Container>
-
-                        <Spacer py={'2.5rem'} />
-
-
-
-
-                        <Center>
-                            {/* WHAT IS PBR? */}
-                            <MotionText
-                                color={useColorModeValue(colorThemeValues.light.textHeader, colorThemeValues.dark.textHeader)} sx={headerStyle} textAlign={'center'}
-                            >
+                            <Heading color={useColorModeValue(colorThemeValues.light.textHeader, colorThemeValues.dark.textHeader)} sx={headerStyle} textAlign={'center'} >
                                 What is 'PBR'?: <br />
-                            </MotionText>
+                            </Heading>
                         </Center>
 
                         <Spacer py={'1.5rem'} />
-
-
-
-                        <Container
-                        // w='full' p={{base: '2', sm: '4', md: '6', lg: '8', xl: '10'}} bg={useColorModeValue('gray.200', colorThemeValues.dark.componentMain)}
-                        >
-                            <MotionText sx={bodyStyle}
-                                color={useColorModeValue(colorThemeValues.light.textMain, colorThemeValues.dark.textMain)}
-                            // variants={textVariants} initial="hidden" animate="visible"
-
-
-                            >
+                        <Container >
+                            <Text sx={bodyStyle} color={useColorModeValue(colorThemeValues.light.textMain, colorThemeValues.dark.textMain)} >
                                 <br />
                                 In the context of computer graphics, Physically Based Rendering is a technical approach that aims to generate predictable/stable/photorealistic results by approximating the real-world behavior/interactions between light rays (as defined by equations fed to the engine) and surface matter (as described by texture maps fed to the material) in a virtual space. <br /><br />
 
@@ -206,20 +192,18 @@ const AboutSideBar = ({isOpen, onClose}) => {
                                 <strong>Normals/Height</strong>:<br /> Add surface detail by simulating additional geometry. <br />
                                 <br />
                                 <br />
-                                For more in-depth documentation on PBR systems, see: <br />
-                                <center>
-                                    <a href="https://reference.wolfram.com/language/tutorial/PhysicallyBasedRendering.html">Wolfram Guide</a>
-                                </center>
+                                For more in-depth documentation on PBR systems, see:
+                            </Text>
 
-                                <center>
-                                    <a href="https://creativecloud.adobe.com/learn/substance-3d-designer/web/the-pbr-guide-part-1">Adobe Guide</a>
-                                </center>
+                            <Text sx={bodyStyle} color={useColorModeValue(colorThemeValues.light.textMain, colorThemeValues.dark.textMain)} textAlign={'center'}>
+                                <a href="https://reference.wolfram.com/language/tutorial/PhysicallyBasedRendering.html">Wolfram Guide</a>
                                 <br />
+                                <a href="https://creativecloud.adobe.com/learn/substance-3d-designer/web/the-pbr-guide-part-1">Adobe Guide</a>
+                                <br />
+                            </Text>
 
+                            <Spacer py={'1.5rem'} />
 
-
-
-                            </MotionText>
                             <Divider
                                 textAlign={'center'} borderWidth={'.2rem'} w={'100%'}
                                 mx='auto'
@@ -235,24 +219,12 @@ const AboutSideBar = ({isOpen, onClose}) => {
                         <Center>
                             <LinkBox textAlign="center">
                                 <LinkOverlay href='https://github.com/thegrayeminence/material-manager/tree/main' isExternal>
-                                    <MotionText
-                                        sx={headerStyle}
-                                        color={useColorModeValue(colorThemeValues.light.textHeader, colorThemeValues.dark.textHeader)}
-                                    // initial="hidden" animate="visible" variants={textVariants}
-                                    >
+                                    <Heading sx={headerStyle} color={useColorModeValue(colorThemeValues.light.textHeader, colorThemeValues.dark.textHeader)} >
                                         More Info On GitHub:
-                                    </MotionText>
+                                    </Heading>
                                 </LinkOverlay>
                                 <Spacer py={'.5rem'} />
-                                <Icon
-                                    as={FaGithub} height={'auto'}
-                                    // _hover={{transform: 'scale(1.1)', color: useColorModeValue(colorThemeValues.light.hover, colorThemeValues.dark.hover)}}
-                                    width={{base: '4rem', sm: '4rem', md: '5rem', lg: '6rem', xl: '6.5rem'}}
-                                    color={useColorModeValue(colorThemeValues.light.icon, colorThemeValues.dark.icon)}
-                                // initial="hidden"
-                                // animate="visible"
-                                // variants={textVariants}
-                                />
+                                <Icon as={FaGithub} height={'auto'} width={{base: '4rem', sm: '4rem', md: '5rem', lg: '6rem', xl: '6.5rem'}} color={useColorModeValue(colorThemeValues.light.icon, colorThemeValues.dark.icon)} />
                             </LinkBox>
                         </Center>
                     </Box>
