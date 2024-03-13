@@ -37,11 +37,25 @@
 ---
 
 ## About
-URL: [Texture Forge](https://textureforgestatic.onrender.com/) <br>
+APP URL: https://www.textureforge.io/ <br>
 ### Overview
-[Texture Forge](https://textureforgestatic.onrender.com/)  utilizes user input (via a series of elements on the site's form) to generate text prompts that are sent to Stable Diffusion (an open-source generative AI system) to create texture maps, via text-to-image and image-to-image models, that can be easily downloaded and imported into the user's 3D program/software of choice. 
-
-Users can quickly generate their desired PBR textures via a series of prompts, preview them in the browser once they load, download them (with optimal naming conventions/file-structure for ease-of-use), then import their newly generated texture maps into their rendering engine of choice (and connect each map in the shader's console/node tree as they normally would). The platform thus provides a handy, time-saving tool for Game Developers, 3D/VFX artists/etc.--specifically those whose projects are still in the early stages of development (e.g. previz, playblasts, or rough renders where the prioritization of speed and low-impact assets over photorealistic lighting is desirable.)
+[Texture Forge](https://www.textureforge.io/) is a web-app designed to simplify the process of creating textures for game development, 3D renders,and VFX projects, streamlining typical workflows for managing PBR<sup>1</sup> materials by offering a straightforward, free way to generate them directly within the browser.
+<br />
+<br />
+The site employs a practical, intuitive interface that leverages Stable Diffusion (an open-source generative AI model) to create the images, ensuring that users can quickly get the materials they need with a minimum level of input and without having to compromise on quality or spend time (and money) using proprietary software.
+<br />
+<br />
+<strong>How Do I Use It:</strong>
+<br />
+To use the service, a user can simply input a description matching the material they want (via the site's 'Forge' page), click submit, and wait for their prompt to be processed. Meanwhile, under the hood, TextureForge will take the user's description, translate it into a prompt optimally formatted for Stable Diffusion, and send it to SD for evaluation<sup>2</sup>. After the textures load, they can then be previewed directly in the browser, downloaded using filenames structured for easy management, and imported into the user's 3D program of choice.
+<br />
+<br />
+<strong>Why Make This:</strong>
+<br />
+As a platform, TextureForge was designed in the name of efficiency, accessibility, and elasticity; the overall goal was to provide digital artists and game developers with a user-friendly, time-saving tool for generating and managing their materials (—especially handy in projects in early-development where it makes sense to prioritize speed, resource management, and lower-fidelity renders over photorealistic lighting, like previzualizations and alpha-testing.)
+<br />
+<br />
+<span>1: <i>Physically Based Realism refers to a computer graphics system/set of techniques that is the current industry-standard in game design and 3D rendering for creating predictable, stable, and consistent photorealistic results. See below section for more info.</i></span> <br /> <span>2: <i>To be specific, SD's processing of the initial prompt takes place in two stages: first via a text-to-image model (for the base color of the material); and next via an image-to-image model (for everything else).</i></span>
 
 
 ### Features

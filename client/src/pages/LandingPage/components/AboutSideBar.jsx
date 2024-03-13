@@ -130,7 +130,7 @@ const AboutSideBar = ({isOpen, onClose}) => {
                                 <strong>How Do I Use It:</strong>
                                 <br />
                                 To use the service, a user can simply input a description matching the material they want (via the site's 'Forge' page), click submit, and wait
-                                for their prompt to be processed.Meanwhile, under the hood TextureForge will take the user's description, translate it into a prompt optimally
+                                for their prompt to be processed. Meanwhile, under the hood, TextureForge will take the user's description, translate it into a prompt optimally
                                 formatted for Stable Diffusion, and send it to SD for evaluation<sup>2</sup>.
                                 After the textures load, they can then be previewed directly in the browser, downloaded using filenames structured for easy management, and imported into the user's 3D program of choice.
                                 <br />
@@ -138,7 +138,7 @@ const AboutSideBar = ({isOpen, onClose}) => {
                                 <strong>Why Make This:</strong>
                                 <br />
                                 As a platform, TextureForge was designed in the name of efficiency, accessibility, and elasticity; the overall goal was to provide digital artists and game developers
-                                with a user-friendly, time-saving tool for generating and managing their materials (—especially handy in projects where it makes sense to prioritize speed,
+                                with a user-friendly, time-saving tool for generating and managing their materials (—especially handy in projects in early-development where it makes sense to prioritize speed,
                                 resource management, and lower-fidelity renders over photorealistic lighting, like previzualizations and alpha-testing.)
                                 <br />
                                 <br />
